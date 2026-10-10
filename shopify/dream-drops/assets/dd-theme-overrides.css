@@ -21,3 +21,45 @@
 .dd :is(.dd-card__title, #dd-x) { font-size: 15px !important; }
 .dd :is(.dd-review__title, #dd-x) { font-size: 16px !important; }
 .dd :is(.dd-moments .dd-lede, .dd-reviews .dd-lede, #dd-x) { color: rgba(255, 255, 255, .78) !important; }
+
+/* ---------- Buy box rhythm ----------
+   One even gap between every buy box item; benefit pills sit closer together as a group,
+   and the accordion rows join into one list. */
+.dd-info [data-dd-form] { display: flex; flex-direction: column; gap: 14px; }
+.dd-info [data-dd-form] > * { margin-top: 0 !important; margin-bottom: 0 !important; }
+.dd-info .dd-info__badge { align-self: center; }
+.dd-info .dd-info__title { margin: 0 !important; }
+.dd-info .dd-info__tags { margin: -6px 0 0 !important; }
+.dd-info .dd-pills + .dd-pills { margin-top: -6px !important; }
+.dd-info .dd-acc { margin-top: 6px !important; }
+.dd-info .dd-acc + .dd-acc { margin-top: -14px !important; }
+.dd-info .dd-stock { margin: 2px 0 0 !important; }
+.dd :is(.dd-acc summary, #dd-x) { letter-spacing: 0 !important; }
+
+/* ---------- Mobile ----------
+   Every section re-links dd-product.css, so a later copy of it can follow this file;
+   these rules use !important to stay on top regardless of order. */
+@media (max-width: 749px) {
+  .dd-info [data-dd-form] { gap: 12px !important; }
+  .dd-info .dd-acc + .dd-acc { margin-top: -12px !important; }
+  .dd .dd-pill { font-size: 12.5px !important; text-align: left; }
+  .dd.dd-compare .dd-compare__wrap { overflow-x: visible !important; }
+  .dd.dd-compare table { min-width: 0 !important; table-layout: fixed !important; }
+  .dd.dd-compare th, .dd.dd-compare td { padding: 10px 4px !important; font-size: 11px !important; overflow-wrap: anywhere; }
+  .dd.dd-compare thead th { font-size: 10px !important; letter-spacing: .02em !important; }
+  .dd.dd-compare tbody th { width: 34% !important; padding-left: 10px !important; }
+  .dd-ann__sun { right: -8px !important; top: -22px !important; }
+}
+
+/* ---------- Accordion image + full-screen viewer ---------- */
+.dd .dd-acc__image { display: block !important; margin: 12px auto 4px !important; cursor: zoom-in; }
+.dd .dd-acc__body:has(.dd-acc__image) { padding-right: 30px !important; }
+.dd-acc__body p:has(+ .dd-acc__image), .dd-acc__body p:only-child { text-align: center; }
+.dd-zoom { position: fixed; inset: 0; z-index: 2147483000; display: flex; align-items: center; justify-content: center; background: rgba(15, 20, 50, .88); padding: 56px 12px 24px; overflow: auto; }
+.dd-zoom[hidden] { display: none !important; }
+.dd-zoom img { max-width: min(96vw, 900px); max-height: 86vh; width: auto; height: auto; border-radius: 10px; background: #fff; cursor: zoom-in; transition: max-width .2s, max-height .2s; }
+.dd-zoom.is-zoomed { align-items: flex-start; justify-content: flex-start; }
+.dd-zoom.is-zoomed img { flex: none !important; max-height: none !important; width: 200vw !important; max-width: 1800px !important; cursor: zoom-out; }
+.dd-zoom .dd-zoom__close { position: fixed; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: #fff; color: #1f2559; font-size: 20px; line-height: 1; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, .25); }
+.dd-zoom .dd-zoom__hint { position: fixed; bottom: 10px; left: 0; right: 0; text-align: center; color: #fff; font-size: 12px; opacity: .8; pointer-events: none; }
+@media (min-width: 750px) { .dd-zoom.is-zoomed img { width: 160vw !important; } }

@@ -39,22 +39,19 @@ Kaching Bundles is enabled as an app embed. Its widget is moved into the buy box
 pills, and the deal it chooses (quantity and `__kaching_bundles` property) is sent with add to cart.
 The page's own bundle picker only appears if the product gets more than one variant or a subscription plan.
 
-## Still to replace
+## Still to replace or confirm
 
-Everything marked `REPLACE_ME` in the theme editor. In particular:
+Page text has been filled in from the reference page, with the brand changed to Blomar.
 
 | Item | Where | Status |
 |---|---|---|
-| Product images showing Blomar branding | Product media | **Current images show the Evoura brand and label** |
-| Benefit claims | Buy box pills, benefit cards, comparison last row | REPLACE_ME |
-| Ingredients | Ingredient cards and Ingredients accordion | Filled in (supplement facts image shows Evoura's name) |
+| Product images | Product media | **Current images show the Evoura brand and label** |
+| Supplement facts image | Ingredients accordion | Shows "Evoura" and is only 324px wide (soft when zoomed) |
+| Reviews and rating | Reviews section (hidden), buy box rating (removed) | Add real Blomar reviews or a reviews app, then re-enable |
+| Low-stock bar | Buy box | Shows only when stock is tracked and 1–20 units are left; current stock is 0 |
 | Sale end date | Announcement bar → Sale ends | Empty, so the countdown is hidden |
-| Dosage, servings, storage, safety | Steps, accordions, FAQ answers | REPLACE_ME |
-| Shipping offer and dispatch time | Perks box, CTA chip | REPLACE_ME |
-| Guarantee length and terms | Perks box, guarantee band, CTA chip | REPLACE_ME |
-| Rating and review count | Buy box rating, reviews summary | REPLACE_ME |
-| Reviews | Reviews section (or swap in a reviews app) | REPLACE_ME |
-| Inventory | Product has 0 stock with "deny" policy | Set stock or allow overselling |
+| Operational claims | Perks box | Confirm "Ships Within 1-2 Days" and "FREE Shipping Protection" are true |
+| Guarantee | Guarantee band, CTA chip | Set to 30 days to match the store's announcement bar |
 
 ## How to customise the design
 

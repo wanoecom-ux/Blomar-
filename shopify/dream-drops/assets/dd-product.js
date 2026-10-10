@@ -182,6 +182,50 @@
     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }));
 
+  /* ---------- Accordion images: tap to view full size ---------- */
+  const zoomImgs = document.querySelectorAll('.dd-acc__image');
+  if (zoomImgs.length) {
+    const overlay = document.createElement('div');
+    overlay.className = 'dd-zoom';
+    overlay.hidden = true;
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Image viewer');
+    overlay.innerHTML = '<button type="button" class="dd-zoom__close" aria-label="Close">✕</button><img alt=""><p class="dd-zoom__hint">Tap the image to zoom</p>';
+    document.body.appendChild(overlay);
+    const big = overlay.querySelector('img');
+    const closeBtn = overlay.querySelector('.dd-zoom__close');
+    let opener = null;
+
+    const close = () => {
+      overlay.hidden = true;
+      overlay.classList.remove('is-zoomed');
+      document.documentElement.style.overflow = '';
+      if (opener) opener.focus();
+    };
+    const open = (img) => {
+      opener = img;
+      // Ask Shopify's image CDN for a larger copy than the one shown in the accordion.
+      big.src = (img.currentSrc || img.src).replace(/([?&])width=\d+/, '$1width=1800');
+      big.alt = img.alt;
+      overlay.hidden = false;
+      document.documentElement.style.overflow = 'hidden';
+      closeBtn.focus();
+    };
+
+    zoomImgs.forEach((img) => {
+      img.tabIndex = 0;
+      img.setAttribute('role', 'button');
+      img.setAttribute('aria-label', `View ${img.alt || 'image'} full size`);
+      img.addEventListener('click', () => open(img));
+      img.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(img); } });
+    });
+    big.addEventListener('click', (e) => { e.stopPropagation(); overlay.classList.toggle('is-zoomed'); });
+    closeBtn.addEventListener('click', close);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !overlay.hidden) close(); });
+  }
+
   /* ---------- Reviews: filter + load more ---------- */
   document.querySelectorAll('[data-dd-reviews]').forEach((wrap) => {
     const cards = [...wrap.querySelectorAll('[data-dd-review]')];
