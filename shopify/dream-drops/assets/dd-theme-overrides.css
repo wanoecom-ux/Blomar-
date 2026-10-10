@@ -106,3 +106,48 @@
    body font for text, heading font for titles, prices, totals and buttons. */
 cart-drawer :is(*, #dd-x) { font-family: var(--dd-font-body) !important; }
 cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [class*="price"], [class*="total"], button, .button, [class*="btn"], #dd-x) { font-family: var(--dd-font-heading) !important; }
+
+/* ---------- Kaching Bundles, restyled to match the page's bundle boxes ----------
+   Only affects the Kaching widget once dd-product.js has moved it into the buy box. */
+.dd-bundle-slot :is(.kaching-bundles__block-title, #dd-x) { display: none !important; }
+.dd-bundle-slot :is(.kaching-bundles__bars, #dd-x) { display: grid !important; gap: 12px !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-main, #dd-x) {
+  background: var(--dd-card) !important; border: 1.5px solid var(--dd-border) !important; border-radius: 10px !important;
+  padding: 14px 18px !important; box-shadow: none !important; transition: border-color .2s, background .2s;
+}
+.dd-bundle-slot :is(.kaching-bundles__bar:hover .kaching-bundles__bar-main, #dd-x) { border-color: var(--dd-navy) !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar--selected .kaching-bundles__bar-main, #dd-x) {
+  background: var(--dd-sky) !important; border: 2px solid var(--dd-navy) !important; box-shadow: 0 4px 0 rgba(43, 58, 143, .12) !important;
+}
+.dd-bundle-slot :is(.kaching-bundles__bar-radio, #dd-x) {
+  width: 20px !important; height: 20px !important; min-width: 20px !important; border-radius: 50% !important;
+  border: 2px solid var(--dd-border) !important; background: #fff !important; box-shadow: none !important;
+}
+.dd-bundle-slot :is(.kaching-bundles__bar--selected .kaching-bundles__bar-radio, #dd-x) {
+  border-color: var(--dd-navy) !important; background: radial-gradient(circle, var(--dd-pink) 0 4.5px, #fff 5.5px) !important;
+}
+.dd-bundle-slot :is(.kaching-bundles__bar-radio *, #dd-x) { display: none !important; }
+.dd-bundle-slot .kaching-bundles__bar-radio::before, .dd-bundle-slot .kaching-bundles__bar-radio::after { display: none !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-title, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 16px !important; color: var(--dd-ink) !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-label, #dd-x) {
+  background: var(--dd-pink) !important; color: #fff !important; border-radius: 6px !important; padding: 2px 8px !important;
+  font-size: 10px !important; font-weight: 800 !important; letter-spacing: .06em !important; text-transform: uppercase !important;
+}
+.dd-bundle-slot :is(.kaching-bundles__bar-second-line, #dd-x) { color: var(--dd-muted) !important; font-size: 13px !important; font-weight: 600 !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-price, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 16px !important; color: var(--dd-ink) !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-full-price, #dd-x) { font-size: 13px !important; color: var(--dd-muted) !important; text-decoration: line-through !important; }
+.dd-bundle-slot :is(.kaching-bundles__progressive-gifts__title, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; color: var(--dd-ink) !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-container, .kaching-bundles__bar-wrapper, #dd-x) { border: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; outline: 0 !important; }
+.dd-bundle-slot :is(.kaching-bundles__bar-title, .kaching-bundles__bar-price, #dd-x) { letter-spacing: 0 !important; }
+
+/* ---------- Letter spacing ----------
+   The theme tightens letter spacing on every text element; reset it inside .dd so text keeps the
+   page's spacing. Labels that set their own spacing are excluded. */
+.dd :is(p, li, span, a, label, strong, div, button):not(.dd-eyebrow, .dd-info__badge, .dd-divider-label, .dd-moment__label, .dd-review__tag, .dd-tier__badge, .dd-btn) { letter-spacing: inherit; }
+@media (min-width: 750px) {
+  .dd .dd-pill { font-size: 14px !important; }
+  .dd-info .dd-info__tags { font-size: 14px; color: var(--dd-navy); font-weight: 600; }
+}
+@media (max-width: 749px) {
+  .dd-ann .dd-ann__text { font-size: 12.5px !important; letter-spacing: .02em !important; }
+}

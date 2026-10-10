@@ -31,6 +31,8 @@
   }
   #dd-ann-{{ section.id }} .dd-ann__timer small { font-size: 9px; opacity: .8; margin-left: 1px; }
   #dd-ann-{{ section.id }} .dd-ann__sep { opacity: .6; }
+  #dd-ann-{{ section.id }} [data-days] { display: inline-flex; align-items: baseline; gap: 6px; }
+  #dd-ann-{{ section.id }} [data-days][hidden] { display: none; }
   #dd-ann-{{ section.id }} .dd-ann__cloud {
     position: absolute; z-index: 1; width: 46px; height: 14px; border-radius: 14px; background: rgba(255, 255, 255, .85);
   }
@@ -83,6 +85,7 @@
     {%- if s.link != blank -%}<a href="{{ s.link }}" class="dd-ann__text" style="text-decoration: none;">{{ s.text }}</a>{%- else -%}<span class="dd-ann__text">{{ s.text }}</span>{%- endif -%}
     {%- if s.sale_end != blank -%}
       <span class="dd-ann__timer" data-dd-countdown="{{ s.sale_end | escape }}" role="timer" aria-label="Sale ends in" hidden>
+        <span data-days hidden><span data-d>0</span><small>d</small><span class="dd-ann__sep">:</span></span>
         <span data-h>00</span><small>h</small><span class="dd-ann__sep">:</span>
         <span data-m>00</span><small>m</small><span class="dd-ann__sep">:</span>
         <span data-s>00</span><small>s</small>
@@ -104,13 +107,17 @@
     const end = Date.parse(timer.dataset.ddCountdown);
     if (Number.isNaN(end)) return;
     const h = timer.querySelector('[data-h]'), m = timer.querySelector('[data-m]'), sec = timer.querySelector('[data-s]');
+    const dWrap = timer.querySelector('[data-days]'), d = timer.querySelector('[data-d]');
     const pad = (n) => String(n).padStart(2, '0');
     let id;
     const tick = () => {
       const left = Math.floor((end - Date.now()) / 1000);
       if (left <= 0) { timer.hidden = true; clearInterval(id); return; }
       timer.hidden = false;
-      h.textContent = pad(Math.floor(left / 3600));
+      // Over a day away, show days so the hours stay under 24 (20d : 19h : 12m : 43s).
+      const days = Math.floor(left / 86400);
+      if (dWrap) { dWrap.hidden = days < 1; d.textContent = days; }
+      h.textContent = pad(Math.floor((days > 0 ? left % 86400 : left) / 3600));
       m.textContent = pad(Math.floor((left % 3600) / 60));
       sec.textContent = pad(left % 60);
     };
