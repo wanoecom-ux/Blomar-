@@ -1,0 +1,93 @@
+{% comment %}
+  Track your order: numbered help cards (where to find the tracking link, the customer account,
+  contacting support) with a button each. An order-tracking app can be added as an app block;
+  it renders above the cards.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+<style>
+  #dd-track-{{ section.id }} .dd-track__app { margin: 0 auto 28px; max-width: 640px; }
+  #dd-track-{{ section.id }} .dd-track__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 24px; }
+  #dd-track-{{ section.id }} .dd-track__card {
+    display: flex; flex-direction: column; align-items: flex-start; gap: 10px; padding: 24px 20px; text-align: left;
+    background: #fff; border-radius: 14px; box-shadow: 0 6px 18px rgba(43, 58, 143, .08);
+  }
+  #dd-track-{{ section.id }} .dd-track__num {
+    width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+    background: var(--dd-pink); color: #fff; font-family: var(--dd-font-heading) !important; font-weight: 700; font-size: 15px;
+  }
+  #dd-track-{{ section.id }} .dd-track__card h3 { font-size: 16px; margin: 4px 0 0; color: var(--dd-ink); }
+  #dd-track-{{ section.id }} .dd-track__card p { margin: 0; color: #5a6290; font-size: 13.5px; line-height: 1.6; flex: 1; }
+  #dd-track-{{ section.id }} .dd-track__card .dd-btn { min-height: 44px; padding: 0 18px; font-size: 14px !important; display: inline-flex; align-items: center; text-decoration: none; margin-top: 6px; }
+  #dd-track-{{ section.id }} .dd-track__ghost { background: #fff !important; color: var(--dd-navy) !important; border: 2px solid var(--dd-navy); text-transform: none !important; }
+  @media (max-width: 749px) {
+    #dd-track-{{ section.id }} .dd-track__grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<section class="dd dd-section dd-track" style="background: {{ s.background }};">
+  <div class="dd-container dd-center" id="dd-track-{{ section.id }}" style="max-width: {{ s.width }}px;">
+    {% render 'dd-heading', s: s %}
+    {%- for block in section.blocks -%}
+      {%- if block.type == '@app' -%}<div class="dd-track__app">{% render block %}</div>{%- endif -%}
+    {%- endfor -%}
+    <div class="dd-track__grid">
+      {%- assign n = 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'step' -%}
+          {%- assign n = n | plus: 1 -%}
+          {%- liquid
+            assign url = block.settings.button_link
+            if block.settings.button_target == 'account'
+              assign url = routes.account_url
+            elsif block.settings.button_target == 'contact'
+              assign url = '/pages/contact'
+            endif
+          -%}
+          <div class="dd-track__card" {{ block.shopify_attributes }}>
+            <span class="dd-track__num" aria-hidden="true">{{ n }}</span>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+            {%- if block.settings.button_label != blank and url != blank -%}
+              <a class="dd-btn {% if forloop.first %}dd-btn--primary{% else %}dd-track__ghost{% endif %}" href="{{ url }}">{{ block.settings.button_label }}</a>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dream Drops track order",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Where is" },
+    { "type": "text", "id": "highlight", "label": "Highlighted words", "default": "my order?" },
+    { "type": "text", "id": "heading_after", "label": "Words after highlight" },
+    { "type": "richtext", "id": "text", "label": "Intro text" },
+    { "type": "color_background", "id": "background", "label": "Background" },
+    { "type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1000 }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Help card",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Title", "default": "Check your inbox" },
+        { "type": "textarea", "id": "text", "label": "Text" },
+        { "type": "text", "id": "button_label", "label": "Button label" },
+        { "type": "select", "id": "button_target", "label": "Button goes to", "default": "link", "options": [
+          { "value": "link", "label": "The link below" }, { "value": "account", "label": "Customer account" }, { "value": "contact", "label": "Contact page" }
+        ] },
+        { "type": "url", "id": "button_link", "label": "Link" }
+      ]
+    },
+    { "type": "@app" }
+  ],
+  "presets": [{ "name": "Dream Drops track order", "blocks": [{ "type": "step" }, { "type": "step" }, { "type": "step" }] }]
+}
+{% endschema %}

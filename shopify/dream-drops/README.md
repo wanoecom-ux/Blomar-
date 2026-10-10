@@ -26,6 +26,11 @@ Installed on the unpublished theme **Copy of Odour Mister** and assigned to the 
 | `sections/dd-guide-hero.liquid` | Guide header with product card; loads the page fonts for pages without a product section |
 | `sections/dd-guide-list.liquid` | Guide "other ingredients" box with feature pills |
 | `sections/dd-guide-dose.liquid` | Age-band dosage cards, caution note and other ingredients list |
+| `templates/page.track-order.json` | Track Your Order page (`/pages/track-your-order`) |
+| `templates/page.contact.json` | Contact page restyled, with Shopify's contact form |
+| `sections/dd-track.liquid` | Numbered order-help cards; accepts an order-tracking app block |
+| `sections/dd-contact.liquid` | Contact info panel and contact form |
+| `sections/dd-menu-style.liquid` | Mobile menu colours (white drawer, black text, grey current row); in the header group |
 | `snippets/dd-heading.liquid` | Shared eyebrow + heading + intro |
 | `assets/dd-product.css` | All page styles, driven by `--dd-*` variables |
 | `assets/dd-theme-overrides.css` | Scoped rules that beat this theme's `!important` font, colour and button styles |
@@ -76,3 +81,8 @@ Page text has been filled in from the reference page, with the brand changed to 
 Page **Parent Guide** (`/pages/parent-guide`) is created hidden and uses the `parent-guide` template on
 the *Copy of Odour Mister* theme. The wording is Blomar's own. Before publishing, check it against the label:
 the other ingredients list, the dispatch time and the shipping answers.
+
+## Menu
+
+The theme's header uses the **Blomar menu** (Home, Dream Drops, Track Your Order, Contact, Parent Guide).
+The store's original Main menu is unchanged and still used by the live theme.

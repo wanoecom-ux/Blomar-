@@ -1,0 +1,41 @@
+{% comment %}
+  Mobile menu colours: white drawer, near-black text, a light grey row for the current page and hover,
+  light grey dividers above the links and above the account link. Sits in the header group, so it
+  applies on every page of the theme. Outputs no markup of its own.
+{% endcomment %}
+{%- assign s = section.settings -%}
+<style>
+  #menu-drawer:is(.menu-drawer, #dd-x),
+  #menu-drawer :is(.menu-drawer__inner-container, .menu-drawer__navigation-container, .menu-drawer__navigation, .menu-drawer__menu, .menu-drawer__submenu, #dd-x) {
+    background: {{ s.background }} !important; background-image: none !important;
+  }
+  #menu-drawer :is(.menu-drawer__navigation, #dd-x) { border-top: 1px solid {{ s.divider }}; border-bottom: 1px solid {{ s.divider }}; padding: 10px 0 !important; }
+  #menu-drawer :is(.menu-drawer__menu > li, #dd-x) { border: 0 !important; margin: 0 !important; }
+  #menu-drawer :is(.menu-drawer__menu-item, #dd-x) {
+    color: {{ s.text }} !important; background: transparent !important; border: 0 !important;
+    padding: 14px 20px !important; letter-spacing: .04em;
+  }
+  #menu-drawer :is(.menu-drawer__menu-item--active, .menu-drawer__menu-item:hover, .menu-drawer__menu-item:focus-visible, #dd-x) { background: {{ s.active }} !important; color: {{ s.text }} !important; }
+  #menu-drawer :is(.menu-drawer__utility-links, #dd-x) { background: {{ s.background }} !important; }
+  #menu-drawer :is(.menu-drawer__utility-links a, .menu-drawer__account, .list-social__link, .localization-selector, #dd-x) { color: {{ s.text }} !important; }
+  #menu-drawer :is(.menu-drawer__account, #dd-x) { font-weight: 700 !important; }
+  #menu-drawer :is(svg, #dd-x) { fill: {{ s.text }} !important; color: {{ s.text }} !important; }
+  #menu-drawer :is(.menu-drawer__account svg, #dd-x) { fill: none !important; stroke: {{ s.text }}; }
+  .header__icon--menu :is(svg, #dd-x) { color: {{ s.text }} !important; }
+</style>
+
+{% schema %}
+{
+  "name": "Mobile menu colours",
+  "tag": "div",
+  "class": "dd-menu-style",
+  "settings": [
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text and icons", "default": "#111111" },
+    { "type": "color", "id": "active", "label": "Current page and hover", "default": "#f5f5f5" },
+    { "type": "color", "id": "divider", "label": "Divider lines", "default": "#e5e5e5" }
+  ],
+  "presets": [{ "name": "Mobile menu colours" }],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}
