@@ -107,38 +107,57 @@
 cart-drawer :is(*, #dd-x) { font-family: var(--dd-font-body) !important; }
 cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [class*="price"], [class*="total"], button, .button, [class*="btn"], #dd-x) { font-family: var(--dd-font-heading) !important; }
 
-/* ---------- Kaching Bundles, restyled to match the page's bundle boxes ----------
-   Only affects the Kaching widget once dd-product.js has moved it into the buy box. */
-.dd-bundle-slot :is(.kaching-bundles__block-title, #dd-x) { display: none !important; }
-.dd-bundle-slot :is(.kaching-bundles__bars, #dd-x) { display: grid !important; gap: 12px !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-main, #dd-x) {
-  background: var(--dd-card) !important; border: 1.5px solid var(--dd-border) !important; border-radius: 10px !important;
-  padding: 14px 18px !important; box-shadow: none !important; transition: border-color .2s, background .2s;
+/* ---------- Kaching Bundles, styled like the reference bundle boxes ----------
+   Applies to Kaching anywhere in the buy box (moved into the bundle slot, or added as an app block). */
+.dd-info :is(.kaching-bundles__block-title, .kaching-bundles__bar-label, #dd-x) { display: none !important; }
+.dd-info :is(.kaching-bundles__block, #dd-x) { border: 0 !important; padding: 0 !important; background: none !important; }
+.dd-info :is(.kaching-bundles__bars, #dd-x) { display: grid !important; gap: 16px !important; }
+.dd-info :is(.kaching-bundles__bar-container, #dd-x) { position: relative !important; display: block !important; border: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; outline: 0 !important; }
+.dd-info :is(.kaching-bundles__bar-wrapper, #dd-x) { border: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; }
+.dd-info :is(.kaching-bundles__bar-main, #dd-x) {
+  display: flex !important; align-items: center !important; gap: 16px !important;
+  background: #fff !important; border: 1.5px solid #cfe3f3 !important; border-radius: 16px !important;
+  padding: 18px 20px !important; min-height: 74px; box-shadow: none !important; transition: border-color .2s, background .2s;
 }
-.dd-bundle-slot :is(.kaching-bundles__bar:hover .kaching-bundles__bar-main, #dd-x) { border-color: var(--dd-navy) !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar--selected .kaching-bundles__bar-main, #dd-x) {
-  background: var(--dd-sky) !important; border: 2px solid var(--dd-navy) !important; box-shadow: 0 4px 0 rgba(43, 58, 143, .12) !important;
+.dd-info :is(.kaching-bundles__bar:hover .kaching-bundles__bar-main, #dd-x) { border-color: #9fbfe0 !important; }
+.dd-info :is(.kaching-bundles__bar--selected .kaching-bundles__bar-main, #dd-x) { background: #e9f4fb !important; border: 2px solid #3f4c96 !important; }
+.dd-info :is(.kaching-bundles__bar-radio, #dd-x) {
+  flex: none !important; width: 22px !important; height: 22px !important; min-width: 22px !important; border-radius: 50% !important;
+  border: 2px solid #cfe3f3 !important; background: #fff !important; box-shadow: none !important;
 }
-.dd-bundle-slot :is(.kaching-bundles__bar-radio, #dd-x) {
-  width: 20px !important; height: 20px !important; min-width: 20px !important; border-radius: 50% !important;
-  border: 2px solid var(--dd-border) !important; background: #fff !important; box-shadow: none !important;
+.dd-info :is(.kaching-bundles__bar--selected .kaching-bundles__bar-radio, #dd-x) {
+  border-color: #3f4c96 !important; background: radial-gradient(circle, #e08aa6 0 5px, #fff 6px) !important;
 }
-.dd-bundle-slot :is(.kaching-bundles__bar--selected .kaching-bundles__bar-radio, #dd-x) {
-  border-color: var(--dd-navy) !important; background: radial-gradient(circle, var(--dd-pink) 0 4.5px, #fff 5.5px) !important;
+.dd-info :is(.kaching-bundles__bar-radio *, #dd-x) { display: none !important; }
+.dd-info .kaching-bundles__bar-radio::before, .dd-info .kaching-bundles__bar-radio::after { display: none !important; }
+.dd-info :is(.kaching-bundles__bar-content, #dd-x) { flex: 1 !important; display: flex !important; align-items: center !important; justify-content: space-between !important; gap: 12px !important; }
+.dd-info :is(.kaching-bundles__bar-title, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 17px !important; color: #26306a !important; letter-spacing: .04em !important; }
+.dd-info :is(.kaching-bundles__bar-subtitle, .kaching-bundles__bar-second-line, #dd-x) { font-family: var(--dd-font-body) !important; font-weight: 800 !important; font-size: 13.5px !important; color: #6272c4 !important; letter-spacing: .05em !important; margin-top: 2px; }
+.dd-info :is(.kaching-bundles__bar-pricing, #dd-x) { text-align: right !important; }
+.dd-info :is(.kaching-bundles__bar-price, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 18px !important; color: #26306a !important; letter-spacing: .02em !important; }
+.dd-info :is(.kaching-bundles__bar-full-price, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 500 !important; font-size: 14px !important; color: #7c8ad0 !important; text-decoration: line-through !important; letter-spacing: .04em !important; }
+/* "Most popular" / "Best value" badges: small pills on the top-left edge of the box. */
+.dd-info :is(.kaching-bundles__bar-most-popular, #dd-x) {
+  position: absolute !important; top: -11px !important; left: 36px !important; right: auto !important; z-index: 2 !important;
+  background: #6474c4 !important; border-radius: 999px !important; padding: 3px 12px !important; margin: 0 !important; width: auto !important; height: auto !important;
 }
-.dd-bundle-slot :is(.kaching-bundles__bar-radio *, #dd-x) { display: none !important; }
-.dd-bundle-slot .kaching-bundles__bar-radio::before, .dd-bundle-slot .kaching-bundles__bar-radio::after { display: none !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-title, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 16px !important; color: var(--dd-ink) !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-label, #dd-x) {
-  background: var(--dd-pink) !important; color: #fff !important; border-radius: 6px !important; padding: 2px 8px !important;
-  font-size: 10px !important; font-weight: 800 !important; letter-spacing: .06em !important; text-transform: uppercase !important;
+.dd-info .kaching-bundles__bar-most-popular::before, .dd-info .kaching-bundles__bar-most-popular::after,
+.dd-info .kaching-bundles__bar-most-popular__content::before, .dd-info .kaching-bundles__bar-most-popular__content::after { display: none !important; }
+.dd-info :is(.kaching-bundles__bar-most-popular > :not(.kaching-bundles__bar-most-popular__content), #dd-x) { display: none !important; }
+.dd-info :is(.kaching-bundles__bar-wrapper, .kaching-bundles__bar-container, .kaching-bundles__bar-main, #dd-x) { margin: 0 !important; }
+.dd-info :is(.kaching-bundles__bar:nth-child(3) .kaching-bundles__bar-most-popular, #dd-x) { background: #d15b88 !important; }
+.dd-info :is(.kaching-bundles__bar-most-popular__content, #dd-x) {
+  font-family: var(--dd-font-heading) !important; font-weight: 800 !important; font-size: 11px !important; line-height: 1.4 !important;
+  color: #fff !important; letter-spacing: .06em !important; text-transform: uppercase !important; background: none !important; padding: 0 !important;
 }
-.dd-bundle-slot :is(.kaching-bundles__bar-second-line, #dd-x) { color: var(--dd-muted) !important; font-size: 13px !important; font-weight: 600 !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-price, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 16px !important; color: var(--dd-ink) !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-full-price, #dd-x) { font-size: 13px !important; color: var(--dd-muted) !important; text-decoration: line-through !important; }
-.dd-bundle-slot :is(.kaching-bundles__progressive-gifts__title, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; color: var(--dd-ink) !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-container, .kaching-bundles__bar-wrapper, #dd-x) { border: 0 !important; background: none !important; box-shadow: none !important; padding: 0 !important; outline: 0 !important; }
-.dd-bundle-slot :is(.kaching-bundles__bar-title, .kaching-bundles__bar-price, #dd-x) { letter-spacing: 0 !important; }
+.dd-info :is(.kaching-bundles__progressive-gifts__title, #dd-x) { font-family: var(--dd-font-heading) !important; font-weight: 700 !important; color: var(--dd-ink) !important; }
+@media (max-width: 749px) {
+  .dd-info :is(.kaching-bundles__bar-main, #dd-x) { padding: 16px 14px !important; gap: 12px !important; }
+  .dd-info :is(.kaching-bundles__bar-title, #dd-x) { font-size: 15.5px !important; letter-spacing: .03em !important; }
+  .dd-info :is(.kaching-bundles__bar-subtitle, .kaching-bundles__bar-second-line, #dd-x) { font-size: 12.5px !important; letter-spacing: .03em !important; }
+  .dd-info :is(.kaching-bundles__bar-price, #dd-x) { font-size: 16px !important; }
+  .dd-info :is(.kaching-bundles__bar-most-popular, #dd-x) { left: 24px !important; }
+}
 
 /* ---------- Letter spacing ----------
    The theme tightens letter spacing on every text element; reset it inside .dd so text keeps the
