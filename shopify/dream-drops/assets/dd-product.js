@@ -23,6 +23,17 @@
     };
 
     marks.forEach((m) => m.addEventListener('click', () => go(Number(m.dataset.ddThumb))));
+    // Next arrow beside the mobile dots.
+    const dots = gallery.querySelector('.dd-gallery__dots');
+    if (dots) {
+      const next = document.createElement('button');
+      next.type = 'button';
+      next.className = 'dd-gallery__next';
+      next.setAttribute('aria-label', 'Next image');
+      next.textContent = '›';
+      next.addEventListener('click', () => go(index + 1));
+      dots.appendChild(next);
+    }
     gallery.querySelector('[data-dd-prev]')?.addEventListener('click', () => go(index - 1));
     gallery.querySelector('[data-dd-next]')?.addEventListener('click', () => go(index + 1));
     track.addEventListener('keydown', (e) => {

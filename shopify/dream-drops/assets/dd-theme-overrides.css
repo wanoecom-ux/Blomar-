@@ -63,3 +63,40 @@
 .dd-zoom .dd-zoom__close { position: fixed; top: 12px; right: 12px; width: 40px; height: 40px; border-radius: 50%; border: 0; background: #fff; color: #1f2559; font-size: 20px; line-height: 1; cursor: pointer; box-shadow: 0 4px 12px rgba(0, 0, 0, .25); }
 .dd-zoom .dd-zoom__hint { position: fixed; bottom: 10px; left: 0; right: 0; text-align: center; color: #fff; font-size: 12px; opacity: .8; pointer-events: none; }
 @media (min-width: 750px) { .dd-zoom.is-zoomed img { width: 160vw !important; } }
+
+/* ---------- Title swoosh ----------
+   Curved underline under the highlighted title line. Drawn with a mask so it takes the
+   "Highlight (yellow)" colour from the page design settings. */
+.dd-info .dd-info__title .dd-hl {
+  display: table !important; margin: 2px auto 0; padding-bottom: 12px; position: relative;
+  text-decoration: none !important;
+}
+.dd-info .dd-info__title .dd-hl::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: var(--dd-yellow);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 4.5 Q 100 13 197 3.5' fill='none' stroke='%23000' stroke-width='3.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 12' preserveAspectRatio='none'%3E%3Cpath d='M3 4.5 Q 100 13 197 3.5' fill='none' stroke='%23000' stroke-width='3.6' stroke-linecap='round'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
+}
+
+/* ---------- Mobile design pass (matches the reference phone layout) ---------- */
+.dd-info .dd-info__tags li + li::before { color: var(--dd-yellow); font-weight: 900; }
+.dd .dd-pill { color: var(--dd-ink); font-weight: 800 !important; border-color: #b9c8f0; justify-content: center; text-align: center; }
+.dd .dd-stock__bar { height: 8px; background: #e2f0fa; }
+.dd .dd-stock__bar span { background: #5b63c9; }
+.dd-gallery__next { display: none; }
+@media (max-width: 749px) {
+  .dd-ann .dd-ann__text { font-size: 15px !important; letter-spacing: .04em !important; }
+  .dd-info .dd-info__title { font-size: 24px !important; line-height: 1.2; }
+  .dd-info .dd-info__tags { font-size: 13px; color: var(--dd-navy); font-weight: 600; }
+  .dd .dd-pill { font-size: 12.5px !important; text-align: center !important; padding: 8px 18px 8px 8px; }
+  .dd .dd-pill__dot { width: 24px; height: 24px; }
+  .dd .dd-stock { font-size: 16px; }
+  .dd-gallery__dots { align-items: center; gap: 10px !important; }
+  .dd-gallery__dot { width: 7px !important; height: 7px !important; }
+  .dd-gallery__next { display: inline-flex; margin-left: 6px; border: 0; background: none; color: var(--dd-ink); font-size: 22px; line-height: 1; padding: 0 4px; cursor: pointer; }
+  .dd.dd-cta .dd-h2 { font-size: 28px; }
+  .dd.dd-cta .dd-cta__image { max-width: 300px; border-radius: 6px; }
+  .dd.dd-cta .dd-cta__chips { flex-direction: column; align-items: center; gap: 10px; margin: 18px 0 26px; }
+  .dd.dd-cta .dd-chip { padding: 11px 20px; font-size: 14px; border-color: #c9d6f3; }
+  .dd.dd-cta :is(.dd-btn, #dd-x) { min-height: 56px; font-size: 18px !important; }
+  .dd.dd-cta .dd-cta__caption { font-size: 13px; line-height: 1.5; }
+}
