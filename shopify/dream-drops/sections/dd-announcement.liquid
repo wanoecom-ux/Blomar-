@@ -1,0 +1,146 @@
+{% comment %}
+  Dream Drops announcement bar: sky gradient, clouds, sun and drifting leaves, a message and a sale countdown.
+  It moves itself above the header and can hide the theme's own announcement bar on this page only.
+  The countdown runs to the sale end date you enter and disappears once that date has passed.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+
+<style>
+  {%- if s.hide_theme_bar %}
+  .shopify-section-group-header-group[id*="announcement"] { display: none !important; }
+  {%- endif %}
+  #dd-ann-{{ section.id }} {
+    position: relative; overflow: hidden; z-index: 5;
+    background: linear-gradient(180deg, {{ s.sky_top }} 0%, {{ s.sky_bottom }} 100%);
+    color: {{ s.text_color }};
+    min-height: {{ s.height }}px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 6px 16px;
+  }
+  #dd-ann-{{ section.id }} .dd-ann__inner { position: relative; z-index: 2; display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap; text-align: center; }
+  #dd-ann-{{ section.id }}.dd .dd-ann__text {
+    font-family: var(--dd-font-heading) !important; font-weight: 800 !important;
+    font-size: {{ s.font_size }}px; letter-spacing: .06em; text-transform: uppercase; color: inherit !important;
+    text-shadow: 0 1px 2px rgba(20, 40, 80, .25);
+  }
+  #dd-ann-{{ section.id }} .dd-ann__timer {
+    display: inline-flex; align-items: baseline; gap: 6px; padding: 5px 14px; border-radius: 999px;
+    background: #fff; color: {{ s.timer_color }}; font-weight: 800 !important; font-size: 13px;
+    box-shadow: 0 2px 6px rgba(20, 40, 80, .2);
+  }
+  #dd-ann-{{ section.id }} .dd-ann__timer small { font-size: 9px; opacity: .8; margin-left: 1px; }
+  #dd-ann-{{ section.id }} .dd-ann__sep { opacity: .6; }
+  #dd-ann-{{ section.id }} .dd-ann__cloud {
+    position: absolute; z-index: 1; width: 46px; height: 14px; border-radius: 14px; background: rgba(255, 255, 255, .85);
+  }
+  #dd-ann-{{ section.id }} .dd-ann__cloud::before,
+  #dd-ann-{{ section.id }} .dd-ann__cloud::after { content: ''; position: absolute; background: inherit; border-radius: 50%; }
+  #dd-ann-{{ section.id }} .dd-ann__cloud::before { width: 18px; height: 18px; left: 8px; top: -9px; }
+  #dd-ann-{{ section.id }} .dd-ann__cloud::after { width: 22px; height: 22px; left: 20px; top: -12px; }
+  #dd-ann-{{ section.id }} .dd-ann__sun {
+    position: absolute; z-index: 1; right: 6%; top: -26px; width: 52px; height: 52px; border-radius: 50%;
+    background: radial-gradient(circle, #fff6c8 0%, #ffe27a 45%, #f8cf4a 70%);
+    box-shadow: 0 0 22px 10px rgba(255, 230, 140, .55);
+  }
+  #dd-ann-{{ section.id }} .dd-ann__sun::before {
+    content: ''; position: absolute; inset: -18px; border-radius: 50%;
+    background: repeating-conic-gradient(rgba(255, 236, 160, .55) 0 6deg, transparent 6deg 24deg);
+    -webkit-mask: radial-gradient(circle, transparent 42%, #000 44%); mask: radial-gradient(circle, transparent 42%, #000 44%);
+  }
+  #dd-ann-{{ section.id }} .dd-ann__leaf {
+    position: absolute; z-index: 1; top: -10px; width: 9px; height: 6px; border-radius: 60% 0; background: {{ s.leaf_color }};
+    animation: dd-ann-fall 9s linear infinite;
+  }
+  @keyframes dd-ann-fall {
+    0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+    10% { opacity: 1; }
+    100% { transform: translate(-40px, 70px) rotate(300deg); opacity: 0; }
+  }
+  @media (max-width: 749px) {
+    #dd-ann-{{ section.id }} { min-height: {{ s.height_mobile }}px; padding: 6px 10px; }
+    #dd-ann-{{ section.id }} .dd-ann__inner { gap: 6px; flex-direction: column; }
+    #dd-ann-{{ section.id }} .dd-ann__text { font-size: {{ s.font_size_mobile }}px; }
+    #dd-ann-{{ section.id }} .dd-ann__sun { width: 36px; height: 36px; top: -16px; right: 3%; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #dd-ann-{{ section.id }} .dd-ann__leaf { animation: none; display: none; }
+  }
+</style>
+
+<div class="dd dd-ann" id="dd-ann-{{ section.id }}" role="region" aria-label="Announcement">
+  {%- if s.show_decorations -%}
+    <span class="dd-ann__cloud" style="left: 18%; top: 14px;" aria-hidden="true"></span>
+    <span class="dd-ann__cloud" style="left: 36%; bottom: -6px; transform: scale(.8);" aria-hidden="true"></span>
+    <span class="dd-ann__cloud" style="left: 52%; top: -4px; transform: scale(.6);" aria-hidden="true"></span>
+    <span class="dd-ann__cloud" style="left: 66%; top: 18px; transform: scale(.7);" aria-hidden="true"></span>
+    <span class="dd-ann__sun" aria-hidden="true"></span>
+    <span class="dd-ann__leaf" style="left: 82%; animation-delay: 0s;" aria-hidden="true"></span>
+    <span class="dd-ann__leaf" style="left: 12%; animation-delay: 3s;" aria-hidden="true"></span>
+    <span class="dd-ann__leaf" style="left: 58%; animation-delay: 6s;" aria-hidden="true"></span>
+  {%- endif -%}
+  <div class="dd-ann__inner">
+    {%- if s.link != blank -%}<a href="{{ s.link }}" class="dd-ann__text" style="text-decoration: none;">{{ s.text }}</a>{%- else -%}<span class="dd-ann__text">{{ s.text }}</span>{%- endif -%}
+    {%- if s.sale_end != blank -%}
+      <span class="dd-ann__timer" data-dd-countdown="{{ s.sale_end | escape }}" role="timer" aria-label="Sale ends in" hidden>
+        <span data-h>00</span><small>h</small><span class="dd-ann__sep">:</span>
+        <span data-m>00</span><small>m</small><span class="dd-ann__sep">:</span>
+        <span data-s>00</span><small>s</small>
+      </span>
+    {%- endif -%}
+  </div>
+</div>
+
+<script>
+  (() => {
+    const bar = document.getElementById('dd-ann-{{ section.id }}');
+    const wrapper = bar && bar.closest('.shopify-section');
+    // Move the bar above the header so it sits at the very top of the page, like a theme announcement bar.
+    const firstHeader = document.querySelector('.shopify-section-group-header-group');
+    if (wrapper && firstHeader && !(window.Shopify && Shopify.designMode)) firstHeader.parentNode.insertBefore(wrapper, firstHeader);
+
+    const timer = bar && bar.querySelector('[data-dd-countdown]');
+    if (!timer) return;
+    const end = Date.parse(timer.dataset.ddCountdown);
+    if (Number.isNaN(end)) return;
+    const h = timer.querySelector('[data-h]'), m = timer.querySelector('[data-m]'), sec = timer.querySelector('[data-s]');
+    const pad = (n) => String(n).padStart(2, '0');
+    let id;
+    const tick = () => {
+      const left = Math.floor((end - Date.now()) / 1000);
+      if (left <= 0) { timer.hidden = true; clearInterval(id); return; }
+      timer.hidden = false;
+      h.textContent = pad(Math.floor(left / 3600));
+      m.textContent = pad(Math.floor((left % 3600) / 60));
+      sec.textContent = pad(left % 60);
+    };
+    tick();
+    if (!timer.hidden) id = setInterval(tick, 1000);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Dream Drops announcement",
+  "tag": "section",
+  "class": "section dd-ann-section",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Message", "default": "Free shipping on all orders" },
+    { "type": "url", "id": "link", "label": "Link" },
+    { "type": "text", "id": "sale_end", "label": "Sale ends (countdown)", "info": "Your real sale end date with time zone, e.g. 2026-10-31T23:59:00+11:00. Leave empty to hide the countdown. It hides itself once the date passes." },
+    { "type": "checkbox", "id": "hide_theme_bar", "label": "Hide the theme's announcement bar on this page", "default": true },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "show_decorations", "label": "Show clouds, sun and leaves", "default": true },
+    { "type": "color", "id": "sky_top", "label": "Sky colour, top", "default": "#78b4dc" },
+    { "type": "color", "id": "sky_bottom", "label": "Sky colour, bottom", "default": "#4a8dbf" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#ffffff" },
+    { "type": "color", "id": "timer_color", "label": "Countdown colour", "default": "#e9488b" },
+    { "type": "color", "id": "leaf_color", "label": "Leaf colour", "default": "#c0502e" },
+    { "type": "range", "id": "font_size", "label": "Text size, desktop", "min": 11, "max": 26, "step": 1, "unit": "px", "default": 19 },
+    { "type": "range", "id": "font_size_mobile", "label": "Text size, mobile", "min": 10, "max": 20, "step": 1, "unit": "px", "default": 13 },
+    { "type": "range", "id": "height", "label": "Height, desktop", "min": 30, "max": 90, "step": 2, "unit": "px", "default": 54 },
+    { "type": "range", "id": "height_mobile", "label": "Height, mobile", "min": 30, "max": 100, "step": 2, "unit": "px", "default": 64 }
+  ],
+  "presets": [{ "name": "Dream Drops announcement" }]
+}
+{% endschema %}

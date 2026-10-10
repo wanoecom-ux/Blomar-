@@ -12,6 +12,7 @@ Installed on the unpublished theme **Copy of Odour Mister** and assigned to the 
 | File | What it is |
 |---|---|
 | `templates/product.dream-drops.json` | The template: section order and all wording |
+| `sections/dd-announcement.liquid` | Sky-blue announcement bar with sale countdown; moves itself above the header and hides the theme's bar on this page |
 | `sections/dd-main-product.liquid` | Gallery, buy box, sticky add to cart, and the page design settings |
 | `sections/dd-icon-cards.liquid` | Card grid (used for benefits and ingredients) |
 | `sections/dd-moments.liquid` | Dark band with time-stamped cards |
@@ -46,7 +47,8 @@ Everything marked `REPLACE_ME` in the theme editor. In particular:
 |---|---|---|
 | Product images showing Blomar branding | Product media | **Current images show the Evoura brand and label** |
 | Benefit claims | Buy box pills, benefit cards, comparison last row | REPLACE_ME |
-| Ingredients and amounts | Ingredient cards, Ingredients accordion | REPLACE_ME |
+| Ingredients | Ingredient cards and Ingredients accordion | Filled in (supplement facts image shows Evoura's name) |
+| Sale end date | Announcement bar → Sale ends | Empty, so the countdown is hidden |
 | Dosage, servings, storage, safety | Steps, accordions, FAQ answers | REPLACE_ME |
 | Shipping offer and dispatch time | Perks box, CTA chip | REPLACE_ME |
 | Guarantee length and terms | Perks box, guarantee band, CTA chip | REPLACE_ME |

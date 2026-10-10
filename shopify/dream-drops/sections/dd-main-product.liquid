@@ -64,6 +64,7 @@
     --dd-gallery-ratio: {{ s.gallery_ratio }};
   }
   .dd-acc + .dd-acc { margin-top: 0; border-top: 0; }
+  .dd-acc__image { width: 100%; max-width: 420px; height: auto; margin-top: 10px; border-radius: 10px; }
 </style>
 
 {{ 'dd-product.css' | asset_url | stylesheet_tag }}
@@ -243,7 +244,12 @@
               <div class="dd-acc" {{ block.shopify_attributes }}>
                 <details>
                   <summary>{{ block.settings.heading }}</summary>
-                  <div class="dd-acc__body">{{ block.settings.content }}</div>
+                  <div class="dd-acc__body">
+                    {{ block.settings.content }}
+                    {%- if block.settings.image != blank -%}
+                      {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'dd-acc__image', alt: block.settings.image.alt | default: block.settings.heading, widths: '400, 600, 900' }}
+                    {%- endif -%}
+                  </div>
                 </details>
               </div>
 
@@ -380,7 +386,8 @@
     ] },
     { "type": "accordion", "name": "Accordion row", "settings": [
       { "type": "text", "id": "heading", "label": "Heading", "default": "How do I use Dream Drops?" },
-      { "type": "richtext", "id": "content", "label": "Content", "default": "<p>REPLACE_ME_USAGE</p>" }
+      { "type": "richtext", "id": "content", "label": "Content", "default": "<p>REPLACE_ME_USAGE</p>" },
+      { "type": "image_picker", "id": "image", "label": "Image", "info": "Shown under the text, e.g. a supplement facts panel." }
     ] },
     { "type": "description", "name": "Product description", "limit": 1, "settings": [] },
     { "type": "@app" }
