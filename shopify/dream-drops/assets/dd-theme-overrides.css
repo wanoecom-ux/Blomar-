@@ -203,3 +203,10 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
   .dd .dd-gallery__thumb-list { gap: 10px !important; }
   .dd .dd-gallery__thumb { flex: 0 0 calc((100% - 40px) / 5) !important; border-radius: 4px !important; border-width: 1.5px !important; }
 }
+
+/* ---------- Accordion link under the image ----------
+   A paragraph that is only a link (e.g. "Read our full Parent Guide") moves below the accordion image. */
+.dd .dd-acc__body:has(.dd-acc__image) { display: flex; flex-direction: column; }
+.dd .dd-acc__body:has(.dd-acc__image) > .dd-acc__image { order: 1; }
+.dd .dd-acc__body:has(.dd-acc__image) > p:has(> a:only-child) { order: 2; margin: 16px 0 4px; text-align: center; }
+.dd :is(.dd-acc__body p > a:only-child, #dd-x) { color: #6a78c2 !important; font-weight: 800 !important; letter-spacing: .03em !important; text-decoration: underline; text-underline-offset: 3px; }
