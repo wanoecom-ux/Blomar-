@@ -170,3 +170,24 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
 @media (max-width: 749px) {
   .dd-ann .dd-ann__text { font-size: 12.5px !important; letter-spacing: .02em !important; }
 }
+
+/* ---------- Title tags, pills, hurry bar and divider: reference comp ----------
+   Heavier, letter-spaced text, periwinkle pill borders and a periwinkle stock bar. */
+.dd-info :is(.dd-info__tags, #dd-x) { font-weight: 700 !important; color: #3f4c96 !important; letter-spacing: .02em !important; }
+.dd :is(.dd-pills, #dd-x) { gap: 9px !important; }
+.dd :is(.dd-pill, #dd-x) {
+  font-weight: 800 !important; color: #1f2559 !important; letter-spacing: .05em !important;
+  background: #eaf0fd !important; border: 1.5px solid #c3c9ef !important; padding: 8px 18px 8px 9px !important; gap: 10px !important;
+}
+.dd .dd-pill__dot { width: 20px; height: 20px; font-size: 11px; }
+.dd :is(.dd-stock, #dd-x) { font-weight: 800 !important; color: #26306a !important; letter-spacing: .04em !important; font-size: 15px !important; }
+.dd :is(.dd-stock strong, #dd-x) { color: #c95482 !important; font-weight: 800 !important; margin-left: 3px; }
+.dd .dd-stock__bar { height: 8px !important; background: #e6f2fa !important; margin-top: 10px !important; }
+.dd .dd-stock__bar span { background: #6474bf !important; }
+.dd :is(.dd-divider-label, #dd-x) { font-size: 12px !important; font-weight: 800 !important; letter-spacing: .1em !important; color: #6a78c2 !important; margin: 4px 0 6px !important; gap: 10px !important; }
+.dd .dd-divider-label::before, .dd .dd-divider-label::after { background: #cfe0ef !important; }
+@media (max-width: 749px) {
+  .dd :is(.dd-pill, #dd-x) { letter-spacing: .03em !important; padding: 8px 16px 8px 8px !important; }
+  .dd :is(.dd-stock, #dd-x) { font-size: 15px !important; }
+  .dd :is(.dd-divider-label, #dd-x) { font-size: 11px !important; }
+}
