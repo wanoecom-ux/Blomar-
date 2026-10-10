@@ -1,0 +1,389 @@
+{% comment %}
+  Dream Drops main product: gallery, buy box, bundle tiers, sticky add to cart.
+  Also holds the page design settings (colours, fonts, sizes) that every dd-* section reads.
+
+  Bundle tiers are the product's variants, in admin order. Add one "Bundle tier" block per variant
+  to give it a sub-line and a badge; the block's "Variant position" says which variant it styles.
+  A subscribe tier appears only when the product has a selling plan (from a subscriptions app).
+  Prices, compare-at prices and stock all come from the product in Shopify admin.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign default_position = 1
+  for block in section.blocks
+    if block.type == 'tier' and block.settings.default
+      assign default_position = block.settings.position
+    endif
+  endfor
+  if product.variants.size < default_position
+    assign default_position = 1
+  endif
+  assign default_index = default_position | minus: 1
+  assign default_variant = product.variants[default_index]
+  if product.selected_variant
+    assign default_variant = product.selected_variant
+  endif
+  unless default_variant.available
+    assign default_variant = current
+  endunless
+  assign first_plan = product.selling_plan_groups.first.selling_plans.first
+-%}
+
+{%- assign body_bold = s.body_font | font_modify: 'weight', 'bolder' -%}
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+  {{ s.body_font | font_face: font_display: 'swap' }}
+  {{ body_bold | font_face: font_display: 'swap' }}
+  :root {
+    --dd-navy: {{ s.color_primary }};
+    --dd-ink: {{ s.color_text }};
+    --dd-pink: {{ s.color_accent }};
+    --dd-yellow: {{ s.color_highlight }};
+    --dd-green: {{ s.color_success }};
+    --dd-sky: {{ s.color_surface }};
+    --dd-sky-strong: {{ s.color_surface_strong }};
+    --dd-card: {{ s.color_card }};
+    --dd-border: {{ s.color_border }};
+    --dd-muted: {{ s.color_muted }};
+    --dd-sale: {{ s.color_sale }};
+    --dd-star: {{ s.color_star }};
+    --dd-font-heading: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --dd-font-body: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    --dd-h2: {{ s.h2_size }}px;
+    --dd-h2-mobile: {{ s.h2_size_mobile }}px;
+    --dd-body: {{ s.body_size }}px;
+    --dd-radius-card: {{ s.radius_card }}px;
+    --dd-radius-button: {{ s.radius_button }}px;
+    --dd-section-pad: {{ s.section_padding }}px;
+    --dd-section-pad-mobile: {{ s.section_padding_mobile }}px;
+    --dd-container: {{ s.container_width }}px;
+    --dd-button-height: {{ s.button_height }}px;
+    --dd-speed: {{ s.animation_speed }}ms;
+    --dd-gallery-ratio: {{ s.gallery_ratio }};
+  }
+  .dd-acc + .dd-acc { margin-top: 0; border-top: 0; }
+</style>
+
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+{{ 'dd-theme-overrides.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'dd-product.js' | asset_url }}" defer></script>
+
+<section class="dd dd-main" id="dd-main-{{ section.id }}" data-dd-product data-section="{{ section.id }}" style="background: {{ s.background }};">
+  <div class="dd-container dd-main__grid" style="max-width: {{ s.main_width }}px;">
+
+    {%- comment -%} Gallery {%- endcomment -%}
+    <div class="dd-gallery" data-dd-gallery>
+      <div class="dd-gallery__stage">
+        <div class="dd-gallery__track" data-dd-track tabindex="0" aria-label="{{ product.title | escape }} images">
+          {%- for media in product.media -%}
+            <div class="dd-gallery__slide" data-index="{{ forloop.index0 }}">
+              {%- assign alt = media.alt | default: product.title -%}
+              {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
+              {{ media.preview_image | image_url: width: 1400 | image_tag: alt: alt, loading: loading, widths: '400, 700, 1000, 1400', sizes: '(min-width: 990px) 55vw, 100vw' }}
+            </div>
+          {%- else -%}
+            <div class="dd-gallery__slide">{{ 'product-1' | placeholder_svg_tag }}</div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="dd-gallery__thumbs">
+          <button type="button" class="dd-gallery__arrow" data-dd-prev aria-label="Previous image">‹</button>
+          <div class="dd-gallery__thumb-list">
+            {%- for media in product.media -%}
+              <button type="button" class="dd-gallery__thumb" data-dd-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                {{ media.preview_image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
+              </button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="dd-gallery__arrow" data-dd-next aria-label="Next image">›</button>
+        </div>
+        <div class="dd-gallery__dots">
+          {%- for media in product.media -%}
+            <button type="button" class="dd-gallery__dot" data-dd-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Buy box {%- endcomment -%}
+    <div class="dd-info" id="dd-buybox">
+      {%- assign form_id = 'dd-form-' | append: section.id -%}
+      {%- form 'product', product, id: form_id, novalidate: 'novalidate', data-dd-form: '' -%}
+        <input type="hidden" name="id" value="{{ default_variant.id }}" data-dd-variant-input>
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="selling_plan" value="" data-dd-plan-input disabled>
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'badge' -%}
+              <div class="dd-info__badge" {{ block.shopify_attributes }}>{{ block.settings.text_left }}{% if block.settings.text_right != blank %}<span>|</span>{{ block.settings.text_right }}{% endif %}</div>
+
+            {%- when 'rating' -%}
+              <div class="dd-rating" {{ block.shopify_attributes }}>
+                <span class="dd-stars" aria-hidden="true">★★★★★</span>
+                <a href="#{{ block.settings.anchor }}">{{ block.settings.score }} · {{ block.settings.count }}</a>
+              </div>
+
+            {%- when 'title' -%}
+              <h1 class="dd-info__title" {{ block.shopify_attributes }}>
+                {{ block.settings.line_one | default: product.title }}
+                {%- if block.settings.highlight != blank %} <span class="dd-hl">{{ block.settings.highlight }}</span>{% endif %}
+              </h1>
+              {%- if block.settings.tags != blank -%}
+                <ul class="dd-list-reset dd-info__tags">
+                  {%- assign tags = block.settings.tags | split: ',' -%}
+                  {%- for t in tags -%}<li>{{ t | strip }}</li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'pill' -%}
+              <div class="dd-pills" {{ block.shopify_attributes }}>
+                <span class="dd-pill"><span class="dd-pill__dot" style="background: {{ block.settings.dot_color }};" aria-hidden="true">✓</span>{{ block.settings.text }}</span>
+              </div>
+
+            {%- when 'stock' -%}
+              {%- comment -%} Only shown when Shopify tracks stock and the real count is at or under the threshold. JS keeps it in sync with the chosen tier. {%- endcomment -%}
+              <div class="dd-stock" data-dd-stock data-threshold="{{ block.settings.threshold }}" data-template="{{ block.settings.text | escape }}" {{ block.shopify_attributes }}
+                {% unless default_variant.inventory_management == 'shopify' and default_variant.inventory_quantity > 0 and default_variant.inventory_quantity <= block.settings.threshold %}hidden{% endunless %}>
+                <span data-dd-stock-text>{{ block.settings.text | replace: '[count]', default_variant.inventory_quantity }}</span>
+                {%- assign pct = default_variant.inventory_quantity | times: 100 | divided_by: block.settings.threshold -%}
+                <div class="dd-stock__bar" aria-hidden="true"><span data-dd-stock-bar style="width: {{ pct | at_most: 100 }}%;"></span></div>
+              </div>
+
+            {%- when 'divider_label' -%}
+              <div class="dd-divider-label" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+            {%- when 'bundle_selector' -%}
+              {%- comment -%} A bundle app's widget (e.g. Kaching Bundles) is moved into this slot by dd-product.js. {%- endcomment -%}
+              <div class="dd-bundle-slot" data-dd-bundle-slot></div>
+              {%- if product.variants.size > 1 or first_plan -%}
+              <fieldset class="dd-tiers" {{ block.shopify_attributes }}>
+                <legend class="visually-hidden">Choose your bundle</legend>
+                {%- for variant in product.variants -%}
+                  {%- assign tier = nil -%}
+                  {%- for b in section.blocks -%}
+                    {%- if b.type == 'tier' and b.settings.position == forloop.parentloop.index -%}{%- assign tier = b -%}{%- endif -%}
+                  {%- endfor -%}
+                  {%- capture tier_title -%}{% if variant.title == 'Default Title' %}{{ tier.settings.title | default: product.title }}{% else %}{{ tier.settings.title | default: variant.title }}{% endif %}{%- endcapture -%}
+                  <label class="dd-tier">
+                    <input type="radio" name="dd-tier-{{ section.id }}" value="{{ variant.id }}"
+                      data-price="{{ variant.price | money }}"
+                      data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}"
+                      data-save="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}{% endif %}"
+                      data-tracked="{% if variant.inventory_management == 'shopify' %}1{% endif %}"
+                      data-inventory="{{ variant.inventory_quantity }}"
+                      data-available="{% if variant.available %}1{% endif %}"
+                      {% unless variant.available %}disabled{% endunless %}
+                      {% if variant.id == default_variant.id %}checked{% endif %}>
+                    {%- if tier.settings.badge != blank -%}
+                      <span class="dd-tier__badge" style="background: {{ tier.settings.badge_color }};">{{ tier.settings.badge }}</span>
+                    {%- endif -%}
+                    <span class="dd-tier__box">
+                      <span class="dd-tier__radio" aria-hidden="true"></span>
+                      <span>
+                        <span class="dd-tier__title">{{ tier_title }}</span><br>
+                        <span class="dd-tier__sub">{% if variant.available %}{{ tier.settings.subtitle }}{% else %}Sold out{% endif %}</span>
+                      </span>
+                      <span class="dd-tier__price">
+                        {{ variant.price | money }}
+                        {%- if variant.compare_at_price > variant.price %}<s>{{ variant.compare_at_price | money }}</s>{% endif -%}
+                      </span>
+                    </span>
+                  </label>
+                {%- endfor -%}
+
+                {%- if first_plan and block.settings.show_subscription -%}
+                  {%- assign allocation = default_variant.selling_plan_allocations | where: 'selling_plan_id', first_plan.id | first -%}
+                  <label class="dd-tier">
+                    <input type="radio" name="dd-tier-{{ section.id }}" value="{{ default_variant.id }}" data-plan="{{ first_plan.id }}"
+                      data-price="{{ allocation.price | default: default_variant.price | money }}" data-compare="{% if allocation.compare_at_price > allocation.price %}{{ allocation.compare_at_price | money }}{% endif %}"
+                      data-save="{% if allocation.compare_at_price > allocation.price %}{{ allocation.compare_at_price | minus: allocation.price | times: 100 | divided_by: allocation.compare_at_price }}{% endif %}"
+                      data-tracked="{% if default_variant.inventory_management == 'shopify' %}1{% endif %}" data-inventory="{{ default_variant.inventory_quantity }}" data-available="1">
+                    <span class="dd-tier__box">
+                      <span class="dd-tier__radio" aria-hidden="true"></span>
+                      <span>
+                        <span class="dd-tier__title">{{ block.settings.subscribe_title }}</span><br>
+                        <span class="dd-tier__sub">{{ first_plan.name }}</span>
+                      </span>
+                      {%- if allocation.price_adjustments.first.value > 0 and allocation.price_adjustments.first.value_type == 'percentage' -%}
+                        <span class="dd-tier__save">Save {{ allocation.price_adjustments.first.value }}%</span>
+                      {%- else -%}
+                        <span class="dd-tier__price">{{ allocation.price | default: default_variant.price | money }}</span>
+                      {%- endif -%}
+                    </span>
+                  </label>
+                  {%- if block.settings.subscribe_note != blank -%}<p class="dd-tier__note">{{ block.settings.subscribe_note }}</p>{%- endif -%}
+                {%- endif -%}
+              </fieldset>
+              {%- endif -%}
+
+            {%- when 'perks' -%}
+              <div class="dd-perks" {{ block.shopify_attributes }}>
+                {%- if block.settings.banner != blank -%}<div class="dd-perks__banner">{{ block.settings.banner }}</div>{%- endif -%}
+                <ul class="dd-list-reset dd-perks__grid">
+                  {%- assign lines = block.settings.checks | newline_to_br | split: '<br />' -%}
+                  {%- for line in lines -%}{%- assign l = line | strip -%}{%- if l != blank -%}<li>{{ l }}</li>{%- endif -%}{%- endfor -%}
+                </ul>
+                {%- if block.settings.fine_print != blank -%}<p class="dd-perks__fine">{{ block.settings.fine_print }}</p>{%- endif -%}
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              <div class="dd-buy" {{ block.shopify_attributes }}>
+                <button type="submit" class="dd-btn dd-btn--primary" data-dd-add data-label="{{ block.settings.label | escape }}" {% unless default_variant.available %}disabled{% endunless %}>
+                  {%- if default_variant.available -%}{{ block.settings.label }}{%- else -%}Sold out{%- endif -%}
+                </button>
+                <p class="dd-buy__error" role="alert" data-dd-error></p>
+                {%- if block.settings.show_dynamic_checkout -%}{{ form | payment_button }}{%- endif -%}
+              </div>
+
+            {%- when 'accordion' -%}
+              <div class="dd-acc" {{ block.shopify_attributes }}>
+                <details>
+                  <summary>{{ block.settings.heading }}</summary>
+                  <div class="dd-acc__body">{{ block.settings.content }}</div>
+                </details>
+              </div>
+
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}<div class="dd-acc__body" style="padding-left: 0;" {{ block.shopify_attributes }}>{{ product.description }}</div>{%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  {%- if s.show_sticky -%}
+    <div class="dd-sticky" data-dd-sticky aria-hidden="true">
+      <div class="dd-sticky__inner">
+        <div>
+          <div class="dd-sticky__title">{{ s.sticky_title | default: product.title }}</div>
+          <div class="dd-sticky__price">
+            <span data-dd-sticky-price>{{ default_variant.price | money }}</span>
+            <s data-dd-sticky-compare>{% if default_variant.compare_at_price > default_variant.price %}{{ default_variant.compare_at_price | money }}{% endif %}</s>
+            <span class="dd-sticky__save" data-dd-sticky-save {% unless default_variant.compare_at_price > default_variant.price %}hidden{% endunless %}>
+              Save <span data-dd-sticky-save-pct>{% if default_variant.compare_at_price > default_variant.price %}{{ default_variant.compare_at_price | minus: default_variant.price | times: 100 | divided_by: default_variant.compare_at_price }}{% endif %}</span>%
+            </span>
+          </div>
+        </div>
+        <button type="button" class="dd-btn dd-btn--primary" data-dd-sticky-add tabindex="-1">{{ s.sticky_label }}</button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+{% schema %}
+{
+  "name": "Dream Drops main product",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "main_width", "label": "Max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1340 },
+    { "type": "select", "id": "gallery_ratio", "label": "Gallery image shape", "default": "1 / 1", "options": [
+      { "value": "1 / 1", "label": "Square" }, { "value": "4 / 5", "label": "Portrait" }, { "value": "4 / 3", "label": "Landscape" }
+    ] },
+    { "type": "checkbox", "id": "show_sticky", "label": "Show sticky add to cart bar", "default": true },
+    { "type": "text", "id": "sticky_title", "label": "Sticky bar title", "info": "Leave empty to use the product title." },
+    { "type": "text", "id": "sticky_label", "label": "Sticky bar button", "default": "Add to cart" },
+
+    { "type": "header", "content": "Page design: colours", "info": "These apply to every Dream Drops section on this template." },
+    { "type": "color", "id": "color_primary", "label": "Primary (buttons, dark band)", "default": "#2b3a8f" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1f2559" },
+    { "type": "color", "id": "color_accent", "label": "Accent (highlight words, CTA)", "default": "#e9488b" },
+    { "type": "color", "id": "color_highlight", "label": "Highlight (yellow)", "default": "#f6c744" },
+    { "type": "color", "id": "color_success", "label": "Success / guarantee", "default": "#2e9d5b" },
+    { "type": "color", "id": "color_surface", "label": "Light surface", "default": "#e7f0fd" },
+    { "type": "color", "id": "color_surface_strong", "label": "Light surface, stronger", "default": "#d6e4fb" },
+    { "type": "color", "id": "color_card", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "color_border", "label": "Borders", "default": "#cfdcf6" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#5a6290" },
+    { "type": "color", "id": "color_sale", "label": "Sale / urgency", "default": "#e9488b" },
+    { "type": "color", "id": "color_star", "label": "Review stars", "default": "#f6b500" },
+
+    { "type": "header", "content": "Page design: type" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "nunito_sans_n4" },
+    { "type": "range", "id": "h2_size", "label": "Section heading size, desktop", "min": 22, "max": 56, "step": 1, "unit": "px", "default": 34 },
+    { "type": "range", "id": "h2_size_mobile", "label": "Section heading size, mobile", "min": 18, "max": 40, "step": 1, "unit": "px", "default": 26 },
+    { "type": "range", "id": "body_size", "label": "Body text size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 15 },
+
+    { "type": "header", "content": "Page design: shape and spacing" },
+    { "type": "range", "id": "radius_card", "label": "Card corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 16 },
+    { "type": "range", "id": "radius_button", "label": "Button corner radius", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "button_height", "label": "Button height", "min": 40, "max": 70, "step": 2, "unit": "px", "default": 54 },
+    { "type": "range", "id": "container_width", "label": "Content width (sections below)", "min": 700, "max": 1400, "step": 20, "unit": "px", "default": 1100 },
+    { "type": "range", "id": "section_padding", "label": "Section padding, desktop", "min": 20, "max": 140, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "section_padding_mobile", "label": "Section padding, mobile", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "animation_speed", "label": "Hover animation speed", "min": 0, "max": 600, "step": 25, "unit": "ms", "default": 250 }
+  ],
+  "blocks": [
+    { "type": "badge", "name": "Badge", "limit": 1, "settings": [
+      { "type": "text", "id": "text_left", "label": "Left text", "default": "New" },
+      { "type": "text", "id": "text_right", "label": "Right text", "default": "Liquid drops" }
+    ] },
+    { "type": "rating", "name": "Rating summary", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Use your real rating and review count only." },
+      { "type": "text", "id": "score", "label": "Score", "default": "REPLACE_ME_RATING" },
+      { "type": "text", "id": "count", "label": "Count text", "default": "REPLACE_ME_REVIEW_COUNT Reviews" },
+      { "type": "text", "id": "anchor", "label": "Link to section id", "default": "dd-reviews" }
+    ] },
+    { "type": "title", "name": "Title", "limit": 1, "settings": [
+      { "type": "text", "id": "line_one", "label": "First line", "default": "Blomar Kids Magnesium" },
+      { "type": "text", "id": "highlight", "label": "Highlighted line", "default": "Dream Drops" },
+      { "type": "text", "id": "tags", "label": "Tags (comma separated)", "default": "Magnesium glycinate, Strawberry flavour, Liquid drops" }
+    ] },
+    { "type": "pill", "name": "Benefit pill", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "REPLACE_ME_PRODUCT_CLAIM" },
+      { "type": "color", "id": "dot_color", "label": "Tick colour", "default": "#e9488b" }
+    ] },
+    { "type": "stock", "name": "Low stock bar", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Uses the variant's real stock count. Hidden when stock isn't tracked or is above the threshold." },
+      { "type": "range", "id": "threshold", "label": "Show when stock is at or below", "min": 1, "max": 100, "step": 1, "default": 20 },
+      { "type": "text", "id": "text", "label": "Text ([count] is replaced)", "default": "Hurry! Only <strong>[count] left</strong> in stock." }
+    ] },
+    { "type": "divider_label", "name": "Divider label", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "Choose your bundle" }
+    ] },
+    { "type": "bundle_selector", "name": "Bundle selector", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shows one option per variant (hidden when the product has a single variant and no subscription). A bundle app's widget, such as Kaching Bundles, is moved to this spot." },
+      { "type": "checkbox", "id": "show_subscription", "label": "Show subscribe option when a selling plan exists", "default": true },
+      { "type": "text", "id": "subscribe_title", "label": "Subscribe option title", "default": "Subscribe & Save" },
+      { "type": "text", "id": "subscribe_note", "label": "Note under subscribe option", "default": "Pause or cancel anytime" }
+    ] },
+    { "type": "tier", "name": "Bundle tier", "settings": [
+      { "type": "number", "id": "position", "label": "Variant position (1 = first variant)", "default": 1 },
+      { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the variant name." },
+      { "type": "text", "id": "subtitle", "label": "Sub-line", "default": "1 bottle · 60 ml" },
+      { "type": "text", "id": "badge", "label": "Badge" },
+      { "type": "color", "id": "badge_color", "label": "Badge colour", "default": "#5b63c9" },
+      { "type": "checkbox", "id": "default", "label": "Selected by default", "default": false }
+    ] },
+    { "type": "perks", "name": "Perks box", "limit": 1, "settings": [
+      { "type": "text", "id": "banner", "label": "Banner", "default": "REPLACE_ME_SHIPPING_OFFER" },
+      { "type": "textarea", "id": "checks", "label": "Ticks (one per line)", "default": "Adjustable dose\nREPLACE_ME_DISPATCH_TIME\nEasy to give\nREPLACE_ME_GUARANTEE" },
+      { "type": "text", "id": "fine_print", "label": "Fine print" }
+    ] },
+    { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
+      { "type": "text", "id": "label", "label": "Button label", "default": "Add to cart" },
+      { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Shop Pay / express buttons", "default": true }
+    ] },
+    { "type": "accordion", "name": "Accordion row", "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "How do I use Dream Drops?" },
+      { "type": "richtext", "id": "content", "label": "Content", "default": "<p>REPLACE_ME_USAGE</p>" }
+    ] },
+    { "type": "description", "name": "Product description", "limit": 1, "settings": [] },
+    { "type": "@app" }
+  ]
+}
+{% endschema %}

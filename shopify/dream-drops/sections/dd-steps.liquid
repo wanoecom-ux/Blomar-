@@ -1,0 +1,24 @@
+{% comment %}
+  Numbered how-to steps with a footnote.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+<section class="dd dd-section dd-steps" id="dd-steps-{{ section.id }}" style="background: {{ s.background }};{% if s.text_color != blank %} color: {{ s.text_color }};{% endif %}">
+  <div class="dd-container" style="max-width: {{ s.width }}px;">
+    <div class="dd-cards__head" style="text-align: {{ s.align }};">{% render 'dd-heading', s: s %}</div>
+    <div class="dd-steps__grid">
+      {%- for block in section.blocks -%}
+        <div class="dd-step" {{ block.shopify_attributes }}>
+          <div class="dd-step__num">{{ forloop.index }}</div>
+          <h3 class="dd-step__title">{{ block.settings.title }}</h3>
+          <p class="dd-step__text">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if s.footnote != blank -%}<div class="dd-steps__foot dd-center">{{ s.footnote }}</div>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{"name": "Dream Drops steps", "tag": "section", "class": "section", "settings": [{"type": "header", "content": "Heading"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Quick and easy"}, {"type": "text", "id": "heading", "label": "Heading", "default": "One dropper,"}, {"type": "text", "id": "highlight", "label": "Highlighted words", "default": "zero fuss"}, {"type": "text", "id": "heading_after", "label": "Words after highlight"}, {"type": "richtext", "id": "text", "label": "Intro text"}, {"type": "header", "content": "Style"}, {"type": "color_background", "id": "background", "label": "Background", "default": "linear-gradient(180deg, rgba(231, 240, 253, 1) 0%, rgba(255, 255, 255, 1) 100%)"}, {"type": "color", "id": "text_color", "label": "Text colour"}, {"type": "select", "id": "align", "label": "Heading alignment", "default": "center", "options": [{"value": "left", "label": "Left"}, {"value": "center", "label": "Center"}]}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1100}, {"type": "richtext", "id": "footnote", "label": "Note under steps", "default": "<p>REPLACE_ME_DOSAGE_AND_STORAGE</p>"}], "blocks": [{"type": "step", "name": "Step", "settings": [{"type": "text", "id": "title", "label": "Title", "default": "Measure"}, {"type": "textarea", "id": "text", "label": "Text", "default": "REPLACE_ME_DOSAGE"}]}], "max_blocks": 4, "presets": [{"name": "Dream Drops steps", "blocks": [{"type": "step"}, {"type": "step"}, {"type": "step"}]}]}
+{% endschema %}

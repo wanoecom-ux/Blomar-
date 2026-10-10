@@ -1,0 +1,9 @@
+{% comment %}
+  Shared heading block for Dream Drops sections.
+  Pass `s` (section.settings). Reads: eyebrow, heading, highlight, heading_after, text.
+{% endcomment %}
+{%- if s.eyebrow != blank -%}<span class="dd-eyebrow">{{ s.eyebrow }}</span>{%- endif -%}
+{%- if s.heading != blank or s.highlight != blank -%}
+  <h2 class="dd-h2">{{ s.heading }}{% if s.highlight != blank %} <span class="dd-hl">{{ s.highlight }}</span>{% endif %}{% if s.heading_after != blank %} {{ s.heading_after }}{% endif %}</h2>
+{%- endif -%}
+{%- if s.text != blank -%}<div class="dd-lede">{{ s.text }}</div>{%- endif -%}

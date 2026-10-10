@@ -1,0 +1,19 @@
+{% comment %}
+  Money-back guarantee band with a button that scrolls back to the bundle picker. Use your real guarantee terms.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+<section class="dd dd-section dd-guarantee" id="dd-guarantee-{{ section.id }}"{% if s.background != blank %} style="background: {{ s.background }};"{% endif %}>
+  <div class="dd-container dd-guarantee__inner" style="max-width: {{ s.width }}px;">
+    <div class="dd-guarantee__num">{{ s.big_number }}<span class="dd-guarantee__unit">{{ s.unit }}</span></div>
+    <div>
+      <h2>{{ s.heading }}</h2>
+      <div>{{ s.text }}</div>
+    </div>
+    {%- if s.button_label != blank -%}<a href="#dd-buybox" class="dd-btn dd-btn--accent" data-dd-scroll-buy>{{ s.button_label }} ↑</a>{%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{"name": "Dream Drops guarantee", "tag": "section", "class": "section", "settings": [{"type": "text", "id": "big_number", "label": "Big number", "default": "REPLACE_ME"}, {"type": "text", "id": "unit", "label": "Unit under number", "default": "Days"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Give it a fair try, or your money back"}, {"type": "richtext", "id": "text", "label": "Text", "default": "<p>REPLACE_ME_GUARANTEE_TERMS</p>"}, {"type": "text", "id": "button_label", "label": "Button label (scrolls to bundles)", "default": "Start your trial"}, {"type": "color_background", "id": "background", "label": "Background"}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1000}], "presets": [{"name": "Dream Drops guarantee"}]}
+{% endschema %}

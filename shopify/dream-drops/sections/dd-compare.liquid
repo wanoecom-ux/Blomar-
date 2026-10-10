@@ -1,0 +1,49 @@
+{% comment %}
+  Comparison table. Columns come from one setting; each row block holds one value per column.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+<section class="dd dd-section dd-compare" id="dd-compare-{{ section.id }}" style="background: {{ s.background }};{% if s.text_color != blank %} color: {{ s.text_color }};{% endif %}">
+  <div class="dd-container" style="max-width: {{ s.width }}px;">
+    <div class="dd-cards__head" style="text-align: {{ s.align }};">{% render 'dd-heading', s: s %}</div>
+    {%- liquid
+      assign cols = s.columns | split: '|'
+    -%}
+    <div class="dd-compare__wrap">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Feature</span></th>
+            {%- for c in cols -%}<th scope="col"{% if forloop.first %} class="is-ours"{% endif %}>{{ c | strip }}</th>{%- endfor -%}
+          </tr>
+        </thead>
+        <tbody>
+          {%- for block in section.blocks -%}
+            {%- assign vals = block.settings.values | split: '|' -%}
+            <tr {{ block.shopify_attributes }}>
+              <th scope="row">{{ block.settings.feature }}</th>
+              {%- for c in cols -%}
+                {%- assign v = vals[forloop.index0] | strip -%}
+                {%- assign kind = v | split: ' ' | first | downcase -%}
+                {%- assign rest = v | remove_first: kind | strip -%}
+                <td{% if forloop.first %} class="is-ours"{% endif %}>
+                  {%- case kind -%}
+                    {%- when 'yes' -%}<span class="dd-mark--yes" aria-label="Yes">✔</span>
+                    {%- when 'no' -%}<span class="dd-mark--no" aria-label="No">✖</span>
+                    {%- when 'warn' -%}<span class="dd-mark--warn" aria-label="Partly">⚠</span>
+                    {%- else -%}{%- assign rest = v -%}
+                  {%- endcase -%}
+                  {%- if rest != blank %} {{ rest }}{% endif -%}
+                </td>
+              {%- endfor -%}
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{"name": "Dream Drops comparison", "tag": "section", "class": "section", "settings": [{"type": "header", "content": "Heading"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow label", "default": "Side by side"}, {"type": "text", "id": "heading", "label": "Heading", "default": "Why drops,"}, {"type": "text", "id": "highlight", "label": "Highlighted words", "default": "not tablets"}, {"type": "text", "id": "heading_after", "label": "Words after highlight"}, {"type": "richtext", "id": "text", "label": "Intro text"}, {"type": "header", "content": "Style"}, {"type": "color", "id": "background", "label": "Background", "default": "#ffffff"}, {"type": "color", "id": "text_color", "label": "Text colour"}, {"type": "select", "id": "align", "label": "Heading alignment", "default": "center", "options": [{"value": "left", "label": "Left"}, {"value": "center", "label": "Center"}]}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1100}, {"type": "header", "content": "Table"}, {"type": "text", "id": "columns", "label": "Column names (separate with |)", "default": "Dream Drops | Tablets | Gummies", "info": "The first column is highlighted as yours."}, {"type": "paragraph", "content": "In each row, start a value with yes, no or warn to show a tick, cross or warning, then any extra words. Example: no hard to swallow"}], "blocks": [{"type": "row", "name": "Row", "settings": [{"type": "text", "id": "feature", "label": "Feature", "default": "Easy for younger children"}, {"type": "text", "id": "values", "label": "Values (separate with |)", "default": "yes | no hard to swallow | yes"}]}], "presets": [{"name": "Dream Drops comparison", "blocks": [{"type": "row"}]}]}
+{% endschema %}

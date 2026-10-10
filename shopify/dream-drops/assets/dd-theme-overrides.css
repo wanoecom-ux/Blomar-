@@ -1,0 +1,23 @@
+/* ---------- Theme overrides ----------
+   This theme sets fonts, heading colours, font weights and button colours with !important on bare
+   element selectors. The rules below win only inside .dd sections. :is(..., #dd-x) raises a selector's
+   specificity to ID level without matching anything extra. */
+.dd :is(p, div, li, label, a, button, input, strong, s, legend, summary, article, #dd-x) { font-family: var(--dd-font-body) !important; }
+.dd :is(span, #dd-x) { font-family: inherit !important; }
+.dd :is(h1, h2, h3, h4, #dd-x) { font-family: var(--dd-font-heading) !important; color: inherit !important; letter-spacing: -.01em !important; }
+.dd :is(.dd-tier__title, .dd-tier__price, .dd-card__title, .dd-step__title, .dd-review__title, .dd-sticky__title, .dd-eyebrow, .dd-info__badge, .dd-btn, .dd-acc summary, .dd-guarantee__num, #dd-x) { font-family: var(--dd-font-heading) !important; }
+.dd :is(.dd-tier__title, .dd-card__title, .dd-step__title, .dd-review__title, .dd-sticky__title, #dd-x) { color: inherit !important; }
+.dd :is(.dd-info__badge, .dd-rating, .dd-stock, .dd-divider-label, .dd-sticky__title, .dd-tier__note, .dd-buy__error, .dd-cta__caption, #dd-x) { font-weight: 700 !important; }
+.dd :is(.dd-moment__label, .dd-perks__banner, .dd-step__num, .dd-guarantee__num, .dd-sticky__price, #dd-x) { font-weight: 800 !important; }
+.dd :is(.dd-btn, #dd-x) { font-size: 17px !important; font-weight: 700 !important; letter-spacing: .02em !important; border-radius: var(--dd-radius-button) !important; }
+.dd :is(.dd-btn--primary, #dd-x), .dd :is(.dd-btn--primary, #dd-x):hover { background: var(--dd-navy) !important; color: #fff !important; text-transform: uppercase !important; }
+.dd :is(.dd-btn--accent, #dd-x), .dd :is(.dd-btn--accent, #dd-x):hover { background: var(--dd-pink) !important; color: #fff !important; text-transform: none !important; border-radius: var(--dd-radius-pill) !important; }
+.dd :is(.dd-reviews__more, #dd-x), .dd :is(.dd-reviews__more, #dd-x):hover { background: #a6dcf2 !important; color: var(--dd-ink) !important; text-transform: none !important; border-radius: var(--dd-radius-pill) !important; }
+.dd :is(.dd-sticky .dd-btn, #dd-x) { text-transform: none !important; font-size: 16px !important; }
+.dd-bundle-slot:empty { display: none; }
+.dd-bundle-slot { margin-bottom: 4px; text-align: left; }
+.dd [hidden] { display: none !important; }
+.dd :is(.dd-step__title, #dd-x) { font-size: 17px !important; line-height: 1.25 !important; }
+.dd :is(.dd-card__title, #dd-x) { font-size: 15px !important; }
+.dd :is(.dd-review__title, #dd-x) { font-size: 16px !important; }
+.dd :is(.dd-moments .dd-lede, .dd-reviews .dd-lede, #dd-x) { color: rgba(255, 255, 255, .78) !important; }
