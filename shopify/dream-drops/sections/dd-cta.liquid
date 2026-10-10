@@ -1,5 +1,6 @@
 {% comment %}
-  Closing call to action with feature chips and a button that scrolls back to the bundle picker.
+  Closing call to action with feature chips and a button that scrolls back to the bundle picker,
+  or goes to the button link when one is set (for pages without a buy box).
 {% endcomment %}
 {%- assign s = section.settings -%}
 {{ 'dd-product.css' | asset_url | stylesheet_tag }}
@@ -11,11 +12,15 @@
     <div class="dd-cta__chips">
       {%- for block in section.blocks -%}<span class="dd-chip" {{ block.shopify_attributes }}>{{ block.settings.text }}</span>{%- endfor -%}
     </div>
-    <a href="#dd-buybox" class="dd-btn dd-btn--accent" data-dd-scroll-buy>{{ s.button_label }} ↑</a>
+    {%- if s.button_link != blank -%}
+      <a href="{{ s.button_link }}" class="dd-btn dd-btn--accent">{{ s.button_label }} →</a>
+    {%- else -%}
+      <a href="#dd-buybox" class="dd-btn dd-btn--accent" data-dd-scroll-buy>{{ s.button_label }} ↑</a>
+    {%- endif -%}
     {%- if s.caption != blank -%}<p class="dd-cta__caption">{{ s.caption }}</p>{%- endif -%}
   </div>
 </section>
 
 {% schema %}
-{"name": "Dream Drops CTA", "tag": "section", "class": "section", "settings": [{"type": "header", "content": "Heading"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow label"}, {"type": "text", "id": "heading", "label": "Heading", "default": "A calmer"}, {"type": "text", "id": "highlight", "label": "Highlighted words", "default": "wind down"}, {"type": "text", "id": "heading_after", "label": "Words after highlight"}, {"type": "richtext", "id": "text", "label": "Intro text"}, {"type": "image_picker", "id": "image", "label": "Image (mobile only)", "info": "Defaults to the product's first image."}, {"type": "text", "id": "button_label", "label": "Button label", "default": "Choose your bundle"}, {"type": "text", "id": "caption", "label": "Caption", "default": "Takes you back to the bundle options at the top"}, {"type": "color_background", "id": "background", "label": "Background"}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 900}], "blocks": [{"type": "chip", "name": "Chip", "settings": [{"type": "text", "id": "text", "label": "Text", "default": "🍓 Strawberry flavour"}]}], "max_blocks": 8, "presets": [{"name": "Dream Drops CTA", "blocks": [{"type": "chip"}]}]}
+{"name": "Dream Drops CTA", "tag": "section", "class": "section", "settings": [{"type": "header", "content": "Heading"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow label"}, {"type": "text", "id": "heading", "label": "Heading", "default": "A calmer"}, {"type": "text", "id": "highlight", "label": "Highlighted words", "default": "wind down"}, {"type": "text", "id": "heading_after", "label": "Words after highlight"}, {"type": "richtext", "id": "text", "label": "Intro text"}, {"type": "image_picker", "id": "image", "label": "Image (mobile only)", "info": "Defaults to the product's first image."}, {"type": "text", "id": "button_label", "label": "Button label", "default": "Choose your bundle"}, {"type": "url", "id": "button_link", "label": "Button link", "info": "Leave empty to scroll back to the bundle options on a product page."}, {"type": "text", "id": "caption", "label": "Caption", "default": "Takes you back to the bundle options at the top"}, {"type": "color_background", "id": "background", "label": "Background"}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 900}], "blocks": [{"type": "chip", "name": "Chip", "settings": [{"type": "text", "id": "text", "label": "Text", "default": "🍓 Strawberry flavour"}]}], "max_blocks": 8, "presets": [{"name": "Dream Drops CTA", "blocks": [{"type": "chip"}]}]}
 {% endschema %}

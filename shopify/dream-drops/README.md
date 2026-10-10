@@ -22,6 +22,9 @@ Installed on the unpublished theme **Copy of Odour Mister** and assigned to the 
 | `sections/dd-faq.liquid` | FAQ accordion |
 | `sections/dd-cta.liquid` | Closing call to action |
 | `sections/dd-reviews.liquid` | Reviews grid with filters and load more |
+| `templates/page.parent-guide.json` | Parent guide page: dosage, ingredients, safety, FAQs, shipping and a link to the product |
+| `sections/dd-guide-hero.liquid` | Guide header with product card; loads the page fonts for pages without a product section |
+| `sections/dd-guide-dose.liquid` | Age-band dosage cards, caution note and other ingredients list |
 | `snippets/dd-heading.liquid` | Shared eyebrow + heading + intro |
 | `assets/dd-product.css` | All page styles, driven by `--dd-*` variables |
 | `assets/dd-theme-overrides.css` | Scoped rules that beat this theme's `!important` font, colour and button styles |
@@ -66,3 +69,9 @@ Page text has been filled in from the reference page, with the brand changed to 
 | Hover speed | … → Page design: shape and spacing | Hover animation speed |
 | Gallery image shape | Dream Drops main product → Layout | Gallery image shape |
 | A section's background or alignment | That section's settings → Style | Background, Text colour, Heading alignment, Content width |
+
+## Parent guide page
+
+Page **Parent Guide** (`/pages/parent-guide`) is created hidden and uses the `parent-guide` template on
+the *Copy of Odour Mister* theme. The wording is Blomar's own. Before publishing, check it against the label:
+the other ingredients list, the dispatch time and the shipping answers.

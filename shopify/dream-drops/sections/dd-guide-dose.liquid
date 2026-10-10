@@ -1,0 +1,84 @@
+{% comment %}
+  Dosage panel for the parent guide: one card per age band, a caution note and an optional
+  "other ingredients" list shown as small pills. Dosage wording must match the product label.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+<style>
+  #dd-dose-{{ section.id }} .dd-dose__grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 24px; }
+  #dd-dose-{{ section.id }} .dd-dose__card { background: var(--dd-sky); border: 1.5px solid #c3c9ef; border-radius: var(--dd-radius-card); padding: 22px 18px; text-align: center; }
+  #dd-dose-{{ section.id }} .dd-dose__age { display: block; font-family: var(--dd-font-heading) !important; font-weight: 700; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #6a78c2; }
+  #dd-dose-{{ section.id }} .dd-dose__amount { display: block; font-family: var(--dd-font-heading) !important; font-weight: 700; font-size: 34px; line-height: 1.15; color: var(--dd-navy); margin: 6px 0 4px; }
+  #dd-dose-{{ section.id }} .dd-dose__note { margin: 0; color: var(--dd-muted); font-size: 14px; }
+  #dd-dose-{{ section.id }} .dd-dose__caution { display: flex; gap: 12px; align-items: flex-start; margin-top: 18px; padding: 14px 16px; border-radius: 12px; background: #fff4e0; border: 1px solid #f3d29a; color: #6b4a12; text-align: left; font-size: 14px; }
+  #dd-dose-{{ section.id }} .dd-dose__caution p { margin: 0; }
+  #dd-dose-{{ section.id }} .dd-dose__other { margin-top: 26px; }
+  #dd-dose-{{ section.id }} .dd-dose__other h3 { font-size: 17px; margin: 0 0 10px; color: var(--dd-ink); }
+  #dd-dose-{{ section.id }} .dd-dose__pills { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+  #dd-dose-{{ section.id }} .dd-dose__pills li { padding: 6px 12px; border-radius: 999px; background: #fff; border: 1.5px solid #c3c9ef; font-weight: 700; font-size: 13px; color: var(--dd-ink); }
+  @media (max-width: 749px) {
+    #dd-dose-{{ section.id }} .dd-dose__grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+    #dd-dose-{{ section.id }} .dd-dose__amount { font-size: 28px; }
+  }
+</style>
+
+<section class="dd dd-section dd-dose" id="{{ s.anchor | default: section.id | handleize }}" style="background: {{ s.background }};">
+  <div class="dd-container dd-center" id="dd-dose-{{ section.id }}" style="max-width: {{ s.width }}px;">
+    {% render 'dd-heading', s: s %}
+    <div class="dd-dose__grid">
+      {%- for block in section.blocks -%}
+        <div class="dd-dose__card" {{ block.shopify_attributes }}>
+          <span class="dd-dose__age">{{ block.settings.age }}</span>
+          <span class="dd-dose__amount">{{ block.settings.amount }}</span>
+          {%- if block.settings.note != blank -%}<p class="dd-dose__note">{{ block.settings.note }}</p>{%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if s.caution != blank -%}<div class="dd-dose__caution"><span aria-hidden="true">⚠️</span>{{ s.caution }}</div>{%- endif -%}
+    {%- if s.other_list != blank -%}
+      <div class="dd-dose__other">
+        {%- if s.other_title != blank -%}<h3>{{ s.other_title }}</h3>{%- endif -%}
+        <ul class="dd-list-reset dd-dose__pills">
+          {%- assign items = s.other_list | split: ',' -%}
+          {%- for item in items -%}<li>{{ item | strip }}</li>{%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dream Drops dosage",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "text", "id": "anchor", "label": "Anchor", "default": "dosage", "info": "Buttons can link here with #dosage." },
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "How much to" },
+    { "type": "text", "id": "highlight", "label": "Highlighted words", "default": "give" },
+    { "type": "text", "id": "heading_after", "label": "Words after highlight" },
+    { "type": "richtext", "id": "text", "label": "Intro text" },
+    { "type": "richtext", "id": "caution", "label": "Caution note" },
+    { "type": "text", "id": "other_title", "label": "Other ingredients title", "default": "Other ingredients" },
+    { "type": "textarea", "id": "other_list", "label": "Other ingredients", "info": "Separate with commas." },
+    { "type": "header", "content": "Style" },
+    { "type": "color_background", "id": "background", "label": "Background" },
+    { "type": "range", "id": "width", "label": "Content width", "min": 500, "max": 1200, "step": 20, "unit": "px", "default": 760 }
+  ],
+  "blocks": [
+    {
+      "type": "band",
+      "name": "Age band",
+      "settings": [
+        { "type": "text", "id": "age", "label": "Age", "default": "Ages 4–7" },
+        { "type": "text", "id": "amount", "label": "Amount", "default": "1 ml" },
+        { "type": "text", "id": "note", "label": "Note", "default": "Once a day" }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "Dream Drops dosage", "blocks": [{ "type": "band" }, { "type": "band" }] }]
+}
+{% endschema %}

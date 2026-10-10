@@ -1,0 +1,85 @@
+{% comment %}
+  Parent guide header: loads the Dream Drops fonts and colour tokens for pages that have no product section,
+  then shows the page title, intro and a product card with links to the guide and the product.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{%- assign body_bold = s.body_font | font_modify: 'weight', 'bolder' -%}
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+  {{ s.body_font | font_face: font_display: 'swap' }}
+  {{ body_bold | font_face: font_display: 'swap' }}
+  :root {
+    --dd-font-heading: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --dd-font-body: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+  }
+  #dd-guide-{{ section.id }} .dd-guide__card {
+    display: flex; align-items: center; gap: 22px; max-width: 620px; margin: 28px auto 0; padding: 18px;
+    background: #fff; border: 1.5px solid #cfe3f3; border-radius: var(--dd-radius-card); text-align: left;
+    box-shadow: 0 8px 24px rgba(43, 58, 143, .08);
+  }
+  #dd-guide-{{ section.id }} .dd-guide__card img { width: 140px; height: 140px; object-fit: cover; border-radius: 12px; flex: none; background: var(--dd-sky); }
+  #dd-guide-{{ section.id }} .dd-guide__card h3 { font-size: 20px; margin: 0 0 6px; color: var(--dd-ink); }
+  #dd-guide-{{ section.id }} .dd-guide__card p { margin: 0 0 14px; color: var(--dd-muted); font-size: 14px; }
+  #dd-guide-{{ section.id }} .dd-guide__links { display: flex; flex-wrap: wrap; gap: 10px; }
+  #dd-guide-{{ section.id }} .dd-guide__links .dd-btn { min-height: 44px; padding: 0 18px; font-size: 15px !important; display: inline-flex; align-items: center; text-decoration: none; }
+  #dd-guide-{{ section.id }} .dd-guide__ghost { background: #fff !important; color: var(--dd-navy) !important; border: 2px solid var(--dd-navy); text-transform: none !important; }
+  @media (max-width: 749px) {
+    #dd-guide-{{ section.id }} .dd-guide__card { flex-direction: column; text-align: center; gap: 14px; }
+    #dd-guide-{{ section.id }} .dd-guide__card img { width: 160px; height: 160px; }
+    #dd-guide-{{ section.id }} .dd-guide__links { justify-content: center; }
+  }
+</style>
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+{{ 'dd-theme-overrides.css' | asset_url | stylesheet_tag }}
+
+<section class="dd dd-section dd-guide dd-center" id="dd-guide-{{ section.id }}" style="background: {{ s.background }};">
+  <div class="dd-container" style="max-width: {{ s.width }}px;">
+    {% render 'dd-heading', s: s %}
+    {%- assign p = s.product -%}
+    {%- if p != blank -%}
+      <div class="dd-guide__card">
+        {%- assign img = s.image | default: p.featured_media.preview_image -%}
+        {%- if img -%}{{ img | image_url: width: 400 | image_tag: loading: 'lazy', alt: p.title }}{%- endif -%}
+        <div>
+          <h3>{{ s.card_title | default: p.title }}</h3>
+          {%- if s.card_text != blank -%}<p>{{ s.card_text }}</p>{%- endif -%}
+          <div class="dd-guide__links">
+            {%- if s.guide_label != blank -%}<a class="dd-btn dd-btn--primary" href="{{ s.guide_anchor }}">{{ s.guide_label }}</a>{%- endif -%}
+            {%- if s.shop_label != blank -%}<a class="dd-btn dd-guide__ghost" href="{{ p.url }}">{{ s.shop_label }}</a>{%- endif -%}
+          </div>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Dream Drops guide header",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Heading" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow label" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "The parent" },
+    { "type": "text", "id": "highlight", "label": "Highlighted words", "default": "guide" },
+    { "type": "text", "id": "heading_after", "label": "Words after highlight" },
+    { "type": "richtext", "id": "text", "label": "Intro text" },
+    { "type": "header", "content": "Product card" },
+    { "type": "product", "id": "product", "label": "Product" },
+    { "type": "image_picker", "id": "image", "label": "Card image", "info": "Defaults to the product's first image." },
+    { "type": "text", "id": "card_title", "label": "Card title" },
+    { "type": "text", "id": "card_text", "label": "Card text" },
+    { "type": "text", "id": "guide_label", "label": "Guide button label", "default": "Read the guide" },
+    { "type": "text", "id": "guide_anchor", "label": "Guide button target", "default": "#dosage", "info": "An anchor on this page, such as #dosage." },
+    { "type": "text", "id": "shop_label", "label": "Shop button label", "default": "Shop Dream Drops" },
+    { "type": "header", "content": "Fonts" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "nunito_sans_n4" },
+    { "type": "header", "content": "Style" },
+    { "type": "color_background", "id": "background", "label": "Background", "default": "linear-gradient(180deg, rgba(231, 240, 253, 1) 0%, rgba(255, 255, 255, 1) 100%)" },
+    { "type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 900 }
+  ],
+  "presets": [{ "name": "Dream Drops guide header" }]
+}
+{% endschema %}
