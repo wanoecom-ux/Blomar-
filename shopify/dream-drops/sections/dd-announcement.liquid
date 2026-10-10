@@ -97,10 +97,16 @@
 <script>
   (() => {
     const bar = document.getElementById('dd-ann-{{ section.id }}');
-    const wrapper = bar && bar.closest('.shopify-section');
     // Move the bar above the header so it sits at the very top of the page, like a theme announcement bar.
-    const firstHeader = document.querySelector('.shopify-section-group-header-group');
-    if (wrapper && firstHeader && !(window.Shopify && Shopify.designMode)) firstHeader.parentNode.insertBefore(wrapper, firstHeader);
+    // This also runs in the theme editor, and again whenever the editor re-renders this section.
+    const moveToTop = () => {
+      const el = document.getElementById('dd-ann-{{ section.id }}');
+      const wrapper = el && el.closest('.shopify-section');
+      const firstHeader = document.querySelector('.shopify-section-group-header-group');
+      if (wrapper && firstHeader && wrapper.nextElementSibling !== firstHeader) firstHeader.parentNode.insertBefore(wrapper, firstHeader);
+    };
+    moveToTop();
+    document.addEventListener('shopify:section:load', (e) => { if (e.detail && e.detail.sectionId === '{{ section.id }}') moveToTop(); });
 
     const timer = bar && bar.querySelector('[data-dd-countdown]');
     if (!timer) return;

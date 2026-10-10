@@ -24,6 +24,7 @@ Installed on the unpublished theme **Copy of Odour Mister** and assigned to the 
 | `sections/dd-reviews.liquid` | Reviews grid with filters and load more |
 | `templates/page.parent-guide.json` | Parent guide page: dosage, ingredients, safety, FAQs, shipping and a link to the product |
 | `sections/dd-guide-hero.liquid` | Guide header with product card; loads the page fonts for pages without a product section |
+| `sections/dd-guide-list.liquid` | Guide "other ingredients" box with feature pills |
 | `sections/dd-guide-dose.liquid` | Age-band dosage cards, caution note and other ingredients list |
 | `snippets/dd-heading.liquid` | Shared eyebrow + heading + intro |
 | `assets/dd-product.css` | All page styles, driven by `--dd-*` variables |
