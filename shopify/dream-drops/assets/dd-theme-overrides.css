@@ -100,3 +100,9 @@
   .dd.dd-cta :is(.dd-btn, #dd-x) { min-height: 56px; font-size: 18px !important; }
   .dd.dd-cta .dd-cta__caption { font-size: 13px; line-height: 1.5; }
 }
+
+/* ---------- Cart drawer ----------
+   On Dream Drops pages the theme's cart drawer uses the same fonts as the landing page:
+   body font for text, heading font for titles, prices, totals and buttons. */
+cart-drawer :is(*, #dd-x) { font-family: var(--dd-font-body) !important; }
+cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [class*="price"], [class*="total"], button, .button, [class*="btn"], #dd-x) { font-family: var(--dd-font-heading) !important; }
