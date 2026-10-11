@@ -1,48 +1,86 @@
 {% comment %}
-  Reviews grid with tag filters and load more. Holds placeholder cards until real reviews are added.
+  Reviews grid with a rating summary, tag filters and load more. Only reviews with text are shown; with none
+  filled in, the section is hidden on the storefront and shows a reminder in the theme editor.
 {% endcomment %}
 {%- assign s = section.settings -%}
+{%- comment -%} Count the reviews that have been filled in; empty or placeholder reviews are never shown. {%- endcomment -%}
+{%- assign real_count = 0 -%}
+{%- for block in section.blocks -%}
+  {%- if block.settings.body != blank and block.settings.body contains 'REPLACE_ME' -%}{%- elsif block.settings.body != blank -%}{%- assign real_count = real_count | plus: 1 -%}{%- endif -%}
+{%- endfor -%}
+{%- assign has_score = false -%}
+{%- if s.score != blank -%}{%- unless s.score contains 'REPLACE_ME' -%}{%- assign has_score = true -%}{%- endunless -%}{%- endif -%}
 {{ 'dd-product.css' | asset_url | stylesheet_tag }}
-<section class="dd dd-section dd-reviews dd-center" id="dd-reviews"{% if s.background != blank %} style="background: {{ s.background }};"{% endif %}>
+<style>
+  #dd-reviews.dd-reviews { background: {{ s.background | default: '#2b3a7a' }}; }
+  #dd-reviews .dd-h2 { color: #fff; }
+  #dd-reviews .dd-lede { color: rgba(255, 255, 255, .78) !important; max-width: 600px; margin: 0 auto; letter-spacing: .03em; }
+  #dd-reviews .dd-reviews__summary { gap: 18px; margin: 28px 0 26px; padding: 18px 34px; background: rgba(255, 255, 255, .08); border: 2px solid rgba(255, 255, 255, .22); box-shadow: 0 10px 30px rgba(10, 16, 60, .35); }
+  #dd-reviews .dd-reviews__summary .dd-stars { color: #fbbf24; font-size: 26px; letter-spacing: 2px; }
+  #dd-reviews .dd-reviews__score { font-size: 32px; font-family: var(--dd-font-heading); }
+  #dd-reviews .dd-reviews__count { font-size: 13px; font-weight: 700; letter-spacing: .06em; line-height: 1.5; max-width: 80px; }
+  #dd-reviews .dd-reviews__filter { padding: 10px 20px; border: 1.5px solid rgba(255, 255, 255, .25); background: transparent; font-size: 14px; }
+  #dd-reviews .dd-reviews__filter[aria-pressed="true"] { background: #6f7ce0; border-color: #6f7ce0; box-shadow: 0 6px 16px rgba(111, 124, 224, .45); }
+  #dd-reviews .dd-reviews__grid { gap: 22px; margin-top: 8px; }
+  #dd-reviews .dd-review { gap: 14px; padding: 24px 26px; border-radius: 22px; background: rgba(255, 255, 255, .1); border: 2px solid rgba(251, 191, 36, .85); }
+  #dd-reviews .dd-review__top { align-items: center; font-size: 13px; letter-spacing: .06em; opacity: 1; color: rgba(255, 255, 255, .55); }
+  #dd-reviews .dd-review__top .dd-stars { color: #fbbf24; font-size: 16px; letter-spacing: 1px; }
+  #dd-reviews .dd-review__tag { align-self: stretch; padding: 5px 14px; border-radius: 999px; background: #fbbf24; color: #1f2559; font-size: 11px; letter-spacing: .08em; margin-bottom: 18px; }
+  #dd-reviews .dd-review__title { font-size: 17px; letter-spacing: .04em; color: #fff; }
+  #dd-reviews .dd-review__body { font-size: 15px; line-height: 1.95; letter-spacing: .05em; color: rgba(255, 255, 255, .78); opacity: 1; }
+  #dd-reviews .dd-reviews__empty { margin-top: 24px; padding: 18px; border: 2px dashed rgba(255, 255, 255, .35); border-radius: 16px; color: rgba(255, 255, 255, .8); font-size: 14px; }
+</style>
+{%- if real_count > 0 or request.design_mode -%}
+<section class="dd dd-section dd-reviews dd-center" id="dd-reviews">
   <div class="dd-container" style="max-width: {{ s.width }}px;" data-dd-reviews data-step="{{ s.per_page }}">
     {% render 'dd-heading', s: s %}
-    {%- if s.show_summary -%}
+    {%- if s.show_summary and has_score -%}
       <div class="dd-reviews__summary">
         <span class="dd-stars" aria-hidden="true">★★★★★</span>
         <span class="dd-reviews__score">{{ s.score }}</span>
-        <span class="dd-reviews__count">{{ s.count }}</span>
+        {%- if s.count != blank -%}<span class="dd-reviews__count">{{ s.count }}</span>{%- endif -%}
       </div>
     {%- endif -%}
-    {%- assign tags = s.filters | split: ',' -%}
-    {%- if tags.size > 0 -%}
-      <div class="dd-reviews__filters" role="group" aria-label="Filter reviews">
-        <button type="button" class="dd-reviews__filter" data-dd-filter="all" aria-pressed="true">All reviews</button>
-        {%- for t in tags -%}
-          {%- assign key = t | strip | handleize -%}
-          <button type="button" class="dd-reviews__filter" data-dd-filter="{{ key }}" aria-pressed="false">{{ t | strip }}</button>
+    {%- if real_count > 0 -%}
+      {%- assign tags = s.filters | split: ',' -%}
+      {%- if tags.size > 0 -%}
+        <div class="dd-reviews__filters" role="group" aria-label="Filter reviews">
+          <button type="button" class="dd-reviews__filter" data-dd-filter="all" aria-pressed="true">All Reviews</button>
+          {%- for t in tags -%}
+            {%- assign key = t | strip | handleize -%}
+            <button type="button" class="dd-reviews__filter" data-dd-filter="{{ key }}" aria-pressed="false">{{ t | strip }}</button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div class="dd-reviews__grid">
+        {%- assign shown = 0 -%}
+        {%- for block in section.blocks -%}
+          {%- assign b = block.settings -%}
+          {%- if b.body == blank or b.body contains 'REPLACE_ME' -%}{%- continue -%}{%- endif -%}
+          {%- assign shown = shown | plus: 1 -%}
+          <article class="dd-review{% if shown <= 3 %} is-featured{% endif %}" data-dd-review data-tag="{{ b.tag | handleize }}" {{ block.shopify_attributes }}>
+            <div class="dd-review__top"><span class="dd-stars" aria-label="{{ b.stars }} out of 5 stars">{% for i in (1..b.stars) %}★{% endfor %}</span><span>{{ b.date }}</span></div>
+            {%- if b.tag != blank -%}<span class="dd-review__tag">{{ b.tag }}</span>{%- endif -%}
+            {%- if b.title != blank -%}<h3 class="dd-review__title">{{ b.title }}</h3>{%- endif -%}
+            <p class="dd-review__body">"{{ b.body }}"</p>
+            {%- if b.name != blank -%}
+              <div class="dd-review__author">
+                <span class="dd-review__avatar" aria-hidden="true">{{ b.name | slice: 0 }}</span>
+                <span><strong>{{ b.name }}</strong>{% if b.detail != blank %}<br>{{ b.detail }}{% endif %}{% if b.verified %}<br><span class="dd-review__verified">✔ Verified purchase</span>{% endif %}</span>
+              </div>
+            {%- endif -%}
+          </article>
         {%- endfor -%}
       </div>
+      <button type="button" class="dd-btn dd-reviews__more" data-dd-more>{{ s.more_label }}</button>
+      <p class="dd-reviews__shown" data-dd-shown aria-live="polite"></p>
+    {%- else -%}
+      <p class="dd-reviews__empty">Add your reviews in the blocks on the left (stars, date, tag, title, review, name). This section stays hidden on your store until at least one review is filled in. Add the average score and count above to show the rating summary.</p>
     {%- endif -%}
-    <div class="dd-reviews__grid">
-      {%- for block in section.blocks -%}
-        {%- assign b = block.settings -%}
-        <article class="dd-review{% if forloop.index <= 3 %} is-featured{% endif %}" data-dd-review data-tag="{{ b.tag | handleize }}" {{ block.shopify_attributes }}>
-          <div class="dd-review__top"><span class="dd-stars" aria-label="{{ b.stars }} out of 5 stars">{% for i in (1..b.stars) %}★{% endfor %}</span><span>{{ b.date }}</span></div>
-          {%- if b.tag != blank -%}<span class="dd-review__tag">{{ b.tag }}</span>{%- endif -%}
-          <h3 class="dd-review__title">{{ b.title }}</h3>
-          <p class="dd-review__body">“{{ b.body }}”</p>
-          <div class="dd-review__author">
-            <span class="dd-review__avatar" aria-hidden="true">{{ b.name | slice: 0 }}</span>
-            <span><strong>{{ b.name }}</strong><br>{{ b.detail }}{% if b.verified %}<br><span class="dd-review__verified">✔ Verified purchase</span>{% endif %}</span>
-          </div>
-        </article>
-      {%- endfor -%}
-    </div>
-    <button type="button" class="dd-btn dd-reviews__more" data-dd-more>{{ s.more_label }}</button>
-    <p class="dd-reviews__shown" data-dd-shown aria-live="polite"></p>
   </div>
 </section>
+{%- endif -%}
 
 {% schema %}
-{"name": "Dream Drops reviews", "tag": "section", "class": "section", "settings": [{"type": "header", "content": "Heading"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow label"}, {"type": "text", "id": "heading", "label": "Heading", "default": "What"}, {"type": "text", "id": "highlight", "label": "Highlighted words", "default": "parents"}, {"type": "text", "id": "heading_after", "label": "Words after highlight", "default": "are saying"}, {"type": "richtext", "id": "text", "label": "Intro text", "default": "<p>REPLACE_ME: only publish reviews from real customers.</p>"}, {"type": "header", "content": "Summary"}, {"type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true}, {"type": "text", "id": "score", "label": "Average score", "default": "REPLACE_ME_RATING"}, {"type": "text", "id": "count", "label": "Count text", "default": "REPLACE_ME_REVIEW_COUNT reviews"}, {"type": "text", "id": "filters", "label": "Filter tags (comma separated)", "default": "Bedtime, Calm, Flavour, Easy to take", "info": "Match each review's tag to one of these."}, {"type": "range", "id": "per_page", "label": "Reviews shown at first", "min": 3, "max": 12, "step": 3, "default": 6}, {"type": "text", "id": "more_label", "label": "Load more label", "default": "Load more reviews"}, {"type": "color_background", "id": "background", "label": "Background"}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1100}], "blocks": [{"type": "review", "name": "Review", "settings": [{"type": "paragraph", "content": "Add genuine reviews only. If you use a reviews app, remove this section and add the app block instead."}, {"type": "range", "id": "stars", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5}, {"type": "text", "id": "date", "label": "Date"}, {"type": "text", "id": "tag", "label": "Tag", "default": "Bedtime"}, {"type": "text", "id": "title", "label": "Title", "default": "REPLACE_ME_REVIEW"}, {"type": "textarea", "id": "body", "label": "Review", "default": "REPLACE_ME_REVIEW"}, {"type": "text", "id": "name", "label": "Name", "default": "REPLACE_ME"}, {"type": "text", "id": "detail", "label": "Detail line", "default": "Parent"}, {"type": "checkbox", "id": "verified", "label": "Verified purchase", "default": false}]}], "presets": [{"name": "Dream Drops reviews", "blocks": [{"type": "review"}]}]}
+{"name": "Dream Drops reviews", "tag": "section", "class": "section", "settings": [{"type": "header", "content": "Heading"}, {"type": "text", "id": "eyebrow", "label": "Eyebrow label"}, {"type": "text", "id": "heading", "label": "Heading", "default": "What"}, {"type": "text", "id": "highlight", "label": "Highlighted words", "default": "parents"}, {"type": "text", "id": "heading_after", "label": "Words after highlight", "default": "are saying"}, {"type": "richtext", "id": "text", "label": "Intro text", "default": "<p>See what parents are saying about Blomar Kids Magnesium Dream Drops.</p>"}, {"type": "header", "content": "Summary"}, {"type": "checkbox", "id": "show_summary", "label": "Show rating summary", "default": true}, {"type": "text", "id": "score", "label": "Average score", "info": "Your real average, e.g. 4.8. Leave empty to hide the summary."}, {"type": "text", "id": "count", "label": "Count text", "info": "Your real review count, e.g. 120 Reviews."}, {"type": "text", "id": "filters", "label": "Filter tags (comma separated)", "default": "Bedtime, Calm, Focus, Flavour, Easy to take", "info": "Match each review's tag to one of these."}, {"type": "range", "id": "per_page", "label": "Reviews shown at first", "min": 3, "max": 12, "step": 3, "default": 6}, {"type": "text", "id": "more_label", "label": "Load more label", "default": "Load more reviews"}, {"type": "color_background", "id": "background", "label": "Background"}, {"type": "range", "id": "width", "label": "Content width", "min": 600, "max": 1400, "step": 20, "unit": "px", "default": 1100}], "blocks": [{"type": "review", "name": "Review", "settings": [{"type": "paragraph", "content": "Add genuine reviews only. If you use a reviews app, remove this section and add the app block instead."}, {"type": "range", "id": "stars", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5}, {"type": "text", "id": "date", "label": "Date"}, {"type": "text", "id": "tag", "label": "Tag", "default": "Bedtime"}, {"type": "text", "id": "title", "label": "Title"}, {"type": "textarea", "id": "body", "label": "Review", "info": "Reviews with no text are hidden."}, {"type": "text", "id": "name", "label": "Name"}, {"type": "text", "id": "detail", "label": "Detail line", "default": "Parent"}, {"type": "checkbox", "id": "verified", "label": "Verified purchase", "default": false}]}], "presets": [{"name": "Dream Drops reviews", "blocks": [{"type": "review"}]}]}
 {% endschema %}
