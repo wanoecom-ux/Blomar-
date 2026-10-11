@@ -192,13 +192,13 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
   .dd :is(.dd-divider-label, #dd-x) { font-size: 11px !important; }
 }
 
-/* ---------- Mobile gallery: rounded main image with a row of thumbnails below ----------
-   16px side gutters, 20px between image and thumbnails, five thumbnails across with 10px gaps;
-   any extra thumbnails scroll sideways. Replaces the dots and next arrow. */
+/* ---------- Mobile gallery: full-width main image with a row of thumbnails below ----------
+   The main image runs edge to edge with square corners; thumbnails sit 16px below it inside 16px gutters,
+   five across with 10px gaps; any extra thumbnails scroll sideways. Replaces the dots and next arrow. */
 @media (max-width: 749px) {
-  .dd .dd-gallery { margin: 0 -4px !important; }
-  .dd .dd-gallery__stage { border-radius: 16px !important; }
-  .dd .dd-gallery__thumbs { display: flex !important; margin-top: 20px !important; gap: 0 !important; }
+  .dd .dd-gallery { margin: 0 -20px !important; }
+  .dd .dd-gallery__stage { border-radius: 0 !important; }
+  .dd .dd-gallery__thumbs { display: flex !important; margin-top: 16px !important; gap: 0 !important; padding: 0 16px !important; }
   .dd .dd-gallery__arrow, .dd .dd-gallery__dots { display: none !important; }
   .dd .dd-gallery__thumb-list { gap: 10px !important; }
   .dd .dd-gallery__thumb { flex: 0 0 calc((100% - 40px) / 5) !important; border-radius: 4px !important; border-width: 1.5px !important; }
