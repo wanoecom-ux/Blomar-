@@ -1,13 +1,10 @@
 {% comment %}
-  Cart drawer top: a free shipping message with a full progress bar, then a navy band when a discount
-  (e.g. a bundle deal) is applied to the cart. Rendered under the cart header when the cart has items.
+  Cart drawer top: a free shipping message with a full progress bar.
+  Rendered under the cart header when the cart has items.
 {% endcomment %}
 <div class="dd-cart-top">
   <div class="dd-cart-ship">
     <p>Congrats! You've unlocked <strong>FREE SHIPPING!</strong></p>
     <div class="dd-cart-ship__bar" aria-hidden="true"><span></span></div>
   </div>
-  {%- if cart.total_discount > 0 -%}
-    <div class="dd-cart-band">Limited Time Discount Auto-Applied</div>
-  {%- endif -%}
 </div>
