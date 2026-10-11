@@ -123,10 +123,17 @@
               <div class="dd-info__badge" {{ block.shopify_attributes }}>{{ block.settings.text_left }}{% if block.settings.text_right != blank %}<span>|</span>{{ block.settings.text_right }}{% endif %}</div>
 
             {%- when 'rating' -%}
-              <div class="dd-rating" {{ block.shopify_attributes }}>
-                <span class="dd-stars" aria-hidden="true">★★★★★</span>
-                <a href="#{{ block.settings.anchor }}">{{ block.settings.score }} · {{ block.settings.count }}</a>
-              </div>
+              {%- comment -%} Shows only once a real score is entered; the link jumps to the reviews section. {%- endcomment -%}
+              {%- assign r_score = block.settings.score | strip -%}
+              {%- if r_score != blank and r_score contains 'REPLACE_ME' -%}{%- assign r_score = '' -%}{%- endif -%}
+              {%- if r_score != blank -%}
+                <div class="dd-rating" {{ block.shopify_attributes }}>
+                  <span class="dd-stars" aria-hidden="true">★★★★★</span>
+                  <a href="#{{ block.settings.anchor }}">{{ r_score }}{% if block.settings.count != blank %} · {{ block.settings.count }}{% endif %}</a>
+                </div>
+              {%- elsif request.design_mode -%}
+                <div class="dd-rating dd-rating--empty" {{ block.shopify_attributes }}>★★★★★ Add your real rating and review count in this block (editor only)</div>
+              {%- endif -%}
 
             {%- when 'title' -%}
               <h1 class="dd-info__title" {{ block.shopify_attributes }}>
@@ -339,9 +346,9 @@
       { "type": "text", "id": "text_right", "label": "Right text", "default": "Liquid drops" }
     ] },
     { "type": "rating", "name": "Rating summary", "limit": 1, "settings": [
-      { "type": "paragraph", "content": "Use your real rating and review count only." },
-      { "type": "text", "id": "score", "label": "Score", "default": "REPLACE_ME_RATING" },
-      { "type": "text", "id": "count", "label": "Count text", "default": "REPLACE_ME_REVIEW_COUNT Reviews" },
+      { "type": "paragraph", "content": "Use your real rating and review count only. Hidden on the store while the score is empty." },
+      { "type": "text", "id": "score", "label": "Score", "info": "e.g. 4.9" },
+      { "type": "text", "id": "count", "label": "Count text", "info": "e.g. 120 Reviews" },
       { "type": "text", "id": "anchor", "label": "Link to section id", "default": "dd-reviews" }
     ] },
     { "type": "title", "name": "Title", "limit": 1, "settings": [

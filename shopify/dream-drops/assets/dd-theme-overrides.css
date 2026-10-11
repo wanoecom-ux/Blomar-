@@ -210,3 +210,9 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
 .dd .dd-acc__body:has(.dd-acc__image) > .dd-acc__image { order: 1; }
 .dd .dd-acc__body:has(.dd-acc__image) > p:has(> a:only-child) { order: 2; margin: 16px 0 4px; text-align: center; }
 .dd :is(.dd-acc__body p > a:only-child, #dd-x) { color: #6a78c2 !important; font-weight: 800 !important; letter-spacing: .03em !important; text-decoration: underline; text-underline-offset: 3px; }
+
+/* ---------- Rating line between the badge and the title ---------- */
+.dd-info :is(.dd-rating, #dd-x) { justify-content: center; gap: 8px; margin: -4px 0 -6px !important; font-weight: 800 !important; }
+.dd-info .dd-rating .dd-stars { color: #f6b500; font-size: 17px; letter-spacing: 2px; }
+.dd-info :is(.dd-rating a, #dd-x) { color: #3f4c96 !important; font-size: 14px; letter-spacing: .02em; text-decoration: none; }
+.dd-info .dd-rating--empty { font-size: 12px; font-weight: 700; color: #8d97c9; border: 1px dashed #cfdcf6; border-radius: 8px; padding: 6px 10px; }
