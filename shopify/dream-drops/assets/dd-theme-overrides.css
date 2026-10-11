@@ -192,13 +192,13 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
   .dd :is(.dd-divider-label, #dd-x) { font-size: 11px !important; }
 }
 
-/* ---------- Mobile gallery: full-width main image with a row of thumbnails below ----------
-   The main image runs edge to edge with square corners; thumbnails sit 16px below it inside 16px gutters,
-   five across with 10px gaps; any extra thumbnails scroll sideways. Replaces the dots and next arrow. */
+/* ---------- Mobile gallery: main image inside the page gutters with a row of thumbnails below ----------
+   Thumbnails sit 16px below the image, five across with 10px gaps; any extra thumbnails scroll sideways.
+   Replaces the dots and next arrow. */
 @media (max-width: 749px) {
-  .dd .dd-gallery { margin: 0 -20px !important; }
-  .dd .dd-gallery__stage { border-radius: 0 !important; }
-  .dd .dd-gallery__thumbs { display: flex !important; margin-top: 16px !important; gap: 0 !important; padding: 0 16px !important; }
+  .dd .dd-gallery { margin: 0 !important; }
+  .dd .dd-gallery__stage { border-radius: var(--dd-radius-card) !important; }
+  .dd .dd-gallery__thumbs { display: flex !important; margin-top: 16px !important; gap: 0 !important; padding: 0 !important; }
   .dd .dd-gallery__arrow, .dd .dd-gallery__dots { display: none !important; }
   .dd .dd-gallery__thumb-list { gap: 10px !important; }
   .dd .dd-gallery__thumb { flex: 0 0 calc((100% - 40px) / 5) !important; border-radius: 4px !important; border-width: 1.5px !important; }
@@ -221,3 +221,8 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
 @media (max-width: 749px) {
   .dd.dd-main { padding-top: 6px !important; }
 }
+
+/* ---------- Closing CTA image: always a square ----------
+   Keeps a 1:1 image at its true shape at any width; other shapes are cropped to a square, never stretched. */
+.dd.dd-cta .dd-cta__image { aspect-ratio: 1 / 1; }
+.dd.dd-cta .dd-cta__image img { display: block; width: 100% !important; height: 100% !important; object-fit: cover; }
