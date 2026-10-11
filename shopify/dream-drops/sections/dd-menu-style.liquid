@@ -2,6 +2,8 @@
   Mobile menu colours: white drawer, near-black text, a light grey row for the current page and hover,
   light grey dividers above the links and above the account link. Sits in the header group, so it
   applies on every page of the theme. Outputs no markup of its own.
+  Also holds the free gift guard: because it loads on every page, it watches the cart and removes the free
+  gift lines whenever no paid item is left, so gifts can never sit in the cart on their own.
 {% endcomment %}
 {%- assign s = section.settings -%}
 <style>
@@ -23,6 +25,70 @@
   #menu-drawer :is(.menu-drawer__account svg, #dd-x) { fill: none !important; stroke: {{ s.text }}; }
   .header__icon--menu :is(svg, #dd-x) { color: {{ s.text }} !important; }
 </style>
+
+<script>
+  (() => {
+    if (window.ddGiftGuard) return;
+    window.ddGiftGuard = true;
+    const isGift = (i) => (i.properties && i.properties._free_gift) || i.product_type === 'Free gift';
+    let busy = false;
+    let timer;
+
+    const refreshDrawer = async (drawer, state) => {
+      if (!drawer) return;
+      if (drawer.classList.contains('active') && state && state.sections && drawer.renderContents) {
+        drawer.renderContents(state);
+        return;
+      }
+      // Drawer closed: swap in the fresh markup without opening it.
+      const ids = ['cart-drawer', 'cart-icon-bubble'];
+      const html = await (await fetch(`${location.pathname}?sections=${ids.join(',')}`)).json();
+      const parse = (markup, sel) => new DOMParser().parseFromString(markup, 'text/html').querySelector(sel);
+      const fresh = html['cart-drawer'] && parse(html['cart-drawer'], '#CartDrawer');
+      const current = document.getElementById('CartDrawer');
+      if (fresh && current) current.innerHTML = fresh.innerHTML;
+      const bubble = document.getElementById('cart-icon-bubble');
+      const freshBubble = html['cart-icon-bubble'] && parse(html['cart-icon-bubble'], '.shopify-section');
+      if (bubble && freshBubble) bubble.innerHTML = freshBubble.innerHTML;
+      const drawerEl = document.querySelector('cart-drawer');
+      drawerEl && drawerEl.classList.add('is-empty');
+    };
+
+    const check = async () => {
+      if (busy) return;
+      busy = true;
+      try {
+        const cart = await (await fetch('/cart.js', { headers: { Accept: 'application/json' } })).json();
+        const gifts = cart.items.filter(isGift);
+        if (!gifts.length || cart.items.some((i) => !isGift(i))) return;
+        const updates = {};
+        gifts.forEach((i) => { updates[i.key] = 0; });
+        const drawer = document.querySelector('cart-drawer');
+        const sections = drawer && drawer.getSectionsToRender ? drawer.getSectionsToRender().map((x) => x.id) : [];
+        const res = await fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ updates, sections, sections_url: location.pathname }),
+        });
+        await refreshDrawer(drawer, await res.json());
+      } catch (e) {
+        /* Never block the page over the gift check. */
+      } finally {
+        busy = false;
+      }
+    };
+    const later = () => { clearTimeout(timer); timer = setTimeout(check, 400); };
+
+    const start = () => {
+      later();
+      if (typeof subscribe === 'function' && window.PUB_SUB_EVENTS) subscribe(PUB_SUB_EVENTS.cartUpdate, later);
+      const drawer = document.querySelector('cart-drawer');
+      if (drawer) new MutationObserver(later).observe(drawer, { childList: true, subtree: true });
+    };
+    document.addEventListener('cart-drawer:render', later);
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', start) : start();
+  })();
+</script>
 
 {% schema %}
 {
