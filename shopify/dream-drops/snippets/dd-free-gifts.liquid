@@ -17,8 +17,10 @@
 -%}
 <style>
   .dd-gifts { text-align: center; }
+  .dd-info :is(.dd-gifts, #dd-x) { margin-top: -14px !important; }
+  .dd-gifts :is(.dd-gifts__title, #dd-x) { margin: 0 0 4px !important; }
   .dd-gifts__title {
-    margin: 0 0 16px; font-family: var(--dd-font-heading) !important; font-weight: 800 !important; font-size: 14px;
+    margin: 0 0 19px; font-family: var(--dd-font-heading) !important; font-weight: 800 !important; font-size: 14px;
     letter-spacing: .04em !important; text-transform: uppercase; color: var(--dd-ink);
   }
   .dd-gifts__title span { color: var(--dd-pink); }
