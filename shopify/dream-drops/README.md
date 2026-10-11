@@ -4,8 +4,9 @@ A product template for **Blomar Kids Magnesium Dream Drops**, laid out like the 
 conversion flow (gallery and buy box, benefits, evening-routine band, ingredients, steps, comparison,
 guarantee, FAQ, closing call to action, reviews). All copy is Blomar's own; nothing is taken from the reference brand.
 
-Installed on the unpublished theme **Copy of Odour Mister** and assigned to the draft product
-**Blomar Kids Magnesium Dream Drops (Copy)**. The live theme is untouched.
+Installed on the unpublished theme **Copy of Odour Mister** and assigned to the live product
+**Blomar Kids Magnesium Dream Drops** (`/products/blomar-kids-magnesium-dream-drops`) and its draft copy.
+The live theme has no `product.dream-drops` template, so it keeps showing its default product page.
 
 ## Files
 
