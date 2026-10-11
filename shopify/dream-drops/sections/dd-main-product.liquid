@@ -154,10 +154,11 @@
 
             {%- when 'stock' -%}
               {%- comment -%} Only shown when Shopify tracks stock and the real count is at or under the threshold. JS keeps it in sync with the chosen tier. {%- endcomment -%}
-              <div class="dd-stock" data-dd-stock data-threshold="{{ block.settings.threshold }}" data-template="{{ block.settings.text | escape }}" {{ block.shopify_attributes }}
+              {%- assign bar_max = block.settings.bar_max | default: block.settings.threshold -%}
+              <div class="dd-stock" data-dd-stock data-threshold="{{ block.settings.threshold }}" data-bar-max="{{ bar_max }}" data-template="{{ block.settings.text | escape }}" {{ block.shopify_attributes }}
                 {% unless default_variant.inventory_management == 'shopify' and default_variant.inventory_quantity > 0 and default_variant.inventory_quantity <= block.settings.threshold %}hidden{% endunless %}>
                 <span data-dd-stock-text>{{ block.settings.text | replace: '[count]', default_variant.inventory_quantity }}</span>
-                {%- assign pct = default_variant.inventory_quantity | times: 100 | divided_by: block.settings.threshold -%}
+                {%- assign pct = default_variant.inventory_quantity | times: 100 | divided_by: bar_max -%}
                 <div class="dd-stock__bar" aria-hidden="true"><span data-dd-stock-bar style="width: {{ pct | at_most: 100 }}%;"></span></div>
               </div>
 
@@ -363,6 +364,7 @@
     { "type": "stock", "name": "Low stock bar", "limit": 1, "settings": [
       { "type": "paragraph", "content": "Uses the variant's real stock count. Hidden when stock isn't tracked or is above the threshold." },
       { "type": "range", "id": "threshold", "label": "Show when stock is at or below", "min": 1, "max": 100, "step": 1, "default": 20 },
+      { "type": "range", "id": "bar_max", "label": "Bar is full at", "min": 5, "max": 200, "step": 5, "default": 50, "info": "The bar shows stock as a share of this number. 11 left with 50 here fills about a fifth of the bar." },
       { "type": "text", "id": "text", "label": "Text ([count] is replaced)", "default": "Hurry! Only <strong>[count] left</strong> in stock." }
     ] },
     { "type": "divider_label", "name": "Divider label", "settings": [

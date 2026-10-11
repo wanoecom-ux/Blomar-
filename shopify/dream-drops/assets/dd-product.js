@@ -81,7 +81,7 @@
         stock.hidden = !show;
         if (show) {
           stock.querySelector('[data-dd-stock-text]').innerHTML = stock.dataset.template.replace('[count]', qty);
-          stock.querySelector('[data-dd-stock-bar]').style.width = `${Math.min(100, (qty / limit) * 100)}%`;
+          stock.querySelector('[data-dd-stock-bar]').style.width = `${Math.min(100, (qty / (Number(stock.dataset.barMax) || limit)) * 100)}%`;
         }
       }
 
