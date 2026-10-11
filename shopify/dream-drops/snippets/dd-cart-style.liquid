@@ -1,0 +1,95 @@
+{% comment %}
+  Dream Drops styling for the theme's cart drawer: Blomar colours and fonts, free shipping box and
+  discount band, "Free Gift" / "One-Time Purchase" group labels, gift lines with a short description,
+  a Subtotal row with a "% Off" pill, and the trust row. Works on phones and desktop.
+{% endcomment %}
+<style>
+  cart-drawer {
+    --ddc-navy: #2b3a8f; --ddc-ink: #1f2559; --ddc-pink: #e9488b; --ddc-yellow: #f6c744;
+    --ddc-sky: #e7f0fd; --ddc-line: #d9e3f3; --ddc-muted: #5a6290;
+    --ddc-head: var(--dd-font-heading, 'Poppins', sans-serif); --ddc-body: var(--dd-font-body, 'Nunito Sans', sans-serif);
+  }
+  cart-drawer :is(.drawer__inner, #ddc) { font-family: var(--ddc-body) !important; color: var(--ddc-ink) !important; }
+  cart-drawer :is(.drawer__heading, #ddc) { font-family: var(--ddc-head) !important; font-weight: 700 !important; color: var(--ddc-ink) !important; letter-spacing: -.01em !important; }
+
+  /* Free shipping box + discount band */
+  .dd-cart-top { flex: none; }
+  .dd-cart-ship { background: var(--ddc-sky); padding: 12px 18px 14px; text-align: center; }
+  .dd-cart-ship p { margin: 0 0 9px; font-family: var(--ddc-body) !important; font-size: 15px; font-weight: 600; color: var(--ddc-ink); }
+  .dd-cart-ship strong { color: var(--ddc-navy); font-weight: 800; }
+  .dd-cart-ship__bar { height: 9px; border-radius: 999px; background: #fff; overflow: hidden; }
+  .dd-cart-ship__bar span { display: block; height: 100%; width: 100%; border-radius: inherit; background: var(--ddc-navy); }
+  cart-drawer :is(.dd-cart-band, #ddc) { background: var(--ddc-navy); color: #fff !important; text-align: center; padding: 9px 14px; font-family: var(--ddc-head) !important; font-weight: 700 !important; font-size: 14.5px; letter-spacing: .01em; }
+
+  /* Group labels above each line: "Free Gift" for gifts, "One-Time Purchase" for everything else.
+     Each row is a wrapping flex row, so a full-width ::before sits on its own line above the item.
+     The divider starts just after the label text (ch-based offset for the label length). */
+  cart-drawer tbody:has(> tr.cart-item) { display: flex !important; flex-direction: column; }
+  cart-drawer tr.cart-item { flex-wrap: wrap; align-items: flex-start; }
+  cart-drawer tr.cart-item > td.cart-item__media { flex: none; }
+  cart-drawer :is(tr.cart-item > td.cart-item__details, #ddc) { flex: 1 1 0 !important; min-width: 0 !important; width: auto !important; }
+  cart-drawer tr.cart-item:not([style*="display:none"])::before {
+    content: 'One-Time Purchase'; flex: 0 0 100%; order: -1; margin: 6px 0 10px; padding: 0;
+    font-family: var(--ddc-head) !important; font-weight: 700; font-size: 13px; line-height: 1.2; color: var(--ddc-ink);
+    background: linear-gradient(var(--ddc-line), var(--ddc-line)) no-repeat right center / calc(100% - 17ch - 12px) 1px;
+  }
+  cart-drawer :is(.cart-item__name, #ddc) { font-family: var(--ddc-head) !important; font-weight: 700 !important; color: var(--ddc-ink) !important; text-decoration: none !important; }
+  cart-drawer .cart-item__image { background: var(--ddc-sky); border-radius: 10px; }
+
+  {%- comment -%} Free gift lines: listed first, pink label, short description, £0.00 then the crossed-out value. {%- endcomment -%}
+  {%- for item in cart.items -%}
+    {%- if item.properties._free_gift != blank or item.product.type == 'Free gift' -%}
+      {%- capture g -%}cart-drawer tr.cart-item[data-variant-id="{{ item.variant.id }}"]{%- endcapture -%}
+      {%- assign desc = item.product.description | strip_html | strip | truncate: 110 | replace: '\', '' | replace: '"', "'" -%}
+      {{ g }} { order: -1; }
+      {{ g }}::before { content: 'Free Gift'; color: var(--ddc-pink); background-size: calc(100% - 7ch - 12px) 1px; }
+      {{ g }} .cart-item__image { object-fit: contain !important; padding: 4px; border: 1.5px solid var(--ddc-line); }
+      {%- if desc != blank -%}
+      {{ g }} .cart-item__name::after { content: "{{ desc }}"; display: block; margin-top: 3px; font-family: var(--ddc-body) !important; font-weight: 400; font-size: 13px; line-height: 1.45; color: var(--ddc-muted); }
+      {%- endif -%}
+      {{ g }} .gb-price-drawer { display: flex; flex-direction: row-reverse; justify-content: flex-end; align-items: baseline; gap: 7px; }
+      {{ g }} .gb-price-drawer :is(strong.cart-item__final-price, #ddc) { font-size: 0 !important; }
+      {{ g }} .gb-price-drawer strong.cart-item__final-price::before { content: "{{ 0 | money }}"; font-size: 16px; font-family: var(--ddc-head); font-weight: 700; color: var(--ddc-ink); }
+      {{ g }} .gb-price-drawer s { color: #8d97c9; }
+      {{ g }} :is(quantity-input, .gb-price-drawer-saving, .cartitem-free-product-label, #ddc) { display: none !important; }
+    {%- endif -%}
+  {%- endfor -%}
+
+  /* Footer order: Subtotal row, checkout button, trust row, payment icons.
+     The block wrapper that holds the Subtotal + trust row is flattened so each can be placed on its own. */
+  cart-drawer .drawer__footer { display: flex !important; flex-direction: column; }
+  cart-drawer .drawer__footer > div:has(> .dd-subtotal) { display: contents; }
+  cart-drawer .drawer__footer > .gb-discounts-cart-values,
+  cart-drawer .drawer__footer .gb-30day-back,
+  cart-drawer .cart-drawer-trustpilot-rating,
+  cart-drawer .social-proof-bar { display: none !important; }
+  cart-drawer .dd-subtotal { order: -1; display: flex; justify-content: space-between; align-items: center; gap: 10px; margin: 0 0 12px; }
+  cart-drawer .dd-subtotal__label { font-family: var(--ddc-head) !important; font-weight: 700; font-size: 18px; color: var(--ddc-ink); }
+  cart-drawer .dd-subtotal__right { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+  cart-drawer .dd-subtotal__pill { background: var(--ddc-yellow); color: var(--ddc-ink); border-radius: 999px; padding: 3px 10px; font-family: var(--ddc-head) !important; font-weight: 700; font-size: 13px; }
+  cart-drawer .dd-subtotal__was { color: #8d97c9; font-size: 15px; }
+  cart-drawer .dd-subtotal__total { font-family: var(--ddc-head) !important; font-weight: 700; font-size: 19px; color: var(--ddc-ink); }
+  cart-drawer .dd-cart-trust { order: 1; }
+  cart-drawer .cart-drawer-payment-icons { order: 2; margin-top: 10px; }
+
+  /* Checkout button */
+  cart-drawer :is(#CartDrawer-Checkout, #ddc) {
+    background: var(--ddc-navy) !important; color: #fff !important; border-radius: 999px !important; min-height: 56px;
+    font-family: var(--ddc-head) !important; font-weight: 700 !important; font-size: 17px !important; text-transform: none !important;
+    box-shadow: 0 6px 16px rgba(43, 58, 143, .25) !important;
+  }
+
+  /* Trust row */
+  .dd-cart-trust { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; margin: 12px 0 2px; padding: 0; list-style: none; }
+  .dd-cart-trust li { display: flex; align-items: flex-start; gap: 7px; font-family: var(--ddc-body) !important; font-size: 12.5px; line-height: 1.3; color: var(--ddc-ink); }
+  .dd-cart-trust svg { flex: none; width: 18px; height: 18px; fill: none; stroke: var(--ddc-navy); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-top: 1px; }
+
+  @media (max-width: 749px) {
+    .dd-cart-ship p { font-size: 14px; }
+    cart-drawer .dd-cart-band { font-size: 13.5px; }
+    cart-drawer .dd-subtotal__label { font-size: 17px; }
+    cart-drawer .dd-subtotal__total { font-size: 18px; }
+    .dd-cart-trust li { font-size: 11.5px; gap: 5px; }
+    .dd-cart-trust svg { width: 16px; height: 16px; }
+  }
+</style>

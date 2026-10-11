@@ -1,0 +1,32 @@
+{% comment %}
+  Cart drawer footer additions: a Subtotal row (with a "% Off" pill and the full price crossed out when
+  the cart has savings) and the trust row. Rendered from the money-back guarantee block snippet; the
+  dd-cart-style CSS moves the Subtotal row above the checkout button and the trust row under it.
+{% endcomment %}
+{%- liquid
+  assign dd_compare = 0
+  for i in cart.items
+    assign unit = i.variant.price
+    if i.variant.compare_at_price > unit
+      assign unit = i.variant.compare_at_price
+    endif
+    assign dd_compare = unit | times: i.quantity | plus: dd_compare
+  endfor
+  assign dd_pct = 0
+  if dd_compare > cart.total_price
+    assign dd_pct = dd_compare | minus: cart.total_price | times: 100 | divided_by: dd_compare
+  endif
+-%}
+{%- if cart != empty -%}
+  <div class="dd-subtotal" role="status">
+    <span class="dd-subtotal__label">Subtotal</span>
+    <span class="dd-subtotal__right">
+      {%- if dd_pct > 0 -%}
+        <span class="dd-subtotal__pill">{{ dd_pct }}% Off</span>
+        <s class="dd-subtotal__was">{{ dd_compare | money }}</s>
+      {%- endif -%}
+      <strong class="dd-subtotal__total">{{ cart.total_price | money }}</strong>
+    </span>
+  </div>
+  {% render 'dd-cart-trust' %}
+{%- endif -%}
