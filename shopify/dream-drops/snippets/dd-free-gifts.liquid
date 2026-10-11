@@ -1,0 +1,87 @@
+{% comment %}
+  Free gifts row for the buy box: a heading, then a free shipping tile and one tile per gift product.
+  Gift products are found by handle (section settings), so they can stay Unlisted in admin.
+  Each tile's "FREE £x" pill uses the value set in the section, or the gift's compare-at price.
+  When auto-add is on, dd-product.js adds the gift products to the cart along with Dream Drops.
+  Pass `s` (section.settings).
+{% endcomment %}
+{%- liquid
+  assign gifts = ''
+  if s.gift_1_handle != blank and all_products[s.gift_1_handle].id
+    assign gifts = gifts | append: s.gift_1_handle | append: ','
+  endif
+  if s.gift_2_handle != blank and all_products[s.gift_2_handle].id
+    assign gifts = gifts | append: s.gift_2_handle | append: ','
+  endif
+  assign gift_handles = gifts | split: ','
+-%}
+<style>
+  .dd-gifts { text-align: center; }
+  .dd-gifts__title {
+    margin: 0 0 16px; font-family: var(--dd-font-heading) !important; font-weight: 800 !important; font-size: 14px;
+    letter-spacing: .04em !important; text-transform: uppercase; color: var(--dd-ink);
+  }
+  .dd-gifts__title span { color: var(--dd-pink); }
+  .dd-gifts__grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; padding-top: 12px; }
+  .dd-gift { position: relative; display: flex; flex-direction: column; align-items: center; min-width: 0; }
+  .dd-gift__box {
+    position: relative; width: 100%; aspect-ratio: 1 / 1; display: grid; place-items: center;
+    background: var(--dd-sky); border: 2px solid #5b6cc4; border-radius: 16px;
+  }
+  .dd-gift__box img { width: 78%; height: 78%; object-fit: contain; }
+  .dd-gift__emoji { font-size: 48px; line-height: 1; }
+  .dd-gift__pill {
+    position: absolute; top: -11px; left: 50%; transform: translateX(-50%); z-index: 1; white-space: nowrap;
+    padding: 3px 12px; border-radius: 999px; background: var(--dd-navy); color: #fff;
+    font-family: var(--dd-font-heading) !important; font-weight: 800 !important; font-size: 11.5px; letter-spacing: .04em !important;
+  }
+  .dd-gift__pill s { opacity: .75; margin-left: 3px; font-weight: 700; }
+  .dd-gift__label { margin-top: 8px; font-family: var(--dd-font-heading) !important; font-weight: 700 !important; font-size: 13.5px; line-height: 1.25; color: var(--dd-ink); }
+  @media (max-width: 749px) {
+    .dd-gifts__title { font-size: 11.5px; letter-spacing: .02em !important; }
+    .dd-gifts__grid { gap: 10px; }
+    .dd-gift__box { border-radius: 14px; }
+    .dd-gift__emoji { font-size: 38px; }
+    .dd-gift__pill { font-size: 10px; padding: 3px 9px; top: -10px; }
+    .dd-gift__label { font-size: 12px; }
+  }
+</style>
+
+<div class="dd-gifts" data-dd-gifts{% if s.gifts_auto_add %} data-gift-ids="{%- for h in gift_handles -%}{{ all_products[h].selected_or_first_available_variant.id }}{% unless forloop.last %},{% endunless %}{%- endfor -%}"{% endif %}>
+  <p class="dd-gifts__title">{% if s.gifts_heading != blank %}<span>{{ s.gifts_heading }}</span> {% endif %}{{ s.gifts_heading_after }}</p>
+  <div class="dd-gifts__grid">
+    <div class="dd-gift">
+      <div class="dd-gift__box">
+        <span class="dd-gift__pill">FREE{% if s.gifts_shipping_value != blank %} <s>{{ s.gifts_shipping_value }}</s>{% endif %}</span>
+        {%- if s.gifts_shipping_image != blank -%}
+          {{ s.gifts_shipping_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: s.gifts_shipping_label }}
+        {%- else -%}
+          <span class="dd-gift__emoji" aria-hidden="true">📦</span>
+        {%- endif -%}
+      </div>
+      <span class="dd-gift__label">{{ s.gifts_shipping_label }}</span>
+    </div>
+
+    {%- for h in gift_handles -%}
+      {%- assign g = all_products[h] -%}
+      {%- assign v = g.selected_or_first_available_variant -%}
+      {%- if forloop.index == 1 -%}
+        {%- assign label = s.gift_1_label | default: g.title -%}{%- assign value = s.gift_1_value -%}{%- assign emoji = '🎧' -%}
+      {%- else -%}
+        {%- assign label = s.gift_2_label | default: g.title -%}{%- assign value = s.gift_2_value -%}{%- assign emoji = '🧸' -%}
+      {%- endif -%}
+      {%- if value == blank and v.compare_at_price > 0 -%}{%- assign value = v.compare_at_price | money_without_trailing_zeros -%}{%- endif -%}
+      <div class="dd-gift">
+        <div class="dd-gift__box">
+          <span class="dd-gift__pill">FREE{% if value != blank %} <s>{{ value }}</s>{% endif %}</span>
+          {%- if g.featured_image -%}
+            {{ g.featured_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: label }}
+          {%- else -%}
+            <span class="dd-gift__emoji" aria-hidden="true">{{ emoji }}</span>
+          {%- endif -%}
+        </div>
+        <span class="dd-gift__label">{{ label }}</span>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>

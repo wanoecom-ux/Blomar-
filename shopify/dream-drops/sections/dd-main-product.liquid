@@ -240,6 +240,7 @@
               </div>
 
             {%- when 'buy_buttons' -%}
+              {%- if s.gifts_show -%}{% render 'dd-free-gifts', s: s %}{%- endif -%}
               <div class="dd-buy" {{ block.shopify_attributes }}>
                 <button type="submit" class="dd-btn dd-btn--primary" data-dd-add data-label="{{ block.settings.label | escape }}" {% unless default_variant.available %}disabled{% endunless %}>
                   {%- if default_variant.available -%}{{ block.settings.label }}{%- else -%}Sold out{%- endif -%}
@@ -310,6 +311,21 @@
     { "type": "checkbox", "id": "show_sticky", "label": "Show sticky add to cart bar", "default": true },
     { "type": "text", "id": "sticky_title", "label": "Sticky bar title", "info": "Leave empty to use the product title." },
     { "type": "text", "id": "sticky_label", "label": "Sticky bar button", "default": "Add to cart" },
+
+    { "type": "header", "content": "Free gifts", "info": "Shown just above the add to cart button. Gift products are found by their handle, so they can stay Unlisted." },
+    { "type": "checkbox", "id": "gifts_show", "label": "Show free gifts", "default": true },
+    { "type": "checkbox", "id": "gifts_auto_add", "label": "Add the gifts to the cart with Dream Drops", "default": true },
+    { "type": "text", "id": "gifts_heading", "label": "Heading, highlighted part", "default": "Special offer!" },
+    { "type": "text", "id": "gifts_heading_after", "label": "Heading, rest", "default": "Free gifts with your first order" },
+    { "type": "text", "id": "gifts_shipping_label", "label": "Shipping tile label", "default": "Free Shipping" },
+    { "type": "text", "id": "gifts_shipping_value", "label": "Shipping tile value", "info": "Shown crossed out in the pill, e.g. £4.99. Leave empty to show just FREE." },
+    { "type": "image_picker", "id": "gifts_shipping_image", "label": "Shipping tile image" },
+    { "type": "text", "id": "gift_1_handle", "label": "Gift 1 product handle", "default": "free-gift-audio-bedtime-stories" },
+    { "type": "text", "id": "gift_1_label", "label": "Gift 1 label", "default": "Audio Bedtime Stories" },
+    { "type": "text", "id": "gift_1_value", "label": "Gift 1 value", "info": "Leave empty to use the product's compare-at price." },
+    { "type": "text", "id": "gift_2_handle", "label": "Gift 2 product handle", "default": "free-gift-sleepy-teddy-bear" },
+    { "type": "text", "id": "gift_2_label", "label": "Gift 2 label", "default": "Sleepy Teddy Bear" },
+    { "type": "text", "id": "gift_2_value", "label": "Gift 2 value", "info": "Leave empty to use the product's compare-at price." },
 
     { "type": "header", "content": "Page design: colours", "info": "These apply to every Dream Drops section on this template." },
     { "type": "color", "id": "color_primary", "label": "Primary (buttons, dark band)", "default": "#2b3a8f" },

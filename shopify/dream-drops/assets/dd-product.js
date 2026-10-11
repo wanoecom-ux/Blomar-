@@ -138,6 +138,19 @@
       }
 
       try {
+        // Free gifts: add any gift that isn't in the cart yet, before the product, so the drawer shows both.
+        const giftIds = (root.querySelector('[data-dd-gifts]')?.dataset.giftIds || '').split(',').filter(Boolean).map(Number);
+        if (giftIds.length) {
+          try {
+            const cart = await (await fetch('/cart.js', { headers: { Accept: 'application/json' } })).json();
+            const inCart = new Set(cart.items.map((i) => i.variant_id));
+            const items = giftIds.filter((id) => !inCart.has(id)).map((id) => ({ id, quantity: 1, properties: { _free_gift: 'Dream Drops' } }));
+            if (items.length) {
+              await fetch(`${cartAddUrl}.js`, { method: 'POST', headers: { 'Content-Type': 'application/json', Accept: 'application/json' }, body: JSON.stringify({ items }) });
+            }
+          } catch (giftErr) { /* A gift that can't be added never blocks the product itself. */ }
+        }
+
         const res = await fetch(`${cartAddUrl}.js`, { method: 'POST', headers: { Accept: 'application/json' }, body });
         const data = await res.json();
         if (!res.ok || data.status) {
