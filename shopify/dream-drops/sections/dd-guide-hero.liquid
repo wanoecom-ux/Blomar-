@@ -1,21 +1,12 @@
 {% comment %}
   Parent guide header: loads the Dream Drops fonts for pages that have no product section, shows the
   page title, intro, a small link pill and an optional product card.
-  It also carries the guide page styling (wavy section edges, white cards, plain FAQ rows, navy closing
-  band), so that styling applies only on pages that use this header.
+  The shared page styling (wavy section edges, white cards, plain FAQ rows, navy closing band) comes
+  from the dd-page-style snippet.
 {% endcomment %}
 {%- assign s = section.settings -%}
-{%- assign body_bold = s.body_font | font_modify: 'weight', 'bolder' -%}
+{% render 'dd-page-style', heading_font: s.heading_font, body_font: s.body_font %}
 <style>
-  {{ s.heading_font | font_face: font_display: 'swap' }}
-  {{ s.body_font | font_face: font_display: 'swap' }}
-  {{ body_bold | font_face: font_display: 'swap' }}
-  :root {
-    --dd-font-heading: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
-    --dd-font-body: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
-    --dd-guide-wave: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 24' preserveAspectRatio='none'%3E%3Cpath d='M0 24V12Q30 4 60 12T120 12V24Z'/%3E%3C/svg%3E");
-  }
-
   /* Header */
   #dd-guide-{{ section.id }} { position: relative; overflow: hidden; padding: 64px 0 80px; }
   #dd-guide-{{ section.id }}::before {
@@ -39,61 +30,17 @@
   #dd-guide-{{ section.id }} .dd-guide__card p { margin: 0 0 14px; color: var(--dd-muted); font-size: 14px; }
   #dd-guide-{{ section.id }} .dd-guide__links { display: flex; flex-wrap: wrap; gap: 10px; }
 
-  /* Every section after the header: a wavy top edge in the section's own colour. */
-  .dd.dd-section:not(.dd-guide) { position: relative; }
-  .dd.dd-section:not(.dd-guide)::before {
-    content: ''; position: absolute; left: 0; right: 0; top: -22px; height: 23px; z-index: 1; pointer-events: none;
-    background: inherit; -webkit-mask: var(--dd-guide-wave) 0 0 / 120px 100% repeat-x; mask: var(--dd-guide-wave) 0 0 / 120px 100% repeat-x;
-  }
-
-  /* Small eyebrow tags */
-  .dd :is(.dd-eyebrow, #dd-x) {
-    padding: 4px 10px !important; border: 1px solid #cfdcf6 !important; border-radius: 999px !important; box-shadow: none !important;
-    font-size: 10px !important; letter-spacing: .12em !important; color: #6a78c2 !important; background: #fff !important; margin-bottom: 12px !important;
-  }
-
-  /* Cards: white, soft shadow, icon above the title */
-  .dd.dd-cards .dd-cards__grid { gap: 16px !important; }
-  .dd.dd-cards .dd-card {
-    flex-direction: column; gap: 10px; padding: 22px 20px; background: #fff !important; border: 0 !important;
-    border-radius: 14px; box-shadow: 0 6px 18px rgba(43, 58, 143, .08);
-  }
-  .dd.dd-cards :is(.dd-card__title, #dd-x) { font-size: 15px !important; color: var(--dd-ink) !important; margin-bottom: 6px; }
-  .dd.dd-cards .dd-card__text { font-size: 13.5px; line-height: 1.6; color: #5a6290; }
-  .dd.dd-cards .dd-card__icon { width: auto; text-align: left; font-size: 22px; }
-  [id$="__safety"] .dd.dd-cards .dd-card { flex-direction: row; align-items: flex-start; gap: 14px; }
-  [id$="__safety"] .dd.dd-cards .dd-card__icon {
-    width: 40px; height: 40px; border-radius: 50%; background: #fdf2c9; display: grid; place-items: center; font-size: 18px;
-  }
-
-  /* FAQs: plain rows with a divider line and a plus on the right */
-  .dd.dd-faq .dd-faq__list { gap: 0 !important; max-width: 720px; }
-  .dd.dd-faq .dd-faq__item { background: none !important; border: 0 !important; border-bottom: 1px solid #d5e3f2 !important; border-radius: 0 !important; }
-  .dd.dd-faq .dd-faq__item summary { padding: 18px 4px !important; font-weight: 700 !important; font-size: 14.5px; color: var(--dd-ink); }
-  .dd.dd-faq .dd-faq__icon { background: none !important; color: #8d97c9 !important; font-size: 20px; font-weight: 400 !important; }
-  .dd.dd-faq .dd-faq__answer { padding: 0 4px 18px !important; }
-
-  /* Closing band: navy with white text, pink and outline buttons */
-  .dd.dd-cta { color: #fff; }
-  .dd.dd-cta :is(.dd-h2, #dd-x) { color: #fff !important; }
-  .dd.dd-cta .dd-lede { color: rgba(255, 255, 255, .78); max-width: 520px; margin: 0 auto 22px; }
-  .dd.dd-cta .dd-cta__chips { display: none; }
-  .dd.dd-cta .dd-cta__image { display: none; }
-  .dd.dd-cta .dd-cta__caption { color: rgba(255, 255, 255, .7); }
-  .dd.dd-cta :is(.dd-btn--accent, #dd-x) { box-shadow: 0 8px 22px rgba(233, 72, 139, .35); }
-
   @media (max-width: 749px) {
     #dd-guide-{{ section.id }} { padding: 44px 0 60px; }
     #dd-guide-{{ section.id }} .dd-h2 { font-size: 32px; }
     #dd-guide-{{ section.id }} .dd-guide__card { flex-direction: column; text-align: center; }
     #dd-guide-{{ section.id }} .dd-guide__links { justify-content: center; }
-    .dd.dd-section:not(.dd-guide)::before { top: -14px; height: 15px; -webkit-mask-size: 80px 100%; mask-size: 80px 100%; }
   }
 </style>
 {{ 'dd-product.css' | asset_url | stylesheet_tag }}
 {{ 'dd-theme-overrides.css' | asset_url | stylesheet_tag }}
 
-<section class="dd dd-section dd-guide dd-center" id="dd-guide-{{ section.id }}" style="background: {{ s.background }};">
+<section class="dd dd-section dd-guide dd-top dd-center" id="dd-guide-{{ section.id }}" style="background: {{ s.background }};">
   <div class="dd-container" style="max-width: {{ s.width }}px;">
     {% render 'dd-heading', s: s %}
     {%- if s.pill_label != blank -%}<a class="dd-guide__pill" href="{{ s.pill_link | default: '#' }}">{{ s.pill_label }}</a>{%- endif -%}

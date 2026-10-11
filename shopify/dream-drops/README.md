@@ -32,6 +32,10 @@ The live theme has no `product.dream-drops` template, so it keeps showing its de
 | `sections/dd-track.liquid` | Numbered order-help cards; accepts an order-tracking app block |
 | `sections/dd-contact.liquid` | Contact info panel and contact form |
 | `sections/dd-menu-style.liquid` | Mobile menu colours (white drawer, black text, grey current row); in the header group |
+| `templates/page.dream-drops-home.json` | Pre-lander (`/pages/dream-drops-home`): hero, how it works, key figures, FAQ, closing call to action |
+| `sections/dd-pre-hero.liquid` | Pre-lander hero with tick list, product image, badges and button |
+| `sections/dd-stats.liquid` | Key-figure tiles with a button |
+| `snippets/dd-page-style.liquid` | Shared fonts and styling for the guide, pre-lander, track and contact pages |
 | `snippets/dd-heading.liquid` | Shared eyebrow + heading + intro |
 | `assets/dd-product.css` | All page styles, driven by `--dd-*` variables |
 | `assets/dd-theme-overrides.css` | Scoped rules that beat this theme's `!important` font, colour and button styles |
