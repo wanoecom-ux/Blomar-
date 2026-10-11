@@ -30,8 +30,9 @@
     position: relative; width: 100%; aspect-ratio: 1 / 1; display: grid; place-items: center;
     background: var(--dd-sky); border: 2px solid #5b6cc4; border-radius: 16px;
   }
-  .dd-gift__box img { width: 78%; height: 78%; object-fit: contain; }
-  .dd-gift__emoji { font-size: 48px; line-height: 1; }
+  .dd-gift__box img { width: 90%; height: 90%; object-fit: contain; }
+  .dd-gift__ship { width: 82%; height: 82%; }
+  .dd-gift__emoji { font-size: 64px; line-height: 1; }
   .dd-gift__pill {
     position: absolute; top: -11px; left: 50%; transform: translateX(-50%); z-index: 1; white-space: nowrap;
     padding: 3px 12px; border-radius: 999px; background: var(--dd-navy); color: #fff;
@@ -43,7 +44,7 @@
     .dd-gifts__title { font-size: 11.5px; letter-spacing: .02em !important; }
     .dd-gifts__grid { gap: 10px; }
     .dd-gift__box { border-radius: 14px; }
-    .dd-gift__emoji { font-size: 38px; }
+    .dd-gift__emoji { font-size: 50px; }
     .dd-gift__pill { font-size: 10px; padding: 3px 9px; top: -10px; }
     .dd-gift__label { font-size: 12px; }
   }
@@ -58,7 +59,17 @@
         {%- if s.gifts_shipping_image != blank -%}
           {{ s.gifts_shipping_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: s.gifts_shipping_label }}
         {%- else -%}
-          <span class="dd-gift__emoji" aria-hidden="true">📦</span>
+          <svg class="dd-gift__ship" viewBox="0 0 120 120" aria-hidden="true">
+            <path d="M60 18 104 36v52L60 106 16 88V36z" fill="#c98d4f"/>
+            <path d="M60 54v52L16 88V36z" fill="#d9a066"/>
+            <path d="M60 54v52l44-18V36z" fill="#b97a3d"/>
+            <path d="M16 36 60 18l44 18-44 18z" fill="#e4b47c"/>
+            <path d="M38 27 82 45v14l-10 4V49L28 31z" fill="#f1d3a3"/>
+            <path d="M60 54 16 36l-8 12 44 18z" fill="#e8bb84"/>
+            <path d="M60 54l44-18 8 12-44 18z" fill="#d39a5c"/>
+            <path d="M88 64c8 3 14 3 20 1v15c0 11-8 19-20 24-12-5-20-13-20-24V65c6 2 12 2 20-1z" fill="#2b3a8f" stroke="#fff" stroke-width="3"/>
+            <path d="m79 83 6 6 12-13" fill="none" stroke="#fff" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
         {%- endif -%}
       </div>
       <span class="dd-gift__label">{{ s.gifts_shipping_label }}</span>
