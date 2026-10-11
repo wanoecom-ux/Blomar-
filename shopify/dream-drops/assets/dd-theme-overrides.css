@@ -226,3 +226,8 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
    Keeps a 1:1 image at its true shape at any width; other shapes are cropped to a square, never stretched. */
 .dd.dd-cta .dd-cta__image { aspect-ratio: 1 / 1; }
 .dd.dd-cta .dd-cta__image img { display: block; width: 100% !important; height: 100% !important; object-fit: cover; }
+
+/* ---------- Bundle offer sits close under the divider label ----------
+   Drops Kaching's own top margin and pulls the app block up against the "Free shipping" divider. */
+.dd-info :is(.kaching-bundles__block, #dd-x) { margin-top: 0 !important; }
+.dd-info :is(.dd-divider-label + .shopify-app-block, #dd-x) { margin-top: -12px !important; }
