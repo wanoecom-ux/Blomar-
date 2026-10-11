@@ -216,3 +216,8 @@ cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [c
 .dd-info .dd-rating .dd-stars { color: #f6b500; font-size: 17px; letter-spacing: 2px; }
 .dd-info :is(.dd-rating a, #dd-x) { color: #3f4c96 !important; font-size: 14px; letter-spacing: .02em; text-decoration: none; }
 .dd-info .dd-rating--empty { font-size: 12px; font-weight: 700; color: #8d97c9; border: 1px dashed #cfdcf6; border-radius: 8px; padding: 6px 10px; }
+
+/* ---------- Mobile: less space between the header and the product image ---------- */
+@media (max-width: 749px) {
+  .dd.dd-main { padding-top: 6px !important; }
+}

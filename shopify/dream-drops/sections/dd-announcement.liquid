@@ -40,6 +40,11 @@
   #dd-ann-{{ section.id }} .dd-ann__cloud::after { content: ''; position: absolute; background: inherit; border-radius: 50%; }
   #dd-ann-{{ section.id }} .dd-ann__cloud::before { width: 18px; height: 18px; left: 8px; top: -9px; }
   #dd-ann-{{ section.id }} .dd-ann__cloud::after { width: 22px; height: 22px; left: 20px; top: -12px; }
+  /* Clouds sit in the outer edges of the bar, clear of the message and countdown. */
+  #dd-ann-{{ section.id }} .dd-ann__cloud--1 { left: 3%; top: 16px; }
+  #dd-ann-{{ section.id }} .dd-ann__cloud--2 { left: 11%; bottom: 4px; transform: scale(.75); }
+  #dd-ann-{{ section.id }} .dd-ann__cloud--3 { right: 13%; bottom: 6px; transform: scale(.7); }
+  #dd-ann-{{ section.id }} .dd-ann__cloud--4 { right: 20%; top: 8px; transform: scale(.55); }
   #dd-ann-{{ section.id }} .dd-ann__sun {
     position: absolute; z-index: 1; right: 6%; top: -26px; width: 52px; height: 52px; border-radius: 50%;
     background: radial-gradient(circle, #fff6c8 0%, #ffe27a 45%, #f8cf4a 70%);
@@ -64,6 +69,11 @@
     #dd-ann-{{ section.id }} .dd-ann__inner { gap: 6px; flex-direction: column; }
     #dd-ann-{{ section.id }} .dd-ann__text { font-size: {{ s.font_size_mobile }}px; }
     #dd-ann-{{ section.id }} .dd-ann__sun { width: 36px; height: 36px; top: -16px; right: 3%; }
+    #dd-ann-{{ section.id }} .dd-ann__cloud { transform: scale(.55); }
+    #dd-ann-{{ section.id }} .dd-ann__cloud--1 { display: none; }
+    #dd-ann-{{ section.id }} .dd-ann__cloud--2 { left: -10px; top: auto; bottom: 4px; transform: scale(.45); }
+    #dd-ann-{{ section.id }} .dd-ann__cloud--3 { right: -12px; left: auto; bottom: 6px; transform: scale(.5); }
+    #dd-ann-{{ section.id }} .dd-ann__cloud--4 { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
     #dd-ann-{{ section.id }} .dd-ann__leaf { animation: none; display: none; }
@@ -72,10 +82,10 @@
 
 <div class="dd dd-ann" id="dd-ann-{{ section.id }}" role="region" aria-label="Announcement">
   {%- if s.show_decorations -%}
-    <span class="dd-ann__cloud" style="left: 18%; top: 14px;" aria-hidden="true"></span>
-    <span class="dd-ann__cloud" style="left: 36%; bottom: -6px; transform: scale(.8);" aria-hidden="true"></span>
-    <span class="dd-ann__cloud" style="left: 52%; top: -4px; transform: scale(.6);" aria-hidden="true"></span>
-    <span class="dd-ann__cloud" style="left: 66%; top: 18px; transform: scale(.7);" aria-hidden="true"></span>
+    <span class="dd-ann__cloud dd-ann__cloud--1" aria-hidden="true"></span>
+    <span class="dd-ann__cloud dd-ann__cloud--2" aria-hidden="true"></span>
+    <span class="dd-ann__cloud dd-ann__cloud--3" aria-hidden="true"></span>
+    <span class="dd-ann__cloud dd-ann__cloud--4" aria-hidden="true"></span>
     <span class="dd-ann__sun" aria-hidden="true"></span>
     <span class="dd-ann__leaf" style="left: 82%; animation-delay: 0s;" aria-hidden="true"></span>
     <span class="dd-ann__leaf" style="left: 12%; animation-delay: 3s;" aria-hidden="true"></span>
