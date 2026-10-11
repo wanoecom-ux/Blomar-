@@ -6,13 +6,15 @@
 {{ 'dd-product.css' | asset_url | stylesheet_tag }}
 <style>
   #dd-stats-{{ section.id }} .dd-stats__grid { display: grid; grid-template-columns: repeat({{ section.blocks.size | at_least: 1 }}, minmax(0, 1fr)); gap: 16px; margin: 24px 0; }
-  #dd-stats-{{ section.id }} .dd-stats__tile { background: #fff; border-radius: 14px; padding: 22px 16px; box-shadow: 0 6px 18px rgba(43, 58, 143, .08); }
+  #dd-stats-{{ section.id }} .dd-stats__tile { background: #fff; border: 1px solid #e3e8f6; border-radius: 14px; padding: 18px 12px; box-shadow: 0 4px 14px rgba(43, 58, 143, .06); }
   #dd-stats-{{ section.id }} .dd-stats__fig { display: block; font-family: var(--dd-font-heading) !important; font-weight: 700; font-size: 34px; line-height: 1.1; color: var(--dd-pink); }
   #dd-stats-{{ section.id }} .dd-stats__label { display: block; margin-top: 6px; color: #5a6290; font-size: 13.5px; font-weight: 700; }
   #dd-stats-{{ section.id }} .dd-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 54px; padding: 0 32px; text-decoration: none; }
   #dd-stats-{{ section.id }} .dd-stats__note { margin: 10px 0 0; color: #5a6290; font-size: 13px; }
   @media (max-width: 749px) {
-    #dd-stats-{{ section.id }} .dd-stats__grid { grid-template-columns: 1fr; gap: 10px; }
+    #dd-stats-{{ section.id }} .dd-stats__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    #dd-stats-{{ section.id }} .dd-stats__fig { font-size: 26px; }
+    #dd-stats-{{ section.id }} .dd-stats__label { font-size: 12.5px; }
     #dd-stats-{{ section.id }} .dd-btn { width: 100%; }
   }
 </style>

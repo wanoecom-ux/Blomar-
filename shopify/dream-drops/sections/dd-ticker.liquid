@@ -1,0 +1,51 @@
+{% comment %}
+  Scrolling strip: short phrases that loop sideways, separated by a small star.
+  The list is written out twice so the loop has no gap. Stops moving for visitors who prefer reduced motion.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{%- assign items = s.items | split: ',' -%}
+<style>
+  #dd-ticker-{{ section.id }} { overflow: hidden; background: {{ s.background }}; color: {{ s.text_color }}; padding: {{ s.padding }}px 0; }
+  #dd-ticker-{{ section.id }} .dd-ticker__track { display: flex; width: max-content; animation: dd-ticker-{{ section.id }} {{ s.speed }}s linear infinite; }
+  #dd-ticker-{{ section.id }} .dd-ticker__list { display: flex; flex: none; margin: 0; padding: 0; list-style: none; }
+  #dd-ticker-{{ section.id }} li {
+    display: flex; align-items: center; gap: 22px; padding-right: 22px; white-space: nowrap;
+    font-family: var(--dd-font-body, inherit); font-weight: 800; font-size: 11px; letter-spacing: .12em; text-transform: uppercase;
+  }
+  #dd-ticker-{{ section.id }} li::after { content: '✦'; opacity: .55; font-size: 10px; }
+  #dd-ticker-{{ section.id }}:hover .dd-ticker__track { animation-play-state: paused; }
+  @keyframes dd-ticker-{{ section.id }} { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (max-width: 749px) {
+    #dd-ticker-{{ section.id }} li { font-size: 12px; gap: 18px; padding-right: 18px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #dd-ticker-{{ section.id }} .dd-ticker__track { animation: none; }
+  }
+</style>
+
+<div class="dd-ticker" id="dd-ticker-{{ section.id }}" role="region" aria-label="{{ s.items | escape }}">
+  <div class="dd-ticker__track" aria-hidden="true">
+    {%- for n in (1..2) -%}
+      <ul class="dd-ticker__list">
+        {%- for item in items -%}{%- assign t = item | strip -%}{%- if t != blank -%}<li>{{ t }}</li>{%- endif -%}{%- endfor -%}
+        {%- for item in items -%}{%- assign t = item | strip -%}{%- if t != blank -%}<li>{{ t }}</li>{%- endif -%}{%- endfor -%}
+      </ul>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Dream Drops ticker",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "textarea", "id": "items", "label": "Phrases (comma separated)", "default": "Free shipping on all orders, Strawberry flavour, No tablets to swallow" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#2b3a7a" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#ffffff" },
+    { "type": "range", "id": "speed", "label": "Seconds per loop", "min": 10, "max": 80, "step": 2, "default": 36 },
+    { "type": "range", "id": "padding", "label": "Height padding", "min": 4, "max": 24, "step": 1, "unit": "px", "default": 11 }
+  ],
+  "presets": [{ "name": "Dream Drops ticker" }]
+}
+{% endschema %}
