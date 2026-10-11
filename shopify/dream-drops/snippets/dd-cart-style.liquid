@@ -36,12 +36,12 @@
   cart-drawer :is(.cart-item__name, #ddc) { font-family: var(--ddc-head) !important; font-weight: 700 !important; color: var(--ddc-ink) !important; text-decoration: none !important; }
   cart-drawer .cart-item__image { background: var(--ddc-sky); border-radius: 10px; }
 
-  {%- comment -%} Free gift lines: listed first, pink label, short description, £0.00 then the crossed-out value. {%- endcomment -%}
+  {%- comment -%} Free gift lines: listed after the main items, pink label, short description, £0.00 then the crossed-out value. {%- endcomment -%}
   {%- for item in cart.items -%}
     {%- if item.properties._free_gift != blank or item.product.type == 'Free gift' -%}
       {%- capture g -%}cart-drawer tr.cart-item[data-variant-id="{{ item.variant.id }}"]{%- endcapture -%}
       {%- assign desc = item.product.description | strip_html | strip | truncate: 110 | replace: '\', '' | replace: '"', "'" -%}
-      {{ g }} { order: -1; }
+      {{ g }} { order: 1; }
       {{ g }}::before { content: 'Free Gift'; color: var(--ddc-pink); background-size: calc(100% - 7ch - 12px) 1px; }
       {{ g }} .cart-item__image { object-fit: contain !important; padding: 4px; border: 1.5px solid var(--ddc-line); }
       {%- if desc != blank -%}
