@@ -1,0 +1,42 @@
+{%- comment -%}
+  Highlights one header menu link as a filled pill (e.g. "Mood Munchies").
+  Matches the link by a piece of its URL, so renaming the menu title keeps working.
+{%- endcomment -%}
+{%- if section.settings.url_match != blank -%}
+  {%- assign m = section.settings.url_match | escape -%}
+  <style>
+    .header__inline-menu a.header__menu-item[href*="{{ m }}"] {
+      background: {{ section.settings.pill_bg }};
+      color: {{ section.settings.pill_text }} !important;
+      border-radius: {{ section.settings.pill_radius }}px;
+      padding: {{ section.settings.pill_pad_y }}px {{ section.settings.pill_pad_x }}px;
+      font-weight: {{ section.settings.pill_weight }};
+      transition: filter .2s ease;
+    }
+    .header__inline-menu a.header__menu-item[href*="{{ m }}"] * { color: inherit !important; }
+    .header__inline-menu a.header__menu-item[href*="{{ m }}"]:hover { filter: brightness(1.15); }
+    .header__inline-menu a.header__menu-item[href*="{{ m }}"] > span::after { display: none !important; }
+    .menu-drawer a[href*="{{ m }}"] {
+      color: {{ section.settings.pill_bg }} !important;
+      font-weight: {{ section.settings.pill_weight }};
+    }
+  </style>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Menu highlight",
+  "settings": [
+    { "type": "text", "id": "url_match", "label": "Highlight the menu link whose URL contains", "default": "mood-munchies" },
+    { "type": "color", "id": "pill_bg", "label": "Pill background", "default": "#1F2D5C" },
+    { "type": "color", "id": "pill_text", "label": "Pill text", "default": "#FFFFFF" },
+    { "type": "range", "id": "pill_radius", "label": "Corner radius", "min": 0, "max": 30, "step": 1, "unit": "px", "default": 6 },
+    { "type": "range", "id": "pill_pad_x", "label": "Horizontal padding", "min": 4, "max": 30, "step": 1, "unit": "px", "default": 10 },
+    { "type": "range", "id": "pill_pad_y", "label": "Vertical padding", "min": 0, "max": 16, "step": 1, "unit": "px", "default": 5 },
+    { "type": "select", "id": "pill_weight", "label": "Text weight", "default": "700", "options": [
+      { "value": "500", "label": "Medium" }, { "value": "600", "label": "Semi-bold" }, { "value": "700", "label": "Bold" }, { "value": "800", "label": "Extra bold" }
+    ] }
+  ],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}

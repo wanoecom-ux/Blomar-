@@ -1,0 +1,625 @@
+{%- comment -%}
+  Blomar long-form product lander (Mood Munchies).
+  One section, many block types. Each block renders a full-width band, so bands
+  can be added, removed and reordered in the theme editor.
+  Anything marked REPLACE_ME must be swapped for real, substantiated content before launch.
+{%- endcomment -%}
+
+{%- liquid
+  assign s = section.settings
+  assign cta_target = s.cta_target | default: '#MainContent'
+-%}
+
+<style>
+  #bml-{{ section.id }} {
+    --bml-primary: {{ s.color_primary }};
+    --bml-accent: {{ s.color_accent }};
+    --bml-soft: {{ s.color_soft }};
+    --bml-bg: {{ s.color_bg }};
+    --bml-text: {{ s.color_text }};
+    --bml-muted: {{ s.color_muted }};
+    --bml-star: {{ s.color_star }};
+    --bml-border: {{ s.color_border }};
+    --bml-radius: {{ s.radius }}px;
+    --bml-btn-radius: {{ s.button_radius }}px;
+    --bml-h-desktop: {{ s.heading_size_desktop }}px;
+    --bml-h-mobile: {{ s.heading_size_mobile }}px;
+    --bml-body: {{ s.body_size }}px;
+    --bml-pad-desktop: {{ s.section_padding_desktop }}px;
+    --bml-pad-mobile: {{ s.section_padding_mobile }}px;
+    --bml-max: {{ s.container_width }}px;
+    color: var(--bml-text);
+    background: var(--bml-bg);
+    font-size: var(--bml-body);
+    line-height: 1.55;
+  }
+  #bml-{{ section.id }} * { box-sizing: border-box; }
+  .bml-band { padding: var(--bml-pad-mobile) 16px; }
+  .bml-band--soft { background: var(--bml-soft); }
+  .bml-band--dark { background: var(--bml-primary); color: #fff; }
+  .bml-wrap { max-width: var(--bml-max); margin: 0 auto; }
+  .bml-eyebrow { display: inline-block; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--bml-accent); margin-bottom: 8px; }
+  .bml-band--dark .bml-eyebrow { color: #cfe0f2; }
+  .bml-h { font-size: var(--bml-h-mobile); line-height: 1.15; font-weight: 800; margin: 0 0 12px; color: var(--bml-primary); letter-spacing: -0.01em; }
+  .bml-band--dark .bml-h { color: #fff; }
+  .bml-sub { color: var(--bml-muted); margin: 0 0 20px; max-width: 680px; }
+  .bml-band--dark .bml-sub { color: #dbe4f3; }
+  .bml-center { text-align: center; }
+  .bml-center .bml-sub { margin-left: auto; margin-right: auto; }
+  .bml-rte p { margin: 0 0 12px; }
+  .bml-grid { display: grid; gap: 14px; }
+  .bml-card { background: #fff; border: 1px solid var(--bml-border); border-radius: var(--bml-radius); padding: 18px; }
+  .bml-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 52px; padding: 0 28px; border-radius: var(--bml-btn-radius); background: var(--bml-primary); color: #fff; font-weight: 800; text-decoration: none; letter-spacing: .02em; transition: transform .2s ease, background .2s ease; }
+  .bml-btn:hover { transform: translateY(-1px); background: var(--bml-accent); }
+  .bml-btn:focus-visible { outline: 3px solid var(--bml-accent); outline-offset: 3px; }
+  .bml-band--dark .bml-btn { background: #fff; color: var(--bml-primary); }
+  .bml-note { font-size: 12px; color: var(--bml-muted); margin-top: 14px; }
+
+  /* Formula / pills */
+  .bml-split { display: grid; gap: 24px; align-items: center; }
+  .bml-split__media img, .bml-media-ph { width: 100%; border-radius: var(--bml-radius); display: block; aspect-ratio: 1/1; object-fit: cover; }
+  .bml-media-ph { background: var(--bml-soft); border: 2px dashed var(--bml-border); display: flex; align-items: center; justify-content: center; color: var(--bml-muted); font-weight: 700; font-size: 13px; text-align: center; padding: 16px; }
+  .bml-pills { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+  .bml-pill { background: #fff; border: 1px solid var(--bml-border); border-radius: var(--bml-radius); padding: 12px; }
+  .bml-pill strong { display: block; color: var(--bml-primary); }
+  .bml-pill span { font-size: 13px; color: var(--bml-muted); }
+  .bml-check { display: flex; gap: 8px; align-items: flex-start; font-weight: 700; color: var(--bml-primary); }
+  .bml-check::before { content: '✓'; color: var(--bml-accent); }
+
+  /* Stats */
+  .bml-stats { grid-template-columns: 1fr; }
+  .bml-stat { text-align: center; padding: 20px 12px; }
+  .bml-stat__num { font-size: 44px; font-weight: 900; line-height: 1; color: var(--bml-accent); }
+  .bml-band--dark .bml-stat__num { color: #fff; }
+  .bml-stat__label { margin-top: 8px; font-size: 14px; }
+
+  /* Ingredients */
+  .bml-ingredients { grid-template-columns: 1fr 1fr; }
+  .bml-ing__icon { font-size: 28px; line-height: 1; margin-bottom: 8px; }
+  .bml-ing__name { font-weight: 800; color: var(--bml-primary); margin: 0 0 4px; }
+  .bml-ing__text { font-size: 14px; color: var(--bml-muted); margin: 0; }
+
+  /* Routine */
+  .bml-routine { grid-template-columns: 1fr; }
+  .bml-dose { display: flex; gap: 14px; align-items: center; }
+  .bml-dose__badge { flex: 0 0 auto; width: 64px; height: 64px; border-radius: 50%; background: var(--bml-primary); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 22px; }
+  .bml-dose__title { font-weight: 800; color: var(--bml-primary); margin: 0; }
+  .bml-dose__text { margin: 2px 0 0; font-size: 14px; color: var(--bml-muted); }
+
+  /* Reviews */
+  .bml-rating { display: flex; justify-content: center; align-items: center; gap: 10px; margin-bottom: 16px; font-weight: 700; flex-wrap: wrap; }
+  .bml-stars { color: var(--bml-star); letter-spacing: 2px; }
+  .bml-filters { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 16px; scrollbar-width: none; }
+  .bml-filters::-webkit-scrollbar { display: none; }
+  .bml-filter { flex: 0 0 auto; border: 1px solid var(--bml-border); background: #fff; color: var(--bml-text); border-radius: 999px; padding: 8px 14px; font-size: 14px; cursor: pointer; font: inherit; }
+  .bml-filter[aria-pressed="true"] { background: var(--bml-primary); border-color: var(--bml-primary); color: #fff; }
+  .bml-filter:focus-visible { outline: 3px solid var(--bml-accent); outline-offset: 2px; }
+  .bml-reviews { grid-template-columns: 1fr; }
+  .bml-review[hidden] { display: none; }
+  .bml-review__body { margin: 8px 0 12px; }
+  .bml-review__meta { font-size: 13px; color: var(--bml-muted); display: flex; gap: 8px; align-items: center; }
+  .bml-verified { color: var(--bml-accent); font-weight: 700; }
+  .bml-more { display: block; margin: 18px auto 0; background: none; border: 2px solid var(--bml-primary); color: var(--bml-primary); border-radius: var(--bml-btn-radius); padding: 12px 24px; font: inherit; font-weight: 800; cursor: pointer; }
+  .bml-more[hidden] { display: none; }
+
+  /* Comparison */
+  .bml-table-wrap { overflow-x: auto; border-radius: var(--bml-radius); border: 1px solid var(--bml-border); background: #fff; }
+  .bml-table { width: 100%; border-collapse: collapse; min-width: 520px; font-size: 14px; }
+  .bml-table th, .bml-table td { padding: 14px 12px; text-align: center; border-bottom: 1px solid var(--bml-border); }
+  .bml-table th:first-child, .bml-table td:first-child { text-align: left; font-weight: 600; }
+  .bml-table thead th { font-size: 13px; color: var(--bml-muted); font-weight: 700; }
+  .bml-table thead th.bml-us { background: var(--bml-primary); color: #fff; border-radius: var(--bml-radius) var(--bml-radius) 0 0; }
+  .bml-table td.bml-us { background: var(--bml-soft); font-weight: 800; color: var(--bml-primary); }
+  .bml-table tr:last-child td { border-bottom: 0; }
+  .bml-yes { color: #2e8b57; font-weight: 900; }
+  .bml-no { color: #c0392b; font-weight: 900; }
+  .bml-mid { color: #d68910; font-weight: 900; }
+
+  /* Guarantee */
+  .bml-guarantee { display: grid; gap: 20px; align-items: center; text-align: center; }
+  .bml-seal { width: 140px; height: 140px; margin: 0 auto; border-radius: 50%; border: 4px solid #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; font-weight: 900; line-height: 1; }
+  .bml-seal__num { font-size: 40px; }
+  .bml-seal__unit { font-size: 13px; letter-spacing: .1em; text-transform: uppercase; margin-top: 4px; }
+
+  /* FAQ */
+  .bml-faq { max-width: 820px; margin: 0 auto; }
+  .bml-faq details { background: #fff; border: 1px solid var(--bml-border); border-radius: var(--bml-radius); margin-bottom: 10px; }
+  .bml-faq summary { list-style: none; cursor: pointer; padding: 16px 48px 16px 18px; font-weight: 700; color: var(--bml-primary); position: relative; }
+  .bml-faq summary::-webkit-details-marker { display: none; }
+  .bml-faq summary::after { content: '+'; position: absolute; right: 18px; top: 50%; transform: translateY(-50%); font-size: 22px; transition: transform .2s ease; }
+  .bml-faq details[open] summary::after { transform: translateY(-50%) rotate(45deg); }
+  .bml-faq summary:focus-visible { outline: 3px solid var(--bml-accent); outline-offset: -3px; border-radius: var(--bml-radius); }
+  .bml-faq__a { padding: 0 18px 16px; color: var(--bml-muted); }
+
+  /* Final CTA */
+  .bml-perks { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px 18px; margin: 0 0 22px; padding: 0; list-style: none; font-weight: 700; }
+
+  @media (min-width: 750px) {
+    .bml-band { padding: var(--bml-pad-desktop) 24px; }
+    .bml-h { font-size: var(--bml-h-desktop); }
+    .bml-split { grid-template-columns: 1fr 1fr; gap: 48px; }
+    .bml-split--reverse .bml-split__media { order: 2; }
+    .bml-stats { grid-template-columns: repeat(3, 1fr); }
+    .bml-ingredients { grid-template-columns: repeat(4, 1fr); }
+    .bml-routine { grid-template-columns: 1fr 1fr; }
+    .bml-reviews { grid-template-columns: repeat(3, 1fr); }
+    .bml-guarantee { grid-template-columns: 180px 1fr; text-align: left; }
+    .bml-seal { width: 170px; height: 170px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #bml-{{ section.id }} * { transition: none !important; }
+  }
+</style>
+
+<div id="bml-{{ section.id }}" class="bml">
+  {%- for block in section.blocks -%}
+    {%- assign b = block.settings -%}
+    {%- case block.type -%}
+
+      {%- when 'formula' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap bml-split{% if b.reverse %} bml-split--reverse{% endif %}">
+            <div class="bml-split__media">
+              {%- if b.image != blank -%}
+                {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: b.image.alt | default: b.heading, widths: '400, 600, 800, 1200', sizes: '(min-width: 750px) 50vw, 100vw' }}
+              {%- else -%}
+                <div class="bml-media-ph">REPLACE_ME_PRODUCT_IMAGE<br>(add in theme editor)</div>
+              {%- endif -%}
+            </div>
+            <div>
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              <div class="bml-rte bml-sub">{{ b.text }}</div>
+              <div class="bml-pills">
+                {%- for i in (1..4) -%}
+                  {%- capture n %}pill_{{ i }}_title{% endcapture -%}
+                  {%- capture t %}pill_{{ i }}_text{% endcapture -%}
+                  {%- if b[n] != blank -%}
+                    <div class="bml-pill"><strong>{{ b[n] }}</strong><span>{{ b[t] }}</span></div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- if b.check_text != blank %}<p class="bml-check">{{ b.check_text }}</p>{% endif -%}
+            </div>
+          </div>
+        </section>
+
+      {%- when 'stats' -%}
+        <section class="bml-band{% if b.dark_bg %} bml-band--dark{% else %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap bml-center">
+            {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+            <h2 class="bml-h">{{ b.heading }}</h2>
+            {%- if b.subheading != blank %}<p class="bml-sub">{{ b.subheading }}</p>{% endif -%}
+            <div class="bml-grid bml-stats">
+              {%- for i in (1..3) -%}
+                {%- capture n %}stat_{{ i }}_number{% endcapture -%}
+                {%- capture l %}stat_{{ i }}_label{% endcapture -%}
+                {%- if b[n] != blank -%}
+                  <div class="bml-stat">
+                    <div class="bml-stat__num">{{ b[n] }}</div>
+                    <div class="bml-stat__label">{{ b[l] }}</div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- if b.source != blank %}<p class="bml-note">{{ b.source }}</p>{% endif -%}
+          </div>
+        </section>
+
+      {%- when 'text_cta' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap bml-split{% if b.reverse %} bml-split--reverse{% endif %}">
+            <div class="bml-split__media">
+              {%- if b.image != blank -%}
+                {{ b.image | image_url: width: 1200 | image_tag: loading: 'lazy', alt: b.image.alt | default: b.heading, widths: '400, 600, 800, 1200', sizes: '(min-width: 750px) 50vw, 100vw' }}
+              {%- else -%}
+                <div class="bml-media-ph">REPLACE_ME_LIFESTYLE_IMAGE<br>(add in theme editor)</div>
+              {%- endif -%}
+            </div>
+            <div>
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              <div class="bml-rte bml-sub">{{ b.text }}</div>
+              {%- if b.link_label != blank -%}
+                <a class="bml-btn" href="{{ b.link_url | default: '#' }}">{{ b.link_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </section>
+
+      {%- when 'ingredients' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap">
+            <div class="bml-center">
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              {%- if b.subheading != blank %}<p class="bml-sub">{{ b.subheading }}</p>{% endif -%}
+            </div>
+            <div class="bml-grid bml-ingredients">
+              {%- for i in (1..4) -%}
+                {%- capture ic %}ing_{{ i }}_icon{% endcapture -%}
+                {%- capture n %}ing_{{ i }}_name{% endcapture -%}
+                {%- capture t %}ing_{{ i }}_text{% endcapture -%}
+                {%- if b[n] != blank -%}
+                  <div class="bml-card">
+                    {%- if b[ic] != blank %}<div class="bml-ing__icon" aria-hidden="true">{{ b[ic] }}</div>{% endif -%}
+                    <p class="bml-ing__name">{{ b[n] }}</p>
+                    <p class="bml-ing__text">{{ b[t] }}</p>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </section>
+
+      {%- when 'routine' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap">
+            <div class="bml-center">
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              {%- if b.text != blank %}<div class="bml-rte bml-sub">{{ b.text }}</div>{% endif -%}
+            </div>
+            <div class="bml-grid bml-routine">
+              {%- for i in (1..2) -%}
+                {%- capture d %}dose_{{ i }}_badge{% endcapture -%}
+                {%- capture n %}dose_{{ i }}_title{% endcapture -%}
+                {%- capture t %}dose_{{ i }}_text{% endcapture -%}
+                {%- if b[n] != blank -%}
+                  <div class="bml-card bml-dose">
+                    <div class="bml-dose__badge">{{ b[d] }}</div>
+                    <div>
+                      <p class="bml-dose__title">{{ b[n] }}</p>
+                      <p class="bml-dose__text">{{ b[t] }}</p>
+                    </div>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </section>
+
+      {%- when 'reviews' -%}
+        {%- assign filters = b.filters | split: ',' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" data-bml-reviews data-page-size="{{ b.page_size }}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap">
+            <div class="bml-center">
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              {%- if b.subheading != blank %}<p class="bml-sub">{{ b.subheading }}</p>{% endif -%}
+            </div>
+            {%- if b.rating_text != blank -%}
+              <div class="bml-rating"><span class="bml-stars" aria-hidden="true">★★★★★</span><span>{{ b.rating_text }}</span></div>
+            {%- endif -%}
+            {%- if b.filters != blank -%}
+              <div class="bml-filters" role="group" aria-label="Filter reviews">
+                <button type="button" class="bml-filter" data-filter="all" aria-pressed="true">All reviews</button>
+                {%- for f in filters -%}
+                  {%- assign ft = f | strip -%}
+                  <button type="button" class="bml-filter" data-filter="{{ ft | handleize }}" aria-pressed="false">{{ ft }}</button>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+            <div class="bml-grid bml-reviews">
+              {%- for i in (1..9) -%}
+                {%- capture q %}review_{{ i }}_text{% endcapture -%}
+                {%- capture a %}review_{{ i }}_author{% endcapture -%}
+                {%- capture tg %}review_{{ i }}_tag{% endcapture -%}
+                {%- if b[q] != blank -%}
+                  <article class="bml-card bml-review" data-tag="{{ b[tg] | handleize }}">
+                    <span class="bml-stars" aria-label="5 out of 5 stars">★★★★★</span>
+                    <p class="bml-review__body">{{ b[q] }}</p>
+                    <div class="bml-review__meta"><strong>{{ b[a] }}</strong>{% if b.show_verified %}<span class="bml-verified">✔ Verified buyer</span>{% endif %}</div>
+                  </article>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            <button type="button" class="bml-more" hidden>Load more reviews</button>
+            {%- if b.app_note != blank %}<p class="bml-note bml-center">{{ b.app_note }}</p>{% endif -%}
+          </div>
+        </section>
+
+      {%- when 'comparison' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap">
+            <div class="bml-center">
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              {%- if b.subheading != blank %}<p class="bml-sub">{{ b.subheading }}</p>{% endif -%}
+            </div>
+            <div class="bml-table-wrap">
+              <table class="bml-table">
+                <thead>
+                  <tr><th scope="col"><span class="visually-hidden">Feature</span></th><th scope="col" class="bml-us">{{ b.col_us }}</th><th scope="col">{{ b.col_2 }}</th><th scope="col">{{ b.col_3 }}</th></tr>
+                </thead>
+                <tbody>
+                  {%- assign rows = b.rows | newline_to_br | split: '<br />' -%}
+                  {%- for row in rows -%}
+                    {%- assign cells = row | strip | split: '|' -%}
+                    {%- if cells.size >= 4 -%}
+                      <tr>
+                        {%- for cell in cells limit: 4 -%}
+                          {%- assign c = cell | strip -%}
+                          {%- capture cls -%}{%- if forloop.index == 2 -%}bml-us{%- endif -%}{%- endcapture -%}
+                          {%- if forloop.first -%}
+                            <th scope="row">{{ c }}</th>
+                          {%- elsif c == 'yes' -%}
+                            <td class="{{ cls }}"><span class="bml-yes" aria-label="Yes">✓</span></td>
+                          {%- elsif c == 'no' -%}
+                            <td class="{{ cls }}"><span class="bml-no" aria-label="No">✗</span></td>
+                          {%- elsif c == 'varies' -%}
+                            <td class="{{ cls }}"><span class="bml-mid" aria-label="Varies">⚠</span></td>
+                          {%- else -%}
+                            <td class="{{ cls }}">{{ c }}</td>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </tr>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </tbody>
+              </table>
+            </div>
+            {%- if b.footnote != blank %}<p class="bml-note bml-center">{{ b.footnote }}</p>{% endif -%}
+          </div>
+        </section>
+
+      {%- when 'guarantee' -%}
+        <section class="bml-band bml-band--dark" {{ block.shopify_attributes }}>
+          <div class="bml-wrap bml-guarantee">
+            <div class="bml-seal" aria-hidden="true"><span class="bml-seal__num">{{ b.days }}</span><span class="bml-seal__unit">day guarantee</span></div>
+            <div>
+              <h2 class="bml-h">{{ b.heading }}</h2>
+              <div class="bml-rte bml-sub">{{ b.text }}</div>
+              {%- if b.button_label != blank %}<a class="bml-btn" href="{{ cta_target }}">{{ b.button_label }}</a>{% endif -%}
+            </div>
+          </div>
+        </section>
+
+      {%- when 'faq' -%}
+        <section class="bml-band{% if b.soft_bg %} bml-band--soft{% endif %}" {{ block.shopify_attributes }}>
+          <div class="bml-wrap">
+            <div class="bml-center">
+              {%- if b.eyebrow != blank %}<span class="bml-eyebrow">{{ b.eyebrow }}</span>{% endif -%}
+              <h2 class="bml-h">{{ b.heading }}</h2>
+            </div>
+            <div class="bml-faq">
+              {%- for i in (1..8) -%}
+                {%- capture q %}q_{{ i }}{% endcapture -%}
+                {%- capture a %}a_{{ i }}{% endcapture -%}
+                {%- if b[q] != blank -%}
+                  <details><summary>{{ b[q] }}</summary><div class="bml-faq__a bml-rte">{{ b[a] }}</div></details>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+            {%- if b.footer_link_label != blank -%}
+              <p class="bml-center" style="margin-top:18px"><a href="{{ b.footer_link_url | default: '#' }}" style="color:var(--bml-primary);font-weight:700">{{ b.footer_link_label }}</a></p>
+            {%- endif -%}
+          </div>
+        </section>
+
+      {%- when 'final_cta' -%}
+        <section class="bml-band bml-band--soft" {{ block.shopify_attributes }}>
+          <div class="bml-wrap bml-center">
+            <h2 class="bml-h">{{ b.heading }}</h2>
+            <ul class="bml-perks">
+              {%- for i in (1..4) -%}
+                {%- capture p %}perk_{{ i }}{% endcapture -%}
+                {%- if b[p] != blank %}<li>{{ b[p] }}</li>{% endif -%}
+              {%- endfor -%}
+            </ul>
+            <a class="bml-btn" href="{{ cta_target }}">{{ b.button_label }}</a>
+            {%- if b.note != blank %}<p class="bml-note">{{ b.note }}</p>{% endif -%}
+          </div>
+        </section>
+
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('bml-{{ section.id }}');
+    if (!root) return;
+    root.querySelectorAll('[data-bml-reviews]').forEach(function (band) {
+      var pageSize = parseInt(band.getAttribute('data-page-size'), 10) || 6;
+      var cards = Array.prototype.slice.call(band.querySelectorAll('.bml-review'));
+      var buttons = band.querySelectorAll('.bml-filter');
+      var more = band.querySelector('.bml-more');
+      var current = 'all';
+      var shown = pageSize;
+
+      function render() {
+        var matches = cards.filter(function (c) { return current === 'all' || c.getAttribute('data-tag') === current; });
+        cards.forEach(function (c) { c.hidden = true; });
+        matches.forEach(function (c, i) { c.hidden = i >= shown; });
+        more.hidden = matches.length <= shown;
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          current = btn.getAttribute('data-filter');
+          shown = pageSize;
+          buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
+          render();
+        });
+      });
+      more.addEventListener('click', function () { shown += pageSize; render(); });
+      render();
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Blomar lander",
+  "tag": "div",
+  "class": "section-blomar-lander",
+  "settings": [
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_primary", "label": "Primary (headings, buttons)", "default": "#1E2A5E" },
+    { "type": "color", "id": "color_accent", "label": "Accent", "default": "#6A9BC3" },
+    { "type": "color", "id": "color_soft", "label": "Soft band background", "default": "#EEF4FA" },
+    { "type": "color", "id": "color_bg", "label": "Page background", "default": "#FFFFFF" },
+    { "type": "color", "id": "color_text", "label": "Body text", "default": "#1F2433" },
+    { "type": "color", "id": "color_muted", "label": "Muted text", "default": "#4A5578" },
+    { "type": "color", "id": "color_star", "label": "Review stars", "default": "#F5B400" },
+    { "type": "color", "id": "color_border", "label": "Borders", "default": "#D9E3EF" },
+    { "type": "header", "content": "Type & spacing" },
+    { "type": "range", "id": "heading_size_desktop", "label": "Heading size (desktop)", "min": 24, "max": 56, "step": 1, "unit": "px", "default": 40 },
+    { "type": "range", "id": "heading_size_mobile", "label": "Heading size (mobile)", "min": 20, "max": 40, "step": 1, "unit": "px", "default": 28 },
+    { "type": "range", "id": "body_size", "label": "Body text size", "min": 13, "max": 20, "step": 1, "unit": "px", "default": 16 },
+    { "type": "range", "id": "section_padding_desktop", "label": "Band padding (desktop)", "min": 24, "max": 120, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "section_padding_mobile", "label": "Band padding (mobile)", "min": 16, "max": 80, "step": 4, "unit": "px", "default": 44 },
+    { "type": "range", "id": "container_width", "label": "Content width", "min": 800, "max": 1400, "step": 20, "unit": "px", "default": 1160 },
+    { "type": "range", "id": "radius", "label": "Card corner radius", "min": 0, "max": 28, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "button_radius", "label": "Button corner radius", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 10 },
+    { "type": "header", "content": "Buttons" },
+    { "type": "text", "id": "cta_target", "label": "Where buy buttons scroll to", "default": "#MainContent", "info": "Anchor of the buy box at the top of the page." }
+  ],
+  "blocks": [
+    {
+      "type": "formula", "name": "Formula (image + pills)",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": false },
+        { "type": "checkbox", "id": "reverse", "label": "Image on right", "default": false },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The formula" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "pill_1_title", "label": "Pill 1 title" }, { "type": "text", "id": "pill_1_text", "label": "Pill 1 text" },
+        { "type": "text", "id": "pill_2_title", "label": "Pill 2 title" }, { "type": "text", "id": "pill_2_text", "label": "Pill 2 text" },
+        { "type": "text", "id": "pill_3_title", "label": "Pill 3 title" }, { "type": "text", "id": "pill_3_text", "label": "Pill 3 text" },
+        { "type": "text", "id": "pill_4_title", "label": "Pill 4 title" }, { "type": "text", "id": "pill_4_text", "label": "Pill 4 text" },
+        { "type": "text", "id": "check_text", "label": "Tick line" }
+      ]
+    },
+    {
+      "type": "stats", "name": "Stats band",
+      "settings": [
+        { "type": "checkbox", "id": "dark_bg", "label": "Dark background", "default": true },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "text", "id": "subheading", "label": "Subheading" },
+        { "type": "text", "id": "stat_1_number", "label": "Stat 1 number" }, { "type": "text", "id": "stat_1_label", "label": "Stat 1 label" },
+        { "type": "text", "id": "stat_2_number", "label": "Stat 2 number" }, { "type": "text", "id": "stat_2_label", "label": "Stat 2 label" },
+        { "type": "text", "id": "stat_3_number", "label": "Stat 3 number" }, { "type": "text", "id": "stat_3_label", "label": "Stat 3 label" },
+        { "type": "text", "id": "source", "label": "Source line", "info": "Name the real source of every number shown." }
+      ]
+    },
+    {
+      "type": "text_cta", "name": "Image + text + link",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": false },
+        { "type": "checkbox", "id": "reverse", "label": "Image on right", "default": true },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "link_label", "label": "Button label" },
+        { "type": "url", "id": "link_url", "label": "Button link" }
+      ]
+    },
+    {
+      "type": "ingredients", "name": "Ingredient cards",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": true },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "text", "id": "subheading", "label": "Subheading" },
+        { "type": "text", "id": "ing_1_icon", "label": "Card 1 emoji" }, { "type": "text", "id": "ing_1_name", "label": "Card 1 name" }, { "type": "textarea", "id": "ing_1_text", "label": "Card 1 text" },
+        { "type": "text", "id": "ing_2_icon", "label": "Card 2 emoji" }, { "type": "text", "id": "ing_2_name", "label": "Card 2 name" }, { "type": "textarea", "id": "ing_2_text", "label": "Card 2 text" },
+        { "type": "text", "id": "ing_3_icon", "label": "Card 3 emoji" }, { "type": "text", "id": "ing_3_name", "label": "Card 3 name" }, { "type": "textarea", "id": "ing_3_text", "label": "Card 3 text" },
+        { "type": "text", "id": "ing_4_icon", "label": "Card 4 emoji" }, { "type": "text", "id": "ing_4_name", "label": "Card 4 name" }, { "type": "textarea", "id": "ing_4_text", "label": "Card 4 text" }
+      ]
+    },
+    {
+      "type": "routine", "name": "Routine / dosage",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": false },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "dose_1_badge", "label": "Card 1 badge" }, { "type": "text", "id": "dose_1_title", "label": "Card 1 title" }, { "type": "text", "id": "dose_1_text", "label": "Card 1 text" },
+        { "type": "text", "id": "dose_2_badge", "label": "Card 2 badge" }, { "type": "text", "id": "dose_2_title", "label": "Card 2 title" }, { "type": "text", "id": "dose_2_text", "label": "Card 2 text" }
+      ]
+    },
+    {
+      "type": "reviews", "name": "Reviews (filterable)",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": false },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "text", "id": "subheading", "label": "Subheading" },
+        { "type": "text", "id": "rating_text", "label": "Rating summary", "info": "Use your real review average and count only." },
+        { "type": "text", "id": "filters", "label": "Filter tabs (comma separated)", "info": "Each review's tag must match one of these." },
+        { "type": "checkbox", "id": "show_verified", "label": "Show 'Verified buyer'", "default": false, "info": "Only turn on if every review shown is from a verified order." },
+        { "type": "range", "id": "page_size", "label": "Reviews shown before 'Load more'", "min": 3, "max": 9, "step": 3, "default": 6 },
+        { "type": "textarea", "id": "review_1_text", "label": "Review 1" }, { "type": "text", "id": "review_1_author", "label": "Review 1 name" }, { "type": "text", "id": "review_1_tag", "label": "Review 1 tag" },
+        { "type": "textarea", "id": "review_2_text", "label": "Review 2" }, { "type": "text", "id": "review_2_author", "label": "Review 2 name" }, { "type": "text", "id": "review_2_tag", "label": "Review 2 tag" },
+        { "type": "textarea", "id": "review_3_text", "label": "Review 3" }, { "type": "text", "id": "review_3_author", "label": "Review 3 name" }, { "type": "text", "id": "review_3_tag", "label": "Review 3 tag" },
+        { "type": "textarea", "id": "review_4_text", "label": "Review 4" }, { "type": "text", "id": "review_4_author", "label": "Review 4 name" }, { "type": "text", "id": "review_4_tag", "label": "Review 4 tag" },
+        { "type": "textarea", "id": "review_5_text", "label": "Review 5" }, { "type": "text", "id": "review_5_author", "label": "Review 5 name" }, { "type": "text", "id": "review_5_tag", "label": "Review 5 tag" },
+        { "type": "textarea", "id": "review_6_text", "label": "Review 6" }, { "type": "text", "id": "review_6_author", "label": "Review 6 name" }, { "type": "text", "id": "review_6_tag", "label": "Review 6 tag" },
+        { "type": "textarea", "id": "review_7_text", "label": "Review 7" }, { "type": "text", "id": "review_7_author", "label": "Review 7 name" }, { "type": "text", "id": "review_7_tag", "label": "Review 7 tag" },
+        { "type": "textarea", "id": "review_8_text", "label": "Review 8" }, { "type": "text", "id": "review_8_author", "label": "Review 8 name" }, { "type": "text", "id": "review_8_tag", "label": "Review 8 tag" },
+        { "type": "textarea", "id": "review_9_text", "label": "Review 9" }, { "type": "text", "id": "review_9_author", "label": "Review 9 name" }, { "type": "text", "id": "review_9_tag", "label": "Review 9 tag" },
+        { "type": "text", "id": "app_note", "label": "Note under reviews" }
+      ]
+    },
+    {
+      "type": "comparison", "name": "Comparison table",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": true },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "text", "id": "subheading", "label": "Subheading" },
+        { "type": "text", "id": "col_us", "label": "Your column", "default": "Blomar" },
+        { "type": "text", "id": "col_2", "label": "Column 2", "default": "Typical gummy" },
+        { "type": "text", "id": "col_3", "label": "Column 3", "default": "Single-herb product" },
+        { "type": "textarea", "id": "rows", "label": "Rows", "info": "One row per line: Feature | yes/no/varies/text | ... | ... (4 cells)" },
+        { "type": "text", "id": "footnote", "label": "Footnote" }
+      ]
+    },
+    {
+      "type": "guarantee", "name": "Guarantee",
+      "settings": [
+        { "type": "text", "id": "days", "label": "Number of days", "default": "60" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "text", "id": "button_label", "label": "Button label" }
+      ]
+    },
+    {
+      "type": "faq", "name": "FAQ",
+      "settings": [
+        { "type": "checkbox", "id": "soft_bg", "label": "Soft background", "default": false },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "heading", "label": "Heading", "default": "FAQ" },
+        { "type": "text", "id": "q_1", "label": "Question 1" }, { "type": "richtext", "id": "a_1", "label": "Answer 1" },
+        { "type": "text", "id": "q_2", "label": "Question 2" }, { "type": "richtext", "id": "a_2", "label": "Answer 2" },
+        { "type": "text", "id": "q_3", "label": "Question 3" }, { "type": "richtext", "id": "a_3", "label": "Answer 3" },
+        { "type": "text", "id": "q_4", "label": "Question 4" }, { "type": "richtext", "id": "a_4", "label": "Answer 4" },
+        { "type": "text", "id": "q_5", "label": "Question 5" }, { "type": "richtext", "id": "a_5", "label": "Answer 5" },
+        { "type": "text", "id": "q_6", "label": "Question 6" }, { "type": "richtext", "id": "a_6", "label": "Answer 6" },
+        { "type": "text", "id": "q_7", "label": "Question 7" }, { "type": "richtext", "id": "a_7", "label": "Answer 7" },
+        { "type": "text", "id": "q_8", "label": "Question 8" }, { "type": "richtext", "id": "a_8", "label": "Answer 8" },
+        { "type": "text", "id": "footer_link_label", "label": "Link under FAQ" },
+        { "type": "url", "id": "footer_link_url", "label": "Link URL" }
+      ]
+    },
+    {
+      "type": "final_cta", "name": "Final call to action",
+      "settings": [
+        { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+        { "type": "text", "id": "perk_1", "label": "Perk 1" },
+        { "type": "text", "id": "perk_2", "label": "Perk 2" },
+        { "type": "text", "id": "perk_3", "label": "Perk 3" },
+        { "type": "text", "id": "perk_4", "label": "Perk 4" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Choose your bundle" },
+        { "type": "text", "id": "note", "label": "Small note" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "Blomar lander" }]
+}
+{% endschema %}
