@@ -1,0 +1,571 @@
+{% comment %}
+  Story funnel: a full-screen, one-screen-at-a-time story that ends on an offer. Each block is one screen, in order.
+  Screen types: Story (photo + heading + text), List (ingredients or features), Timeline (week by week),
+  Reviews (swipeable quotes) and Offer (the final screen, whose button leaves the funnel).
+  The bars at the top show progress. "Skip to offer" jumps to the Offer screen. The back arrow and the
+  browser's back button both go back one screen. Every colour, font and size is a setting on this section.
+{% endcomment %}
+{%- liquid
+  assign s = section.settings
+  assign steps = section.blocks
+  assign total = steps.size
+  assign offer_index = total | minus: 1
+  for b in steps
+    if b.type == 'offer'
+      assign offer_index = forloop.index0
+      break
+    endif
+  endfor
+  assign body_bold = s.body_font | font_modify: 'weight', 'bold'
+  assign heading_id = 'sf-' | append: section.id
+-%}
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+  {{ s.body_font | font_face: font_display: 'swap' }}
+  {{ body_bold | font_face: font_display: 'swap' }}
+  #{{ heading_id }} {
+    --sf-bg: {{ s.color_bg }};
+    --sf-bg-2: {{ s.color_bg_2 }};
+    --sf-page: {{ s.color_page }};
+    --sf-text: {{ s.color_text }};
+    --sf-soft: {{ s.color_soft }};
+    --sf-hl: {{ s.color_highlight }};
+    --sf-card: {{ s.color_card }};
+    --sf-line: {{ s.color_line }};
+    --sf-btn-1: {{ s.color_button }};
+    --sf-btn-2: {{ s.color_button_2 }};
+    --sf-btn-text: {{ s.color_button_text }};
+    --sf-star: {{ s.color_star }};
+    --sf-review-bg: {{ s.color_review_bg }};
+    --sf-review-text: {{ s.color_review_text }};
+    --sf-heading-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --sf-body-font: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    --sf-h: {{ s.heading_size }}px;
+    --sf-h-desk: {{ s.heading_size_desktop }}px;
+    --sf-body: {{ s.body_size }}px;
+    --sf-btn-h: {{ s.button_height }}px;
+    --sf-btn-size: {{ s.button_size }}px;
+    --sf-radius: {{ s.radius }}px;
+    --sf-btn-radius: {{ s.button_radius }}px;
+    --sf-width: {{ s.card_width }}px;
+    --sf-speed: {{ s.speed }}ms;
+  }
+  html.sf-open, html.sf-open body { overflow: hidden !important; }
+  .sf { position: fixed; inset: 0; z-index: 2147483000; display: flex; justify-content: center; align-items: center; background: var(--sf-page); font-family: var(--sf-body-font); color: var(--sf-text); -webkit-font-smoothing: antialiased; }
+  .sf *, .sf *::before, .sf *::after { box-sizing: border-box; }
+  .sf__card { position: relative; width: 100%; height: 100%; max-width: var(--sf-width); overflow: hidden; background: linear-gradient(180deg, var(--sf-bg-2), var(--sf-bg)); }
+  @media (min-width: 750px) {
+    .sf__card { height: calc(100% - 48px); max-height: 900px; border-radius: 28px; box-shadow: 0 30px 80px rgba(0, 0, 0, .45); }
+  }
+
+  /* Top bar: logo, back arrow, skip button, progress */
+  .sf__top { position: absolute; z-index: 5; top: 0; left: 0; right: 0; padding: 12px 14px 0; }
+  .sf__row { display: flex; align-items: center; justify-content: space-between; gap: 10px; min-height: 36px; }
+  .sf__brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+  .sf__back { flex: none; display: grid; place-items: center; width: 34px; height: 34px; padding: 0; border-radius: 50%; border: 1.5px solid var(--sf-text); background: rgba(0, 0, 0, .25); color: var(--sf-text); cursor: pointer; }
+  .sf__back[hidden] { display: none; }
+  .sf__back svg { width: 16px; height: 16px; }
+  .sf__logo { display: block; height: {{ s.logo_height }}px; width: auto; }
+  .sf__logo-text { font-family: var(--sf-heading-font); font-size: 20px; font-weight: 700; letter-spacing: .02em; color: var(--sf-text); }
+  .sf__skip { flex: none; padding: 8px 14px; border-radius: 999px; border: 1.5px solid var(--sf-hl); background: rgba(0, 0, 0, .35); color: var(--sf-hl); font-family: var(--sf-body-font); font-size: 11.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; cursor: pointer; }
+  .sf__skip[hidden] { display: none; }
+  .sf__bars { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; margin-top: 10px; }
+  .sf__bars span { height: 3px; border-radius: 3px; background: rgba(255, 255, 255, .28); transition: background var(--sf-speed); }
+  .sf__bars span.is-on { background: var(--sf-hl); }
+
+  /* Screens */
+  .sf__step { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: flex-end; padding: 0 22px calc(22px + env(safe-area-inset-bottom)); opacity: 0; visibility: hidden; transform: translateX(24px); transition: opacity var(--sf-speed) ease, transform var(--sf-speed) ease, visibility 0s linear var(--sf-speed); overflow-y: auto; overscroll-behavior: contain; }
+  .sf__step.is-active { opacity: 1; visibility: visible; transform: none; transition: opacity var(--sf-speed) ease, transform var(--sf-speed) ease, visibility 0s; }
+  .sf__step.is-before { transform: translateX(-24px); }
+  .sf__media { position: absolute; inset: 0 0 auto; height: var(--sf-media-h, 68%); pointer-events: none; }
+  .sf__media img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+  /* Product images sit above the text (never behind it) and shrink to fit */
+  .sf__step:has(.sf__media--contain) { justify-content: flex-start; }
+  .sf__media--contain { position: relative; inset: auto; flex: 0 1 auto; min-height: 120px; height: var(--sf-media-h, 46%); margin: 66px 0 0; overflow: hidden; }
+  .sf__media--contain img { position: absolute; inset: 0; object-fit: contain; object-position: center; }
+  .sf__media--contain + .sf__body, .sf__media--contain ~ .sf__body { margin-top: auto; padding-top: 16px; }
+  .sf__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, var(--sf-bg) 100%), rgba(0, 0, 0, var(--sf-dim, 0)); }
+  .sf__media--contain::after { background: linear-gradient(180deg, rgba(0, 0, 0, 0) 70%, var(--sf-bg) 100%); }
+  .sf__body { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 14px; padding-top: 100px; text-align: center; }
+  .sf__h { margin: 0; font-family: var(--sf-heading-font); font-size: var(--sf-h); font-weight: 700; line-height: 1.12; letter-spacing: .01em; text-transform: {{ s.heading_case }}; color: var(--sf-text); text-wrap: balance; }
+  .sf__h em { font-style: normal; color: var(--sf-hl); }
+  .sf__text { margin: 0; font-size: var(--sf-body); font-weight: 600; line-height: 1.5; color: var(--sf-soft); }
+  .sf__text p { margin: 0 0 10px; }
+  .sf__text p:last-child { margin-bottom: 0; }
+  .sf__text strong { color: var(--sf-text); }
+  .sf__rating { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 14px; font-weight: 700; color: var(--sf-soft); }
+  .sf__stars { color: var(--sf-star); font-size: 19px; letter-spacing: 1px; line-height: 1; }
+  .sf__note { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.4; color: var(--sf-text); }
+
+  /* Buttons */
+  .sf__btn { display: flex; align-items: center; justify-content: center; gap: 10px; width: 100%; min-height: var(--sf-btn-h); margin-top: 4px; padding: 12px 20px; border: 0; border-radius: var(--sf-btn-radius); background: linear-gradient(180deg, var(--sf-btn-1), var(--sf-btn-2)); box-shadow: 0 8px 26px color-mix(in srgb, var(--sf-btn-2) 45%, transparent), inset 0 1px 0 rgba(255, 255, 255, .35); color: var(--sf-btn-text); font-family: var(--sf-body-font); font-size: var(--sf-btn-size); font-weight: 700; letter-spacing: .1em; text-transform: uppercase; text-decoration: none; cursor: pointer; transition: transform var(--sf-speed), filter var(--sf-speed); }
+  .sf__btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+  .sf__btn svg { flex: none; width: 18px; height: 18px; }
+  .sf :focus-visible { outline: 3px solid var(--sf-hl); outline-offset: 3px; }
+
+  /* List and timeline cards */
+  .sf__cards { display: flex; flex-direction: column; gap: 8px; margin: 0; padding: 0; list-style: none; text-align: left; }
+  .sf__item { display: flex; align-items: center; gap: 12px; padding: 10px 12px; border: 1px solid var(--sf-line); border-radius: calc(var(--sf-radius) * .75); background: var(--sf-card); font-size: 14.5px; font-weight: 600; line-height: 1.4; color: var(--sf-soft); }
+  .sf__item b { color: var(--sf-hl); font-weight: 700; }
+  .sf__icon { flex: none; display: grid; place-items: center; width: 40px; height: 40px; overflow: hidden; border-radius: 10px; border: 1px solid var(--sf-line); background: rgba(255, 255, 255, .08); font-size: 22px; }
+  .sf__icon img { width: 100%; height: 100%; object-fit: cover; }
+  .sf__week { padding: 12px 14px; border: 1px solid var(--sf-line); border-radius: calc(var(--sf-radius) * .75); background: var(--sf-card); font-size: 14px; font-weight: 600; line-height: 1.5; color: var(--sf-soft); }
+  .sf__week-label { display: flex; align-items: center; gap: 7px; margin-bottom: 6px; font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sf-hl); }
+  .sf__week-label::before { content: ''; width: 8px; height: 8px; border-radius: 50%; background: var(--sf-hl); box-shadow: 0 0 0 3px color-mix(in srgb, var(--sf-hl) 30%, transparent); }
+  .sf__week strong { color: var(--sf-text); }
+
+  /* Reviews carousel */
+  .sf__reviews { display: flex; gap: 12px; margin: 0 -22px; padding: 0 22px; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .sf__reviews::-webkit-scrollbar { display: none; }
+  .sf__review { flex: 0 0 100%; scroll-snap-align: center; padding: 16px 16px 14px; border-radius: var(--sf-radius); background: var(--sf-review-bg); color: var(--sf-review-text); text-align: left; }
+  .sf__review .sf__stars { font-size: 20px; }
+  .sf__review p { margin: 10px 0; font-size: 14.5px; font-weight: 600; line-height: 1.5; }
+  .sf__review-by { display: flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: {{ s.color_verified }}; }
+  .sf__review-by svg { flex: none; width: 18px; height: 18px; }
+  .sf__dots { display: flex; justify-content: center; gap: 7px; }
+  .sf__dots button { width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: rgba(255, 255, 255, .3); cursor: pointer; }
+  .sf__dots button[aria-current="true"] { background: var(--sf-hl); }
+
+  /* Offer screen */
+  .sf__step--offer { justify-content: flex-start; padding-top: 72px; }
+  .sf__step--offer .sf__body { padding-top: 0; margin: auto 0; }
+  .sf__pill { display: inline-flex; align-self: center; align-items: center; gap: 8px; padding: 8px 18px; border-radius: 999px; border: 1.5px solid var(--sf-hl); background: color-mix(in srgb, var(--sf-hl) 18%, transparent); font-size: 14px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--sf-hl); }
+  .sf__pill svg { width: 18px; height: 18px; }
+  .sf__offer-img { width: 100%; aspect-ratio: {{ s.offer_ratio }}; border-radius: var(--sf-radius); overflow: hidden; background: rgba(255, 255, 255, .08); }
+  .sf__offer-img img { width: 100%; height: 100%; object-fit: cover; }
+  .sf__chips { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+  .sf__chip { display: inline-flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px; border: 1px solid var(--sf-line); background: var(--sf-card); font-size: 12.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase; color: var(--sf-text); }
+  .sf__chip svg { width: 16px; height: 16px; color: var(--sf-hl); }
+  .sf__guar { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+  .sf__guar strong { display: inline-flex; align-items: center; gap: 7px; font-size: 15px; color: var(--sf-text); }
+  .sf__guar strong svg { width: 18px; height: 18px; color: var(--sf-hl); }
+  .sf__guar span { font-size: 14px; font-weight: 600; color: var(--sf-soft); }
+  .sf__fine { margin: 0; font-size: 10.5px; font-weight: 600; line-height: 1.45; color: color-mix(in srgb, var(--sf-soft) 70%, transparent); }
+  .sf__fine p { margin: 0 0 6px; }
+  .sf__confetti { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+  .sf__confetti i { position: absolute; top: -12px; width: 8px; height: 12px; border-radius: 2px; opacity: .9; animation: sf-fall linear infinite; }
+  @keyframes sf-fall { to { transform: translateY(105vh) rotate(540deg); } }
+  @media (prefers-reduced-motion: reduce) {
+    .sf__step, .sf__btn, .sf__bars span { transition: none !important; }
+    .sf__confetti { display: none; }
+  }
+  @media (min-width: 750px) {
+    .sf__h { font-size: var(--sf-h-desk); }
+  }
+  /* Keep the theme's own heading, text and section styles off the funnel */
+  #{{ heading_id }} :is(.sf__step, .sf__body) { background: transparent; }
+  #{{ heading_id }} .sf__h { color: var(--sf-text) !important; font-family: var(--sf-heading-font) !important; letter-spacing: .01em; }
+  #{{ heading_id }} .sf__h em { color: var(--sf-hl) !important; }
+  #{{ heading_id }} :is(.sf__text, .sf__text p, .sf__item, .sf__week, .sf__rating) { color: var(--sf-soft); font-family: var(--sf-body-font); }
+  #{{ heading_id }} :is(.sf__text strong, .sf__week strong, .sf__note, .sf__guar strong, .sf__chip, .sf__logo-text) { color: var(--sf-text); }
+  #{{ heading_id }} :is(.sf__item b, .sf__week-label, .sf__pill, .sf__skip) { color: var(--sf-hl); }
+  #{{ heading_id }} :is(.sf__review, .sf__review p) { color: var(--sf-review-text); }
+  #{{ heading_id }} .sf__btn { color: var(--sf-btn-text) !important; text-decoration: none !important; }
+  .sf__empty { padding: 40px 24px; text-align: center; font-size: 15px; font-weight: 700; }
+</style>
+
+<div class="sf" id="{{ heading_id }}" data-sf data-offer="{{ offer_index }}" role="region" aria-label="{{ s.label | escape }}">
+  <div class="sf__card">
+    <div class="sf__top">
+      <div class="sf__row">
+        <div class="sf__brand">
+          <button type="button" class="sf__back" data-sf-back aria-label="Go back one step" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+          </button>
+          {%- if s.logo != blank -%}
+            {{ s.logo | image_url: width: 400 | image_tag: class: 'sf__logo', alt: shop.name, loading: 'eager' }}
+          {%- else -%}
+            <span class="sf__logo-text">{{ shop.name }}</span>
+          {%- endif -%}
+        </div>
+        {%- if s.skip_label != blank and total > 1 -%}
+          <button type="button" class="sf__skip" data-sf-skip>{{ s.skip_label }}</button>
+        {%- endif -%}
+      </div>
+      <div class="sf__bars" aria-hidden="true">{%- for b in steps -%}<span></span>{%- endfor -%}</div>
+    </div>
+
+    {%- if total == 0 -%}
+      <div class="sf__empty">Add a screen to this section to start the story.</div>
+    {%- endif -%}
+
+    {%- for block in steps -%}
+      {%- assign b = block.settings -%}
+      <div class="sf__step sf__step--{{ block.type }}{% if forloop.first %} is-active{% endif %}" data-sf-step="{{ forloop.index0 }}" role="group" {{ block.shopify_attributes }}
+        aria-hidden="{% if forloop.first %}false{% else %}true{% endif %}" aria-label="Step {{ forloop.index }} of {{ total }}">
+
+        {%- if block.type != 'offer' and b.image != blank -%}
+          <div class="sf__media{% if b.image_fit == 'contain' %} sf__media--contain{% endif %}" style="--sf-media-h: {{ b.image_height }}%; --sf-dim: {{ b.dim | divided_by: 100.0 }};">
+            {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
+            {{ b.image | image_url: width: 1000 | image_tag: alt: b.image.alt, loading: loading, widths: '500, 750, 1000', sizes: '(min-width: 750px) 440px, 100vw' }}
+          </div>
+        {%- endif -%}
+
+        {%- if block.type == 'offer' and b.confetti -%}
+          <div class="sf__confetti" aria-hidden="true" data-sf-confetti></div>
+        {%- endif -%}
+
+        <div class="sf__body">
+          {%- if block.type == 'offer' and b.pill != blank -%}
+            <span class="sf__pill"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#1e2554" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ b.pill }}</span>
+          {%- endif -%}
+          {%- if block.type == 'offer' and b.image != blank -%}
+            <div class="sf__offer-img">{{ b.image | image_url: width: 900 | image_tag: alt: b.image.alt, loading: 'lazy', widths: '450, 700, 900', sizes: '(min-width: 750px) 400px, 90vw' }}</div>
+          {%- endif -%}
+
+          {%- if b.heading != blank or b.highlight != blank -%}
+            <h2 class="sf__h" tabindex="-1">
+              {%- if b.highlight_first -%}
+                {%- if b.highlight != blank -%}<em>{{ b.highlight }}</em> {% endif -%}{{ b.heading }}
+              {%- else -%}
+                {{ b.heading }}{%- if b.highlight != blank %}<br><em>{{ b.highlight }}</em>{%- endif -%}
+              {%- endif -%}
+            </h2>
+          {%- endif -%}
+
+          {%- if b.text != blank -%}<div class="sf__text">{{ b.text }}</div>{%- endif -%}
+
+          {%- case block.type -%}
+            {%- when 'story' -%}
+              {%- if b.rating_text != blank -%}
+                <div class="sf__rating"><span class="sf__stars" aria-hidden="true">★★★★★</span><span>{{ b.rating_text }}</span></div>
+              {%- endif -%}
+
+            {%- when 'list' -%}
+              <ul class="sf__cards">
+                {%- for i in (1..5) -%}
+                  {%- capture k_title %}item_{{ i }}_title{% endcapture -%}
+                  {%- capture k_text %}item_{{ i }}_text{% endcapture -%}
+                  {%- capture k_img %}item_{{ i }}_image{% endcapture -%}
+                  {%- capture k_icon %}item_{{ i }}_icon{% endcapture -%}
+                  {%- if b[k_title] != blank or b[k_text] != blank -%}
+                    <li class="sf__item">
+                      <span class="sf__icon" aria-hidden="true">{%- if b[k_img] != blank -%}{{ b[k_img] | image_url: width: 120 | image_tag: alt: '', loading: 'lazy' }}{%- else -%}{{ b[k_icon] }}{%- endif -%}</span>
+                      <span>{%- if b[k_title] != blank -%}<b>{{ b[k_title] }}</b>{% if b[k_text] != blank %} – {% endif %}{%- endif -%}{{ b[k_text] }}</span>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+
+            {%- when 'timeline' -%}
+              <div class="sf__cards">
+                {%- for i in (1..4) -%}
+                  {%- capture k_label %}week_{{ i }}_label{% endcapture -%}
+                  {%- capture k_title %}week_{{ i }}_title{% endcapture -%}
+                  {%- capture k_text %}week_{{ i }}_text{% endcapture -%}
+                  {%- if b[k_title] != blank or b[k_text] != blank -%}
+                    <div class="sf__week">
+                      {%- if b[k_label] != blank -%}<div class="sf__week-label">{{ b[k_label] }}</div>{%- endif -%}
+                      {%- if b[k_title] != blank -%}<strong>{{ b[k_title] }}</strong> {% endif -%}{{ b[k_text] }}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              {%- if b.note != blank -%}<p class="sf__note">{{ b.note }}</p>{%- endif -%}
+
+            {%- when 'reviews' -%}
+              <div class="sf__reviews" data-sf-track>
+                {%- for i in (1..5) -%}
+                  {%- capture k_text %}review_{{ i }}_text{% endcapture -%}
+                  {%- capture k_name %}review_{{ i }}_name{% endcapture -%}
+                  {%- if b[k_text] != blank -%}
+                    <figure class="sf__review" data-sf-slide>
+                      <span class="sf__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                      <p>“{{ b[k_text] }}”</p>
+                      <figcaption class="sf__review-by"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10" fill="currentColor"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{% if b.verified_label != blank %}{{ b.verified_label }} · {% endif %}{{ b[k_name] }}</figcaption>
+                    </figure>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+              <div class="sf__dots" data-sf-dots></div>
+
+            {%- when 'offer' -%}
+              {%- if b.chip_1 != blank or b.chip_2 != blank -%}
+                <div class="sf__chips">
+                  {%- if b.chip_1 != blank -%}<span class="sf__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="8" width="18" height="13" rx="2"/><path d="M12 8v13M3 12h18M12 8S10.5 3 7.5 4.5 9 8 12 8zm0 0s1.5-5 4.5-3.5S15 8 12 8z"/></svg>{{ b.chip_1 }}</span>{%- endif -%}
+                  {%- if b.chip_2 != blank -%}<span class="sf__chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1z"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="5.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>{{ b.chip_2 }}</span>{%- endif -%}
+                </div>
+              {%- endif -%}
+              {%- if b.guarantee != blank -%}
+                <div class="sf__guar">
+                  <strong><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l8 3v6c0 5-3.4 9.4-8 11-4.6-1.6-8-6-8-11V5z" fill="currentColor"/><path d="M8 12l3 3 5-5.5" fill="none" stroke="#1e2554" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ b.guarantee }}</strong>
+                  {%- if b.guarantee_sub != blank -%}<span>{{ b.guarantee_sub }}</span>{%- endif -%}
+                </div>
+              {%- endif -%}
+          {%- endcase -%}
+
+          {%- if block.type == 'offer' -%}
+            <a class="sf__btn" href="{{ b.button_link | default: routes.all_products_collection_url }}" data-sf-claim>{{ b.button_label }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></a>
+            {%- if b.fine_print != blank -%}<div class="sf__fine">{{ b.fine_print }}</div>{%- endif -%}
+          {%- elsif b.button_label != blank -%}
+            <button type="button" class="sf__btn" data-sf-next>{{ b.button_label }}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<script>
+  (function () {
+    var root = document.getElementById('{{ heading_id }}');
+    if (!root || root.dataset.sfReady) return;
+    root.dataset.sfReady = '1';
+    document.documentElement.classList.add('sf-open');
+    var steps = Array.prototype.slice.call(root.querySelectorAll('[data-sf-step]'));
+    var bars = root.querySelectorAll('.sf__bars span');
+    var back = root.querySelector('[data-sf-back]');
+    var skip = root.querySelector('[data-sf-skip]');
+    var offer = Number(root.dataset.offer) || steps.length - 1;
+    var current = 0;
+
+    function show(i, push) {
+      if (i < 0 || i >= steps.length) return;
+      steps.forEach(function (el, n) {
+        el.classList.toggle('is-active', n === i);
+        el.classList.toggle('is-before', n < i);
+        el.setAttribute('aria-hidden', n === i ? 'false' : 'true');
+        if ('inert' in el) el.inert = n !== i;
+      });
+      Array.prototype.forEach.call(bars, function (b, n) { b.classList.toggle('is-on', n <= i); });
+      if (back) back.hidden = i === 0;
+      if (skip) skip.hidden = i >= offer;
+      current = i;
+      steps[i].scrollTop = 0;
+      if (push !== false && window.history && history.pushState) history.pushState({ sf: i }, '', '#step-' + (i + 1));
+      var h = steps[i].querySelector('.sf__h');
+      if (h && push !== false) h.focus({ preventScroll: true });
+      if (steps[i].querySelector('[data-sf-confetti]')) confetti(steps[i].querySelector('[data-sf-confetti]'));
+    }
+
+    root.addEventListener('click', function (e) {
+      if (e.target.closest('[data-sf-next]')) show(current + 1);
+      else if (e.target.closest('[data-sf-back]')) { if (history.state && typeof history.state.sf === 'number') history.back(); else show(current - 1); }
+      else if (e.target.closest('[data-sf-skip]')) show(offer);
+    });
+    window.addEventListener('popstate', function (e) {
+      var i = e.state && typeof e.state.sf === 'number' ? e.state.sf : 0;
+      show(i, false);
+    });
+
+    /* Start on the screen in the address (#step-3), otherwise the first one */
+    var m = location.hash.match(/^#step-(\d+)$/);
+    var start = m ? Math.min(steps.length, Math.max(1, Number(m[1]))) - 1 : 0;
+    if (history.replaceState) history.replaceState({ sf: start }, '', start ? '#step-' + (start + 1) : location.pathname + location.search);
+    show(start, false);
+
+    /* Reviews: swipe between quotes, with a dot for each */
+    root.querySelectorAll('[data-sf-track]').forEach(function (track) {
+      var slides = track.querySelectorAll('[data-sf-slide]');
+      var dots = track.parentNode.querySelector('[data-sf-dots]');
+      if (!dots || slides.length < 2) return;
+      Array.prototype.forEach.call(slides, function (s, n) {
+        var d = document.createElement('button');
+        d.type = 'button';
+        d.setAttribute('aria-label', 'Show review ' + (n + 1));
+        d.setAttribute('aria-current', n === 0 ? 'true' : 'false');
+        d.addEventListener('click', function () { track.scrollTo({ left: s.offsetLeft - track.offsetLeft - 22, behavior: 'smooth' }); });
+        dots.appendChild(d);
+      });
+      track.addEventListener('scroll', function () {
+        var n = Math.round(track.scrollLeft / track.clientWidth);
+        Array.prototype.forEach.call(dots.children, function (d, k) { d.setAttribute('aria-current', k === n ? 'true' : 'false'); });
+      }, { passive: true });
+    });
+
+    /* Offer screen confetti */
+    function confetti(box) {
+      if (box.childElementCount || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var colours = {{ s.confetti_colours | split: ',' | json }};
+      for (var n = 0; n < 36; n++) {
+        var p = document.createElement('i');
+        p.style.left = Math.random() * 100 + '%';
+        p.style.background = (colours[n % colours.length] || '#f5c842').trim();
+        p.style.animationDuration = 4 + Math.random() * 5 + 's';
+        p.style.animationDelay = -Math.random() * 8 + 's';
+        p.style.transform = 'rotate(' + Math.random() * 360 + 'deg)';
+        box.appendChild(p);
+      }
+    }
+
+    /* Theme editor: jump to the screen being edited */
+    document.addEventListener('shopify:block:select', function (e) {
+      var el = e.target.closest && e.target.closest('[data-sf-step]');
+      if (el && root.contains(el)) show(Number(el.dataset.sfStep), false);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Story funnel",
+  "tag": "div",
+  "class": "section sf-section",
+  "settings": [
+    { "type": "paragraph", "content": "A full-screen story shown one screen at a time. Add a block for each screen, in order. The Offer screen's button leaves the funnel, usually to your product page." },
+    { "type": "text", "id": "label", "label": "Name for screen readers", "default": "Mood Munchies story" },
+    { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Leave empty to show the shop name. A white logo works best on the dark background." },
+    { "type": "range", "id": "logo_height", "label": "Logo height", "min": 14, "max": 44, "step": 1, "unit": "px", "default": 24 },
+    { "type": "text", "id": "skip_label", "label": "Skip button", "default": "Skip to special offer", "info": "Jumps to the Offer screen. Leave empty to hide." },
+
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "color_page", "label": "Page behind the card (desktop)", "default": "#141a3d" },
+    { "type": "color", "id": "color_bg", "label": "Card background, bottom", "default": "#1e2554" },
+    { "type": "color", "id": "color_bg_2", "label": "Card background, top", "default": "#2d3a8c" },
+    { "type": "color", "id": "color_text", "label": "Headings", "default": "#ffffff" },
+    { "type": "color", "id": "color_soft", "label": "Body text", "default": "#e3e8fb" },
+    { "type": "color", "id": "color_highlight", "label": "Highlight (yellow words, bars, labels)", "default": "#f5c842" },
+    { "type": "color_background", "id": "color_card", "label": "Cards", "default": "rgba(255, 255, 255, 0.07)" },
+    { "type": "color", "id": "color_line", "label": "Card borders", "default": "#5a66b0" },
+    { "type": "color", "id": "color_button", "label": "Button, top", "default": "#f06a9e" },
+    { "type": "color", "id": "color_button_2", "label": "Button, bottom", "default": "#e84b8a" },
+    { "type": "color", "id": "color_button_text", "label": "Button text", "default": "#ffffff" },
+    { "type": "color", "id": "color_star", "label": "Stars", "default": "#f5c842" },
+    { "type": "color", "id": "color_review_bg", "label": "Review card", "default": "#fdf6e9" },
+    { "type": "color", "id": "color_review_text", "label": "Review text", "default": "#1e2554" },
+    { "type": "color", "id": "color_verified", "label": "Verified label", "default": "#2e9e5b" },
+    { "type": "text", "id": "confetti_colours", "label": "Confetti colours (comma separated)", "default": "#f5c842,#e84b8a,#ffffff,#8fa2ff" },
+
+    { "type": "header", "content": "Type" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "nunito_n4" },
+    { "type": "select", "id": "heading_case", "label": "Heading case", "default": "uppercase", "options": [ { "value": "uppercase", "label": "UPPERCASE" }, { "value": "none", "label": "As typed" } ] },
+    { "type": "range", "id": "heading_size", "label": "Heading size, mobile", "min": 18, "max": 36, "step": 1, "unit": "px", "default": 25 },
+    { "type": "range", "id": "heading_size_desktop", "label": "Heading size, desktop", "min": 18, "max": 40, "step": 1, "unit": "px", "default": 28 },
+    { "type": "range", "id": "body_size", "label": "Body text size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 16 },
+
+    { "type": "header", "content": "Shape and size" },
+    { "type": "range", "id": "card_width", "label": "Card width on desktop", "min": 360, "max": 600, "step": 10, "unit": "px", "default": 440 },
+    { "type": "range", "id": "radius", "label": "Card corner radius", "min": 0, "max": 28, "step": 1, "unit": "px", "default": 16 },
+    { "type": "range", "id": "button_height", "label": "Button height", "min": 44, "max": 70, "step": 2, "unit": "px", "default": 56 },
+    { "type": "range", "id": "button_size", "label": "Button text size", "min": 12, "max": 18, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "button_radius", "label": "Button corner radius", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 14 },
+    { "type": "select", "id": "offer_ratio", "label": "Offer image shape", "default": "1 / 1", "options": [ { "value": "1 / 1", "label": "Square" }, { "value": "4 / 3", "label": "Landscape" }, { "value": "4 / 5", "label": "Portrait" } ] },
+    { "type": "range", "id": "speed", "label": "Screen change speed", "min": 0, "max": 800, "step": 50, "unit": "ms", "default": 350 }
+  ],
+  "blocks": [
+    { "type": "story", "name": "Story screen", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "select", "id": "image_fit", "label": "Image style", "default": "cover", "options": [ { "value": "cover", "label": "Full-width photo" }, { "value": "contain", "label": "Product, whole image shown" } ] },
+      { "type": "range", "id": "image_height", "label": "Image height", "min": 30, "max": 100, "step": 2, "unit": "%", "default": 68 },
+      { "type": "range", "id": "dim", "label": "Darken image", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+      { "type": "text", "id": "highlight", "label": "Highlighted words", "info": "Shown in the highlight colour." },
+      { "type": "checkbox", "id": "highlight_first", "label": "Put highlighted words first", "default": false },
+      { "type": "richtext", "id": "text", "label": "Text" },
+      { "type": "text", "id": "rating_text", "label": "Rating line", "info": "Shown after five stars. Use your real rating. Leave empty to hide." },
+      { "type": "text", "id": "button_label", "label": "Button", "default": "Next" }
+    ] },
+    { "type": "list", "name": "List screen", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "select", "id": "image_fit", "label": "Image style", "default": "contain", "options": [ { "value": "cover", "label": "Full-width photo" }, { "value": "contain", "label": "Product, whole image shown" } ] },
+      { "type": "range", "id": "image_height", "label": "Image height", "min": 20, "max": 100, "step": 2, "unit": "%", "default": 34 },
+      { "type": "range", "id": "dim", "label": "Darken image", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+      { "type": "text", "id": "highlight", "label": "Highlighted words" },
+      { "type": "checkbox", "id": "highlight_first", "label": "Put highlighted words first", "default": false },
+      { "type": "richtext", "id": "text", "label": "Text" },
+      { "type": "header", "content": "Item 1" },
+      { "type": "image_picker", "id": "item_1_image", "label": "Picture" },
+      { "type": "text", "id": "item_1_icon", "label": "Emoji (if no picture)" },
+      { "type": "text", "id": "item_1_title", "label": "Bold name" },
+      { "type": "text", "id": "item_1_text", "label": "Text" },
+      { "type": "header", "content": "Item 2" },
+      { "type": "image_picker", "id": "item_2_image", "label": "Picture" },
+      { "type": "text", "id": "item_2_icon", "label": "Emoji (if no picture)" },
+      { "type": "text", "id": "item_2_title", "label": "Bold name" },
+      { "type": "text", "id": "item_2_text", "label": "Text" },
+      { "type": "header", "content": "Item 3" },
+      { "type": "image_picker", "id": "item_3_image", "label": "Picture" },
+      { "type": "text", "id": "item_3_icon", "label": "Emoji (if no picture)" },
+      { "type": "text", "id": "item_3_title", "label": "Bold name" },
+      { "type": "text", "id": "item_3_text", "label": "Text" },
+      { "type": "header", "content": "Item 4" },
+      { "type": "image_picker", "id": "item_4_image", "label": "Picture" },
+      { "type": "text", "id": "item_4_icon", "label": "Emoji (if no picture)" },
+      { "type": "text", "id": "item_4_title", "label": "Bold name" },
+      { "type": "text", "id": "item_4_text", "label": "Text" },
+      { "type": "header", "content": "Item 5" },
+      { "type": "image_picker", "id": "item_5_image", "label": "Picture" },
+      { "type": "text", "id": "item_5_icon", "label": "Emoji (if no picture)" },
+      { "type": "text", "id": "item_5_title", "label": "Bold name" },
+      { "type": "text", "id": "item_5_text", "label": "Text" },
+      { "type": "header", "content": "Button" },
+      { "type": "text", "id": "button_label", "label": "Button", "default": "Next" }
+    ] },
+    { "type": "timeline", "name": "Timeline screen", "settings": [
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "select", "id": "image_fit", "label": "Image style", "default": "cover", "options": [ { "value": "cover", "label": "Full-width photo" }, { "value": "contain", "label": "Product, whole image shown" } ] },
+      { "type": "range", "id": "image_height", "label": "Image height", "min": 20, "max": 100, "step": 2, "unit": "%", "default": 60 },
+      { "type": "range", "id": "dim", "label": "Darken image", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 35 },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+      { "type": "text", "id": "highlight", "label": "Highlighted words" },
+      { "type": "checkbox", "id": "highlight_first", "label": "Put highlighted words first", "default": false },
+      { "type": "richtext", "id": "text", "label": "Text" },
+      { "type": "header", "content": "Card 1" },
+      { "type": "text", "id": "week_1_label", "label": "Label", "default": "Week 1" },
+      { "type": "text", "id": "week_1_title", "label": "Bold start" },
+      { "type": "textarea", "id": "week_1_text", "label": "Text" },
+      { "type": "header", "content": "Card 2" },
+      { "type": "text", "id": "week_2_label", "label": "Label", "default": "Week 2" },
+      { "type": "text", "id": "week_2_title", "label": "Bold start" },
+      { "type": "textarea", "id": "week_2_text", "label": "Text" },
+      { "type": "header", "content": "Card 3" },
+      { "type": "text", "id": "week_3_label", "label": "Label", "default": "Week 3" },
+      { "type": "text", "id": "week_3_title", "label": "Bold start" },
+      { "type": "textarea", "id": "week_3_text", "label": "Text" },
+      { "type": "header", "content": "Card 4" },
+      { "type": "text", "id": "week_4_label", "label": "Label", "default": "Week 4" },
+      { "type": "text", "id": "week_4_title", "label": "Bold start" },
+      { "type": "textarea", "id": "week_4_text", "label": "Text" },
+      { "type": "header", "content": "After the cards" },
+      { "type": "text", "id": "note", "label": "Closing line" },
+      { "type": "text", "id": "button_label", "label": "Button", "default": "Next" }
+    ] },
+    { "type": "reviews", "name": "Reviews screen", "settings": [
+      { "type": "paragraph", "content": "Use genuine customer reviews only." },
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "select", "id": "image_fit", "label": "Image style", "default": "cover", "options": [ { "value": "cover", "label": "Full-width photo" }, { "value": "contain", "label": "Product, whole image shown" } ] },
+      { "type": "range", "id": "image_height", "label": "Image height", "min": 20, "max": 100, "step": 2, "unit": "%", "default": 62 },
+      { "type": "range", "id": "dim", "label": "Darken image", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 0 },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+      { "type": "text", "id": "highlight", "label": "Highlighted words" },
+      { "type": "checkbox", "id": "highlight_first", "label": "Put highlighted words first", "default": true },
+      { "type": "richtext", "id": "text", "label": "Text" },
+      { "type": "text", "id": "verified_label", "label": "Label before each name", "default": "Verified buyer" },
+      { "type": "header", "content": "Reviews" },
+      { "type": "textarea", "id": "review_1_text", "label": "Review 1" },
+      { "type": "text", "id": "review_1_name", "label": "Name 1" },
+      { "type": "textarea", "id": "review_2_text", "label": "Review 2" },
+      { "type": "text", "id": "review_2_name", "label": "Name 2" },
+      { "type": "textarea", "id": "review_3_text", "label": "Review 3" },
+      { "type": "text", "id": "review_3_name", "label": "Name 3" },
+      { "type": "textarea", "id": "review_4_text", "label": "Review 4" },
+      { "type": "text", "id": "review_4_name", "label": "Name 4" },
+      { "type": "textarea", "id": "review_5_text", "label": "Review 5" },
+      { "type": "text", "id": "review_5_name", "label": "Name 5" },
+      { "type": "header", "content": "Button" },
+      { "type": "text", "id": "button_label", "label": "Button", "default": "Next" }
+    ] },
+    { "type": "offer", "name": "Offer screen", "limit": 1, "settings": [
+      { "type": "text", "id": "pill", "label": "Label at the top", "default": "Exclusive offer" },
+      { "type": "image_picker", "id": "image", "label": "Image" },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Heading" },
+      { "type": "text", "id": "highlight", "label": "Highlighted words" },
+      { "type": "checkbox", "id": "highlight_first", "label": "Put highlighted words first", "default": false },
+      { "type": "richtext", "id": "text", "label": "Text" },
+      { "type": "text", "id": "chip_1", "label": "Chip 1 (gift icon)", "default": "Free gifts" },
+      { "type": "text", "id": "chip_2", "label": "Chip 2 (delivery icon)", "default": "Free shipping" },
+      { "type": "text", "id": "guarantee", "label": "Guarantee", "default": "60-Day Money-Back Guarantee" },
+      { "type": "text", "id": "guarantee_sub", "label": "Line under the guarantee" },
+      { "type": "text", "id": "button_label", "label": "Button", "default": "Claim offer" },
+      { "type": "url", "id": "button_link", "label": "Button link", "info": "Usually your product page." },
+      { "type": "checkbox", "id": "confetti", "label": "Confetti", "default": true },
+      { "type": "richtext", "id": "fine_print", "label": "Small print" }
+    ] }
+  ],
+  "presets": [ { "name": "Story funnel" } ]
+}
+{% endschema %}
