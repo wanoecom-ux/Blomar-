@@ -1,0 +1,257 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "listicle",
+      "blocks": {
+        "r1": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/005_1_9455aaaa-9246-448d-bd5f-659206d48f66.jpg",
+            "caption": "Diggers, jumpers and gate-dashers",
+            "title": "It Works on Dogs That Have Outsmarted Every Other Fence",
+            "subtitle": "",
+            "text": "<p><strong>Diggers, jumpers, gate-bolters, it doesn't matter.</strong> PawFence draws a satellite GPS boundary you set yourself, from a 50 ft circle to 50+ acres. No wire to slip, no fence to climb. The second your dog nears the edge, the collar warns them, and the line holds.</p>"
+          }
+        },
+        "r2": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/006_Infographic_showing_dog_fence_me__202608081534_1.jpg",
+            "caption": "",
+            "title": "It Contains AND Trains, So You Don't Pay for Both",
+            "subtitle": "",
+            "text": "<p>One of the many reasons why professional trainers love it.<strong> It's a fence and a training collar in one.</strong> Progressive beep, vibrate, and static, each adjustable 0 to 9, any mode off if you want. Your dog learns the line like a trainer taught it, and the remote handles leash-pulling on walks too. Most learn their boundary in about a week.</p>"
+          }
+        },
+        "r3": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/007_3_8a28ebfd-5a47-44cd-9c0b-070c6d921607.jpg",
+            "caption": "Your yard isn't a perfect square",
+            "title": "Set Any Boundary Shape You Want, to Fit Your Exact Property",
+            "subtitle": "",
+            "text": "<p><strong>Your yard isn't a circle, so your fence shouldn't be either.</strong> Set custom shapes right on the remote: circle, triangle, square, pentagon, or hexagon. Wrap it around an odd lot, block off the road, or fence just the back forty. Buried-wire systems can't come close.</p><p></p>"
+          }
+        },
+        "r4": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/008_4_68d20b7e-23ee-43a3-962b-706a363c8fe3.jpg",
+            "caption": "No trench, no installer, no wire",
+            "title": "No Digging. No Wires. No Torn-Up Yard.",
+            "subtitle": "",
+            "text": "<p><strong>Setup takes minutes, not a weekend.</strong> No trenching, no installers, no wire to snap. Unbox it, set your center, pick your shape, done, all on the handheld. <strong>One remote even runs up to three collars, so the whole pack is covered.</strong></p>"
+          }
+        },
+        "r5": {
+          "type": "reason",
+          "settings": {
+            "image": "shopify://shop_images/009_5_d7cfd99d-d9d2-4b7f-8d7e-a6b8b711000b.jpg",
+            "caption": "One price, no subscription",
+            "title": "One-Time Price. No App. No Monthly Fees. Ever.",
+            "subtitle": "",
+            "text": "<p><strong>Buy it once. That's it.</strong> No subscription, no monthly trap, nothing to download, because it runs on GPS, not your phone. Compare that to a fence, a trainer, or a GPS collar that bills you every month forever. One payment, and it just keeps working.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ],
+      "settings": {
+        "image_1": "shopify://shop_images/image1.png",
+        "image_2": "shopify://shop_images/002_0d6326d5-b7ff-46e3-ab73-dffdb59c884e_1.png",
+        "show_rating": false,
+        "rating_style": "stars",
+        "rating_label": "",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "heading": "5 Reasons Professional Dog Trainers Recommend PawFence to Contain and Train Your Escape Artist",
+        "intro": "<p>If your dog treats every fence like a suggestion, you've probably priced the $6,000 fence, the buried wire, the trainer, and the GPS systems with monthly fees. Here's why professional trainers and thousands of owners chose one collar that contains <em>and</em> trains instead.</p>",
+        "badge_1": "15,000+ 5-Star Reviews",
+        "badge_1_icon": "truck",
+        "badge_1_image": "shopify://shop_images/Orange_dog_benefit_badge-3.png",
+        "badge_2": "Fast & Free Shipping",
+        "badge_2_icon": "shield",
+        "badge_2_image": "shopify://shop_images/Circular_Orange_Dog_Benefit_Badge-2.png",
+        "badge_3": "90-day money-back guarantee",
+        "badge_3_icon": "check",
+        "badge_3_image": "shopify://shop_images/Golden_Puppy_Shield_Emblem.png",
+        "reason_style": "plain",
+        "numbers": true,
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta_link": "",
+        "cta": "",
+        "cta_note": "Free shipping · 90-day money-back guarantee",
+        "sticky": true,
+        "sticky_desktop": true,
+        "sticky_text": "SHOP NOW",
+        "bg": "#f7efde",
+        "badge_bg": "",
+        "strip_bg": "",
+        "strip_text": "#ffffff",
+        "c_text": "",
+        "c_heading": "#1c2d5a",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": {
+        "items": "Contains & trains,No monthly fees,Wireless GPS boundary,Up to 3 dogs,Waterproof",
+        "bg": "#db6742",
+        "fg": "#ffffff",
+        "size": 14,
+        "caps": false,
+        "show_icon": false
+      }
+    },
+    "proof": {
+      "type": "listicle-proof",
+      "blocks": {
+        "s1": {
+          "type": "spec",
+          "settings": {
+            "title": "Fits Every Dog, 10 to 200 lbs",
+            "text": "Adjustable strap fits necks from 10 to 30 inches, so it works on almost any breed"
+          }
+        },
+        "s2": {
+          "type": "spec",
+          "settings": {
+            "title": "Accurate GPS You Can Trust",
+            "text": "The boundary stays exactly where you set it, so your dog gets a consistent line every time, not one that shifts a few feet on its own"
+          }
+        },
+        "s3": {
+          "type": "spec",
+          "settings": {
+            "title": "4+ Day Battery, Fully Waterproof",
+            "text": "Charge it once and it lasts days, so your dog can swim, play in the rain, or roll in mud with it on"
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "specs_image": "shopify://shop_images/010_6_2dd0e950-1f44-4378-945c-3797e9d7c517.jpg",
+        "specs_heading": "Built Tough Enough for Any Dog, Any Yard",
+        "stat_small": "",
+        "stat_big": "",
+        "stat_text": "",
+        "reviews_heading": "",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta_link": "",
+        "cta": "",
+        "cta_note": "",
+        "bg": "#f7efde",
+        "c_text": "",
+        "c_heading": "#1c2d5a",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "reviews": {
+      "type": "review-cards",
+      "blocks": {
+        "v1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "So easy to use",
+            "text": "\"Had the boundary set in one afternoon, no digging, no wires, nothing. My lab figured out the line in about three days. Easiest thing I've ever done for him.\"",
+            "name": "Amanda R",
+            "location": "Sacramento, California.",
+            "verified": false
+          }
+        },
+        "v2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Perfect for my senior boy",
+            "text": "\"My 11-year-old still likes to wander off. A gentle beep and he circles right back now. No stress, no chasing him down the road at 6am anymore.\"",
+            "name": "Greg P.",
+            "location": "Nashville, Tennessee.",
+            "verified": false
+          }
+        },
+        "v3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Saved me thousands",
+            "text": "\"I was quoted $6,000 to fence our property. Got this instead, and my shepherd hasn't crossed the line since. Paid for itself the day it arrived.\"",
+            "name": "Amanda S.",
+            "location": "Austin, Texas.",
+            "verified": false
+          }
+        },
+        "v4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Works for both our dogs+",
+            "text": "\"Two escape artists, one remote. Set boundaries for both and I control them from one handheld. Total game changer — they finally just stay in the yard.\"",
+            "name": " Jack M.",
+            "location": "Denver, Colorado.",
+            "verified": false
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
+      "settings": {
+        "anchor": "reviews",
+        "bg": "#f7efde",
+        "photo_1": "shopify://shop_images/Smiling_woman_with_brown_dog_in_field_25040eb8-10fd-4214-85d7-f55c9e57da39.png",
+        "photo_2": "shopify://shop_images/Brown_dog_on_woodland_path_cc4b7d41-db12-4708-8e4e-f076a28fc99c.png",
+        "photo_3": "shopify://shop_images/Seated_Black_Labrador_in_a_Grassy_Field_85d554d0-572c-4795-96bf-6cb5222ee828.png",
+        "photo_4": "shopify://shop_images/Father_child_and_shepherd_outdoors_294b0d2c-a85f-46ac-a81e-d7bcbd3eb118.png",
+        "layout": "heading_first",
+        "show_stars": true,
+        "heading": "Over [18,340+] DOG OWNERS KEEP THEIR DOGS [SAFE] daily",
+        "heading_style": "caps",
+        "highlight": "",
+        "text": "",
+        "button": "",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "note": "Free shipping · 90-day money-back guarantee",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a",
+        "c_stars": ""
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ticker",
+    "proof",
+    "reviews"
+  ]
+}
