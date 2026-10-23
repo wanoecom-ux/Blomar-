@@ -1,0 +1,276 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "listicle",
+      "settings": {
+        "image_1": "shopify://shop_images/image1.png",
+        "image_2": "shopify://shop_images/002_0d6326d5-b7ff-46e3-ab73-dffdb59c884e_1.png",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_label": "",
+        "rating_count_text": "",
+        "rating_color": "#FF9900",
+        "heading": "5 reasons dog owners are swapping fences for a GPS collar",
+        "intro": "<p>If your dog treats the fence as a suggestion, you've probably priced a new fence, buried wire and a trainer. Here's why more owners are choosing one collar that keeps them home and helps train them too.</p>",
+        "badge_1": "Fast, free shipping",
+        "badge_1_icon": "truck",
+        "badge_2": "90-day money-back guarantee",
+        "badge_2_icon": "shield",
+        "badge_3": "No monthly fees",
+        "badge_3_icon": "check",
+        "numbers": true,
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta": "Shop now",
+        "cta_note": "Free shipping · 90-day money-back guarantee",
+        "sticky": true,
+        "sticky_desktop": true,
+        "sticky_text": "Shop now",
+        "bg": "#F7EFDE",
+        "strip_text": "#FFFFFF",
+        "c_shadow": "#1C2D5A"
+      },
+      "blocks": {
+        "r1": {
+          "type": "reason",
+          "settings": {
+            "title": "Works on dogs that beat every other fence",
+            "text": "<p>Diggers, jumpers and gate-dashers can't get under or over a line that only exists in GPS. You set the boundary, and the collar warns your dog as they get close to it.</p>",
+            "caption": "Diggers, jumpers and gate-dashers",
+            "subtitle": "The line they can't get under or over"
+          }
+        },
+        "r2": {
+          "type": "reason",
+          "settings": {
+            "title": "One collar does two jobs",
+            "text": "<p>It's a boundary fence at home and a training collar everywhere else. Beep first, then vibration, with static as an optional last step. Every cue goes from 0 to 9 and can be turned off.</p>",
+            "caption": "Fence at home, trainer on walks",
+            "subtitle": "Two jobs, one collar"
+          }
+        },
+        "r3": {
+          "type": "reason",
+          "settings": {
+            "title": "Shaped to your property, not the other way round",
+            "text": "<p>Odd-shaped block? Driveway you need to keep them off? Set the boundary to fit your space instead of the space a fence contractor can reach.</p>",
+            "caption": "Your yard isn't a perfect square",
+            "subtitle": "Neither is your boundary"
+          }
+        },
+        "r4": {
+          "type": "reason",
+          "settings": {
+            "title": "Set up in an afternoon",
+            "text": "<p>No trenching, no installers, no wire to snap. Charge it, walk your boundary, save it on the remote. One remote handles up to three collars.</p>",
+            "caption": "No trench, no installer, no wire",
+            "subtitle": "Done before dinner"
+          }
+        },
+        "r5": {
+          "type": "reason",
+          "settings": {
+            "title": "Pay once. That's it.",
+            "text": "<p>No subscription and no app, because it runs on GPS and the handheld remote, not your phone. One price and it keeps working.</p>",
+            "caption": "One price, no subscription",
+            "subtitle": "Nothing to renew"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ]
+    },
+    "compare": {
+      "type": "comparison",
+      "settings": {
+        "anchor": "compare",
+        "heading": "Why owners are ditching old-school fences",
+        "heading_style": "caps",
+        "corner_label": "Us vs them",
+        "col_bg": "#F3E7D3",
+        "show_rating": false,
+        "rating_style": "stars",
+        "rating_color": "#FF9900",
+        "col_us": "Blomar",
+        "col_us_image": "shopify://shop_images/blomar-pets-logo-navy.png",
+        "col_2": "Others",
+        "col_3": "",
+        "button": "Shop now",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "c_bg": "#F7EFDE",
+        "c_shadow": "#1C2D5A"
+      },
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "Wireless GPS boundary, no digging",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Keeps them in and trains them too",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "feature": "One remote runs up to 3 dogs",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "feature": "No app, no monthly fees",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "feature": "Set up the same day",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ]
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": {
+        "items": "Contains & trains,No monthly fees,Wireless GPS boundary,Up to 3 dogs,Waterproof",
+        "bg": "#DB6742",
+        "fg": "#FFFFFF",
+        "size": 14,
+        "caps": false,
+        "show_icon": false
+      }
+    },
+    "proof": {
+      "type": "listicle-proof",
+      "settings": {
+        "specs_heading": "Built tough for any dog, any yard",
+        "stat_small": "",
+        "stat_big": "",
+        "stat_text": "",
+        "reviews_heading": "What owners are saying",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta": "Shop now",
+        "cta_note": "Free shipping · 90-day money-back guarantee",
+        "bg": "#F7EFDE",
+        "c_shadow": "#1C2D5A"
+      },
+      "blocks": {
+        "s1": {
+          "type": "spec",
+          "settings": {
+            "title": "Fits most dogs",
+            "text": "Roughly 4–90 kg, with an adjustable strap for necks about 25–76 cm."
+          }
+        },
+        "s2": {
+          "type": "spec",
+          "settings": {
+            "title": "Waterproof",
+            "text": "Rain, mud and swims are all fine."
+          }
+        },
+        "s3": {
+          "type": "spec",
+          "settings": {
+            "title": "Days of battery",
+            "text": "About 4 days per charge, depending on use."
+          }
+        },
+        "q1": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "title": "Review title",
+            "text": "Paste a real customer review here.",
+            "name": "Customer name",
+            "location": ""
+          }
+        },
+        "q2": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "title": "Review title",
+            "text": "Paste a real customer review here.",
+            "name": "Customer name",
+            "location": ""
+          }
+        },
+        "q3": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "title": "Review title",
+            "text": "Paste a real customer review here.",
+            "name": "Customer name",
+            "location": ""
+          }
+        },
+        "q4": {
+          "type": "quote",
+          "settings": {
+            "rating": 5,
+            "title": "Review title",
+            "text": "Paste a real customer review here.",
+            "name": "Customer name",
+            "location": ""
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "q1",
+        "q2",
+        "q3",
+        "q4"
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "compare",
+    "ticker",
+    "proof"
+  ]
+}
