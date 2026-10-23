@@ -1,0 +1,78 @@
+<section class="pf-sec pft sec-scope" id="{{ section.settings.anchor | handleize }}" style="--pf-bg: {{ section.settings.bg }}; {% render 'section-vars', s: section.settings %}" data-pft>
+  <div class="page-width">
+    {%- if section.settings.heading != blank -%}<h2 class="pf-head">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>{%- endif -%}
+  </div>
+  <div class="pft__track" data-pft-track>
+    {%- for block in section.blocks -%}
+      <figure class="pft__card" {{ block.shopify_attributes }}>
+        <div class="pft__photo">
+          {%- if block.settings.photo != blank -%}
+            {{ block.settings.photo | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350,500,700', sizes: '(min-width: 990px) 25vw, 85vw', alt: block.settings.name }}
+          {%- else -%}
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+        </div>
+        <div class="pft__body">
+          <div class="pft__stars">{% render 'stars', rating: block.settings.rating %}</div>
+          {%- if block.settings.title != blank -%}<p class="pft__title">"{{ block.settings.title }}"</p>{%- endif -%}
+          <blockquote class="pft__quote">”{{ block.settings.text }}”</blockquote>
+          <figcaption class="pft__name">— {{ block.settings.name }}</figcaption>
+          {%- if block.settings.verified != blank -%}<p class="pft__verified"><span class="pft__vtick">{% render 'icon', name: 'check', size: 14 %}</span>{{ block.settings.verified }}</p>{%- endif -%}
+        </div>
+      </figure>
+    {%- endfor -%}
+  </div>
+  {%- if section.blocks.size > 1 -%}
+    <div class="pft__nav">
+      <div class="pft__dots" data-pft-dots>{%- for block in section.blocks -%}<button type="button" aria-label="Go to review {{ forloop.index }}"{% if forloop.first %} class="is-active"{% endif %}></button>{%- endfor -%}</div>
+      <div class="pft__arrows">
+        <button type="button" class="pft__arrow" data-pft-prev aria-label="Previous review"><svg viewBox="0 0 32 16" width="34" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M31 8H2M9 1 2 8l7 7"/></svg></button>
+        <button type="button" class="pft__arrow" data-pft-next aria-label="Next review"><svg viewBox="0 0 32 16" width="34" height="18" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M1 8h29M23 1l7 7-7 7"/></svg></button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+{%- render 'pf-styles' -%}
+<style>
+.pft__track{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:6px max(16px,calc((100vw - 1200px)/2)) 18px;scroll-padding-inline:max(16px,calc((100vw - 1200px)/2))}
+.pft__track::-webkit-scrollbar{display:none}
+.pft__card{flex:0 0 86%;margin:0;scroll-snap-align:center;background:var(--color-bg);box-shadow:0 4px 18px rgba(0,0,0,.12);display:flex;flex-direction:column}
+@media (min-width:750px){.pft__card{flex-basis:44%}}
+@media (min-width:1100px){.pft__card{flex-basis:calc((100% - 64px)/4.4);scroll-snap-align:start}}
+.pft__photo{aspect-ratio:1/1;overflow:hidden;border:1px solid var(--color-ink);border-radius:10px 10px 0 0;background:var(--color-card)}
+.pft__photo img,.pft__photo svg{width:100%;height:100%;object-fit:cover}
+.pft__body{padding:16px 20px 20px;display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center}
+.pft__stars .stars{color:var(--color-accent)}
+.pft__title{margin:0;font-weight:var(--font-body-weight-bold);font-size:1.05rem;line-height:1.35;letter-spacing:.02em}
+.pft__quote{margin:0;font-size:1rem;line-height:1.5;letter-spacing:.03em;text-align:left}
+.pft__name{font-weight:var(--font-body-weight-bold);font-style:italic;font-size:1.15rem;line-height:1.35}
+.pft__verified{display:flex;align-items:center;gap:10px;margin:0;color:var(--color-muted);font-size:1rem;text-align:left}
+.pft__vtick{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--color-accent);color:#fff}
+.pft__nav{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:10px}
+.pft__dots{display:flex;gap:10px}
+.pft__dots button{width:11px;height:11px;border-radius:50%;border:0;padding:0;background:#E2E2E2}
+.pft__dots button.is-active{background:var(--color-ink)}
+.pft__arrows{display:flex;gap:40px}
+.pft__arrow{border:0;background:none;padding:4px;color:var(--color-ink)}
+.pft__arrow[disabled]{opacity:.3}
+</style>
+<script>
+(() => {
+  document.querySelectorAll('[data-pft]').forEach((root) => {
+    const track = root.querySelector('[data-pft-track]'); if (!track) return;
+    const cards = [...track.children]; const dots = [...root.querySelectorAll('[data-pft-dots] button')];
+    const prev = root.querySelector('[data-pft-prev]'), next = root.querySelector('[data-pft-next]');
+    const go = (i) => { const c = cards[Math.max(0, Math.min(cards.length - 1, i))]; if (c) track.scrollTo({ left: c.offsetLeft - (track.clientWidth - c.clientWidth) / 2, behavior: 'smooth' }); };
+    const current = () => { let best = 0, d = Infinity; const mid = track.scrollLeft + track.clientWidth / 2; cards.forEach((c, i) => { const m = Math.abs(c.offsetLeft + c.clientWidth / 2 - mid); if (m < d) { d = m; best = i; } }); return best; };
+    const sync = () => { const i = current(); dots.forEach((b, k) => b.classList.toggle('is-active', k === i)); if (prev) prev.disabled = i === 0; if (next) next.disabled = i === cards.length - 1; };
+    dots.forEach((b, i) => b.addEventListener('click', () => go(i)));
+    prev?.addEventListener('click', () => go(current() - 1));
+    next?.addEventListener('click', () => go(current() + 1));
+    track.addEventListener('scroll', () => { clearTimeout(track._t); track._t = setTimeout(sync, 80); }, { passive: true });
+    sync();
+  });
+})();
+</script>
+{% schema %}
+{"name":"Photo testimonials slider","settings":[{"type":"text","id":"anchor","label":"Anchor ID","default":"stories"},{"type":"text","id":"heading","label":"Heading","default":"Join dog owners who stopped worrying","info":"Put [square brackets] around words to highlight them."},{"type":"paragraph","content":"Only add real reviews from real customers, in their own words."},{"type":"header","content":"Colours"},{"type":"color","id":"bg","label":"Background"},{"type":"color","id":"c_text","label":"Text"},{"type":"color","id":"c_heading","label":"Heading"},{"type":"color","id":"c_accent","label":"Accent (stars, tick)"}],"blocks":[{"type":"review","name":"Testimonial","settings":[{"type":"image_picker","id":"photo","label":"Customer photo"},{"type":"range","id":"rating","label":"Stars","min":1,"max":5,"step":1,"default":5},{"type":"text","id":"title","label":"Title","default":"Review title"},{"type":"textarea","id":"text","label":"Review","default":"Paste a real customer review here."},{"type":"text","id":"name","label":"Name & location","default":"Customer name, Suburb STATE"},{"type":"text","id":"verified","label":"Verified line","default":"Verified Buyer","info":"e.g. Verified Buyer, purchased 12 August 2026. Only for real orders."}]}],"presets":[{"name":"Photo testimonials slider","blocks":[{"type":"review"},{"type":"review"},{"type":"review"}]}]}
+{% endschema %}
