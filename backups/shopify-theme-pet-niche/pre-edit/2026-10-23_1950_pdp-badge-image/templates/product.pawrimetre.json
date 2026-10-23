@@ -1,0 +1,784 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "pf-product",
+      "blocks": {
+        "badge_z9fd9H": {
+          "type": "badge",
+          "settings": {
+            "alt": ""
+          }
+        },
+        "b_rating": {
+          "type": "rating",
+          "settings": {
+            "label": "(4.8) 11,231+ Reviews",
+            "count_text": "",
+            "color": "#ff9900"
+          }
+        },
+        "b_title": {
+          "type": "title",
+          "settings": {
+            "title": "Pawrimetre — Keep Your Escape Artist Safe at Home"
+          }
+        },
+        "b_text": {
+          "type": "text",
+          "settings": {
+            "use_description": false,
+            "text": "<p>Pawrimetre is a wireless GPS boundary and training collar in one. Set a boundary around your yard from the handheld remote, with no buried wire, no Wi-Fi and no monthly fees. As your dog nears the edge, the waterproof collar gives a beep, then a vibration, with static as an optional last step. Away from home, the same remote works as a training collar. One remote handles up to three dogs.</p>",
+            "caps": true
+          }
+        },
+        "b_bullets": {
+          "type": "bullets",
+          "settings": {
+            "item_1": "No subscriptions or monthly fees",
+            "item_2": "Contains & trains your dog",
+            "item_3": "Quick setup & waterproof",
+            "item_4": "Control up to 3 dogs with one remote",
+            "item_5": "",
+            "item_6": ""
+          }
+        },
+        "b_packs": {
+          "type": "packs",
+          "settings": {
+            "heading": "Build Your Pack:",
+            "show_save": true,
+            "save_label": "Save",
+            "popular_index": 2,
+            "popular_label": "Most Popular",
+            "value_index": 3,
+            "value_label": "Best Value",
+            "name_1": "The Solo Pack (1 dog)",
+            "name_2": "The Duo Pack (2 dogs)",
+            "name_3": "The Trio Pack (3 dogs)",
+            "name_4": "",
+            "name_5": ""
+          }
+        },
+        "b_gifts": {
+          "type": "gifts",
+          "settings": {
+            "title": "",
+            "subtitle": "Included free with every order",
+            "free_label": "Free",
+            "gift_1_name": "",
+            "gift_1_value": "",
+            "gift_2_name": "",
+            "gift_2_value": "",
+            "gift_3_name": "",
+            "gift_3_value": ""
+          }
+        },
+        "b_cart": {
+          "type": "cart",
+          "settings": {
+            "button": "Add to cart",
+            "note": "90-Day Money Back Guarantee"
+          }
+        },
+        "f1": {
+          "type": "faq",
+          "settings": {
+            "question": "Do I need my phone, an app, or Wi-Fi?",
+            "answer": "<p>Nope, none of it. Everything's controlled right from the handheld remote. No app, no WiFi, no monthly fees, ever.</p>"
+          }
+        },
+        "f2": {
+          "type": "faq",
+          "settings": {
+            "question": "What happens when my dog reaches the boundary?",
+            "answer": "<p>A gentle beep first, then a vibration, then optional static, all adjustable 0–9 and each one can be turned fully off. Most dogs learn the line in a few days.</p>"
+          }
+        },
+        "f3": {
+          "type": "faq",
+          "settings": {
+            "question": "Is it just a fence, or can I train with it too?",
+            "answer": "<p>Both. Set the GPS boundary at home, then grab the remote to correct your dog anywhere, up to 1,650 ft away. A fence and a trainer in one collar.</p>"
+          }
+        },
+        "f4": {
+          "type": "faq",
+          "settings": {
+            "question": "Will it fit my dog?",
+            "answer": "<p>Fits dogs 10–200 lbs with 10–30 inch necks, fully adjustable strap. Big, small, and every escape artist in between.</p>"
+          }
+        },
+        "f5": {
+          "type": "faq",
+          "settings": {
+            "question": "What if it doesn't work for my dog?",
+            "answer": "<p>You're covered by our 90-day guarantee. Give it a real shot, and if your dog still isn't staying put, we'll make it right.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "badge_z9fd9H",
+        "b_rating",
+        "b_title",
+        "b_text",
+        "b_bullets",
+        "b_packs",
+        "b_gifts",
+        "b_cart",
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5"
+      ],
+      "settings": {
+        "sticky": true,
+        "sticky_text": "Add to cart",
+        "pick_bg": "#fdece6",
+        "save_bg": "#fff07a",
+        "save_text": "#1e1f24",
+        "strike_color": "#e02424",
+        "gift_bg": "#f6eedc",
+        "gift_tag_bg": "#1c2d5a",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": {
+        "items": "Fence + trainer in one,No monthly fees,GPS boundary,Up to 3 dogs,Waterproof,90-day guarantee",
+        "bg": "#db6742",
+        "fg": "#ffffff",
+        "size": 14,
+        "caps": false,
+        "show_icon": false
+      }
+    },
+    "stories": {
+      "type": "pf-testimonials",
+      "blocks": {
+        "t2": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/042_9e112151-9c31-481f-837c-f0956fdfbec3.png",
+            "rating": 5,
+            "title": "Finally trust him off leash in the open",
+            "text": "We adopted Cooper knowing he was a flight risk and our trainer wanted $2,800 for a full recall program with no guarantee it would even stick. We tried this collar instead. Set the boundary at the park we go to every morning, and within about a week he understood exactly where the edge was. Now he runs full speed and circles right back to us. The beep does all the work, we almost never go past that. Watching him actually be a dog without me holding my breath is everything.",
+            "name": "Marcus and Devon Riley, Bloomington IN",
+            "verified": "Verified Buyer, purchased May 22nd 2025"
+          }
+        },
+        "t1": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/041_ChatGPT_Image_Aug_7_2026_10_24_09_PM_ddd397a3-ed47-483e-9261-2b87b0f77cc5.png",
+            "rating": 5,
+            "title": "Contained a working breed with zero digging",
+            "text": "Everyone warned me a border collie needs a real fence or he’d find a way out, and the quote to fence our whole yard was $6,000. No thanks. Rocky is smart and stubborn but he figured out the boundary in under a week. Best part, no trenching, no wires buried in my lawn, no contractor. I set the shape myself and it wraps around our weird angled yard perfectly. He plays like a maniac right up to the edge and never crosses. Battery easily lasts me four days.",
+            "name": "Colleen Ferraro, Erie PA",
+            "verified": "Verified Buyer, purchased August 12th 2025"
+          }
+        },
+        "t3": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/038_ChatGPT_Image_Aug_7_2026_08_03_11_PM_a9f0addd-2315-4c86-841e-3130bafa9928.png",
+            "rating": 5,
+            "title": "No more getting dragged down the block",
+            "text": "“Every walk with Sunny used to wreck my shoulder. She pulled the entire time and I dreaded taking her out. What sold me was that this is a fence AND a trainer in one. I use the remote on our walks now, a quick vibrate when she lunges and she settles right down. Three weeks in and she walks next to me like a completely different dog. I was quoted $1,500 for group obedience classes and this did more in a month. The remote is simple, my battery goes about four days.”",
+            "name": "Janet Collins, Naperville IL",
+            "verified": "Verified Buyer, purchased July 29th 2025"
+          }
+        },
+        "t4": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/040_ChatGPT_Image_Aug_7_2026_10_22_18_PM_7210d458-1dd0-453d-90bb-8aa0ad03b364.png",
+            "rating": 5,
+            "title": "My door dasher finally stopped bolting",
+            "text": "Bailey is a beagle so a nose with legs. The second the front door cracked open she was gone, straight for the street, and I lived in fear of it. Getting my yard properly fenced was going to run me around $4,500 and I rent, so that was never happening. This collar fixed the exact problem I thought was unfixable. She learned where the line is and now she waits by the door instead of blowing past me. I actually sleep at night. Set it up on the remote in one afternoon.",
+            "name": "Terrence White, Springfield MO",
+            "verified": "Verified Buyer, purchased March 5th 2026"
+          }
+        },
+        "review_KxUDxe": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/037_ChatGPT_Image_Aug_7_2026_07_55_29_PM_f3d41783-b57b-4f9a-836f-3998b6548726.png",
+            "rating": 5,
+            "title": "Finally trust him off leash in the open",
+            "text": "We adopted Cooper knowing he was a flight risk and our trainer wanted $2,800 for a full recall program with no guarantee it would even stick. We tried this collar instead. Set the boundary at the park we go to every morning, and within about a week he understood exactly where the edge was. Now he runs full speed and circles right back to us. The beep does all the work, we almost never go past that. Watching him actually be a dog without me holding my breath is everything.",
+            "name": "— Marcus and Devon Riley, Bloomington IN",
+            "verified": "Verified Buyer, purchased August 12th 2025"
+          }
+        },
+        "review_WELEEG": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/039_ChatGPT_Image_Aug_7_2026_08_12_16_PM_4049a61e-2a0a-495b-82bc-2985c3f680e4.png",
+            "rating": 5,
+            "title": "Wish I’d started this when he was a puppy",
+            "text": "“My biggest regret is not getting this the day we brought Ziggy home. We let the puppy stage slide and by a year old he thought the whole neighbourhood was his. Started fresh with this collar and even a little late he picked up the boundary in maybe eight days. If you have a young dog, do it now while their habits are still forming. Adjustable modes meant I started with just the beep on the lowest setting. Never had to go higher. He is 100 percent trustworthy in the yard now.”",
+            "name": "Hannah Voss, Fort Collins CO",
+            "verified": "Verified Buyer, purchased June 3rd 2025"
+          }
+        }
+      },
+      "block_order": [
+        "t2",
+        "t1",
+        "t3",
+        "t4",
+        "review_KxUDxe",
+        "review_WELEEG"
+      ],
+      "settings": {
+        "anchor": "stories",
+        "heading": "Join Thousands of Dog Owners Who Stopped [Worrying]",
+        "bg": "#ffffff",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": ""
+      }
+    },
+    "why": {
+      "type": "pf-why",
+      "settings": {
+        "heading": "Why Pawrimetre?",
+        "item_1": "Contains and trains in one collar",
+        "item_2": "Set the boundary to fit your yard",
+        "item_3": "One remote runs up to 3 dogs",
+        "item_4": "No wires, no app, no monthly fees",
+        "item_5": "Waterproof & built to last",
+        "item_6": "",
+        "item_7": "",
+        "item_8": "",
+        "review_rating": 5,
+        "review_title": "Finally stopped chasing him down the street",
+        "review_text": "\"I was quoted $6,000 to fence my yard and my shepherd still would've dug under it. Set this up in an afternoon, and within a week he stopped bolting out the front door. Wish I'd found it two dogs ago.\"",
+        "review_name": "Charles K., Denver, Colorado.",
+        "bg": "#f7efde",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "problem": {
+      "type": "story",
+      "settings": {
+        "anchor": "problem",
+        "image": "shopify://shop_images/002_0d6326d5-b7ff-46e3-ab73-dffdb59c884e_1.png",
+        "image_right": true,
+        "eyebrow": "The problem",
+        "label_style": "boxed",
+        "label_img_size": 95,
+        "label_img_tilt": 12,
+        "label_img_mirror": false,
+        "label_img_reuse": true,
+        "label_bg": "#fbf4e8",
+        "label_color": "#db6742",
+        "label_border": "#1c2d5a",
+        "heading_style": "caps",
+        "heading": "Why some dogs just keep getting out",
+        "text": "<p><strong>Most escape artists aren't being naughty.</strong> A gate gets left open, a cat runs past, the front door opens for a second, and they're gone.</p><p>Owners try the usual fixes: a cheap collar that stops working, a trainer that costs a small fortune, or a fence quote that's more than the car is worth. And plenty of dogs still dig under or jump over.</p><p><strong>What most dogs need is a boundary they can understand, plus a reminder when they forget it.</strong> That's exactly what Pawrimetre gives them.</p>",
+        "mobile_center": true,
+        "media_shadow": false,
+        "c_bg": "",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "solution": {
+      "type": "feature-grid",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "icon": "clock",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_2.png",
+            "title": "Set  in minutes",
+            "text": ""
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "icon": "no",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_446f3f8c-424c-4498-9dbb-d438e3b9a500.png",
+            "title": "No digging",
+            "text": ""
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "icon": "tool",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_1.png",
+            "title": "FULLY ADJUSTABLE MODES",
+            "text": ""
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "icon": "remote",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_3.png",
+            "title": "Trains anywhere",
+            "text": ""
+          }
+        },
+        "f5": {
+          "type": "feature",
+          "settings": {
+            "icon": "dogs",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_4.png",
+            "title": "1 remote, 3 dogs",
+            "text": ""
+          }
+        },
+        "f6": {
+          "type": "feature",
+          "settings": {
+            "icon": "drop",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_5.png",
+            "title": "Waterproof + tOUGH",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "settings": {
+        "anchor": "solution",
+        "layout": "split",
+        "card_style": "boxed",
+        "bg": "#ffffff",
+        "eyebrow": "The solution",
+        "label_style": "boxed",
+        "label_img_left": "shopify://shop_images/Diagonal_black_training_remote_and_collar.png",
+        "label_img_right": "shopify://shop_images/Black_dog_training_remote_and_collar.png",
+        "label_img_size": 95,
+        "label_img_tilt": 12,
+        "label_img_mirror": false,
+        "label_img_reuse": true,
+        "label_bg": "#ffffff",
+        "label_color": "#db6742",
+        "label_border": "#1c2d5a",
+        "heading_style": "caps",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_label": "",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "heading": "One collar that keeps them home",
+        "text": "Pawrimetre combines a GPS boundary and a training remote, with no wires to bury and no monthly fees.",
+        "image": "shopify://shop_images/009_Golden_retriever_in_sunny_yard_202608081001_1.jpg",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta": "Choose your pack",
+        "cta_note": "Secure checkout · 90-day money-back guarantee",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "steps": {
+      "type": "pf-steps",
+      "blocks": {
+        "s1": {
+          "type": "step",
+          "settings": {
+            "icon": "gps",
+            "title": "Step 1 — Set your boundary",
+            "text": "Stand where you want the centre, choose a shape and size on the remote, and save it. No digging, no wires."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "icon": "dogs",
+            "title": "Step 2 — Let them learn",
+            "text": "When your dog nears the edge, the collar gives a beep first. Most dogs pick up the line with a little practice."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "icon": "remote",
+            "title": "Step 3 — Relax & train anywhere",
+            "text": "Let them enjoy the yard, and take the remote on walks to reinforce good behaviour wherever you go."
+          }
+        }
+      },
+      "block_order": [
+        "s1",
+        "s2",
+        "s3"
+      ],
+      "settings": {
+        "anchor": "how-it-works",
+        "heading": "3 steps to stop the escapes for good",
+        "bg": "#f7efde",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": ""
+      }
+    },
+    "reviews": {
+      "type": "review-cards",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "REPLACE_ME review title",
+            "text": "REPLACE_ME: paste a real customer review here.",
+            "name": "REPLACE_ME Customer name",
+            "location": "",
+            "verified": false
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "REPLACE_ME review title",
+            "text": "REPLACE_ME: paste a real customer review here.",
+            "name": "REPLACE_ME Customer name",
+            "location": "",
+            "verified": false
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "REPLACE_ME review title",
+            "text": "REPLACE_ME: paste a real customer review here.",
+            "name": "REPLACE_ME Customer name",
+            "location": "",
+            "verified": false
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "REPLACE_ME review title",
+            "text": "REPLACE_ME: paste a real customer review here.",
+            "name": "REPLACE_ME Customer name",
+            "location": "",
+            "verified": false
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {
+        "anchor": "reviews",
+        "bg": "#f7efe3",
+        "photo_1": "shopify://shop_images/Smiling_woman_with_brown_dog_in_field_25040eb8-10fd-4214-85d7-f55c9e57da39.png",
+        "photo_2": "shopify://shop_images/Brown_dog_on_woodland_path_cc4b7d41-db12-4708-8e4e-f076a28fc99c.png",
+        "photo_3": "shopify://shop_images/Seated_Black_Labrador_in_a_Grassy_Field_85d554d0-572c-4795-96bf-6cb5222ee828.png",
+        "photo_4": "shopify://shop_images/Father_child_and_shepherd_outdoors_294b0d2c-a85f-46ac-a81e-d7bcbd3eb118.png",
+        "layout": "photos_first",
+        "show_stars": true,
+        "heading": "Dog owners who [stopped worrying]",
+        "heading_style": "caps",
+        "highlight": "",
+        "text": "",
+        "button": "Get Pawrimetre today",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "note": "Secure checkout · 90-day money-back guarantee",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a",
+        "c_stars": ""
+      }
+    },
+    "stats": {
+      "type": "pf-stats",
+      "blocks": {
+        "p1": {
+          "type": "stat",
+          "settings": {
+            "percent": 0,
+            "text": "REPLACE_ME: of surveyed customers said …"
+          }
+        },
+        "p2": {
+          "type": "stat",
+          "settings": {
+            "percent": 0,
+            "text": "REPLACE_ME: of surveyed customers said …"
+          }
+        },
+        "p3": {
+          "type": "stat",
+          "settings": {
+            "percent": 0,
+            "text": "REPLACE_ME: of surveyed customers said …"
+          }
+        }
+      },
+      "block_order": [
+        "p1",
+        "p2",
+        "p3"
+      ],
+      "settings": {
+        "heading": "Why dog owners trust [Pawrimetre]",
+        "note": "REPLACE_ME: e.g. Based on a survey of 312 Pawrimetre customers, March 2026.",
+        "button": "Shop now",
+        "product": "",
+        "secure_text": "Secure checkout guaranteed",
+        "show_payment": true,
+        "bg": "#ffffff",
+        "card_bg": "#fbf4e8",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "compare": {
+      "type": "comparison",
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "Wireless GPS boundary, no digging",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Contains & trains your dog",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "feature": "One remote runs up to 3 dogs",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "feature": "No app, no monthly fees",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "feature": "Set up the same day",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "row_hNYzyt": {
+          "type": "row",
+          "settings": {
+            "feature": "Set up in minutes, not days",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "t1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "REPLACE_ME review title",
+            "text": "REPLACE_ME: paste a real customer review here.",
+            "name": "REPLACE_ME Customer name",
+            "location": "",
+            "verified": false
+          }
+        },
+        "t2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "REPLACE_ME review title",
+            "text": "REPLACE_ME: paste a real customer review here.",
+            "name": "REPLACE_ME Customer name",
+            "location": "",
+            "verified": false
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "row_hNYzyt",
+        "t1",
+        "t2"
+      ],
+      "settings": {
+        "anchor": "compare",
+        "heading": "Why choose [Pawrimetre] over old-school fences?",
+        "heading_style": "caps",
+        "corner_label": "Us vs them",
+        "col_bg": "#f3e7d3",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_label": "",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "col_us": "GPS fence",
+        "col_us_image": "shopify://shop_images/blomar-pets-logo-navy.png",
+        "col_2": "Others",
+        "col_3": "",
+        "button": "Get Pawrimetre today",
+        "cta_note": "Secure checkout guaranteed",
+        "show_payment": true,
+        "product": "gps-wireless-dog-fence-training-collar",
+        "c_bg": "#f7efde",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "faq": {
+      "type": "pf-faq",
+      "blocks": {
+        "q1": {
+          "type": "question",
+          "settings": {
+            "question": "Can I choose the boundary shape and size?",
+            "answer": "<p>Yes. Pick the shape and size on the remote. REPLACE_ME: list the exact shapes and the smallest and largest boundary your model supports.</p>"
+          }
+        },
+        "q2": {
+          "type": "question",
+          "settings": {
+            "question": "How small a yard does it work in?",
+            "answer": "<p>REPLACE_ME: smallest boundary size from your supplier's specs. GPS works best with a clear view of the sky.</p>"
+          }
+        },
+        "q3": {
+          "type": "question",
+          "settings": {
+            "question": "Can each collar have its own boundary?",
+            "answer": "<p>REPLACE_ME: confirm whether each collar can have its own boundary on your model.</p>"
+          }
+        },
+        "q4": {
+          "type": "question",
+          "settings": {
+            "question": "How often do I charge it?",
+            "answer": "<p>REPLACE_ME: real battery life per charge and charging time.</p>"
+          }
+        },
+        "q5": {
+          "type": "question",
+          "settings": {
+            "question": "Will it work for a stubborn escape artist?",
+            "answer": "<p>The beep, vibration and optional static levels are adjustable from 0 to 9, so you can find what works for your dog. Consistent practice in the first week makes the biggest difference.</p>"
+          }
+        },
+        "q6": {
+          "type": "question",
+          "settings": {
+            "question": "Does it work in wooded or rural areas?",
+            "answer": "<p>GPS needs a view of the sky. Dense tree cover or tall buildings can reduce accuracy, so set the boundary a little inside any area you don't want your dog to reach.</p>"
+          }
+        },
+        "q7": {
+          "type": "question",
+          "settings": {
+            "question": "Where do you ship?",
+            "answer": "<p>REPLACE_ME: your real shipping regions and delivery times.</p>"
+          }
+        },
+        "q8": {
+          "type": "question",
+          "settings": {
+            "question": "What's your guarantee?",
+            "answer": "<p>REPLACE_ME: your real money-back guarantee terms.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7",
+        "q8"
+      ],
+      "settings": {
+        "anchor": "faq",
+        "heading": "FAQs",
+        "bg": "#f5ebda",
+        "c_text": "",
+        "c_heading": "",
+        "c_shadow": "#1c2d5a"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "ticker",
+    "stories",
+    "why",
+    "problem",
+    "solution",
+    "steps",
+    "reviews",
+    "stats",
+    "compare",
+    "faq"
+  ]
+}
