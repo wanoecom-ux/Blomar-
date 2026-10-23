@@ -1,0 +1,15 @@
+{%- comment -%}
+  Small section label with optional images on either side.
+  Usage: {% render 'label-row', label: label_html, left: section.settings.label_img_left, right: section.settings.label_img_right, size: section.settings.label_img_size %}
+{%- endcomment -%}
+{%- if left != blank or right != blank -%}
+  {%- assign sz = size | default: 95 -%}
+  {%- assign sz2 = sz | times: 2 -%}
+  <div class="label-row" style="--lr-size: {{ sz }}px;">
+    <span class="label-row__img label-row__img--l">{%- if left != blank -%}{{ left | image_url: width: sz2 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+    <div class="label-row__label">{{ label }}</div>
+    <span class="label-row__img label-row__img--r">{%- if right != blank -%}{{ right | image_url: width: sz2 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+  </div>
+{%- else -%}
+  {{ label }}
+{%- endif -%}
