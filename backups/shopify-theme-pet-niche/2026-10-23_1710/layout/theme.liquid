@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_accent }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+    <title>
+      {{ page_title }}
+      {%- if current_tags %} &ndash; {{ current_tags | join: ', ' }}{% endif -%}
+      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+    </title>
+    {% if page_description %}<meta name="description" content="{{ page_description | escape }}">{% endif %}
+    {% render 'meta-tags' %}
+    {%- liquid
+      assign heading_font = settings.type_heading_font
+      assign body_font = settings.type_body_font
+      assign heading_italic = heading_font | font_modify: 'style', 'italic'
+      assign body_bold = body_font | font_modify: 'weight', 'bold'
+      assign body_medium = body_font | font_modify: 'weight', '+100'
+      assign body_italic = body_font | font_modify: 'style', 'italic'
+    -%}
+    <style>
+      {{ heading_font | font_face: font_display: 'swap' }}
+      {{ heading_italic | font_face: font_display: 'swap' }}
+      {{ body_font | font_face: font_display: 'swap' }}
+      {{ body_bold | font_face: font_display: 'swap' }}
+      {{ body_medium | font_face: font_display: 'swap' }}
+      {{ body_italic | font_face: font_display: 'swap' }}
+      :root {
+        --font-heading: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+        --font-heading-weight: {{ heading_font.weight }};
+        --font-heading-style: {{ heading_font.style }};
+        --font-body: {{ body_font.family }}, {{ body_font.fallback_families }};
+        --font-body-weight: {{ body_font.weight }};
+        --font-body-weight-bold: {% if body_bold %}{{ body_bold.weight }}{% else %}700{% endif %};
+        --font-body-weight-medium: {% if body_medium %}{{ body_medium.weight }}{% else %}500{% endif %};
+        --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+        --body-scale: {{ settings.body_scale | divided_by: 100.0 }};
+        --color-ink: {{ settings.color_ink }};
+        --color-muted: {{ settings.color_muted }};
+        --color-bg: {{ settings.color_bg }};
+        --color-card: {{ settings.color_card }};
+        --color-line: {{ settings.color_line }};
+        --color-accent: {{ settings.color_accent }};
+        --color-accent-ink: {{ settings.color_accent_ink }};
+        --color-accent-soft: {{ settings.color_accent_soft }};
+        --color-dark: {{ settings.color_dark }};
+        --color-sale: {{ settings.color_sale }};
+        --color-star: {{ settings.color_star }};
+        --color-highlight: {{ settings.color_highlight | default: settings.color_accent }};
+        --radius: {{ settings.radius }}px;
+        --radius-btn: {{ settings.radius_button }}px;
+        --page-width: {{ settings.page_width }}px;
+      }
+      {%- if settings.custom_heading_name != blank and settings.custom_heading_url != blank -%}
+      @font-face { font-family: "{{ settings.custom_heading_name }}"; src: url("{{ settings.custom_heading_url }}") format("woff2"); font-weight: {{ settings.custom_heading_weight | default: '600' }}; font-display: swap; }
+      :root { --font-heading: "{{ settings.custom_heading_name }}", {{ heading_font.fallback_families }}; --font-heading-weight: {{ settings.custom_heading_weight | default: '600' }}; --font-heading-style: normal; }
+      {%- endif -%}
+      {%- if settings.custom_body_name != blank and settings.custom_body_url != blank -%}
+      @font-face { font-family: "{{ settings.custom_body_name }}"; src: url("{{ settings.custom_body_url }}") format("woff2"); font-weight: 400; font-display: swap; }
+      {%- if settings.custom_body_bold_url != blank -%}
+      @font-face { font-family: "{{ settings.custom_body_name }}"; src: url("{{ settings.custom_body_bold_url }}") format("woff2"); font-weight: 700; font-display: swap; }
+      {%- endif -%}
+      :root { --font-body: "{{ settings.custom_body_name }}", {{ body_font.fallback_families }}; --font-body-weight: 400; --font-body-weight-medium: 500; --font-body-weight-bold: 700; }
+      {%- endif -%}
+    </style>
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    {{ 'base-2.css' | asset_url | stylesheet_tag }}
+    {{ 'base-3.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    {{ content_for_header }}
+  </head>
+  <body class="template-{{ template.name }} hl-{{ settings.highlight_style | default: 'text' }}">
+    <a class="skip-link" href="#MainContent">Skip to content</a>
+    {% sections 'header-group' %}
+    <main id="MainContent" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+    {% sections 'footer-group' %}
+    {% render 'cart-drawer' %}
+  </body>
+</html>

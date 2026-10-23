@@ -1,0 +1,139 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "problem": {
+      "type": "story",
+      "settings": {
+        "anchor": "problem",
+        "image": "shopify://shop_images/002_0d6326d5-b7ff-46e3-ab73-dffdb59c884e_1.png",
+        "image_right": true,
+        "eyebrow": "The problem",
+        "label_style": "boxed",
+        "label_bg": "#fbf4e8",
+        "label_color": "#db6742",
+        "heading_style": "caps",
+        "heading": "THE TRUTH ABOUT ESCAPE ARTIST DOGS",
+        "text": "<p><strong>Your dog doesn't mean to run.</strong> The door opens for two seconds, a squirrel darts by, the gate's left cracked — and he's gone. Down the driveway, into the street, three houses down before you've got your shoes on.</p><p>And every time, your stomach drops. You're chasing him down the block, praying a car doesn't come around the corner. <strong>It only takes once.</strong></p><p>So you try to fix it. A $30 shock collar off Amazon he figures out in a week. A trainer who wants $2,000 and eight sessions. A fence quote that makes you laugh out loud — <strong>$6,000 to bury wire in your yard</strong>, and he'd still dig under it.</p><p>That's the trap: expensive fixes that don't work, or cheap ones that don't last. Either way <strong>you're still standing at the window every time he's outside</strong>, unable to relax.</p><p>The truth? Your dog doesn't need a wall. <strong>He needs a boundary he understands — and a little guidance when he forgets it.</strong> What if you could set that boundary in an afternoon, <strong>train him from your hand anywhere you go, and finally stop chasing him down the street?</strong></p>",
+        "mobile_center": true,
+        "media_shadow": false,
+        "c_bg": "",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a",
+        "label_border": "#1C2D5A"
+      }
+    },
+    "solution": {
+      "type": "feature-grid",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "icon": "clock",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_2.png",
+            "title": "Set  in minutes",
+            "text": ""
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "icon": "no",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_446f3f8c-424c-4498-9dbb-d438e3b9a500.png",
+            "title": "No digging",
+            "text": ""
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "icon": "tool",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_1.png",
+            "title": "FULLY ADJUSTABLE MODES",
+            "text": ""
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "icon": "remote",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_3.png",
+            "title": "Trains anywhere",
+            "text": ""
+          }
+        },
+        "f5": {
+          "type": "feature",
+          "settings": {
+            "icon": "dogs",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_4.png",
+            "title": "1 remote, 3 dogs",
+            "text": ""
+          }
+        },
+        "f6": {
+          "type": "feature",
+          "settings": {
+            "icon": "drop",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_5.png",
+            "title": "Waterproof + tOUGH",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "settings": {
+        "anchor": "solution",
+        "layout": "split",
+        "card_style": "boxed",
+        "bg": "#ffffff",
+        "eyebrow": "The solution",
+        "label_style": "boxed",
+        "label_bg": "#FFFFFF",
+        "label_color": "#db6742",
+        "heading_style": "caps",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_label": "(4.8) 11,231+ Reviews",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "heading": "THE COLLAR THAT ACTUALLY KEEPS THEM HOME",
+        "text": "PawRimtre fixes what old fences and cheap collars get wrong — it contains and trains, with zero wires and zero monthly fees.",
+        "image": "shopify://shop_images/009_Golden_retriever_in_sunny_yard_202608081001_1.jpg",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta": "CLAIM 50% OFF TODAY",
+        "cta_note": "Secure checkout · 90-day money-back guarantee",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a",
+        "label_img_left": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_3.png",
+        "label_img_right": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_4.png",
+        "label_img_size": 95,
+        "label_border": "#1C2D5A"
+      }
+    }
+  },
+  "order": [
+    "problem",
+    "solution"
+  ]
+}

@@ -1,0 +1,258 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "eyebrow": "",
+        "heading": "Let them roam. Know they'll stay.",
+        "text": "<p>Set a GPS boundary around your yard in minutes and keep a training remote in your pocket. No digging, no wires, no app, no monthly fees.</p>",
+        "button_1": "Shop the GPS fence",
+        "button_2": "See how it works",
+        "min_height": 70,
+        "show_rating": true,
+        "rating_product": "gps-wireless-dog-fence-training-collar",
+        "rating_label": "Excellent",
+        "rating_color": "#1F9D55"
+      }
+    },
+    "trust": {
+      "type": "trust-strip",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "item",
+          "settings": {
+            "icon": "gps",
+            "title": "GPS boundary",
+            "sub": "Set any shape, any size"
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "icon": "remote",
+            "title": "Training remote",
+            "sub": "Works away from home too"
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free shipping",
+            "sub": "On every order"
+          }
+        },
+        "b4": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "90-day guarantee",
+            "sub": "Try it risk-free"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "tiles": {
+      "type": "category-tiles",
+      "settings": {
+        "heading": "Everything for the escape artist",
+        "text": "Shop by what your dog needs most.",
+        "link_label": "View all products"
+      },
+      "blocks": {
+        "b1": {
+          "type": "tile",
+          "settings": {
+            "label": "GPS fences"
+          }
+        },
+        "b2": {
+          "type": "tile",
+          "settings": {
+            "label": "Training"
+          }
+        },
+        "b3": {
+          "type": "tile",
+          "settings": {
+            "label": "Multi-dog packs"
+          }
+        },
+        "b4": {
+          "type": "tile",
+          "settings": {
+            "label": "Accessories"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "best": {
+      "type": "product-carousel",
+      "settings": {
+        "heading": "Shop best sellers",
+        "text": "The gear dog parents reach for first.",
+        "eyebrow": "For dogs",
+        "limit": 8
+      }
+    },
+    "promos": {
+      "type": "promo-pair",
+      "settings": {},
+      "blocks": {
+        "b1": {
+          "type": "card",
+          "settings": {
+            "bg": "#F4F3EF",
+            "eyebrow": "Multi-dog homes",
+            "heading": "Two dogs? Three?",
+            "text": "One remote runs up to three collars, each with its own boundary. Bundle and save.",
+            "button": "Shop bundles"
+          }
+        },
+        "b2": {
+          "type": "card",
+          "settings": {
+            "bg": "#EEF4EF",
+            "eyebrow": "New to boundary training?",
+            "heading": "Start with our 7-day guide",
+            "text": "Short daily sessions that teach your dog where the line is, the kind way.",
+            "button": "Read the guide"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2"
+      ]
+    },
+    "expert": {
+      "type": "expert-quote",
+      "settings": {
+        "heading": "Training you can trust",
+        "text": "Clear boundaries, gentle cues and plenty of praise. That's how dogs learn fastest.",
+        "quote": "Replace this with a real quote from a trainer or vet you work with. Only publish words they've approved.",
+        "name": "Expert name",
+        "role": "Certified dog trainer",
+        "verified": false
+      }
+    },
+    "stats": {
+      "type": "stats-panel",
+      "settings": {
+        "heading": "Freedom for them. Peace of mind for you.",
+        "text": "Simple gear that does what it says, plain-English instructions, and real people on email when you need a hand."
+      },
+      "blocks": {
+        "b1": {
+          "type": "stat",
+          "settings": {
+            "number": "3",
+            "label": "Dogs per remote"
+          }
+        },
+        "b2": {
+          "type": "stat",
+          "settings": {
+            "number": "0–9",
+            "label": "Levels for each cue"
+          }
+        },
+        "b3": {
+          "type": "stat",
+          "settings": {
+            "number": "$0",
+            "label": "Monthly fees"
+          }
+        },
+        "b4": {
+          "type": "stat",
+          "settings": {
+            "number": "90",
+            "label": "Day money-back guarantee"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "heading": "Questions? We've got you.",
+        "text": "Can't see yours? Email us and a real person will reply."
+      },
+      "blocks": {
+        "b1": {
+          "type": "question",
+          "settings": {
+            "question": "Do I need Wi-Fi, a phone or an app?",
+            "answer": "<p>No. Everything is set and controlled from the handheld remote, so it works anywhere the collar can see the sky.</p>"
+          }
+        },
+        "b2": {
+          "type": "question",
+          "settings": {
+            "question": "Will it hurt my dog?",
+            "answer": "<p>Every collar starts with a beep, then vibration. Static is optional, adjustable and can be switched off completely. Most owners never go past the beep once their dog has learned the line.</p>"
+          }
+        },
+        "b3": {
+          "type": "question",
+          "settings": {
+            "question": "What size dogs is it for?",
+            "answer": "<p>Dogs from roughly 4 to 90 kg (8–200 lb), with neck sizes from about 25 to 76 cm (10–30 in).</p>"
+          }
+        },
+        "b4": {
+          "type": "question",
+          "settings": {
+            "question": "What if it doesn't work for my dog?",
+            "answer": "<p>You have 90 days to try it. If it's not right for your dog, contact us for a refund.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    }
+  },
+  "order": [
+    "hero",
+    "trust",
+    "tiles",
+    "best",
+    "promos",
+    "expert",
+    "stats",
+    "faq"
+  ]
+}

@@ -1,0 +1,35 @@
+{%- if cart.item_count == 0 -%}
+  <p class="cart-empty">{{ 'cart.empty' | t }}</p>
+  <a class="btn btn--accent btn--block" href="{{ routes.all_products_collection_url }}">{{ 'products.shop_now' | t }}</a>
+{%- else -%}
+  <ul class="cart-list" role="list">
+    {%- for item in cart.items -%}
+      <li class="cart-line" data-line="{{ forloop.index }}">
+        <div class="cart-line__img">
+          {%- if item.image -%}{{ item.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: item.title }}{%- endif -%}
+        </div>
+        <div class="cart-line__info">
+          <a href="{{ item.url }}" class="cart-line__title">{{ item.product.title }}</a>
+          {%- unless item.product.has_only_default_variant -%}<p class="muted small">{{ item.variant.title }}</p>{%- endunless -%}
+          {%- for d in item.line_level_discount_allocations -%}<p class="small tag-sale">{{ d.discount_application.title }}</p>{%- endfor -%}
+          <div class="qty" data-qty>
+            <button type="button" aria-label="Decrease" data-qty-change="{{ item.quantity | minus: 1 }}">{% render 'icon', name: 'minus', size: 16 %}</button>
+            <span>{{ item.quantity }}</span>
+            <button type="button" aria-label="Increase" data-qty-change="{{ item.quantity | plus: 1 }}">{% render 'icon', name: 'plus', size: 16 %}</button>
+          </div>
+        </div>
+        <div class="cart-line__price">
+          {%- if item.original_line_price > item.final_line_price -%}<s class="muted small">{{ item.original_line_price | money }}</s>{%- endif -%}
+          <strong>{{ item.final_line_price | money }}</strong>
+        </div>
+      </li>
+    {%- endfor -%}
+  </ul>
+  <div class="cart-foot">
+    <div class="cart-foot__row"><span>{{ 'cart.subtotal' | t }}</span><strong>{{ cart.total_price | money }}</strong></div>
+    <form action="{{ routes.cart_url }}" method="post">
+      <button type="submit" name="checkout" class="btn btn--accent btn--block btn--lg">{% render 'icon', name: 'shield', size: 18 %} {{ 'cart.checkout' | t }}</button>
+    </form>
+    {%- if settings.cart_note != blank -%}<p class="small muted center">{{ settings.cart_note }}</p>{%- endif -%}
+  </div>
+{%- endif -%}

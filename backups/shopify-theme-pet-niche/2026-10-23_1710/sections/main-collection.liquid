@@ -1,0 +1,24 @@
+<section class="section">
+  <div class="page-width">
+    <div class="section-head">
+      <h1 class="h1">{{ collection.title }}</h1>
+      {%- if collection.description != blank -%}<div class="muted rte narrow-left">{{ collection.description }}</div>{%- endif -%}
+    </div>
+    {%- paginate collection.products by 24 -%}
+      <div class="grid-products">
+        {%- for product in collection.products -%}
+          {% render 'product-card', product: product, eyebrow: section.settings.eyebrow %}
+        {%- else -%}
+          <p class="muted">No products here yet.</p>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}<div class="pagination">{{ paginate | default_pagination }}</div>{%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Collection grid",
+  "settings": [{ "type": "text", "id": "eyebrow", "label": "Small label on cards", "default": "For dogs" }]
+}
+{% endschema %}

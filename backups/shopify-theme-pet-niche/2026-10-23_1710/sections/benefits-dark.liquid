@@ -1,0 +1,26 @@
+<section class="dark-band" id="{{ section.settings.anchor | handleize }}" style="--band-bg: {{ section.settings.bg }};">
+  <div class="page-width dark-band__grid">
+    <div class="dark-band__copy">
+      {%- if section.settings.eyebrow != blank -%}<p class="dark-band__eyebrow">{% render 'stars', rating: 5 %} {{ section.settings.eyebrow | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+      <h2 class="h1">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>
+      <div class="benefits">
+        {%- for block in section.blocks -%}
+          <div class="benefit" {{ block.shopify_attributes }}>
+            <span class="benefit__icon">{% render 'icon-slot', image: block.settings.custom_icon, name: block.settings.icon, size: 26 %}</span>
+            <h3 class="benefit__title">{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h3>
+            <p>{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+      {%- if section.settings.footnote != blank -%}<p class="small dark-band__note">{{ section.settings.footnote | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+    </div>
+    <div class="dark-band__media">
+      {%- if section.settings.image -%}
+        {{ section.settings.image | image_url: width: 1200 | image_tag: loading: 'lazy', widths: '600,900,1200', sizes: '(min-width: 990px) 45vw, 100vw', alt: section.settings.heading }}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Benefits (dark band)","settings":[{"type":"text","id":"anchor","label":"Anchor ID","default":"benefits"},{"type":"color","id":"bg","label":"Background","default":"#101A2B"},{"type":"text","id":"eyebrow","label":"Small line above heading","default":"Built for dogs who bolt"},{"type":"text","id":"heading","label":"Heading","default":"A fence and a trainer in one collar","info":"Put [square brackets] around words to highlight them."},{"type":"image_picker","id":"image","label":"Image","info":"Product shot on a transparent or dark background works best."},{"type":"text","id":"footnote","label":"Footnote"}],"blocks":[{"type":"benefit","name":"Benefit","settings":[{"type":"select","id":"icon","label":"Icon","default":"gps","options":[{"value":"gps","label":"GPS pin"},{"value":"remote","label":"Remote"},{"value":"dogs","label":"Dogs"},{"value":"drop","label":"Water drop"},{"value":"battery","label":"Battery"},{"value":"shield","label":"Shield"},{"value":"tool","label":"Tool"},{"value":"clock","label":"Clock"},{"value":"paw","label":"Paw"},{"value":"none","label":"None"}]},{"type":"image_picker","id":"custom_icon","label":"Your own icon (replaces the one above)","info":"Upload a PNG or SVG. Square works best."},{"type":"text","id":"title","label":"Title","default":"Benefit","info":"Put [square brackets] around words to highlight them."},{"type":"textarea","id":"text","label":"Text","default":"Describe the benefit."}]}],"max_blocks":6,"presets":[{"name":"Benefits (dark band)","blocks":[{"type":"benefit"},{"type":"benefit"}]}]}
+{% endschema %}

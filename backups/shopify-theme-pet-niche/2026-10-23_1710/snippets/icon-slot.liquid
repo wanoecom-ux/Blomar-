@@ -1,0 +1,11 @@
+{%- comment -%}
+  Shows the merchant's own uploaded icon if set, otherwise a built-in icon.
+  Usage: {% render 'icon-slot', image: block.settings.custom_icon, name: block.settings.icon, size: 24 %}
+{%- endcomment -%}
+{%- assign s = size | default: 24 -%}
+{%- if image != blank -%}
+  {%- assign s2 = s | times: 2 -%}
+  {{ image | image_url: width: s2 | image_tag: loading: 'lazy', alt: '', width: s, height: s, class: 'icon icon--img', style: 'object-fit:contain;' }}
+{%- elsif name != blank and name != 'none' -%}
+  {% render 'icon', name: name, size: s %}
+{%- endif -%}

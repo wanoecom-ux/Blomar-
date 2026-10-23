@@ -1,0 +1,60 @@
+<section class="section rv sec-scope" id="{{ section.settings.anchor | handleize }}" style="--rv-bg: {{ section.settings.bg }}; {% if section.settings.c_stars != blank %}--rv-stars: {{ section.settings.c_stars }}; {% endif %}{% render 'section-vars', s: section.settings %}">
+  <div class="page-width">
+    {%- assign has_photos = false -%}
+    {%- for n in (1..4) -%}{%- assign k = 'photo_' | append: n -%}{%- if section.settings[k] -%}{%- assign has_photos = true -%}{%- endif -%}{%- endfor -%}
+    {%- if has_photos -%}
+      <div class="rv__photos">
+        {%- for n in (1..4) -%}
+          {%- assign k = 'photo_' | append: n -%}
+          {%- if section.settings[k] -%}<div class="rv__photo">{{ section.settings[k] | image_url: width: 500 | image_tag: loading: 'lazy', alt: '' }}</div>{%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    <div class="section-head center">
+      {%- if section.settings.show_stars -%}<div class="rv__stars">{% render 'stars', rating: 5 %}</div>{%- endif -%}
+      <h2 class="h2{% if section.settings.heading_style == 'caps' %} h-caps{% endif %}">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{% if section.settings.highlight != blank %} <span class="accent">{{ section.settings.highlight }}</span>{% endif %}</h2>
+      {%- if section.settings.text != blank -%}<p class="muted narrow">{{ section.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+    </div>
+    <div class="rv__grid">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'review' -%}{% render 'review-card', b: block %}
+          {%- when '@app' -%}<div class="rv__app">{% render block %}</div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.button != blank -%}
+      <div class="rv__cta">
+        <a class="btn btn--accent btn--block" href="{% if section.settings.product != blank %}{{ section.settings.product.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ section.settings.button }}</a>
+        {%- if section.settings.note != blank -%}<p class="small muted">{% render 'icon', name: 'shield', size: 16 %} {{ section.settings.note | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+.rv{background:var(--rv-bg)}
+.rv .stars{color:var(--rv-stars,var(--color-star))}
+.rv__photos{display:flex;justify-content:center;gap:12px;margin-bottom:28px;flex-wrap:wrap}
+.rv__photo{width:160px;aspect-ratio:4/5;border-radius:14px;overflow:hidden;border:3px solid var(--color-accent);box-shadow:5px 5px 0 var(--sec-shadow,var(--color-accent));margin-inline:-6px}
+.rv__photo:nth-child(odd){transform:rotate(-4deg)}.rv__photo:nth-child(even){transform:rotate(4deg)}
+.rv__photo img{width:100%;height:100%;object-fit:cover}
+@media (max-width:749px){.rv__photo{width:22%}}
+.rv__stars{display:flex;justify-content:center;margin-bottom:8px}
+.rv__stars .stars svg{width:26px;height:26px}
+.rv__grid{display:grid;gap:16px;grid-template-columns:1fr}
+@media (min-width:750px){.rv__grid{grid-template-columns:repeat(2,1fr)}}
+@media (min-width:1100px){.rv__grid{grid-template-columns:repeat(4,1fr)}}
+.rv__app{grid-column:1/-1}
+.rcard{margin:0;display:flex;flex-direction:column;gap:10px;padding:20px;background:var(--color-bg);border:1.5px solid var(--color-ink);border-radius:18px;box-shadow:5px 5px 0 var(--sec-shadow,var(--color-accent))}
+.rcard__top{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.rcard__title{font-size:.9rem}
+.rcard__quote{margin:0;font-size:.95rem}
+.rcard__by{display:flex;align-items:center;gap:10px;font-size:.8rem;color:var(--color-muted);font-style:italic}
+.rcard__avatar{border-radius:50%;object-fit:cover}
+.rcard__verified{display:inline-flex;align-items:center;gap:3px;color:var(--color-accent)}
+.rv__cta{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:36px}
+.rv__cta .small{display:inline-flex;align-items:center;gap:6px;margin:0}
+</style>
+{% schema %}
+{"name":"Customer reviews","settings":[{"type":"text","id":"anchor","label":"Anchor ID","default":"reviews"},{"type":"color","id":"bg","label":"Background","default":"#F7EFE3"},{"type":"paragraph","content":"Only add real reviews from real customers, in their own words. You can also add your review app's widget as a block."},{"type":"image_picker","id":"photo_1","label":"Customer photo 1"},{"type":"image_picker","id":"photo_2","label":"Customer photo 2"},{"type":"image_picker","id":"photo_3","label":"Customer photo 3"},{"type":"image_picker","id":"photo_4","label":"Customer photo 4"},{"type":"checkbox","id":"show_stars","label":"Show stars above heading","default":true},{"type":"text","id":"heading","label":"Heading","default":"Dog owners who stopped worrying","info":"Put [square brackets] around words to highlight them."},{"type":"select","id":"heading_style","label":"Heading style","default":"theme","options":[{"value":"theme","label":"Theme heading font"},{"value":"caps","label":"Bold capitals (body font)"}]},{"type":"text","id":"highlight","label":"Highlighted words (shown in accent colour)"},{"type":"text","id":"text","label":"Text"},{"type":"text","id":"button","label":"Button text","default":"Get yours today"},{"type":"product","id":"product","label":"Product the button links to"},{"type":"text","id":"note","label":"Text under button","default":"Secure checkout · 90-day money-back guarantee"},{"type":"header","content":"Colours"},{"type":"paragraph","content":"Leave any colour empty to use the theme colours."},{"type":"color","id":"c_text","label":"Text"},{"type":"color","id":"c_heading","label":"Headings"},{"type":"color","id":"c_accent","label":"Accent (buttons, ticks, icons, highlights)"},{"type":"color","id":"c_btn_text","label":"Button text"},{"type":"color","id":"c_shadow","label":"Card & button shadow"},{"type":"color","id":"c_stars","label":"Star colour"}],"blocks":[{"type":"@app"},{"type":"review","name":"Review","settings":[{"type":"range","id":"rating","label":"Stars","min":1,"max":5,"step":1,"default":5},{"type":"text","id":"title","label":"Title","default":"Review title","info":"Put [square brackets] around words to highlight them."},{"type":"textarea","id":"text","label":"Review","default":"Paste a real customer review here."},{"type":"text","id":"name","label":"Name","default":"Customer name"},{"type":"text","id":"location","label":"Location"},{"type":"image_picker","id":"photo","label":"Customer photo"},{"type":"checkbox","id":"verified","label":"Verified buyer","default":true}]}],"presets":[{"name":"Customer reviews","blocks":[{"type":"review"},{"type":"review"},{"type":"review"},{"type":"review"}]}]}
+{% endschema %}

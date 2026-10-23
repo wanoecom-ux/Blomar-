@@ -1,0 +1,23 @@
+<section class="section">
+  <div class="page-width">
+    <h1 class="h1">{{ 'general.search' | t }}</h1>
+    <form action="{{ routes.search_url }}" method="get" class="search-form" role="search">
+      <label class="visually-hidden" for="SearchInput">{{ 'general.search' | t }}</label>
+      <input id="SearchInput" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search products">
+      <input type="hidden" name="type" value="product">
+      <button class="btn btn--accent" type="submit">{% render 'icon', name: 'search', size: 18 %}</button>
+    </form>
+    {%- if search.performed -%}
+      <div class="grid-products">
+        {%- for item in search.results -%}
+          {%- if item.object_type == 'product' -%}{% render 'product-card', product: item %}{%- endif -%}
+        {%- else -%}
+          <p class="muted">No results for "{{ search.terms | escape }}".</p>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{ "name": "Search" }
+{% endschema %}

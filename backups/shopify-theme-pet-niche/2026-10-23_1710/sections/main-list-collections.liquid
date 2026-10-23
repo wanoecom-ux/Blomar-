@@ -1,0 +1,16 @@
+<section class="section">
+  <div class="page-width">
+    <div class="section-head"><h1 class="h1">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h1></div>
+    <div class="tiles">
+      {%- for c in collections -%}
+        <a class="tile" href="{{ c.url }}">
+          {%- if c.featured_image -%}{{ c.featured_image | image_url: width: 800 | image_tag: loading: 'lazy', alt: c.title }}{%- else -%}{{ 'collection-1' | placeholder_svg_tag: 'placeholder' }}{%- endif -%}
+          <span class="tile__pill">{{ c.title }} {% render 'icon', name: 'arrow', size: 16 %}</span>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Collections list", "settings": [{ "type": "text", "id": "heading", "label": "Heading", "default": "Shop all", "info": "Put [square brackets] around words to highlight them." }] }
+{% endschema %}

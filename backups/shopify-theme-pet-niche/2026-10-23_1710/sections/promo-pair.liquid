@@ -1,0 +1,39 @@
+<section class="section">
+  <div class="page-width promo-pair">
+    {%- for block in section.blocks -%}
+      <div class="promo-card" style="--promo-bg: {{ block.settings.bg }};" {{ block.shopify_attributes }}>
+        <div class="promo-card__copy">
+          {%- if block.settings.eyebrow != blank -%}<p class="eyebrow eyebrow--accent">{{ block.settings.eyebrow | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+          <h2 class="h3">{{ block.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>
+          {%- if block.settings.text != blank -%}<p>{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+          {%- if block.settings.button != blank -%}<a class="btn btn--outline btn--sm" href="{{ block.settings.link | default: '#' }}">{{ block.settings.button }}</a>{%- endif -%}
+        </div>
+        <div class="promo-card__media">
+          {%- if block.settings.image -%}
+            {{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', widths: '350,500,700', sizes: '(min-width: 990px) 25vw, 50vw', alt: block.settings.heading }}
+          {%- else -%}
+            {{ 'product-2' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Promo pair",
+  "blocks": [
+    { "type": "card", "name": "Card", "settings": [
+      { "type": "color", "id": "bg", "label": "Background", "default": "#F4F3EF" },
+      { "type": "text", "id": "eyebrow", "label": "Small label" },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Two dogs? Three?", "info": "Put [square brackets] around words to highlight them." },
+      { "type": "text", "id": "text", "label": "Text", "default": "One remote runs up to three collars. Bundle and save." },
+      { "type": "text", "id": "button", "label": "Button", "default": "Shop bundles" },
+      { "type": "url", "id": "link", "label": "Link" },
+      { "type": "image_picker", "id": "image", "label": "Image" }
+    ] }
+  ],
+  "max_blocks": 2,
+  "presets": [{ "name": "Promo pair", "blocks": [{ "type": "card" }, { "type": "card" }] }]
+}
+{% endschema %}

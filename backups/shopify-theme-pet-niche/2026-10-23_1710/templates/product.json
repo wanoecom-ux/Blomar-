@@ -1,0 +1,497 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "subnav": {
+      "type": "product-subnav",
+      "settings": {},
+      "blocks": {
+        "l1": {
+          "type": "link",
+          "settings": {
+            "label": "Product info",
+            "anchor": "product"
+          }
+        },
+        "l2": {
+          "type": "link",
+          "settings": {
+            "label": "Benefits",
+            "anchor": "benefits"
+          }
+        },
+        "l3": {
+          "type": "link",
+          "settings": {
+            "label": "How it works",
+            "anchor": "how-to-use"
+          }
+        },
+        "l4": {
+          "type": "link",
+          "settings": {
+            "label": "What's inside",
+            "anchor": "features"
+          }
+        },
+        "l5": {
+          "type": "link",
+          "settings": {
+            "label": "Compare",
+            "anchor": "compare"
+          }
+        },
+        "l6": {
+          "type": "link",
+          "settings": {
+            "label": "Reviews",
+            "anchor": "reviews"
+          }
+        },
+        "l7": {
+          "type": "link",
+          "settings": {
+            "label": "FAQ",
+            "anchor": "faq"
+          }
+        }
+      },
+      "block_order": [
+        "l1",
+        "l2",
+        "l3",
+        "l4",
+        "l5",
+        "l6",
+        "l7"
+      ]
+    },
+    "main": {
+      "type": "main-product",
+      "settings": {
+        "image_badge": "Free shipping"
+      },
+      "blocks": {
+        "m1": {
+          "type": "award",
+          "settings": {
+            "text": "GPS fence + training remote in one collar"
+          }
+        },
+        "m2": {
+          "type": "title",
+          "settings": {}
+        },
+        "m3": {
+          "type": "rating",
+          "settings": {
+            "anchor": "reviews"
+          }
+        },
+        "m4": {
+          "type": "text",
+          "settings": {
+            "text": "<p>Set a boundary around your yard without digging a single trench. When your dog gets close to the edge, the collar warns them with a beep. Away from home, the remote turns it into a training collar.</p>"
+          }
+        },
+        "m5": {
+          "type": "buy",
+          "settings": {
+            "heading": "Choose your pack",
+            "popular_index": 2,
+            "popular_label": "Most popular",
+            "value_index": 3,
+            "value_label": "Best value",
+            "button": "Add to cart",
+            "reassure_1": "90-day money-back guarantee",
+            "reassure_2": "Free shipping"
+          }
+        },
+        "m6": {
+          "type": "gift",
+          "settings": {
+            "title": "Free with every order",
+            "text": "Boundary training flags to help your dog learn the line faster."
+          }
+        },
+        "m7": {
+          "type": "tabs",
+          "settings": {
+            "heading": "Tell me about:",
+            "tab_1_title": "How it works",
+            "tab_1_body": "<p>Walk your boundary and save it from the remote. The collar uses satellite GPS to know where your dog is. Near the edge it beeps first, then vibrates, with optional static as a last step. You choose the level for each, from 0 to 9.</p>",
+            "tab_2_title": "In the box",
+            "tab_2_body": "<ul><li>GPS collar(s), waterproof and rechargeable</li><li>Handheld remote</li><li>Charging cable</li><li>Boundary training flags</li><li>Quick-start guide</li></ul>",
+            "tab_3_title": "Specs",
+            "tab_3_body": "<ul><li>Remote range: up to approx. 500 m (1,650 ft)</li><li>Up to 3 collars per remote, each on its own channel</li><li>Cues: beep, vibration, optional static (levels 0–9)</li><li>Waterproof collar</li><li>Battery: about 4 days per charge, depending on use</li></ul>",
+            "tab_4_title": "Sizing",
+            "tab_4_body": "<p>Fits dogs from roughly 4 to 90 kg (8–200 lb) with necks from about 25 to 76 cm (10–30 in). The strap is fully adjustable.</p>"
+          }
+        },
+        "m8": {
+          "type": "accordion",
+          "settings": {
+            "title": "Shipping & returns",
+            "body": "<p>Free shipping on every order. You have 90 days to try it. If it isn't right for your dog, contact us for a refund.</p>"
+          }
+        },
+        "m9": {
+          "type": "accordion",
+          "settings": {
+            "title": "Using it kindly",
+            "body": "<p>Start on the beep only and pair it with treats and praise. Most dogs learn the boundary within a few short sessions. Static is optional and can be turned off. Check your local rules on training collars before using that mode.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "m1",
+        "m2",
+        "m3",
+        "m4",
+        "m5",
+        "m6",
+        "m7",
+        "m8",
+        "m9"
+      ]
+    },
+    "benefits": {
+      "type": "benefits-dark",
+      "settings": {
+        "anchor": "benefits",
+        "eyebrow": "Built for dogs who bolt",
+        "heading": "A fence and a trainer in one collar",
+        "footnote": ""
+      },
+      "blocks": {
+        "b1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "gps",
+            "title": "Any shape, any size",
+            "text": "Wrap the boundary around odd-shaped yards, driveways or open land. No contractor, no trenching."
+          }
+        },
+        "b2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "remote",
+            "title": "Trains on the go",
+            "text": "Take the remote on walks or to the park and give a quick cue when it matters."
+          }
+        },
+        "b3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "dogs",
+            "title": "Up to three dogs",
+            "text": "Each collar gets its own channel, boundary and cue levels, all from one remote."
+          }
+        },
+        "b4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "drop",
+            "title": "Rain, mud, swims",
+            "text": "A waterproof collar that keeps up with dogs who love the creek as much as the couch."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4"
+      ]
+    },
+    "steps": {
+      "type": "steps",
+      "settings": {
+        "anchor": "how-to-use",
+        "heading": "Up and running in an afternoon"
+      },
+      "blocks": {
+        "b1": {
+          "type": "step",
+          "settings": {
+            "title": "Set your boundary",
+            "text": "Walk the edge of your space and save it from the remote. No digging, no wires."
+          }
+        },
+        "b2": {
+          "type": "step",
+          "settings": {
+            "title": "Teach the line",
+            "text": "Place the training flags and walk your dog along them. The beep tells them they're close."
+          }
+        },
+        "b3": {
+          "type": "step",
+          "settings": {
+            "title": "Relax and enjoy",
+            "text": "Let them play while you put the kettle on. Take the remote along for training anywhere."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "features": {
+      "type": "card-carousel",
+      "settings": {
+        "anchor": "features",
+        "heading": "What's inside"
+      },
+      "blocks": {
+        "b1": {
+          "type": "card",
+          "settings": {
+            "title": "GPS collar",
+            "icon": "gps",
+            "text": "Satellite positioning keeps track of the boundary. No base station needed."
+          }
+        },
+        "b2": {
+          "type": "card",
+          "settings": {
+            "title": "Handheld remote",
+            "icon": "remote",
+            "text": "Set boundaries, switch dogs and adjust cue levels with a few buttons."
+          }
+        },
+        "b3": {
+          "type": "card",
+          "settings": {
+            "title": "Rechargeable battery",
+            "icon": "battery",
+            "text": "Around four days per charge, depending on how much you use it."
+          }
+        },
+        "b4": {
+          "type": "card",
+          "settings": {
+            "title": "Waterproof build",
+            "icon": "drop",
+            "text": "Made for rain, puddles and the occasional dive into the dam."
+          }
+        },
+        "b5": {
+          "type": "card",
+          "settings": {
+            "title": "Training flags",
+            "icon": "paw",
+            "text": "Visual markers that help your dog connect the beep with the edge."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5"
+      ]
+    },
+    "free": {
+      "type": "icon-row",
+      "settings": {
+        "anchor": "free-from",
+        "heading": "None of the hassle",
+        "text": "Everything a traditional fence needs, this doesn't.",
+        "style": "no"
+      },
+      "blocks": {
+        "b1": {
+          "type": "item",
+          "settings": {
+            "icon": "no",
+            "title": "No digging",
+            "text": "Nothing to bury, nothing to dig up when you move."
+          }
+        },
+        "b2": {
+          "type": "item",
+          "settings": {
+            "icon": "no",
+            "title": "No app or Wi-Fi",
+            "text": "The remote does everything, even out of phone range."
+          }
+        },
+        "b3": {
+          "type": "item",
+          "settings": {
+            "icon": "no",
+            "title": "No monthly fees",
+            "text": "Pay once. No subscription to keep it working."
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3"
+      ]
+    },
+    "compare": {
+      "type": "comparison",
+      "settings": {
+        "anchor": "compare",
+        "heading": "How it stacks up",
+        "col_us": "GPS fence",
+        "col_2": "Buried-wire fence",
+        "col_3": "Built fence"
+      },
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "No digging or installers",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Set up the same day",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "feature": "Take it with you when you move",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "feature": "Trains away from home",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "feature": "Works for renters",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5"
+      ]
+    },
+    "reviews": {
+      "type": "reviews",
+      "settings": {
+        "anchor": "reviews",
+        "heading": "What dog parents are saying",
+        "empty_text": "Reviews from verified buyers will show here once your review app is connected."
+      }
+    },
+    "faq": {
+      "type": "faq",
+      "settings": {
+        "anchor": "faq",
+        "heading": "Questions? We've got you.",
+        "text": "Can't see yours? Email us and a real person will reply."
+      },
+      "blocks": {
+        "b1": {
+          "type": "question",
+          "settings": {
+            "question": "Do I need Wi-Fi, a phone or an app?",
+            "answer": "<p>No. Everything is controlled from the handheld remote.</p>"
+          }
+        },
+        "b2": {
+          "type": "question",
+          "settings": {
+            "question": "What happens when my dog reaches the boundary?",
+            "answer": "<p>The collar beeps first, then vibrates. Static is an optional final step. Each cue has levels 0–9 and can be switched off.</p>"
+          }
+        },
+        "b3": {
+          "type": "question",
+          "settings": {
+            "question": "Can each dog have its own boundary?",
+            "answer": "<p>Yes. Each collar sits on its own channel, so you can give each dog a different area and different cue levels.</p>"
+          }
+        },
+        "b4": {
+          "type": "question",
+          "settings": {
+            "question": "How small a yard can I set?",
+            "answer": "<p>Small yards work fine. Just keep in mind GPS is accurate to a few metres, so leave a buffer from roads.</p>"
+          }
+        },
+        "b5": {
+          "type": "question",
+          "settings": {
+            "question": "Does it work under trees or near buildings?",
+            "answer": "<p>It uses satellite GPS outdoors. Very heavy tree cover or tall buildings can weaken the signal on any GPS device, but most yards work well.</p>"
+          }
+        },
+        "b6": {
+          "type": "question",
+          "settings": {
+            "question": "How long does the battery last?",
+            "answer": "<p>About four days per charge, depending on use.</p>"
+          }
+        },
+        "b7": {
+          "type": "question",
+          "settings": {
+            "question": "What if it doesn't work for my dog?",
+            "answer": "<p>You have 90 days to try it. If it's not right, contact us for a refund.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "b1",
+        "b2",
+        "b3",
+        "b4",
+        "b5",
+        "b6",
+        "b7"
+      ]
+    }
+  },
+  "order": [
+    "subnav",
+    "main",
+    "benefits",
+    "steps",
+    "features",
+    "free",
+    "compare",
+    "reviews",
+    "faq"
+  ]
+}

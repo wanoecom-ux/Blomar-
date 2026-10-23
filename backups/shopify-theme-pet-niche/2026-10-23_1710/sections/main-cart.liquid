@@ -1,0 +1,9 @@
+<section class="section">
+  <div class="page-width cart-page">
+    <h1 class="h1">{{ 'cart.title' | t }}</h1>
+    <div data-cart-body>{% render 'cart-items' %}</div>
+  </div>
+</section>
+{% schema %}
+{ "name": "Cart" }
+{% endschema %}

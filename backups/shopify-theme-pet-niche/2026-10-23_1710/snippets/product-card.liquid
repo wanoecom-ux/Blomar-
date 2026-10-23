@@ -1,0 +1,25 @@
+{%- comment -%} Usage: {% render 'product-card', product: product, eyebrow: 'For dogs' %} {%- endcomment -%}
+<article class="pcard">
+  <a href="{{ product.url | default: '#' }}" class="pcard__media" aria-label="{{ product.title | escape }}">
+    {%- if product.featured_media -%}
+      {{ product.featured_media | image_url: width: 700 | image_tag: loading: 'lazy', widths: '300,450,600,700', sizes: '(min-width: 990px) 25vw, 70vw', alt: product.featured_media.alt | default: product.title }}
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+    {%- endif -%}
+    {%- if product.compare_at_price > product.price -%}
+      <span class="badge badge--sale">Save {{ product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price }}%</span>
+    {%- endif -%}
+  </a>
+  <div class="pcard__body">
+    {%- if eyebrow != blank -%}<p class="eyebrow">{{ eyebrow }}</p>{%- endif -%}
+    <h3 class="pcard__title"><a href="{{ product.url | default: '#' }}">{{ product.title | default: 'Your pet product' }}</a></h3>
+    {%- if product.metafields.reviews.rating.value != blank -%}
+      <div class="pcard__rating">{% render 'stars', rating: product.metafields.reviews.rating.value.rating %} <span>({{ product.metafields.reviews.rating_count }})</span></div>
+    {%- endif -%}
+    {%- if product.metafields.custom.tagline != blank -%}
+      <p class="pcard__tagline">{{ product.metafields.custom.tagline }}</p>
+    {%- endif -%}
+    <div class="pcard__price">{% render 'price', product: product, show_from: true %}</div>
+    <a class="btn btn--accent btn--block" href="{{ product.url | default: '#' }}">{{ 'products.shop_now' | t }}</a>
+  </div>
+</article>

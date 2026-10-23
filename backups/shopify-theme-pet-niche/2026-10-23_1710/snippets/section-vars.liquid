@@ -1,0 +1,7 @@
+{%- comment -%} Per-section colour overrides. Blank settings fall back to the theme colours. {%- endcomment -%}
+{%- if s.c_bg != blank -%}background-color: {{ s.c_bg }}; {% endif -%}
+{%- if s.c_text != blank -%}--color-ink: {{ s.c_text }}; --color-muted: {{ s.c_text | color_modify: 'alpha', 0.78 }}; color: {{ s.c_text }}; {% endif -%}
+{%- if s.c_heading != blank -%}--sec-heading: {{ s.c_heading }}; {% endif -%}
+{%- if s.c_accent != blank -%}--color-accent: {{ s.c_accent }}; --color-accent-soft: {{ s.c_accent | color_modify: 'alpha', 0.12 }}; {% endif -%}
+{%- if s.c_btn_text != blank -%}--color-accent-ink: {{ s.c_btn_text }}; {% endif -%}
+{%- if s.c_shadow != blank -%}--sec-shadow: {{ s.c_shadow }}; {% endif -%}

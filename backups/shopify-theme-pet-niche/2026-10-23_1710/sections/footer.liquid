@@ -1,0 +1,47 @@
+<footer class="site-footer">
+  <div class="page-width site-footer__grid">
+    <div class="site-footer__brand">
+      <p class="site-footer__logo">{{ shop.name }}</p>
+      {%- if section.settings.tagline != blank -%}<p class="muted-inv">{{ section.settings.tagline | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+    </div>
+    {%- for menu in (1..2) -%}
+      {%- assign key = 'menu_' | append: menu -%}
+      {%- assign list = section.settings[key] -%}
+      {%- if list.links.size > 0 -%}
+        <nav class="site-footer__col" aria-label="{{ list.title }}">
+          <p class="site-footer__heading">{{ list.title }}</p>
+          <ul role="list">{%- for link in list.links -%}<li><a href="{{ link.url }}">{{ link.title }}</a></li>{%- endfor -%}</ul>
+        </nav>
+      {%- endif -%}
+    {%- endfor -%}
+    <div class="site-footer__news">
+      <p class="site-footer__heading">{{ section.settings.newsletter_heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
+      <p class="muted-inv small">{{ section.settings.newsletter_text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
+      {%- form 'customer', class: 'newsletter' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <label class="visually-hidden" for="FooterEmail">Email</label>
+        <input id="FooterEmail" type="email" name="contact[email]" placeholder="Email address" required autocomplete="email">
+        <button type="submit" class="btn btn--accent">Sign up</button>
+        {%- if form.posted_successfully? -%}<p class="small">Thanks for joining!</p>{%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+  <div class="page-width site-footer__base">
+    <p class="small">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+    <ul class="site-footer__policies" role="list">
+      {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title }}</a></li>{%- endfor -%}
+    </ul>
+  </div>
+</footer>
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    { "type": "textarea", "id": "tagline", "label": "Tagline" },
+    { "type": "link_list", "id": "menu_1", "label": "Menu 1", "default": "main-menu" },
+    { "type": "link_list", "id": "menu_2", "label": "Menu 2", "default": "footer" },
+    { "type": "text", "id": "newsletter_heading", "label": "Newsletter heading", "default": "Join the pack" },
+    { "type": "textarea", "id": "newsletter_text", "label": "Newsletter text" }
+  ]
+}
+{% endschema %}

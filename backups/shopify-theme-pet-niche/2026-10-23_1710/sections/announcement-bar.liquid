@@ -1,0 +1,76 @@
+{%- assign promos = section.blocks | where: 'type', 'countdown' -%}
+{%- assign messages = section.blocks | where: 'type', 'message' -%}
+{%- for block in promos -%}
+  <div class="promo-bar" style="--pb-bg: {{ block.settings.bg }}; --pb-fg: {{ block.settings.fg }}; --pb-timer: {{ block.settings.timer_color }};" data-countdown="{{ block.settings.end_at | escape }}" {{ block.shopify_attributes }}>
+    <div class="page-width promo-bar__inner">
+      <a class="promo-bar__text" href="{{ block.settings.link | default: '#' }}">
+        <strong>{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong>
+        {%- if block.settings.subtitle != blank -%}<span>{{ block.settings.subtitle | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>{%- endif -%}
+      </a>
+      <div class="promo-bar__timer" data-timer hidden>
+        <span data-dwrap hidden><b data-d>00</b><small>{{ block.settings.label_d | default: 'Days' }}</small></span><i data-dwrap hidden>:</i>
+        <span><b data-h>00</b><small>{{ block.settings.label_h }}</small></span><i>:</i>
+        <span><b data-m>00</b><small>{{ block.settings.label_m }}</small></span><i>:</i>
+        <span><b data-s>00</b><small>{{ block.settings.label_s }}</small></span>
+      </div>
+    </div>
+  </div>
+{%- endfor -%}
+{%- if messages.size > 0 -%}
+<div class="announce" style="--announce-bg: {{ section.settings.bg }}; --announce-fg: {{ section.settings.fg }};" data-rotator>
+  <div class="page-width announce__inner">
+    <button class="announce__nav" type="button" data-rotator-prev aria-label="Previous">{% render 'icon', name: 'arrow-left', size: 16 %}</button>
+    <div class="announce__track">
+      {%- for block in messages -%}
+        <p class="announce__item{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}">{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</a>{%- else -%}{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{%- endif -%}
+        </p>
+      {%- endfor -%}
+    </div>
+    <button class="announce__nav" type="button" data-rotator-next aria-label="Next">{% render 'icon', name: 'arrow', size: 16 %}</button>
+  </div>
+</div>
+{%- endif -%}
+<style>
+.promo-bar{background:var(--pb-bg);color:var(--pb-fg)}
+.promo-bar__inner{display:flex;align-items:center;justify-content:center;gap:12px;min-height:60px;padding-block:8px}
+.promo-bar.has-timer .promo-bar__inner{justify-content:space-between}
+.promo-bar__text{display:flex;flex-direction:column;align-items:center;gap:3px;line-height:1.1;text-align:center;min-width:0}
+.promo-bar.has-timer .promo-bar__text{align-items:flex-start;text-align:left}
+.promo-bar__text strong{font-size:1.1rem;text-transform:uppercase;font-weight:var(--font-body-weight-bold);letter-spacing:.01em}
+.promo-bar__text span{font-size:.78rem;text-transform:uppercase;font-weight:var(--font-body-weight-medium);letter-spacing:.02em}
+.promo-bar__timer{display:flex;align-items:flex-start;gap:8px;font-variant-numeric:tabular-nums;flex:none}
+.promo-bar__timer span{display:flex;flex-direction:column;align-items:center;line-height:1}
+.promo-bar__timer b{font-size:1.75rem;color:var(--pb-timer);font-weight:var(--font-body-weight-bold);letter-spacing:.02em}
+.promo-bar__timer small{font-size:.85rem;margin-top:6px;color:var(--pb-fg)}
+.promo-bar__timer i{font-style:normal;color:var(--pb-timer);font-weight:700;font-size:1.6rem;line-height:1}
+@media (min-width:990px){.promo-bar.has-timer .promo-bar__inner{justify-content:center;gap:48px}}
+@media (max-width:420px){.promo-bar__text strong{font-size:.98rem}.promo-bar__text span{font-size:.68rem}.promo-bar__timer{gap:5px}.promo-bar__timer b{font-size:1.45rem}.promo-bar__timer i{font-size:1.3rem}.promo-bar__timer small{font-size:.72rem}}
+</style>
+<script>
+(() => {
+  document.querySelectorAll('[data-countdown]').forEach((bar) => {
+    const raw = (bar.getAttribute('data-countdown') || '').trim();
+    if (!raw) return;
+    const end = new Date(raw.replace(' ', 'T'));
+    if (isNaN(end)) return;
+    const timer = bar.querySelector('[data-timer]');
+    const d = bar.querySelector('[data-d]'), dw = bar.querySelectorAll('[data-dwrap]');
+    const h = bar.querySelector('[data-h]'), m = bar.querySelector('[data-m]'), s = bar.querySelector('[data-s]');
+    const pad = (n) => String(n).padStart(2, '0');
+    const tick = () => {
+      const left = Math.floor((end - Date.now()) / 1000);
+      if (left <= 0) { timer.hidden = true; bar.classList.remove('has-timer'); clearInterval(id); return; }
+      timer.hidden = false; bar.classList.add('has-timer');
+      const days = Math.floor(left / 86400);
+      dw.forEach((el) => { el.hidden = days < 1; });
+      d.textContent = pad(days);
+      h.textContent = pad(Math.floor(left % 86400 / 3600)); m.textContent = pad(Math.floor(left % 3600 / 60)); s.textContent = pad(left % 60);
+    };
+    const id = setInterval(tick, 1000); tick();
+  });
+})();
+</script>
+{% schema %}
+{"name":"Announcement bar","settings":[{"type":"color","id":"bg","label":"Message bar background","default":"#101A2B"},{"type":"color","id":"fg","label":"Message bar text","default":"#FFFFFF"}],"blocks":[{"type":"countdown","name":"Sale bar with timer","limit":1,"settings":[{"type":"text","id":"title","label":"Headline","default":"Spring sale","info":"Put [square brackets] around words to highlight them."},{"type":"text","id":"subtitle","label":"Small line","default":"Limited time"},{"type":"url","id":"link","label":"Link"},{"type":"text","id":"end_at","label":"Sale ends (date & time)","info":"Format: 2026-11-30 23:59 (shopper's local time). The timer only shows before this time and hides when the sale ends. Use your real end date."},{"type":"text","id":"label_d","label":"Days label (shows when more than 24 hours are left)","default":"Days"},{"type":"text","id":"label_h","label":"Hours label","default":"Hrs"},{"type":"text","id":"label_m","label":"Minutes label","default":"Mins"},{"type":"text","id":"label_s","label":"Seconds label","default":"Secs"},{"type":"color","id":"bg","label":"Background","default":"#171F35"},{"type":"color","id":"fg","label":"Text","default":"#FFFFFF"},{"type":"color","id":"timer_color","label":"Timer numbers","default":"#DB6742"}]},{"type":"message","name":"Message","settings":[{"type":"text","id":"text","label":"Text","default":"Free shipping on every order"},{"type":"url","id":"link","label":"Link"}]}],"max_blocks":7}
+{% endschema %}

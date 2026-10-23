@@ -1,0 +1,87 @@
+{%- liquid
+  if section.settings.product != blank
+    assign shop_url = section.settings.product.url
+  else
+    assign shop_url = section.settings.cta_link | default: routes.all_products_collection_url
+  endif
+  assign specs = section.blocks | where: 'type', 'spec'
+  assign quotes = section.blocks | where: 'type', 'quote'
+-%}
+<section class="lp sec-scope" style="--lp-bg: {{ section.settings.bg }}; {% render 'section-vars', s: section.settings %}">
+  <div class="lp__inner">
+    {%- if specs.size > 0 -%}
+      <div class="lp__specs offset-card">
+        {%- if section.settings.specs_heading != blank -%}<h2 class="h3 lp__specs-title">{{ section.settings.specs_heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>{%- endif -%}
+        <ul role="list">
+          {%- for block in specs -%}
+            <li {{ block.shopify_attributes }}>
+              <span class="lp__tick">{% render 'icon-slot', image: block.settings.icon, name: 'check', size: 16 %}</span>
+              <span><strong>{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong>{% if block.settings.text != blank %} – {{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{% endif %}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.stat_image or section.settings.stat_big != blank or section.settings.stat_text != blank -%}
+      <div class="lp__stat">
+        {%- if section.settings.stat_image -%}<div class="lp__stat-img">{{ section.settings.stat_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '400,600,900', sizes: '(min-width: 800px) 720px, 100vw', alt: '' }}</div>{%- endif -%}
+        <p class="lp__stat-copy">
+          {%- if section.settings.stat_small != blank -%}<span>{{ section.settings.stat_small | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>{%- endif -%}
+          {%- if section.settings.stat_big != blank -%}<strong class="lp__stat-big">{{ section.settings.stat_big | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong>{%- endif -%}
+          {%- if section.settings.stat_text != blank -%}<span class="lp__stat-text">{{ section.settings.stat_text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>{%- endif -%}
+        </p>
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.reviews_heading != blank -%}<h2 class="h2 center lp__rev-title">{{ section.settings.reviews_heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>{%- endif -%}
+    {%- if quotes.size > 0 -%}
+      <div class="lp__quotes">
+        {%- for block in quotes -%}
+          <figure class="lp__quote" {{ block.shopify_attributes }}>
+            {% render 'stars', rating: block.settings.rating %}
+            {%- if block.settings.title != blank -%}<strong class="lp__quote-title">{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong>{%- endif -%}
+            <blockquote>{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</blockquote>
+            <figcaption>— {{ block.settings.name }}{% if block.settings.location != blank %}, {{ block.settings.location }}{% endif %}</figcaption>
+          </figure>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == '@app' -%}{% render block %}{%- endif -%}
+    {%- endfor -%}
+
+    {%- if section.settings.cta != blank -%}
+      <div class="lp__cta">
+        <a class="btn btn--accent btn--block" href="{{ shop_url }}">{{ section.settings.cta }}</a>
+        {%- if section.settings.cta_note != blank -%}<p class="cta-trust">{{ section.settings.cta_note | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+.lp{background:var(--lp-bg);padding:40px 0 56px}
+.lp__inner{max-width:760px;margin-inline:auto;padding-inline:16px;display:flex;flex-direction:column;gap:36px}
+.lp__specs{padding:26px 22px;background:var(--color-bg)}
+.lp__specs-title{text-align:center;margin-bottom:18px}
+.lp__specs ul{list-style:none;display:flex;flex-direction:column;gap:16px}
+.lp__specs li{display:flex;gap:12px;align-items:flex-start}
+.lp__tick{flex:none;display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--color-accent);color:var(--color-accent-ink);margin-top:1px}
+.lp__stat{display:grid;gap:16px;text-align:center}
+.lp__stat-img{border-radius:18px;overflow:hidden;border:1.5px solid var(--color-ink)}
+.lp__stat-img img{width:100%;height:auto}
+.lp__stat-copy{margin:0;display:flex;flex-direction:column;align-items:center;gap:2px;text-transform:uppercase;font-weight:var(--font-body-weight-bold);letter-spacing:.03em}
+.lp__stat-big{font-family:var(--font-heading);font-weight:var(--font-heading-weight);font-size:calc(2.6rem * var(--heading-scale));line-height:1.05;color:var(--color-accent);text-transform:none;letter-spacing:0}
+.lp__stat-text{max-width:420px}
+.lp__rev-title{margin-bottom:-12px}
+.lp__quotes{display:grid;gap:18px}
+@media (min-width:750px){.lp__quotes{grid-template-columns:1fr 1fr}}
+.lp__quote{margin:0;display:flex;flex-direction:column;gap:8px;padding:20px;background:var(--color-bg);border:1.5px solid var(--color-ink);border-radius:18px;box-shadow:5px 5px 0 var(--sec-shadow,var(--color-ink))}
+.lp__quote blockquote{margin:0;font-size:.95rem}
+.lp__quote figcaption{font-size:.82rem;color:var(--color-muted);font-style:italic}
+.lp__cta{text-align:center}
+.lp__cta .cta-trust{margin-top:12px;font-size:.85rem}
+</style>
+{% schema %}
+{"name":"Listicle: proof & reviews","settings":[{"type":"text","id":"specs_heading","label":"Spec card heading","default":"Built tough for any dog, any yard","info":"Put [square brackets] around words to highlight them."},{"type":"header","content":"Big number line"},{"type":"image_picker","id":"stat_image","label":"Photo"},{"type":"text","id":"stat_small","label":"Small line above","default":"Join"},{"type":"text","id":"stat_big","label":"Big number or phrase","info":"Only use numbers you can back up."},{"type":"text","id":"stat_text","label":"Line under","default":"dog owners keeping their dogs safe at home","info":"Put [square brackets] around words to highlight them."},{"type":"header","content":"Reviews"},{"type":"text","id":"reviews_heading","label":"Reviews heading","default":"What owners are saying","info":"Put [square brackets] around words to highlight them."},{"type":"header","content":"Button"},{"type":"product","id":"product","label":"Product the button links to"},{"type":"url","id":"cta_link","label":"Or link to"},{"type":"text","id":"cta","label":"Button text","default":"Shop now"},{"type":"text","id":"cta_note","label":"Line under the button","default":"Free shipping · 90-day money-back guarantee"},{"type":"header","content":"Colours"},{"type":"paragraph","content":"Leave any colour empty to use the theme colours."},{"type":"color","id":"bg","label":"Background","default":"#F7EFDE"},{"type":"color","id":"c_text","label":"Text"},{"type":"color","id":"c_heading","label":"Headings"},{"type":"color","id":"c_accent","label":"Accent (buttons, ticks, number)"},{"type":"color","id":"c_btn_text","label":"Button text"},{"type":"color","id":"c_shadow","label":"Card & button shadow"}],"blocks":[{"type":"spec","name":"Spec","settings":[{"type":"text","id":"title","label":"Bold part","default":"Spec title","info":"Put [square brackets] around words to highlight them."},{"type":"text","id":"text","label":"Rest of the line","default":"Short explanation."},{"type":"image_picker","id":"icon","label":"Own icon (replaces the tick)"}]},{"type":"quote","name":"Review","settings":[{"type":"range","id":"rating","label":"Stars","min":1,"max":5,"step":1,"default":5},{"type":"text","id":"title","label":"Title","default":"Review title","info":"Put [square brackets] around words to highlight them."},{"type":"textarea","id":"text","label":"Review","default":"Paste a real customer review here."},{"type":"text","id":"name","label":"Name","default":"Customer name"},{"type":"text","id":"location","label":"Location"}]},{"type":"@app"}],"presets":[{"name":"Listicle: proof & reviews","blocks":[{"type":"spec"},{"type":"spec"},{"type":"spec"},{"type":"quote"},{"type":"quote"}]}]}
+{% endschema %}

@@ -1,0 +1,118 @@
+{%- liquid
+  assign split = false
+  if section.settings.layout == 'split'
+    assign split = true
+  endif
+  assign boxed = false
+  if section.settings.card_style == 'boxed'
+    assign boxed = true
+  endif
+  assign eyebrow_hl = section.settings.eyebrow | replace: '[', '<span class="hl">' | replace: ']', '</span>'
+  capture label
+    if section.settings.eyebrow != blank
+      if section.settings.label_style == 'boxed'
+        echo '<p class="label-box" style="--lb-bg: ' | append: section.settings.label_bg | append: '; --lb-color: ' | append: section.settings.label_color | append: '; --lb-border: ' | append: section.settings.label_border | append: ';">' | append: eyebrow_hl | append: '</p>'
+      else
+        echo '<p class="eyebrow eyebrow--accent">' | append: eyebrow_hl | append: '</p>'
+      endif
+    endif
+  endcapture
+-%}
+<section class="section section--tint fgs sec-scope{% if split %} fgs--split{% endif %}{% if boxed %} fgs--boxed{% endif %}" id="{{ section.settings.anchor | handleize }}" style="--fg-bg: {{ section.settings.bg }}; {% render 'section-vars', s: section.settings %}">
+  <div class="page-width">
+    {%- unless split -%}
+      <div class="section-head center">
+        {% render 'label-row', label: label, left: section.settings.label_img_left, right: section.settings.label_img_right, size: section.settings.label_img_size %}
+        {%- if section.settings.show_rating -%}<div class="rating-line">{% render 'rating-badge', style: section.settings.rating_style, p: section.settings.product, label: section.settings.rating_label, count_text: section.settings.rating_count_text, color: section.settings.rating_color %}</div>{%- endif -%}
+        <h2 class="h2{% if section.settings.heading_style == 'caps' %} h-caps{% endif %}">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>
+        {%- if section.settings.text != blank -%}<p class="muted narrow">{{ section.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+      </div>
+    {%- endunless -%}
+    <div class="fg">
+      {%- if split -%}
+        <div class="fg__head">
+          {% render 'label-row', label: label, left: section.settings.label_img_left, right: section.settings.label_img_right, size: section.settings.label_img_size %}
+          <h2 class="h2{% if section.settings.heading_style == 'caps' %} h-caps{% endif %}">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>
+          {%- if section.settings.text != blank -%}<p class="fg__text">{{ section.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+        </div>
+        <div class="fg__side">
+          {%- if section.settings.show_rating -%}<div class="rating-line center">{% render 'rating-badge', style: section.settings.rating_style, p: section.settings.product, label: section.settings.rating_label, count_text: section.settings.rating_count_text, color: section.settings.rating_color %}</div>{%- endif -%}
+          <div class="fg__media offset-card">
+            {%- if section.settings.image -%}
+              {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500,750,1000', sizes: '(min-width: 990px) 40vw, 100vw', alt: section.settings.heading }}
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+            {%- endif -%}
+          </div>
+        </div>
+        <ul class="fg__list" role="list">
+          {%- for block in section.blocks -%}
+            <li class="fg__item" {{ block.shopify_attributes }}>
+              <span class="fg__icon">{% render 'icon-slot', image: block.settings.custom_icon, name: block.settings.icon, size: 40 %}</span>
+              <span class="fg__title">{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>
+              {%- if block.settings.text != blank -%}<span class="fg__desc">{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>{%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- if section.settings.cta != blank -%}
+          <div class="fg__cta fg__cta--split">
+            <a class="btn btn--accent btn--block" href="{% if section.settings.product != blank %}{{ section.settings.product.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ section.settings.cta }}</a>
+            {%- if section.settings.cta_note != blank -%}<p class="cta-trust">{% render 'icon-slot', image: section.settings.note_icon, name: 'shield', size: 16 %} {{ section.settings.cta_note | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <div class="fg__media">
+          {%- if section.settings.image -%}
+            {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500,750,1000', sizes: '(min-width: 990px) 40vw, 100vw', alt: section.settings.heading }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder' }}
+          {%- endif -%}
+        </div>
+        <ul class="fg__list" role="list">
+          {%- for block in section.blocks -%}
+            <li class="fg__item" {{ block.shopify_attributes }}>
+              <span class="fg__icon">{% render 'icon-slot', image: block.settings.custom_icon, name: block.settings.icon, size: 26 %}</span>
+              <span><strong class="fg__title">{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong>{% if block.settings.text != blank %}<br><span class="fg__desc small muted">{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>{% endif %}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.cta != blank and split == false -%}
+      <div class="fg__cta">
+        <a class="btn btn--accent btn--lg" href="{% if section.settings.product != blank %}{{ section.settings.product.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ section.settings.cta }}</a>
+        {%- if section.settings.cta_note != blank -%}<p class="cta-trust">{% render 'icon-slot', image: section.settings.note_icon, name: 'shield', size: 16 %} {{ section.settings.cta_note | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+<style>
+.fgs{background:var(--fg-bg)}
+.fg{display:grid;gap:28px;align-items:center}
+@media (min-width:990px){.fgs:not(.fgs--split) .fg{grid-template-columns:1fr 1fr;gap:56px}}
+.fg__media{border-radius:var(--radius);overflow:hidden;aspect-ratio:1/1;background:var(--color-bg)}
+.fg__media img,.fg__media svg{width:100%;height:100%;object-fit:cover}
+.fg__list{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.fg__item{display:flex;flex-direction:column;gap:10px;padding:18px;background:var(--color-bg);border-radius:12px;border:1px solid var(--color-line)}
+.fg__icon{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;background:var(--color-accent-soft);color:var(--color-accent)}
+.fg__cta{display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:28px;text-align:center}
+.fgs--split .fg{grid-template-areas:"head" "side" "list" "cta";gap:22px;align-items:start}
+.fg__head{grid-area:head}.fg__side{grid-area:side}.fgs--split .fg__list{grid-area:list}.fg__cta--split{grid-area:cta;margin-top:6px}
+.fgs--split .fg__head .h2{margin-bottom:14px}
+@media (max-width:989px){.fgs--split .fg__head{text-align:center}.fgs--split .fg__text{margin-inline:auto}}
+@media (min-width:990px){.fgs--split .fg{grid-template-columns:1.1fr .9fr;column-gap:72px;row-gap:22px;grid-template-areas:"head side" "list side" "list cta"}}
+.fg__text{font-size:1.05rem;margin-bottom:22px;max-width:520px}
+.fgs--split .fg__list{grid-template-columns:repeat(3,1fr);gap:14px}
+.fgs--boxed .fg__item{align-items:center;text-align:center;justify-content:center;min-height:150px;padding:18px 10px;border:1.5px solid var(--color-ink);border-radius:16px;box-shadow:4px 4px 0 var(--sec-shadow,var(--color-accent))}
+.fgs--boxed .fg__icon{width:auto;height:auto;background:none;border-radius:0}
+.fgs--boxed .fg__title{font-weight:var(--font-body-weight-bold);text-transform:uppercase;color:var(--color-accent);font-size:.82rem;line-height:1.2;letter-spacing:.02em}
+.fgs--boxed .fg__desc{font-size:.78rem;color:var(--color-muted)}
+.fg__side{display:flex;flex-direction:column;align-items:stretch;max-width:440px;width:100%;margin-inline:auto}
+.fgs:not(.fgs--split) .fg__side{max-width:none}
+.rating-line{margin:0 0 14px}
+.rating-line.center{display:flex;justify-content:center}
+@media (max-width:600px){.fgs--split .fg__list{gap:10px}.fgs--boxed .fg__item{min-height:120px;padding:12px 6px}.fgs--boxed .fg__title{font-size:.72rem}}
+</style>
+{% schema %}
+{"name":"Feature grid","settings":[{"type":"text","id":"anchor","label":"Anchor ID","default":"solution"},{"type":"select","id":"layout","label":"Layout","default":"stacked","options":[{"value":"stacked","label":"Heading on top, image + boxes below"},{"value":"split","label":"Text & boxes left, image right (with button)"}]},{"type":"select","id":"card_style","label":"Feature box style","default":"plain","options":[{"value":"plain","label":"Soft cards"},{"value":"boxed","label":"Bold boxes with offset shadow"}]},{"type":"color","id":"bg","label":"Background","default":"#F4F3EF"},{"type":"text","id":"eyebrow","label":"Small label","default":"The solution"},{"type":"header","content":"Label & heading style"},{"type":"select","id":"label_style","label":"Small label style","default":"plain","options":[{"value":"plain","label":"Plain text"},{"value":"boxed","label":"Boxed (dashed border)"}]},{"type":"image_picker","id":"label_img_left","label":"Image left of the small label","info":"Optional. A PNG with a transparent background works best."},{"type":"image_picker","id":"label_img_right","label":"Image right of the small label"},{"type":"range","id":"label_img_size","label":"Label image size","min":40,"max":200,"step":5,"unit":"px","default":95},{"type":"color","id":"label_bg","label":"Boxed label background","default":"#FBF4E8"},{"type":"color","id":"label_color","label":"Label text colour","default":"#101A2B"},{"type":"color","id":"label_border","label":"Boxed label border","info":"Leave empty to match the label text colour."},{"type":"select","id":"heading_style","label":"Heading style","default":"theme","options":[{"value":"theme","label":"Theme heading font"},{"value":"caps","label":"Bold capitals (body font)"}]},{"type":"header","content":"Star rating line"},{"type":"checkbox","id":"show_rating","label":"Show star rating","default":true,"info":"Rating & review count come from the product the button links to (via your review app)."},{"type":"select","id":"rating_style","label":"Star style","default":"stars","options":[{"value":"stars","label":"Plain stars, e.g. ★★★★★ (4.8) 1,234 Reviews"},{"value":"boxes","label":"Stars in coloured boxes"}]},{"type":"text","id":"rating_label","label":"Rating word","default":"Excellent"},{"type":"text","id":"rating_count_text","label":"Or type your own count text","info":"e.g. (1,234 reviews). Leave empty to use the product's real review count. Only use numbers you can back up."},{"type":"color","id":"rating_color","label":"Star colour","default":"#FF9900"},{"type":"text","id":"heading","label":"Heading","default":"Heading","info":"Put [square brackets] around words to highlight them."},{"type":"text","id":"text","label":"Text"},{"type":"image_picker","id":"image","label":"Image"},{"type":"product","id":"product","label":"Product the button links to"},{"type":"text","id":"cta","label":"Button text","default":"Shop now"},{"type":"text","id":"cta_note","label":"Text under button","default":"Secure checkout · 90-day money-back guarantee"},{"type":"image_picker","id":"note_icon","label":"Icon next to the text under the button","info":"Upload a PNG or SVG. Square works best."},{"type":"header","content":"Colours"},{"type":"paragraph","content":"Leave any colour empty to use the theme colours."},{"type":"color","id":"c_text","label":"Text"},{"type":"color","id":"c_heading","label":"Headings"},{"type":"color","id":"c_accent","label":"Accent (buttons, ticks, icons, highlights)"},{"type":"color","id":"c_btn_text","label":"Button text"},{"type":"color","id":"c_shadow","label":"Card & button shadow"}],"blocks":[{"type":"feature","name":"Feature","settings":[{"type":"select","id":"icon","label":"Icon","default":"gps","options":[{"value":"gps","label":"GPS pin"},{"value":"remote","label":"Remote"},{"value":"dogs","label":"Dogs"},{"value":"drop","label":"Water drop"},{"value":"battery","label":"Battery"},{"value":"shield","label":"Shield"},{"value":"tool","label":"Tool"},{"value":"clock","label":"Clock"},{"value":"paw","label":"Paw"},{"value":"no","label":"No / without"},{"value":"none","label":"None"}]},{"type":"image_picker","id":"custom_icon","label":"Your own icon (replaces the one above)","info":"Upload a PNG or SVG. Square works best."},{"type":"text","id":"title","label":"Title","default":"Feature","info":"Put [square brackets] around words to highlight them."},{"type":"text","id":"text","label":"Text"}]}],"max_blocks":8,"presets":[{"name":"Feature grid","blocks":[{"type":"feature"},{"type":"feature"}]}]}
+{% endschema %}

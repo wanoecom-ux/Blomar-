@@ -1,0 +1,14 @@
+{%- comment -%} Usage: {% render 'stars', rating: 4.8 %} {%- endcomment -%}
+{%- assign r = rating | default: 5 | times: 1.0 -%}
+<span class="stars" role="img" aria-label="{{ r }} out of 5 stars">
+  {%- for i in (1..5) -%}
+    {%- assign prev = i | minus: 1 -%}
+    {%- if r >= i -%}
+      <span class="star star--full">{% render 'icon', name: 'star', size: 16 %}</span>
+    {%- elsif r > prev -%}
+      <span class="star star--half">{% render 'icon', name: 'star', size: 16 %}</span>
+    {%- else -%}
+      <span class="star star--empty">{% render 'icon', name: 'star', size: 16 %}</span>
+    {%- endif -%}
+  {%- endfor -%}
+</span>

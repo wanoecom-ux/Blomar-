@@ -1,0 +1,32 @@
+{%- comment -%} Usage: {% render 'icon', name: 'paw', size: 24 %} {%- endcomment -%}
+{%- assign s = size | default: 24 -%}
+<svg class="icon icon-{{ name }}" width="{{ s }}" height="{{ s }}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+{%- case name -%}
+  {%- when 'paw' -%}<circle cx="6.5" cy="9" r="1.8"/><circle cx="10" cy="5.5" r="1.8"/><circle cx="14" cy="5.5" r="1.8"/><circle cx="17.5" cy="9" r="1.8"/><path d="M12 11.5c-2.6 0-5 2.6-5 5 0 1.6 1.2 2.5 2.6 2.5 1 0 1.5-.5 2.4-.5s1.4.5 2.4.5c1.4 0 2.6-.9 2.6-2.5 0-2.4-2.4-5-5-5Z"/>
+  {%- when 'gps' -%}<circle cx="12" cy="10" r="3"/><path d="M12 21s-7-6.2-7-11a7 7 0 1 1 14 0c0 4.8-7 11-7 11Z"/>
+  {%- when 'remote' -%}<rect x="7" y="2.5" width="10" height="19" rx="3"/><circle cx="12" cy="8" r="2"/><path d="M10 14h4M10 17h4"/>
+  {%- when 'shield' -%}<path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.3 7.5 9.5 4.3-1.2 7.5-4.9 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/>
+  {%- when 'truck' -%}<path d="M2.5 6.5h11v9h-11zM13.5 9.5h4l3 3v3h-7"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>
+  {%- when 'drop' -%}<path d="M12 3s6 6.4 6 11a6 6 0 0 1-12 0c0-4.6 6-11 6-11Z"/>
+  {%- when 'battery' -%}<rect x="2.5" y="7" width="17" height="10" rx="2"/><path d="M21.5 10.5v3M6 10v4M9.5 10v4M13 10v4"/>
+  {%- when 'dogs' -%}<circle cx="8" cy="8" r="3"/><circle cx="16.5" cy="9.5" r="2.5"/><path d="M2.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M13.5 20c.4-2.5 1.7-4 3-4s2.6 1.5 3 4"/>
+  {%- when 'no' -%}<circle cx="12" cy="12" r="8.5"/><path d="m6 6 12 12"/>
+  {%- when 'check' -%}<path d="m5 12.5 4.5 4.5L19 7.5"/>
+  {%- when 'x' -%}<path d="M6 6l12 12M18 6 6 18"/>
+  {%- when 'plus' -%}<path d="M12 5v14M5 12h14"/>
+  {%- when 'minus' -%}<path d="M5 12h14"/>
+  {%- when 'arrow' -%}<path d="M5 12h14M13 6l6 6-6 6"/>
+  {%- when 'arrow-left' -%}<path d="M19 12H5M11 6l-6 6 6 6"/>
+  {%- when 'chevron' -%}<path d="m6 9 6 6 6-6"/>
+  {%- when 'cart' -%}<path d="M3 4h2l2.2 11h10.6L20 7.5H6.2"/><circle cx="9" cy="19.5" r="1.3"/><circle cx="17" cy="19.5" r="1.3"/>
+  {%- when 'menu' -%}<path d="M4 7h16M4 12h16M4 17h16"/>
+  {%- when 'search' -%}<circle cx="11" cy="11" r="6.5"/><path d="m20 20-4.2-4.2"/>
+  {%- when 'user' -%}<circle cx="12" cy="8" r="4"/><path d="M4.5 20.5c1-3.6 4-5.5 7.5-5.5s6.5 1.9 7.5 5.5"/>
+  {%- when 'gift' -%}<rect x="3.5" y="8.5" width="17" height="4" rx="1"/><path d="M5 12.5v8h14v-8M12 8.5v12M12 8.5S10.8 4 8.3 4C6.5 4 6 6.8 8.5 8.5M12 8.5S13.2 4 15.7 4c1.8 0 2.3 2.8-.2 4.2"/>
+  {%- when 'verified' -%}<path d="m12 2.5 2.4 1.8 3-.1.9 2.9 2.4 1.8-.9 2.9.9 2.9-2.4 1.8-.9 2.9-3-.1L12 21.5l-2.4-1.8-3 .1-.9-2.9-2.4-1.8.9-2.9-.9-2.9 2.4-1.8.9-2.9 3 .1L12 2.5Z"/><path d="m8.8 12 2.2 2.2 4.2-4.4"/>
+  {%- when 'star' -%}<path fill="currentColor" stroke="none" d="m12 2.8 2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9L12 2.8Z"/>
+  {%- when 'clock' -%}<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>
+  {%- when 'tool' -%}<path d="M14.5 6.5a4 4 0 0 0-5.4 5.1L3.5 17.2l3.3 3.3 5.6-5.6a4 4 0 0 0 5.1-5.4l-2.6 2.6-2.4-.4-.4-2.4 2.4-2.8Z"/>
+  {%- else -%}<circle cx="12" cy="12" r="8.5"/>
+{%- endcase -%}
+</svg>

@@ -1,0 +1,44 @@
+<section class="section">
+  <div class="page-width">
+    <div class="stats-panel" style="--panel-bg: {{ section.settings.bg }};">
+      <div class="stats-panel__copy">
+        <h2 class="h2">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>
+        {%- if section.settings.text != blank -%}<p>{{ section.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+        <div class="stats-grid">
+          {%- for block in section.blocks -%}
+            <div class="stat" {{ block.shopify_attributes }}>
+              <span class="stat__num">{{ block.settings.number | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>
+              <span class="stat__label">{{ block.settings.label | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+      <div class="stats-panel__media">
+        {%- if section.settings.image -%}
+          {{ section.settings.image | image_url: width: 1000 | image_tag: loading: 'lazy', widths: '500,750,1000', sizes: '(min-width: 990px) 45vw, 100vw', alt: section.settings.heading }}
+        {%- else -%}
+          {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder' }}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Stats panel",
+  "settings": [
+    { "type": "color", "id": "bg", "label": "Background", "default": "#E8F0F7" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Freedom for them. Peace of mind for you.", "info": "Put [square brackets] around words to highlight them." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Simple gear that does what it says. Plain-English instructions and real people on email when you need help." },
+    { "type": "image_picker", "id": "image", "label": "Image" }
+  ],
+  "blocks": [
+    { "type": "stat", "name": "Stat", "settings": [
+      { "type": "text", "id": "number", "label": "Number", "default": "0–9" },
+      { "type": "text", "id": "label", "label": "Label", "default": "Adjustable levels per mode" }
+    ] }
+  ],
+  "max_blocks": 4,
+  "presets": [{ "name": "Stats panel", "blocks": [{ "type": "stat" }, { "type": "stat" }] }]
+}
+{% endschema %}

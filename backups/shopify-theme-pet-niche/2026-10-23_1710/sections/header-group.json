@@ -1,0 +1,54 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement-bar",
+      "blocks": {
+        "sale": {
+          "type": "countdown",
+          "settings": {
+            "title": "Blomar launch sale 🐶",
+            "subtitle": "Free shipping on every order",
+            "link": "",
+            "end_at": "",
+            "label_h": "Hrs",
+            "label_m": "Mins",
+            "label_s": "Secs",
+            "bg": "#171F35",
+            "fg": "#FFFFFF",
+            "timer_color": "#DB6742",
+            "label_d": "Days"
+          }
+        }
+      },
+      "block_order": [
+        "sale"
+      ],
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo": "shopify://shop_images/blomar-pets-logo-navy.png",
+        "logo_width": 180,
+        "menu": "main-menu",
+        "promo_text": "Get $15",
+        "promo_link": ""
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

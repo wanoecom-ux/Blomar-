@@ -1,0 +1,165 @@
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+-%}
+<section class="product" id="product" data-product data-section="{{ section.id }}">
+  <div class="page-width">
+    <nav class="crumbs small" aria-label="Breadcrumb">
+      <a href="{{ routes.root_url }}">Home</a> /
+      {%- if collection %} <a href="{{ collection.url }}">{{ collection.title }}</a> /{% endif %}
+      <span aria-current="page">{{ product.title }}</span>
+    </nav>
+    <div class="product__grid">
+      <div class="gallery" data-gallery>
+        <div class="gallery__main">
+          {%- for media in product.media -%}
+            {%- liquid
+              assign is_active = false
+              if current.featured_media
+                if media.id == current.featured_media.id
+                  assign is_active = true
+                endif
+              elsif forloop.first
+                assign is_active = true
+              endif
+              assign img_loading = 'lazy'
+              if forloop.first
+                assign img_loading = 'eager'
+              endif
+              assign img_alt = media.alt | default: product.title
+            -%}
+            <div class="gallery__slide{% if is_active %} is-active{% endif %}" data-media-id="{{ media.id }}">
+              {%- case media.media_type -%}
+                {%- when 'image' -%}
+                  {{ media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(min-width: 990px) 55vw, 100vw', loading: img_loading, alt: img_alt }}
+                {%- else -%}
+                  {{ media | media_tag: image_size: '1400x' }}
+              {%- endcase -%}
+            </div>
+          {%- else -%}
+            <div class="gallery__slide is-active">{{ 'product-1' | placeholder_svg_tag: 'placeholder' }}</div>
+          {%- endfor -%}
+          {%- if section.settings.image_badge != blank -%}<span class="gallery__badge">{{ section.settings.image_badge }}</span>{%- endif -%}
+          {%- if product.media.size > 1 -%}
+            <button class="round-btn gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous image">{% render 'icon', name: 'arrow-left', size: 18 %}</button>
+            <button class="round-btn gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next image">{% render 'icon', name: 'arrow', size: 18 %}</button>
+          {%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}
+          <div class="gallery__thumbs" role="list">
+            {%- for media in product.media -%}
+              <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ media.id }}" aria-label="Show image {{ forloop.index }}" role="listitem">{{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </div>
+      <div class="product__info">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'award' -%}
+              <p class="pill-badge" {{ block.shopify_attributes }}>{% render 'icon-slot', image: block.settings.icon_image, name: 'verified', size: 14 %} {{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
+            {%- when 'title' -%}
+              <h1 class="h2 product__title" {{ block.shopify_attributes }}>{{ product.title }}</h1>
+            {%- when 'rating' -%}
+              {%- if product.metafields.reviews.rating.value != blank -%}
+                <a href="#{{ block.settings.anchor | handleize }}" class="product__rating" {{ block.shopify_attributes }}>
+                  {% render 'stars', rating: product.metafields.reviews.rating.value.rating %}
+                  <span class="small"><strong>{{ product.metafields.reviews.rating.value.rating | round: 1 }}</strong> · {{ product.metafields.reviews.rating_count }} reviews</span>
+                </a>
+              {%- endif -%}
+            {%- when 'text' -%}
+              <div class="product__lede rte" {{ block.shopify_attributes }}>{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</div>
+            {%- when 'description' -%}
+              <div class="product__lede rte" {{ block.shopify_attributes }}>{{ product.description }}</div>
+            {%- when 'buy' -%}
+              <div class="buybox" {{ block.shopify_attributes }}>
+                {%- form 'product', product, id: form_id, class: 'buybox__form', data-product-form: '' -%}
+                  <input type="hidden" name="id" value="{{ current.id }}" data-variant-input>
+                  {%- if block.settings.heading != blank -%}<p class="buybox__heading">{{ block.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+                  {%- unless product.has_only_default_variant -%}
+                    <fieldset class="packs" role="radiogroup">
+                      <legend class="visually-hidden">{{ product.options.first }}</legend>
+                      {%- for variant in product.variants -%}
+                        {%- liquid
+                          assign badge = ''
+                          if forloop.index == block.settings.popular_index
+                            assign badge = block.settings.popular_label
+                          elsif forloop.index == block.settings.value_index
+                            assign badge = block.settings.value_label
+                          endif
+                        -%}
+                        <label class="pack{% if variant.id == current.id %} is-selected{% endif %}{% unless variant.available %} is-disabled{% endunless %}">
+                          <input type="radio" name="variant-choice" value="{{ variant.id }}" {% if variant.id == current.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-price="{{ variant.price | money | escape }}" data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | escape }}{% endif %}" data-media="{{ variant.featured_media.id }}" data-available="{{ variant.available }}">
+                          <span class="pack__radio" aria-hidden="true"></span>
+                          <span class="pack__name">{{ variant.title }}{% if badge != blank %} <span class="pack__badge">{{ badge }}</span>{% endif %}</span>
+                          <span class="pack__price"><strong>{{ variant.price | money }}</strong>{%- if variant.compare_at_price > variant.price -%}<s>{{ variant.compare_at_price | money }}</s>{%- endif -%}</span>
+                        </label>
+                      {%- endfor -%}
+                    </fieldset>
+                  {%- endunless -%}
+                  <div class="buybox__total">
+                    <span class="price price--lg" data-price-wrap>
+                      <span class="price__now" data-price>{{ current.price | money }}</span>
+                      <s class="price__was" data-compare {% unless current.compare_at_price > current.price %}hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+                    </span>
+                  </div>
+                  <button type="submit" name="add" class="btn btn--accent btn--block btn--lg" data-add {% unless current.available %}disabled{% endunless %}>
+                    {% render 'icon', name: 'cart', size: 20 %}
+                    <span data-add-label>{% if current.available %}{{ block.settings.button | default: 'Add to cart' }}{% else %}{{ 'products.sold_out' | t }}{% endif %}</span>
+                  </button>
+                  <p class="buybox__error small" data-error hidden></p>
+                {%- endform -%}
+                {%- if block.settings.reassure_1 != blank or block.settings.reassure_2 != blank -%}
+                  <ul class="reassure" role="list">
+                    {%- if block.settings.reassure_1 != blank -%}<li>{% render 'icon-slot', image: block.settings.reassure_1_icon, name: 'shield', size: 18 %} {{ block.settings.reassure_1 | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</li>{%- endif -%}
+                    {%- if block.settings.reassure_2 != blank -%}<li>{% render 'icon-slot', image: block.settings.reassure_2_icon, name: 'truck', size: 18 %} {{ block.settings.reassure_2 | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</li>{%- endif -%}
+                  </ul>
+                {%- endif -%}
+              </div>
+            {%- when 'gift' -%}
+              <div class="gift-row" {{ block.shopify_attributes }}>
+                <span class="gift-row__icon">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 120 | image_tag: loading: 'lazy', alt: block.settings.title, width: 48, height: 48, style: 'object-fit:cover;border-radius:8px;' }}{%- else -%}{% render 'icon', name: 'gift', size: 22 %}{%- endif -%}</span>
+                <span><strong>{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong><br><span class="small muted">{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span></span>
+              </div>
+            {%- when 'tabs' -%}
+              <div class="tabs" data-tabs {{ block.shopify_attributes }}>
+                <p class="tabs__heading">{{ block.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
+                <div class="tabs__list" role="tablist">
+                  {%- for n in (1..4) -%}
+                    {%- assign t_key = 'tab_' | append: n | append: '_title' -%}
+                    {%- if block.settings[t_key] != blank -%}
+                      <button type="button" role="tab" class="tabs__tab{% if n == 1 %} is-active{% endif %}" aria-selected="{% if n == 1 %}true{% else %}false{% endif %}" aria-controls="{{ block.id }}-p{{ n }}" id="{{ block.id }}-t{{ n }}">{{ block.settings[t_key] }}</button>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+                {%- for n in (1..4) -%}
+                  {%- assign t_key = 'tab_' | append: n | append: '_title' -%}
+                  {%- assign b_key = 'tab_' | append: n | append: '_body' -%}
+                  {%- if block.settings[t_key] != blank -%}
+                    <div class="tabs__panel rte" role="tabpanel" id="{{ block.id }}-p{{ n }}" aria-labelledby="{{ block.id }}-t{{ n }}" {% if n != 1 %}hidden{% endif %}>{{ block.settings[b_key] }}</div>
+                  {%- endif -%}
+                {%- endfor -%}
+              </div>
+            {%- when 'accordion' -%}
+              <details class="accordion__item accordion__item--flush" {{ block.shopify_attributes }}>
+                <summary>{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }} <span class="accordion__icon">{% render 'icon', name: 'chevron', size: 18 %}</span></summary>
+                <div class="accordion__body rte">{%- if block.settings.page != blank -%}{{ block.settings.page.content }}{%- else -%}{{ block.settings.body | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{%- endif -%}</div>
+              </details>
+            {%- when '@app' -%}
+              {% render block %}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+  <div class="sticky-buy" data-sticky-buy hidden>
+    <div class="sticky-buy__info">
+      <span class="sticky-buy__title">{{ product.title }}</span>
+      <span class="small" data-sticky-price>{{ current.price | money }}</span>
+    </div>
+    <button type="submit" form="{{ form_id }}" class="btn btn--accent">Add to cart</button>
+  </div>
+</section>
+{% schema %}
+{"name":"Product information","settings":[{"type":"text","id":"image_badge","label":"Badge on main image","default":"Free shipping"}],"blocks":[{"type":"@app"},{"type":"award","name":"Highlight badge","limit":1,"settings":[{"type":"text","id":"text","label":"Text","default":"GPS fence + training remote in one"},{"type":"image_picker","id":"icon_image","label":"Your own icon (replaces the badge tick)","info":"Upload a PNG or SVG. Square works best."}]},{"type":"title","name":"Title","limit":1},{"type":"rating","name":"Star rating","limit":1,"settings":[{"type":"paragraph","content":"Shows only when a review app has written ratings to the product. Never shows a made-up number."},{"type":"text","id":"anchor","label":"Jump to section ID","default":"reviews"}]},{"type":"text","name":"Text","settings":[{"type":"richtext","id":"text","label":"Text","default":"<p>Short intro about the product.</p>"}]},{"type":"description","name":"Product description","limit":1},{"type":"buy","name":"Pack picker & buy button","limit":1,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Choose your pack","info":"Put [square brackets] around words to highlight them."},{"type":"range","id":"popular_index","label":"'Most popular' on option #","min":0,"max":6,"step":1,"default":2,"info":"0 = none"},{"type":"text","id":"popular_label","label":"'Most popular' label","default":"Most popular"},{"type":"range","id":"value_index","label":"'Best value' on option #","min":0,"max":6,"step":1,"default":3,"info":"0 = none"},{"type":"text","id":"value_label","label":"'Best value' label","default":"Best value"},{"type":"text","id":"button","label":"Button text","default":"Add to cart"},{"type":"text","id":"reassure_1","label":"Reassurance 1","default":"90-day money-back guarantee"},{"type":"image_picker","id":"reassure_1_icon","label":"Reassurance 1 icon","info":"Upload a PNG or SVG. Square works best."},{"type":"text","id":"reassure_2","label":"Reassurance 2","default":"Free shipping"},{"type":"image_picker","id":"reassure_2_icon","label":"Reassurance 2 icon","info":"Upload a PNG or SVG. Square works best."}]},{"type":"gift","name":"Free gift note","settings":[{"type":"image_picker","id":"image","label":"Gift image or icon","info":"e.g. a photo of the free gift. Replaces the gift icon."},{"type":"text","id":"title","label":"Title","default":"Free with every order","info":"Put [square brackets] around words to highlight them."},{"type":"text","id":"text","label":"Text","default":"Boundary training flags to help your dog learn the line faster."}]},{"type":"tabs","name":"Tabs ('Tell me about')","limit":1,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Tell me about:","info":"Put [square brackets] around words to highlight them."},{"type":"text","id":"tab_1_title","label":"Tab 1 title","default":"How it works"},{"type":"richtext","id":"tab_1_body","label":"Tab 1 content"},{"type":"text","id":"tab_2_title","label":"Tab 2 title","default":"In the box"},{"type":"richtext","id":"tab_2_body","label":"Tab 2 content"},{"type":"text","id":"tab_3_title","label":"Tab 3 title","default":"Specs"},{"type":"richtext","id":"tab_3_body","label":"Tab 3 content"},{"type":"text","id":"tab_4_title","label":"Tab 4 title","default":"Sizing"},{"type":"richtext","id":"tab_4_body","label":"Tab 4 content"}]},{"type":"accordion","name":"Collapsible row","settings":[{"type":"text","id":"title","label":"Title","default":"Shipping & returns","info":"Put [square brackets] around words to highlight them."},{"type":"richtext","id":"body","label":"Content"},{"type":"page","id":"page","label":"Or use a page's content"}]}]}
+{% endschema %}

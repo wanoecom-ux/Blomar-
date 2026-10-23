@@ -1,0 +1,38 @@
+<section class="section" data-carousel>
+  <div class="page-width">
+    <div class="section-head section-head--row">
+      <div>
+        <h2 class="h2">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2>
+        {%- if section.settings.text != blank -%}<p class="muted">{{ section.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+      </div>
+      <div class="carousel-nav">
+        <button type="button" class="round-btn" data-carousel-prev aria-label="Previous">{% render 'icon', name: 'arrow-left', size: 18 %}</button>
+        <button type="button" class="round-btn round-btn--accent" data-carousel-next aria-label="Next">{% render 'icon', name: 'arrow', size: 18 %}</button>
+      </div>
+    </div>
+    <div class="carousel" data-carousel-track>
+      {%- if section.settings.collection != blank and section.settings.collection.products_count > 0 -%}
+        {%- for product in section.settings.collection.products limit: section.settings.limit -%}
+          <div class="carousel__slide">{% render 'product-card', product: product, eyebrow: section.settings.eyebrow %}</div>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..4) -%}
+          <div class="carousel__slide">{% render 'product-card', product: nil, eyebrow: section.settings.eyebrow %}</div>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{
+  "name": "Product carousel",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop best sellers", "info": "Put [square brackets] around words to highlight them." },
+    { "type": "text", "id": "text", "label": "Text", "default": "The gear dog parents reach for first." },
+    { "type": "collection", "id": "collection", "label": "Collection" },
+    { "type": "range", "id": "limit", "label": "Products to show", "min": 2, "max": 12, "step": 1, "default": 8 },
+    { "type": "text", "id": "eyebrow", "label": "Small label on cards", "default": "For dogs" }
+  ],
+  "presets": [{ "name": "Product carousel" }]
+}
+{% endschema %}
