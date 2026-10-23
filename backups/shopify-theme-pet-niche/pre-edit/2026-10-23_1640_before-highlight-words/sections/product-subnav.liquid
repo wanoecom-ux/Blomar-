@@ -1,0 +1,20 @@
+<nav class="subnav" aria-label="On this page" data-subnav>
+  <div class="page-width subnav__inner">
+    {%- for block in section.blocks -%}
+      <a href="#{{ block.settings.anchor | handleize }}" class="subnav__link{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+    {%- endfor -%}
+  </div>
+</nav>
+{% schema %}
+{
+  "name": "Page jump links",
+  "blocks": [
+    { "type": "link", "name": "Link", "settings": [
+      { "type": "text", "id": "label", "label": "Label", "default": "Product info" },
+      { "type": "text", "id": "anchor", "label": "Section anchor ID", "default": "product" }
+    ] }
+  ],
+  "max_blocks": 8,
+  "presets": [{ "name": "Page jump links" }]
+}
+{% endschema %}

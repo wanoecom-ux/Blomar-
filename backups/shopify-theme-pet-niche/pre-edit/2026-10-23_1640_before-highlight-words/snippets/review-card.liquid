@@ -1,0 +1,12 @@
+{%- comment -%} Usage: {% render 'review-card', b: block %} {%- endcomment -%}
+<figure class="rcard" {{ b.shopify_attributes }}>
+  <div class="rcard__top">
+    {% render 'stars', rating: b.settings.rating %}
+    {%- if b.settings.title != blank -%}<strong class="rcard__title">{{ b.settings.title }}</strong>{%- endif -%}
+  </div>
+  <blockquote class="rcard__quote">{{ b.settings.text }}</blockquote>
+  <figcaption class="rcard__by">
+    {%- if b.settings.photo -%}{{ b.settings.photo | image_url: width: 96 | image_tag: loading: 'lazy', alt: b.settings.name, width: 36, height: 36, class: 'rcard__avatar' }}{%- endif -%}
+    <span>— {{ b.settings.name }}{% if b.settings.location != blank %}, {{ b.settings.location }}{% endif %}{% if b.settings.verified %} <span class="rcard__verified">{% render 'icon', name: 'verified', size: 14 %} Verified buyer</span>{% endif %}</span>
+  </figcaption>
+</figure>

@@ -1,0 +1,82 @@
+{%- assign hero_tb = section.settings.text_color | color_brightness -%}
+<section class="hero{% if hero_tb > 150 %} hero--light-text{% endif %}{% if section.settings.button_wide %} hero--wide-btn{% endif %}{% if section.settings.mobile_overlay %} hero--m-overlay{% endif %} sec-scope" data-overlay="{{ section.settings.overlay }}" style="--hero-pos-m: {{ section.settings.mobile_focus }}% center; --hero-min: {{ section.settings.min_height }}vh; --hero-min-m: {{ section.settings.mobile_height }}vh; --hero-ov: {{ section.settings.overlay_strength | divided_by: 100.0 }}; --hero-text: {{ section.settings.text_color }}; {% render 'section-vars', s: section.settings %}">
+  <div class="hero__media">
+    {%- if section.settings.image -%}
+      {%- assign hero_alt = section.settings.image.alt | default: section.settings.heading | escape -%}
+      {%- if section.settings.image_mobile -%}
+        <picture>
+          <source media="(max-width: 749px)" srcset="{{ section.settings.image_mobile | image_url: width: 750 }} 750w, {{ section.settings.image_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+          {{ section.settings.image | image_url: width: 2400 | image_tag: widths: '750,1100,1500,1900,2400', sizes: '100vw', fetchpriority: 'high', alt: hero_alt, class: 'hero__img' }}
+        </picture>
+      {%- else -%}
+      {{ section.settings.image | image_url: width: 2400 | image_tag: widths: '750,1100,1500,1900,2400', sizes: '100vw', fetchpriority: 'high', alt: hero_alt, class: 'hero__img' }}
+      {%- endif -%}
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'hero__img placeholder' }}
+    {%- endif -%}
+  </div>
+  <div class="page-width hero__content">
+    <div class="hero__copy">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="hero__eyebrow">{% render 'icon-slot', image: section.settings.eyebrow_icon, name: 'star', size: 14 %} {{ section.settings.eyebrow }}</p>
+      {%- endif -%}
+      {%- if section.settings.show_rating -%}<div class="rating-line">{% render 'rating-badge', style: section.settings.rating_style, p: section.settings.rating_product, label: section.settings.rating_label, count_text: section.settings.rating_count_text, color: section.settings.rating_color %}</div>{%- endif -%}
+      <h1 class="h1">{{ section.settings.heading }}</h1>
+      {%- if section.settings.text != blank -%}<div class="hero__text">{{ section.settings.text }}</div>{%- endif -%}
+      <div class="btn-row">
+        {%- if section.settings.button_1 != blank -%}
+          <a class="btn btn--accent" href="{{ section.settings.link_1 | default: routes.all_products_collection_url }}">{% render 'icon-slot', image: section.settings.button_icon, name: 'paw', size: 18 %} {{ section.settings.button_1 }}</a>
+        {%- endif -%}
+        {%- if section.settings.button_2 != blank -%}
+          <a class="btn btn--outline" href="{{ section.settings.link_2 | default: routes.collections_url }}">{{ section.settings.button_2 }}</a>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.trust_1 != blank or section.settings.trust_2 != blank -%}
+        <ul class="hero__trust" role="list">
+          {%- if section.settings.trust_1 != blank -%}<li>{% render 'icon-slot', image: section.settings.trust_1_icon, name: 'shield', size: 18 %} {{ section.settings.trust_1 }}</li>{%- endif -%}
+          {%- if section.settings.trust_2 != blank -%}<li>{% render 'icon-slot', image: section.settings.trust_2_icon, name: 'truck', size: 18 %} {{ section.settings.trust_2 }}</li>{%- endif -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>.rating-line{margin:0 0 14px}.hero__trust{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;font-size:.85rem;font-weight:var(--font-body-weight-medium);list-style:none}.hero__trust li{display:inline-flex;align-items:center;gap:6px}.hero{grid-template-columns:minmax(0,1fr)}
+.hero .hero__media::after{content:none}
+.hero__media{min-width:0}
+.hero__copy{min-width:0;overflow-wrap:break-word}
+@media (min-width:750px){
+  .hero__copy{color:var(--hero-text)}
+  .hero--light-text .hero__copy{text-shadow:0 1px 3px rgba(0,0,0,.35),0 2px 18px rgba(0,0,0,.35)}
+  .hero--light-text .btn{text-shadow:none}
+  .hero[data-overlay="dark"] .hero__media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,var(--hero-ov)) 0%,rgba(0,0,0,calc(var(--hero-ov) * .6)) 40%,rgba(0,0,0,0) 75%)}
+  .hero[data-overlay="light"] .hero__media::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,var(--hero-ov)) 0%,rgba(255,255,255,calc(var(--hero-ov) * .6)) 40%,rgba(255,255,255,0) 75%)}
+  .hero[data-overlay="dark_full"] .hero__media::after{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at 70% 50%,rgba(0,0,0,calc(var(--hero-ov) * .35)) 0%,rgba(0,0,0,var(--hero-ov)) 100%)}
+}
+.hero--wide-btn .hero__copy{max-width:520px}
+.hero--wide-btn .btn-row .btn{flex:1 1 100%;min-height:54px;font-size:1rem}
+.hero--wide-btn .hero__trust{justify-content:center}
+.hero__trust .icon{color:var(--color-accent)}
+@media (max-width:749px){
+  .hero--m-overlay{min-height:var(--hero-min-m,55vh)}
+  .hero--m-overlay .hero__content{grid-area:1/1}
+  .hero--m-overlay .hero__media{position:absolute;inset:0;aspect-ratio:auto}
+  .hero--m-overlay .hero__media picture{display:contents}
+  .hero--m-overlay .hero__img{position:absolute;inset:0;height:100%;object-position:var(--hero-pos-m,60% center)}
+  .hero--m-overlay .hero__content{align-items:center;padding-block:28px}
+  .hero--m-overlay .h1{font-size:calc(2.05rem * var(--heading-scale));line-height:1.12;margin-bottom:.55em}
+  .hero--m-overlay .rating-line{margin-bottom:10px}
+  .hero--m-overlay .hero__trust{flex-wrap:nowrap;gap:14px;font-size:.72rem;white-space:nowrap;margin-top:12px}
+  .hero--m-overlay .hero__trust .icon{width:14px;height:14px}
+  .hero--m-overlay .hero__copy{color:var(--hero-text);text-align:center;margin-inline:auto}
+  .hero--m-overlay .rating-line{display:flex;justify-content:center}
+  .hero--m-overlay .btn-row,.hero--m-overlay .hero__trust{justify-content:center}
+  .hero--m-overlay .btn-row .btn{flex:1 1 100%}
+  .hero--m-overlay.hero--light-text .hero__copy{text-shadow:0 1px 3px rgba(0,0,0,.35),0 2px 18px rgba(0,0,0,.35)}
+  .hero--m-overlay.hero--light-text .btn{text-shadow:none}
+  .hero--m-overlay[data-overlay="dark"] .hero__media::after,.hero--m-overlay[data-overlay="dark_full"] .hero__media::after{content:"";position:absolute;inset:0;background:rgba(0,0,0,var(--hero-ov))}
+  .hero--m-overlay[data-overlay="light"] .hero__media::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,var(--hero-ov))}
+}
+</style>
+{% schema %}
+{"name":"Hero","settings":[{"type":"image_picker","id":"image","label":"Image","info":"Wide lifestyle photo, subject on the right. 2400px+ wide."},{"type":"range","id":"min_height","label":"Height","min":40,"max":90,"step":5,"unit":"vh","default":70},{"type":"select","id":"overlay","label":"Overlay on the photo (desktop)","default":"none","options":[{"value":"none","label":"None"},{"value":"dark","label":"Dark fade on the left"},{"value":"dark_full","label":"Darken whole photo (edges darker)"},{"value":"light","label":"Light fade on the left"}],"info":"Only needed if your text is hard to read over the photo."},{"type":"range","id":"overlay_strength","label":"Overlay strength","min":10,"max":90,"step":5,"unit":"%","default":45},{"type":"color","id":"text_color","label":"Text colour over the photo (desktop)","default":"#1E1F24","info":"Pick white for a dark photo or with the dark overlay."},{"type":"text","id":"eyebrow","label":"Small line above heading","default":"Loved by dog parents"},{"type":"image_picker","id":"eyebrow_icon","label":"Icon before the small line (replaces the star)","info":"Upload a PNG or SVG. Square works best."},{"type":"header","content":"Star rating line"},{"type":"checkbox","id":"show_rating","label":"Show star rating","default":true},{"type":"select","id":"rating_style","label":"Star style","default":"stars","options":[{"value":"stars","label":"Plain stars, e.g. ★★★★★ (4.8) 1,234 Reviews"},{"value":"boxes","label":"Stars in coloured boxes"}]},{"type":"product","id":"rating_product","label":"Pull the real rating & count from this product","info":"Uses your review app's data (Judge.me, Loox, Okendo, etc.)."},{"type":"text","id":"rating_label","label":"Rating word","default":"Excellent"},{"type":"text","id":"rating_count_text","label":"Or type your own count text","info":"e.g. (1,234 reviews). Leave empty to use the product's real review count. Only use numbers you can back up."},{"type":"color","id":"rating_color","label":"Star colour","default":"#FF9900"},{"type":"text","id":"heading","label":"Heading","default":"Let them roam. Know they'll stay."},{"type":"richtext","id":"text","label":"Text","default":"<p>A GPS boundary you set in minutes and a training remote in your hand. No digging, no wires, no monthly fees.</p>"},{"type":"text","id":"button_1","label":"Main button","default":"Shop the GPS fence"},{"type":"image_picker","id":"button_icon","label":"Icon on the main button (replaces the paw)","info":"Upload a PNG or SVG. Square works best."},{"type":"url","id":"link_1","label":"Main button link"},{"type":"checkbox","id":"button_wide","label":"Wide button with guarantee line centred under it","default":false},{"type":"text","id":"trust_1","label":"Trust point 1 (under button)","default":"90-day money-back guarantee"},{"type":"image_picker","id":"trust_1_icon","label":"Trust point 1 icon","info":"Upload a PNG or SVG. Square works best."},{"type":"text","id":"trust_2","label":"Trust point 2 (under button)","default":"Free shipping"},{"type":"image_picker","id":"trust_2_icon","label":"Trust point 2 icon","info":"Upload a PNG or SVG. Square works best."},{"type":"text","id":"button_2","label":"Second button","default":"See how it works"},{"type":"url","id":"link_2","label":"Second button link"},{"type":"checkbox","id":"mobile_overlay","label":"Mobile: text centred over the photo","default":false,"info":"Off = photo on top, text underneath."},{"type":"range","id":"mobile_height","label":"Mobile: photo height","min":35,"max":100,"step":5,"unit":"vh","default":55,"info":"Only when text sits over the photo. 55 is about half the screen."},{"type":"range","id":"mobile_focus","label":"Mobile: photo focus (left → right)","min":0,"max":100,"step":5,"unit":"%","default":60},{"type":"image_picker","id":"image_mobile","label":"Mobile photo (optional)","info":"A separate crop for phones, e.g. 4:5. Leave empty to use the main photo."},{"type":"header","content":"Colours"},{"type":"paragraph","content":"Leave any colour empty to use the theme colours."},{"type":"color","id":"c_accent","label":"Accent (buttons, ticks, icons, highlights)"},{"type":"color","id":"c_btn_text","label":"Button text"},{"type":"color","id":"c_shadow","label":"Card & button shadow"}],"presets":[{"name":"Hero"}]}
+{% endschema %}

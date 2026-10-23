@@ -1,0 +1,20 @@
+<section class="section" id="{{ section.settings.anchor | handleize }}">
+  <div class="page-width">
+    <div class="section-head center">
+      <h2 class="h2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}<p class="muted narrow">{{ section.settings.text }}</p>{%- endif -%}
+    </div>
+    <div class="icon-row">
+      {%- for block in section.blocks -%}
+        <div class="icon-row__item" {{ block.shopify_attributes }}>
+          <span class="icon-row__icon{% if section.settings.style == 'no' %} icon-row__icon--no{% endif %}">{% render 'icon-slot', image: block.settings.custom_icon, name: block.settings.icon, size: 24 %}</span>
+          <h3 class="icon-row__title">{{ block.settings.title }}</h3>
+          <p class="small muted">{{ block.settings.text }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Icon row","settings":[{"type":"text","id":"anchor","label":"Anchor ID","default":"free-from"},{"type":"text","id":"heading","label":"Heading","default":"None of the hassle"},{"type":"text","id":"text","label":"Text"},{"type":"select","id":"style","label":"Icon style","default":"no","options":[{"value":"no","label":"Red 'without'"},{"value":"plain","label":"Accent"}]}],"blocks":[{"type":"item","name":"Item","settings":[{"type":"select","id":"icon","label":"Icon","default":"no","options":[{"value":"no","label":"No / without"},{"value":"check","label":"Check"},{"value":"gps","label":"GPS pin"},{"value":"remote","label":"Remote"},{"value":"battery","label":"Battery"},{"value":"drop","label":"Water drop"},{"value":"dogs","label":"Dogs"},{"value":"paw","label":"Paw"},{"value":"none","label":"None"}]},{"type":"image_picker","id":"custom_icon","label":"Your own icon (replaces the one above)","info":"Upload a PNG or SVG. Square works best."},{"type":"text","id":"title","label":"Title","default":"Item"},{"type":"text","id":"text","label":"Text"}]}],"max_blocks":6,"presets":[{"name":"Icon row","blocks":[{"type":"item"},{"type":"item"},{"type":"item"}]}]}
+{% endschema %}
