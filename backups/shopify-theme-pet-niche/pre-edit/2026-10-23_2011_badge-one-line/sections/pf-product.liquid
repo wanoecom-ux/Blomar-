@@ -1,0 +1,280 @@
+{%- liquid
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'PfForm-' | append: section.id
+-%}
+<section class="pfp sec-scope" id="product" data-product data-section="{{ section.id }}" style="--pfp-pick: {{ section.settings.pick_bg }}; --pfp-save-bg: {{ section.settings.save_bg }}; --pfp-save-text: {{ section.settings.save_text }}; --pfp-strike: {{ section.settings.strike_color }}; --pfp-gift-bg: {{ section.settings.gift_bg }}; --pfp-gift-tag: {{ section.settings.gift_tag_bg }}; {% render 'section-vars', s: section.settings %}">
+  <div class="page-width pfp__grid">
+    <div class="pfp__gallery gallery" data-gallery>
+      <div class="gallery__main pfp__main">
+        {%- for media in product.media -%}
+          {%- liquid
+            assign is_active = false
+            if current.featured_media
+              if media.id == current.featured_media.id
+                assign is_active = true
+              endif
+            elsif forloop.first
+              assign is_active = true
+            endif
+            assign img_loading = 'lazy'
+            if forloop.first
+              assign img_loading = 'eager'
+            endif
+          -%}
+          <div class="gallery__slide{% if is_active %} is-active{% endif %}" data-media-id="{{ media.id }}">
+            {%- if media.media_type == 'image' -%}
+              {{ media | image_url: width: 1400 | image_tag: widths: '600,900,1200,1400', sizes: '(min-width: 990px) 46vw, 100vw', loading: img_loading, alt: media.alt | default: product.title }}
+            {%- else -%}
+              {{ media | media_tag: image_size: '1400x' }}
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="gallery__slide is-active">{{ 'product-1' | placeholder_svg_tag: 'placeholder' }}</div>
+        {%- endfor -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="pfp__thumbs-row">
+          <button class="pfp__arrow" type="button" data-gallery-prev aria-label="Previous image">{% render 'icon', name: 'arrow-left', size: 22 %}</button>
+          <div class="gallery__thumbs pfp__thumbs" role="list">
+            {%- for media in product.media -%}
+              <button type="button" class="gallery__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ media.id }}" aria-label="Show image {{ forloop.index }}" role="listitem">{{ media.preview_image | image_url: width: 180 | image_tag: loading: 'lazy', alt: '' }}</button>
+            {%- endfor -%}
+          </div>
+          <button class="pfp__arrow pfp__arrow--boxed" type="button" data-gallery-next aria-label="Next image">{% render 'icon', name: 'arrow', size: 22 %}</button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pfp__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'badge' -%}
+            {%- if block.settings.mode == 'image' -%}
+              {%- if block.settings.image != blank -%}
+                <div class="pfp__badge" {{ block.shopify_attributes }}>{{ block.settings.image | image_url: width: 600 | image_tag: loading: 'eager', alt: block.settings.alt, style: 'width:100%;height:auto;' }}</div>
+              {%- endif -%}
+            {%- elsif block.settings.heading != blank or block.settings.subtitle != blank -%}
+              <div class="pfp-award" style="--aw-box: {{ block.settings.box_bg }}; --aw-title: {{ block.settings.title_color }}; --aw-sub: {{ block.settings.sub_color }};" {{ block.shopify_attributes }}>
+                <span class="pfp-award__icon">
+                  {%- if block.settings.icon != blank -%}
+                    {{ block.settings.icon | image_url: width: 160 | image_tag: loading: 'eager', alt: '' }}
+                  {%- elsif block.settings.icon_text != blank -%}
+                    <span class="pfp-award__icontext">{{ block.settings.icon_text }}</span>
+                  {%- else -%}
+                    <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+                  {%- endif -%}
+                </span>
+                <span class="pfp-award__copy">
+                  {%- if block.settings.heading != blank -%}<strong class="pfp-award__title">{{ block.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</strong>{%- endif -%}
+                  {%- if block.settings.subtitle != blank -%}<span class="pfp-award__sub">{{ block.settings.subtitle }}</span>{%- endif -%}
+                </span>
+              </div>
+            {%- endif -%}
+          {%- when 'rating' -%}
+            <div class="pfp__rating" {{ block.shopify_attributes }}>{% render 'rating-badge', style: 'stars', p: product, label: block.settings.label, count_text: block.settings.count_text, color: block.settings.color %}</div>
+          {%- when 'title' -%}
+            <h1 class="pfp__title" {{ block.shopify_attributes }}>{{ block.settings.title | default: product.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h1>
+          {%- when 'text' -%}
+            <div class="pfp__desc{% if block.settings.caps %} pfp__desc--caps{% endif %} rte" {{ block.shopify_attributes }}>
+              {%- if block.settings.use_description -%}{{ product.description }}{%- else -%}{{ block.settings.text | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{%- endif -%}
+            </div>
+          {%- when 'bullets' -%}
+            <ul class="pfp__bullets" role="list" {{ block.shopify_attributes }}>
+              {%- for n in (1..6) -%}
+                {%- assign k = 'item_' | append: n -%}
+                {%- if block.settings[k] != blank -%}<li><span class="pfp__tick">{% render 'icon-slot', image: block.settings.icon, name: 'check', size: 13 %}</span>{{ block.settings[k] | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</li>{%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- when 'packs' -%}
+            <div class="pfp__buy" {{ block.shopify_attributes }}>
+              {%- form 'product', product, id: form_id, class: 'pfp__form', data-product-form: '' -%}
+                <input type="hidden" name="id" value="{{ current.id }}" data-variant-input>
+                {%- unless product.has_only_default_variant -%}
+                  {%- if block.settings.heading != blank -%}<p class="pfp__packs-title">{{ block.settings.heading }}</p>{%- endif -%}
+                  <fieldset class="pfp__packs" role="radiogroup">
+                    <legend class="visually-hidden">{{ product.options.first }}</legend>
+                    {%- for variant in product.variants -%}
+                      {%- liquid
+                        assign i = forloop.index
+                        assign badge = ''
+                        assign badge_cls = ''
+                        if i == block.settings.popular_index
+                          assign badge = block.settings.popular_label
+                          assign badge_cls = 'pfpack__badge--hot'
+                        elsif i == block.settings.value_index
+                          assign badge = block.settings.value_label
+                          assign badge_cls = 'pfpack__badge--value'
+                        endif
+                        assign name_key = 'name_' | append: i
+                        assign img_key = 'image_' | append: i
+                        assign pack_name = block.settings[name_key] | default: variant.title
+                        assign pack_img = block.settings[img_key]
+                        if pack_img == blank
+                          assign pack_img = variant.featured_image
+                        endif
+                      -%}
+                      <label class="pack pfpack{% if variant.id == current.id %} is-selected{% endif %}{% unless variant.available %} is-disabled{% endunless %}">
+                        <input class="visually-hidden" type="radio" name="variant-choice" value="{{ variant.id }}" {% if variant.id == current.id %}checked{% endif %} {% unless variant.available %}disabled{% endunless %} data-price="{{ variant.price | money | escape }}" data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money | escape }}{% endif %}" data-available="{{ variant.available }}"{% if variant.featured_media %} data-media="{{ variant.featured_media.id }}"{% endif %}>
+                        {%- if badge != blank -%}<span class="pfpack__badge {{ badge_cls }}">{{ badge }}</span>{%- endif -%}
+                        <span class="pfpack__img">{%- if pack_img != blank -%}{{ pack_img | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}{%- endif -%}</span>
+                        <span class="pfpack__name">{{ pack_name }}</span>
+                        <span class="pfpack__price">
+                          <span class="pfpack__prices">
+                            {%- if variant.compare_at_price > variant.price -%}<s>{{ variant.compare_at_price | money_with_currency }}</s>{%- endif -%}
+                            <strong>{{ variant.price | money_with_currency }}</strong>
+                          </span>
+                          {%- if block.settings.show_save and variant.compare_at_price > variant.price -%}
+                            {%- assign saved = variant.compare_at_price | minus: variant.price -%}
+                            <span class="pfpack__save">{{ block.settings.save_label | default: 'Save' }} {{ saved | money_without_trailing_zeros }}</span>
+                          {%- endif -%}
+                        </span>
+                      </label>
+                    {%- endfor -%}
+                  </fieldset>
+                {%- endunless -%}
+              {%- endform -%}
+            </div>
+          {%- when 'gifts' -%}
+            {%- if block.settings.title != blank -%}
+              <div class="pfp__gifts" {{ block.shopify_attributes }}>
+                <p class="pfp__gifts-title">{{ block.settings.title | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
+                {%- if block.settings.subtitle != blank -%}<p class="pfp__gifts-sub">{{ block.settings.subtitle }}</p>{%- endif -%}
+                <ul class="pfp__gift-list" role="list">
+                  {%- for n in (1..3) -%}
+                    {%- assign gn = 'gift_' | append: n | append: '_name' -%}
+                    {%- assign gi = 'gift_' | append: n | append: '_image' -%}
+                    {%- assign gv = 'gift_' | append: n | append: '_value' -%}
+                    {%- if block.settings[gn] != blank -%}
+                      <li class="pfp__gift">
+                        <span class="pfp__gift-tag">{{ block.settings.free_label | default: 'Free' }}{% if block.settings[gv] != blank %} <s>{{ block.settings[gv] }}</s>{% endif %}</span>
+                        <span class="pfp__gift-img">{%- if block.settings[gi] != blank -%}{{ block.settings[gi] | image_url: width: 200 | image_tag: loading: 'lazy', alt: block.settings[gn] }}{%- else -%}{% render 'icon', name: 'gift', size: 40 %}{%- endif -%}</span>
+                        <span class="pfp__gift-name">{{ block.settings[gn] }}</span>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </div>
+            {%- endif -%}
+          {%- when 'cart' -%}
+            <div class="pfp__cart" {{ block.shopify_attributes }}>
+              <button type="submit" form="{{ form_id }}" name="add" class="btn btn--accent btn--block pfp__add" data-add {% unless current.available %}disabled{% endunless %}>
+                <span data-add-label>{% if current.available %}{{ block.settings.button | default: 'Add to cart' }}{% else %}{{ 'products.sold_out' | t }}{% endif %}</span>
+              </button>
+              <p class="pfp__error small" data-error hidden></p>
+              {%- if block.settings.note != blank -%}<p class="pfp__note">{% render 'icon-slot', image: block.settings.note_icon, name: 'shield', size: 16 %} {{ block.settings.note | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>{%- endif -%}
+            </div>
+          {%- when 'faq' -%}
+            <details class="pf-acc" {{ block.shopify_attributes }}>
+              <summary><span>{{ block.settings.question }}</span><span class="pf-acc__icon" aria-hidden="true">+</span></summary>
+              <div class="pf-acc__body rte">{{ block.settings.answer }}</div>
+            </details>
+          {%- when '@app' -%}
+            {% render block %}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if section.settings.sticky -%}
+    <div class="pfp-sticky" data-sticky-buy hidden>
+      <div class="pfp-sticky__inner">
+        <span class="pfp-sticky__info"><span class="pfp-sticky__title">{{ product.title | truncate: 40 }}</span><strong data-sticky-price>{{ current.price | money_with_currency }}</strong></span>
+        <button type="submit" form="{{ form_id }}" class="btn btn--accent pfp-sticky__btn">{{ section.settings.sticky_text | default: 'Add to cart' }}</button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+{%- render 'pf-styles' -%}
+<style>
+.pfp{padding-block:24px 48px}
+.pfp__grid{display:grid;grid-template-columns:minmax(0,1fr);gap:22px;align-items:start}
+.pfp__gallery{min-width:0;position:static}
+@media (min-width:990px){.pfp__gallery{position:sticky;top:120px}}
+@media (min-width:990px){.pfp{padding-block:44px 64px}.pfp__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:56px;max-width:1180px}}
+.pfp__main{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--color-card)}
+.pfp__main .gallery__slide{position:absolute;inset:0;opacity:0;transition:opacity .25s ease}
+.pfp__main .gallery__slide.is-active{opacity:1;position:relative;height:100%}
+.pfp__main img,.pfp__main svg{width:100%;height:100%;object-fit:cover}
+.pfp__thumbs-row{display:flex;align-items:center;gap:8px;margin-top:14px}
+.pfp__thumbs{display:flex;gap:6px;overflow-x:auto;scrollbar-width:none;flex:1;scroll-snap-type:x mandatory}
+.pfp__thumbs::-webkit-scrollbar{display:none}
+.pfp__thumbs .gallery__thumb{flex:0 0 19%;aspect-ratio:1/1;padding:0;border:2px solid transparent;background:none;scroll-snap-align:start}
+.pfp__thumbs .gallery__thumb.is-active{border-color:var(--color-ink)}
+.pfp__thumbs img{width:100%;height:100%;object-fit:cover}
+.pfp__arrow{flex:none;display:inline-flex;align-items:center;justify-content:center;width:32px;height:62px;border:0;background:none;color:var(--color-muted)}
+.pfp__arrow--boxed{width:38px;border:1.5px solid var(--color-ink);border-radius:4px;color:var(--color-ink)}
+.pfp__info{display:flex;flex-direction:column;gap:14px;min-width:0}
+@media (min-width:990px){.pfp__info{max-width:500px}}
+.pfp__badge{max-width:var(--pfp-badge-w,280px)}
+.pfp-award{align-self:flex-start;display:inline-flex;align-items:center;gap:12px;max-width:100%;padding:7px 18px 7px 7px;background:#fff;border:1px solid #E2E3E8;border-radius:14px;box-shadow:0 3px 8px rgba(20,25,60,.14)}
+.pfp-award__icon{flex:none;display:inline-flex;align-items:center;justify-content:center;width:50px;height:50px;border-radius:9px;background:var(--aw-box,var(--color-accent));color:#fff;overflow:hidden}
+.pfp-award__icon img{width:100%;height:100%;object-fit:cover}
+.pfp-award__icontext{font-family:var(--font-body);font-weight:var(--font-body-weight-bold);font-size:1.45rem;line-height:1}
+.pfp-award__copy{display:flex;flex-direction:column;gap:2px;min-width:0}
+.pfp-award__title{font-family:var(--font-body);font-weight:var(--font-body-weight-bold);text-transform:uppercase;letter-spacing:.01em;font-size:.92rem;line-height:1.15;color:var(--aw-title,#1C2D5A)}
+.pfp-award__sub{font-style:italic;font-size:.74rem;line-height:1.25;color:var(--aw-sub,#5B5E66)}
+@media (min-width:990px){.pfp-award__icon{width:56px;height:56px}.pfp-award__title{font-size:1.02rem}.pfp-award__sub{font-size:.8rem}}
+
+.pfp__rating .rbadge{font-size:.95rem;font-weight:var(--font-body-weight-medium)}
+.pfp__title{font-family:var(--font-body);font-weight:var(--font-body-weight-bold);font-size:calc(clamp(1.65rem,2.6vw,2.15rem) * var(--heading-scale));line-height:1.3;margin:0;color:var(--sec-heading,var(--color-ink))}
+.pfp__desc{font-size:1rem;line-height:1.45}
+.pfp__desc--caps{text-transform:uppercase;font-weight:var(--font-body-weight-bold);font-size:.86rem;letter-spacing:.005em}
+@media (min-width:990px){.pfp__desc--caps{font-size:1rem}}
+.pfp__desc p{margin:0}
+.pfp__bullets{list-style:none;display:flex;flex-direction:column;gap:10px;margin:2px 0}
+.pfp__bullets li{display:flex;align-items:center;gap:10px;font-size:.95rem}
+@media (min-width:990px){.pfp__bullets li{font-size:1.05rem}}
+.pfp__tick{flex:none;display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--color-accent);color:#fff}
+.pfp__packs-title{font-weight:var(--font-body-weight-bold);font-size:1.25rem;margin:4px 0 10px;letter-spacing:.01em}
+.pfp__packs{border:0;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
+.pfpack{position:relative;display:grid;grid-template-columns:64px minmax(0,1fr) auto;align-items:center;gap:12px;padding:12px 14px;border:1px solid #CFCFCF;border-radius:6px;cursor:pointer;background:var(--color-bg);transition:border-color .15s,background-color .15s}
+.pfpack.is-selected{background:var(--pfp-pick,#FDECE6);border-color:var(--color-ink)}
+.pfpack.is-disabled{opacity:.5;cursor:not-allowed}
+.pfpack__img img{width:64px;height:64px;object-fit:contain}
+.pfpack__name{font-size:1.05rem;line-height:1.4;letter-spacing:.01em}
+.pfpack__price{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:right}
+.pfpack__prices{display:flex;align-items:baseline;gap:8px;white-space:nowrap}
+.pfpack__prices s{color:var(--pfp-strike,#E02424);font-size:.85rem}
+.pfpack__prices strong{font-weight:var(--font-body-weight-medium);font-size:1.05rem}
+.pfpack__save{background:var(--pfp-save-bg,#FFF07A);color:var(--pfp-save-text,#1E1F24);font-weight:var(--font-body-weight-bold);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;padding:3px 12px;border-radius:999px}
+.pfpack__badge{position:absolute;top:-11px;right:12px;font-size:.78rem;font-weight:var(--font-body-weight-medium);padding:3px 10px;border-radius:4px;color:#fff;background:var(--color-ink)}
+.pfpack__badge--hot{background:var(--color-accent)}
+@media (min-width:990px){.pfpack__name{font-size:1rem}}
+.pfp__gifts{background:var(--pfp-gift-bg,#F6EEDC);padding:14px 10px 12px;text-align:center}
+.pfp__gifts-title{margin:0;font-weight:var(--font-body-weight-bold);font-size:1.15rem;text-transform:uppercase;letter-spacing:.03em}
+.pfp__gifts-sub{margin:2px 0 10px;font-size:.92rem;letter-spacing:.02em}
+.pfp__gift-list{list-style:none;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.pfp__gift{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;padding-top:10px}
+.pfp__gift-tag{position:absolute;top:0;left:50%;transform:translateX(-50%);z-index:1;white-space:nowrap;background:var(--pfp-gift-tag,#1C2D5A);color:#fff;font-size:.6rem;font-weight:var(--font-body-weight-bold);letter-spacing:.06em;text-transform:uppercase;padding:2px 8px;border-radius:2px}
+.pfp__gift-tag s{opacity:.85}
+.pfp__gift-img{display:flex;align-items:center;justify-content:center;width:100%;aspect-ratio:1/.9;border:1px dashed var(--color-ink);border-radius:8px;background:#F4EBE8;overflow:hidden}
+.pfp__gift-img img{width:80%;height:80%;object-fit:contain}
+.pfp__gift-name{font-size:.68rem;letter-spacing:.04em;line-height:1.3}
+.pfp__cart{display:flex;flex-direction:column;align-items:center;gap:12px;margin-top:4px}
+.pfp__add{width:100%;font-size:1.3rem;min-height:56px;text-transform:uppercase;letter-spacing:.02em}
+.pfp__note{display:inline-flex;align-items:center;gap:8px;margin:0;font-size:.85rem;letter-spacing:.03em}
+.pfp__note .icon{color:var(--color-accent)}
+.pfp__info>.pf-acc{margin-bottom:2px}
+.pfp__cart+.pf-acc{margin-top:12px}
+.pfp-sticky{position:fixed;left:0;right:0;bottom:0;z-index:45;background:var(--color-bg);box-shadow:0 -6px 20px rgba(0,0,0,.12);padding:10px 16px calc(10px + env(safe-area-inset-bottom))}
+.pfp-sticky__inner{display:flex;align-items:center;gap:12px;max-width:var(--page-width);margin-inline:auto}
+.pfp-sticky__info{display:flex;flex-direction:column;flex:1;min-width:0;font-size:.85rem;line-height:1.3}
+.pfp-sticky__title{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pfp-sticky__btn{min-height:48px;padding:0 22px;border-radius:2px;text-transform:uppercase;font-weight:var(--font-body-weight-bold)}
+@media (min-width:990px){.pfp-sticky{display:none!important}}
+</style>
+{% schema %}
+{"name":"Product: buy box (bold)","settings":[{"type":"checkbox","id":"sticky","label":"Sticky add-to-cart bar on mobile","default":true},{"type":"text","id":"sticky_text","label":"Sticky button text","default":"Add to cart"},{"type":"header","content":"Colours"},{"type":"paragraph","content":"Leave any colour empty to use the theme colours."},{"type":"color","id":"pick_bg","label":"Selected pack background","default":"#FDECE6"},{"type":"color","id":"save_bg","label":"Savings pill background","default":"#FFF07A"},{"type":"color","id":"save_text","label":"Savings pill text","default":"#1E1F24"},{"type":"color","id":"strike_color","label":"Crossed-out price","default":"#E02424"},{"type":"color","id":"gift_bg","label":"Free gifts box background","default":"#F6EEDC"},{"type":"color","id":"gift_tag_bg","label":"Free gift tag background","default":"#1C2D5A"},{"type":"color","id":"c_text","label":"Text"},{"type":"color","id":"c_heading","label":"Title"},{"type":"color","id":"c_accent","label":"Accent (button, ticks, badges)"},{"type":"color","id":"c_btn_text","label":"Button text"},{"type":"color","id":"c_shadow","label":"Card & button shadow"}],
+"blocks":[
+{"type":"badge","name":"Award badge","limit":1,"settings":[{"type":"select","id":"mode","label":"Badge type","default":"text","options":[{"value":"text","label":"Editable badge (heading, small line, icon)"},{"value":"image","label":"My own badge picture"}]},{"type":"paragraph","content":"Only use an award, ranking or endorsement you can back up."},{"type":"header","content":"Editable badge"},{"type":"text","id":"heading","label":"Heading","default":"GPS fence + trainer in one"},{"type":"text","id":"subtitle","label":"Small line","default":"For training and containment, all in one collar"},{"type":"image_picker","id":"icon","label":"Icon image (optional)","info":"Fills the coloured square. Leave empty to show a tick or the text below."},{"type":"text","id":"icon_text","label":"Or text in the square","info":"e.g. a short word. Leave empty for a tick."},{"type":"color","id":"box_bg","label":"Square colour","default":"#E25A2E"},{"type":"color","id":"title_color","label":"Heading colour","default":"#1C2D5A"},{"type":"color","id":"sub_color","label":"Small line colour","default":"#5B5E66"},{"type":"header","content":"Badge picture"},{"type":"image_picker","id":"image","label":"Badge picture"},{"type":"text","id":"alt","label":"Alt text"}]},
+{"type":"rating","name":"Star rating","limit":1,"settings":[{"type":"text","id":"label","label":"Rating text","info":"Leave empty to show your review app's real rating, e.g. (4.8)."},{"type":"text","id":"count_text","label":"Or type your own count text","info":"Leave empty to use the real count. Only use numbers you can back up."},{"type":"color","id":"color","label":"Star colour","default":"#FF9900"}]},
+{"type":"title","name":"Title","limit":1,"settings":[{"type":"text","id":"title","label":"Title","info":"Leave empty to use the product name. Put [square brackets] around words to highlight them."}]},
+{"type":"text","name":"Description","settings":[{"type":"checkbox","id":"use_description","label":"Use the product description","default":false},{"type":"richtext","id":"text","label":"Text"},{"type":"checkbox","id":"caps","label":"Bold capitals","default":true}]},
+{"type":"bullets","name":"Tick list","settings":[{"type":"image_picker","id":"icon","label":"Own tick icon (optional)"},{"type":"text","id":"item_1","label":"Line 1"},{"type":"text","id":"item_2","label":"Line 2"},{"type":"text","id":"item_3","label":"Line 3"},{"type":"text","id":"item_4","label":"Line 4"},{"type":"text","id":"item_5","label":"Line 5"},{"type":"text","id":"item_6","label":"Line 6"}]},
+{"type":"packs","name":"Pack picker","limit":1,"settings":[{"type":"text","id":"heading","label":"Heading","default":"Build Your Pack:"},{"type":"paragraph","content":"Each pack is one of the product's variants. Crossed-out prices and savings only show when a variant has a real compare-at price."},{"type":"checkbox","id":"show_save","label":"Show savings pill","default":true},{"type":"text","id":"save_label","label":"Savings word","default":"Save"},{"type":"range","id":"popular_index","label":"\"Most popular\" pack number","min":0,"max":5,"step":1,"default":2,"info":"0 = none"},{"type":"text","id":"popular_label","label":"\"Most popular\" label","default":"Most Popular"},{"type":"range","id":"value_index","label":"\"Best value\" pack number","min":0,"max":5,"step":1,"default":3,"info":"0 = none"},{"type":"text","id":"value_label","label":"\"Best value\" label","default":"Best Value"},{"type":"header","content":"Pack names & images (optional)"},{"type":"text","id":"name_1","label":"Pack 1 name"},{"type":"image_picker","id":"image_1","label":"Pack 1 image"},{"type":"text","id":"name_2","label":"Pack 2 name"},{"type":"image_picker","id":"image_2","label":"Pack 2 image"},{"type":"text","id":"name_3","label":"Pack 3 name"},{"type":"image_picker","id":"image_3","label":"Pack 3 image"},{"type":"text","id":"name_4","label":"Pack 4 name"},{"type":"image_picker","id":"image_4","label":"Pack 4 image"},{"type":"text","id":"name_5","label":"Pack 5 name"},{"type":"image_picker","id":"image_5","label":"Pack 5 image"}]},
+{"type":"gifts","name":"Free gifts box","limit":1,"settings":[{"type":"paragraph","content":"Only list gifts that are really included with the order. Leave the title empty to hide this box."},{"type":"text","id":"title","label":"Title","default":"🎁 Bonus gifts 🎁"},{"type":"text","id":"subtitle","label":"Small line","default":"Included free with every order"},{"type":"text","id":"free_label","label":"Tag word","default":"Free"},{"type":"text","id":"gift_1_name","label":"Gift 1 name"},{"type":"text","id":"gift_1_value","label":"Gift 1 normal price","info":"e.g. $19.95. Only use a price you really charge for it."},{"type":"image_picker","id":"gift_1_image","label":"Gift 1 image"},{"type":"text","id":"gift_2_name","label":"Gift 2 name"},{"type":"text","id":"gift_2_value","label":"Gift 2 normal price"},{"type":"image_picker","id":"gift_2_image","label":"Gift 2 image"},{"type":"text","id":"gift_3_name","label":"Gift 3 name"},{"type":"text","id":"gift_3_value","label":"Gift 3 normal price"},{"type":"image_picker","id":"gift_3_image","label":"Gift 3 image"}]},
+{"type":"cart","name":"Add to cart button","limit":1,"settings":[{"type":"text","id":"button","label":"Button text","default":"Add to cart"},{"type":"text","id":"note","label":"Line under the button","default":"90-Day Money Back Guarantee"},{"type":"image_picker","id":"note_icon","label":"Own icon for that line"}]},
+{"type":"faq","name":"Question","settings":[{"type":"text","id":"question","label":"Question","default":"Question"},{"type":"richtext","id":"answer","label":"Answer","default":"<p>Answer</p>"}]},
+{"type":"@app"}],
+"presets":[{"name":"Product: buy box (bold)"}]}
+{% endschema %}
