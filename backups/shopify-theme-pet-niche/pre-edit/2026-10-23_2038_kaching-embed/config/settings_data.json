@@ -1,0 +1,22 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "type_heading_font": "instrument_serif_n4",
+    "type_body_font": "poppins_n4",
+    "color_accent": "#DB6742",
+    "color_accent_ink": "#FFFFFF",
+    "color_accent_soft": "#FBEDE7",
+    "color_star": "#F59E0B"
+  },
+  "presets": {
+    "Default": {}
+  }
+}
