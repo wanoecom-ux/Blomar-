@@ -1,0 +1,73 @@
+<header class="site-header" data-header style="--nav-active-bg: {{ section.settings.active_bg }}; --nav-active-text: {{ section.settings.active_text }};">
+  <div class="page-width site-header__inner">
+    <div class="site-header__left">
+      <button class="icon-btn hide-desktop" type="button" data-menu-open aria-label="{{ 'general.menu' | t }}">{% render 'icon', name: 'menu' %}</button>
+      <nav class="site-nav hide-mobile" aria-label="Main">
+        <ul role="list">
+          {%- for link in section.settings.menu.links -%}
+            <li class="site-nav__item{% if link.links.size > 0 %} has-dropdown{% endif %}">
+              <a href="{{ link.url }}" class="site-nav__link{% if link.current or link.child_active %} is-active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}{% if link.links.size > 0 %} {% render 'icon', name: 'chevron', size: 14 %}{% endif %}</a>
+              {%- if link.links.size > 0 -%}
+                <ul class="site-nav__dropdown" role="list">
+                  {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="site-logo" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo -%}
+        {{ section.settings.logo | image_url: width: 400 | image_tag: width: section.settings.logo_width, height: nil, alt: shop.name, style: 'height:auto;' }}
+      {%- else -%}
+        <span class="site-logo__text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="site-header__right">
+      {%- if section.settings.promo_text != blank -%}
+        <a class="site-header__promo hide-mobile" href="{{ section.settings.promo_link | default: '#' }}">{{ section.settings.promo_text }}</a>
+      {%- endif -%}
+      <a class="icon-btn hide-mobile" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', name: 'user' %}</a>
+      <a class="icon-btn hide-mobile" href="{{ routes.search_url }}" aria-label="{{ 'general.search' | t }}">{% render 'icon', name: 'search' %}</a>
+      <a class="icon-btn cart-btn" href="{{ routes.cart_url }}" data-cart-open aria-label="{{ 'general.cart' | t }}">
+        {% render 'icon', name: 'cart' %}<span class="cart-btn__count" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="MobileMenu" aria-hidden="true">
+    <div class="mobile-menu__panel">
+      <button class="icon-btn" type="button" data-menu-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'x' %}</button>
+      <ul role="list">
+        {%- for link in section.settings.menu.links -%}
+          <li><a href="{{ link.url }}"{% if link.current %} class="is-active" aria-current="page"{% endif %}>{{ link.title }}</a>
+            {%- if link.links.size > 0 -%}<ul role="list">{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</header>
+<style>
+.site-nav__link{letter-spacing:.04em;font-weight:var(--font-body-weight);padding:6px 10px;border-radius:4px}
+.site-nav__link.is-active{background:var(--nav-active-bg,#000);color:var(--nav-active-text,#fff);font-weight:var(--font-body-weight-bold)}
+.site-nav__link.is-active:hover{background:var(--nav-active-bg,#000)}
+.mobile-menu__panel a.is-active{font-weight:var(--font-body-weight-bold)}
+</style>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 260, "step": 10, "unit": "px", "default": 140 },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "color", "id": "active_bg", "label": "Current page menu highlight", "default": "#000000" },
+    { "type": "color", "id": "active_text", "label": "Current page menu text", "default": "#FFFFFF" },
+    { "type": "text", "id": "promo_text", "label": "Highlighted link text", "default": "Get $15" },
+    { "type": "url", "id": "promo_link", "label": "Highlighted link" }
+  ]
+}
+{% endschema %}
