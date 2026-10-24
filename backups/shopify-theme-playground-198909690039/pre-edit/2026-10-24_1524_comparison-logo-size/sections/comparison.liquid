@@ -1,0 +1,97 @@
+<section class="section sec-scope" id="{{ section.settings.anchor | handleize }}" style="--cmp-col: {{ section.settings.col_bg }}; {% render 'section-vars', s: section.settings %}">
+  <div class="page-width">
+    <div class="section-head center">{%- if section.settings.show_rating -%}<div class="rating-line center">{% render 'rating-badge', style: section.settings.rating_style, p: section.settings.product, label: section.settings.rating_label, count_text: section.settings.rating_count_text, color: section.settings.rating_color %}</div>{%- endif -%}<h2 class="h2{% if section.settings.heading_style == 'caps' %} h-caps{% endif %}">{{ section.settings.heading | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2></div>
+    {%- assign side_reviews = section.blocks | where: 'type', 'review' -%}
+    <div class="compare-layout{% if side_reviews.size > 0 %} compare-layout--side{% endif %}">
+    {%- liquid
+      assign rows = section.blocks | where: 'type', 'row'
+      assign cols = 3
+      if section.settings.col_3 == blank
+        assign cols = 2
+      endif
+      assign last_row = rows.size | plus: 1
+    -%}
+    <div class="cmp cmp--{{ cols }}" role="table" aria-label="{{ section.settings.heading | remove: '[' | remove: ']' | escape }}" style="grid-template-rows: auto repeat({{ rows.size }}, auto);">
+      <div class="cmp__card" style="grid-row: 1 / span {{ last_row }};" aria-hidden="true"></div>
+      <div class="cmp__col" style="grid-row: 1 / span {{ last_row }};" aria-hidden="true"></div>
+      <div role="row" class="cmp__row">
+        <div role="columnheader" class="cmp__cell cmp__cell--feat cmp__head" style="grid-row:1">{{ section.settings.corner_label | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</div>
+        <div role="columnheader" class="cmp__cell cmp__cell--us cmp__head" style="grid-row:1">{%- if section.settings.col_us_image -%}{{ section.settings.col_us_image | image_url: width: 300 | image_tag: loading: 'lazy', alt: section.settings.col_us, class: 'cmp__logo' }}{%- else -%}{{ section.settings.col_us | default: shop.name }}{%- endif -%}</div>
+        <div role="columnheader" class="cmp__cell cmp__cell--c2 cmp__head" style="grid-row:1">{{ section.settings.col_2 }}</div>
+        {%- if cols == 3 -%}<div role="columnheader" class="cmp__cell cmp__cell--c3 cmp__head" style="grid-row:1">{{ section.settings.col_3 }}</div>{%- endif -%}
+      </div>
+      {%- for block in rows -%}
+        {%- assign gr = forloop.index | plus: 1 -%}
+        <div role="row" class="cmp__row{% if forloop.last %} cmp__row--last{% endif %}" {{ block.shopify_attributes }}>
+          <div role="rowheader" class="cmp__cell cmp__cell--feat" style="grid-row:{{ gr }}">{{ block.settings.feature | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</div>
+          {%- for c in (1..cols) -%}
+            {%- assign key = 'c' | append: c -%}
+            <div role="cell" class="cmp__cell {% if c == 1 %}cmp__cell--us{% else %}cmp__cell--c{{ c }}{% endif %}" style="grid-row:{{ gr }}">
+              {%- if block.settings[key] -%}<span class="yes">{% render 'icon', name: 'check', size: 16 %}<span class="visually-hidden">Yes</span></span>{%- else -%}<span class="no">{% render 'icon', name: 'x', size: 14 %}<span class="visually-hidden">No</span></span>{%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.button != blank -%}
+      <div class="cmp-cta">
+        <a class="btn btn--accent btn--block" href="{% if section.settings.product != blank %}{{ section.settings.product.url }}{% else %}{{ routes.all_products_collection_url }}{% endif %}">{{ section.settings.button }}</a>
+        {%- if section.settings.cta_note != blank or section.settings.show_payment -%}
+          <p class="cmp-cta__note">
+            {%- if section.settings.cta_note != blank -%}<span class="cmp-cta__secure"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>{{ section.settings.cta_note | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span>{%- endif -%}
+            {%- if section.settings.show_payment -%}<span class="cmp-cta__pay">{%- for type in shop.enabled_payment_types limit: 5 -%}{{ type | payment_type_svg_tag: class: 'cmp-cta__payicon' }}{%- endfor -%}</span>{%- endif -%}
+          </p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+    {%- if side_reviews.size > 0 -%}
+      <div class="compare-reviews">{%- for block in side_reviews -%}{% render 'review-card', b: block %}{%- endfor -%}</div>
+    {%- endif -%}
+    </div>
+  </div>
+</section>
+<style>
+.compare-layout--side{display:grid;gap:28px;align-items:start}
+.compare-layout{display:grid;gap:28px}
+@media (min-width:990px){.compare-layout--side{grid-template-columns:1.15fr 1fr;column-gap:48px;align-items:start}.compare-layout--side .cmp{margin:0}.compare-layout--side .compare-reviews{grid-column:2;grid-row:1 / span 2;align-self:center}.compare-layout--side .cmp,.compare-layout--side .cmp-cta{grid-column:1}}
+.cmp-cta{max-width:560px;width:100%;margin:12px auto 0;text-align:center}
+.cmp-cta__note{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px 12px;margin:14px 0 0;font-size:.95rem}
+.cmp-cta__secure{display:inline-flex;align-items:center;gap:6px}
+.cmp-cta__pay{display:inline-flex;gap:4px}
+.cmp-cta__payicon{width:28px;height:18px}
+.cmp{--cmp-lift:30px;display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr) minmax(0,1fr);position:relative;max-width:760px;margin-inline:auto;width:100%}
+.cmp--2{grid-template-columns:minmax(0,1.5fr) minmax(0,1fr) minmax(0,1fr)}
+.cmp__row{display:contents}
+.cmp__card{grid-column:1 / -1;margin-top:var(--cmp-lift);background:var(--color-bg);border:1.5px solid var(--color-ink);border-radius:30px;box-shadow:5px 6px 0 var(--sec-shadow,var(--color-accent))}
+.cmp__col{grid-column:2;background:var(--cmp-col);border:1.5px solid var(--color-ink);border-radius:22px;position:relative;z-index:1}
+.cmp__cell{position:relative;z-index:2;display:flex;align-items:center;justify-content:center;text-align:center;padding:16px 10px;color:var(--color-ink);min-width:0}
+.cmp__cell--feat{grid-column:1;justify-content:flex-start;text-align:left;padding-left:22px;margin-left:0}
+.cmp__cell--us{grid-column:2}.cmp__cell--c2{grid-column:3}.cmp__cell--c3{grid-column:4}
+.cmp__row:not(.cmp__row--last) .cmp__cell--feat::after,.cmp__row:not(.cmp__row--last) .cmp__cell--c2::after,.cmp__row:not(.cmp__row--last) .cmp__cell--c3::after{content:"";position:absolute;bottom:0;left:0;right:0;border-bottom:1px solid var(--color-ink)}
+.cmp__row:not(.cmp__row--last) .cmp__cell--feat::after{left:22px}
+.cmp__row:not(.cmp__row--last) .cmp__cell--c3::after,.cmp--2 .cmp__row:not(.cmp__row--last) .cmp__cell--c2::after{right:16px}
+.cmp__head{font-family:var(--font-body);font-weight:var(--font-body-weight-bold);text-transform:uppercase;font-size:1rem;padding-top:calc(var(--cmp-lift) + 20px);padding-bottom:20px}
+.cmp__logo{max-height:34px;width:auto}
+.cmp .yes,.cmp .no{display:inline-flex;width:30px;height:30px;border-radius:50%;align-items:center;justify-content:center;color:#fff!important}
+.cmp .yes{background:var(--color-accent)}
+.cmp .no{background:var(--color-ink)}
+.cmp__row--last .cmp__cell{padding-bottom:22px}
+.compare-reviews{display:flex;flex-direction:column;gap:16px}
+.rcard{margin:0;display:flex;flex-direction:column;gap:10px;padding:20px 22px;background:var(--color-bg);border:1.5px solid var(--sec-shadow,var(--color-ink));border-radius:22px;box-shadow:5px 5px 0 var(--sec-shadow,var(--color-accent))}
+.rcard__top{display:flex;flex-wrap:wrap;align-items:center;gap:8px}.rcard__title{font-size:.85rem}.rcard__quote{margin:0;font-size:.95rem;line-height:1.6}
+.rcard__by{display:flex;align-items:center;gap:10px;font-size:.78rem;color:var(--color-muted);font-style:italic}.rcard__avatar{border-radius:50%;object-fit:cover}
+.rcard__verified{display:inline-flex;align-items:center;gap:3px;color:var(--color-accent);font-style:normal}
+.rating-line{margin:0 0 14px}.rating-line.center{display:flex;justify-content:center}
+@media (max-width:749px){
+  .cmp{--cmp-lift:28px}
+  .cmp__cell{padding:12px 6px;font-size:.92rem}
+  .cmp__cell--feat{padding-left:16px}
+  .cmp__row:not(.cmp__row--last) .cmp__cell--feat::after{left:16px}
+  .cmp__head{font-size:.8rem;padding-top:calc(var(--cmp-lift) + 22px);padding-bottom:22px}
+  .cmp .yes,.cmp .no{width:26px;height:26px}
+  .cmp__logo{max-height:24px}
+}
+</style>
+{% schema %}
+{"name":"Comparison table","settings":[{"type":"text","id":"anchor","label":"Anchor ID","default":"compare"},{"type":"text","id":"heading","label":"Heading","default":"How it stacks up","info":"Put [square brackets] around words to highlight them."},{"type":"select","id":"heading_style","label":"Heading style","default":"theme","options":[{"value":"theme","label":"Theme heading font"},{"value":"caps","label":"Bold capitals (body font)"}]},{"type":"text","id":"corner_label","label":"Top-left label","default":"Us vs them"},{"type":"color","id":"col_bg","label":"Your column background","default":"#F7EFE3"},{"type":"checkbox","id":"show_rating","label":"Show star rating above heading","default":false,"info":"Uses the product the button links to (via your review app)."},{"type":"select","id":"rating_style","label":"Star style","default":"stars","options":[{"value":"stars","label":"Plain stars, e.g. ★★★★★ (4.8) 1,234 Reviews"},{"value":"boxes","label":"Stars in coloured boxes"}]},{"type":"text","id":"rating_label","label":"Rating word","default":"Excellent"},{"type":"text","id":"rating_count_text","label":"Or type your own count text","info":"Only use numbers you can back up."},{"type":"color","id":"rating_color","label":"Star colour","default":"#FF9900"},{"type":"text","id":"col_us","label":"Your column","default":"GPS fence"},{"type":"image_picker","id":"col_us_image","label":"Your logo for the column header (optional)"},{"type":"text","id":"col_2","label":"Column 2","default":"Buried-wire fence"},{"type":"text","id":"col_3","label":"Column 3","default":"Wooden fence","info":"Leave empty for a two-column table (you vs others)."},{"type":"text","id":"button","label":"Button text under table"},{"type":"text","id":"cta_note","label":"Line under the button","default":"Secure checkout guaranteed"},{"type":"checkbox","id":"show_payment","label":"Show payment card icons","default":true},{"type":"product","id":"product","label":"Product the button links to"},{"type":"header","content":"Colours"},{"type":"paragraph","content":"Leave any colour empty to use the theme colours."},{"type":"color","id":"c_bg","label":"Background"},{"type":"color","id":"c_text","label":"Text"},{"type":"color","id":"c_heading","label":"Headings"},{"type":"color","id":"c_accent","label":"Accent (buttons, ticks, icons, highlights)"},{"type":"color","id":"c_btn_text","label":"Button text"},{"type":"color","id":"c_shadow","label":"Card & button shadow"}],"blocks":[{"type":"row","name":"Row","settings":[{"type":"text","id":"feature","label":"Feature","default":"Feature"},{"type":"checkbox","id":"c1","label":"Your column","default":true},{"type":"checkbox","id":"c2","label":"Column 2","default":false},{"type":"checkbox","id":"c3","label":"Column 3","default":false}]},{"type":"review","name":"Testimonial","settings":[{"type":"range","id":"rating","label":"Stars","min":1,"max":5,"step":1,"default":5},{"type":"text","id":"title","label":"Title","default":"Review title","info":"Put [square brackets] around words to highlight them."},{"type":"textarea","id":"text","label":"Review","default":"Paste a real customer review here."},{"type":"text","id":"name","label":"Name","default":"Customer name"},{"type":"text","id":"location","label":"Location"},{"type":"image_picker","id":"photo","label":"Customer photo"},{"type":"checkbox","id":"verified","label":"Verified buyer","default":true}]}],"presets":[{"name":"Comparison table","blocks":[{"type":"row"},{"type":"row"},{"type":"review"},{"type":"review"}]}]}
+{% endschema %}
