@@ -1,0 +1,13 @@
+{
+  "note": "State before creating a Shop collection and repointing the pet-menu Shop link.",
+  "pet-menu": {"id": "gid://shopify/Menu/248927191223", "items": [
+    {"id": "gid://shopify/MenuItem/610657632439", "title": "Home", "type": "FRONTPAGE", "url": "/"},
+    {"id": "gid://shopify/MenuItem/610657665207", "title": "Shop", "type": "PRODUCT", "resourceId": "gid://shopify/Product/15891750355127", "url": "/products/gps-wireless-dog-fence-training-collar"},
+    {"id": "gid://shopify/MenuItem/610657697975", "title": "Track Your Order", "type": "PAGE", "resourceId": "gid://shopify/Page/121032966327"},
+    {"id": "gid://shopify/MenuItem/610657730743", "title": "Contact us", "type": "PAGE", "resourceId": "gid://shopify/Page/120584994999"}]},
+  "collections": "Only 'Home page' (frontpage, 0 products). No shop collection.",
+  "products": {
+    "20 Boundary Training Markers (gid://shopify/Product/15892771569847)": {"variant": "gid://shopify/ProductVariant/57846392062135", "price_aud": "19.99", "compareAt": null, "CA": "20.08 CAD (converted)", "GB": "10.72 GBP (converted)"},
+    "Remote Wrist Wrap (gid://shopify/Product/15892772389047)": {"variant": "gid://shopify/ProductVariant/57846392619191", "price_aud": "9.99", "compareAt": null, "CA": "10.04 CAD (converted)", "GB": "5.36 GBP (converted)"}
+  }
+}
