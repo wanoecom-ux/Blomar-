@@ -1,0 +1,13 @@
+{
+  "note": "State before setting market-specific Pawrimetre prices. Shop currency AUD.",
+  "product": "gid://shopify/Product/15891750355127",
+  "variant": "gid://shopify/ProductVariant/57834094330039",
+  "base_price_aud": "229.00",
+  "base_compare_at_aud": null,
+  "markets": {
+    "CANDA (CA)": {"price_list": "gid://shopify/PriceList/22827696311", "currency": "CAD", "pawrimetre_fixed_price": null, "parent_adjustment": "PERCENTAGE_DECREASE 0"},
+    "UK GNG (GB, primary)": {"price_list": "gid://shopify/PriceList/22827729079", "currency": "GBP", "pawrimetre_fixed_price": null, "parent_adjustment": "PERCENTAGE_DECREASE 0"},
+    "USA (US)": {"price_list": "gid://shopify/PriceList/22827663543", "currency": "USD", "pawrimetre_fixed_price": null, "parent_adjustment": "PERCENTAGE_DECREASE 0"}
+  },
+  "no_nz_market": true
+}
