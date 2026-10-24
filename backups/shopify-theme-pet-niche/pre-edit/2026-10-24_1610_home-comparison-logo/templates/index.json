@@ -1,0 +1,388 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "image": "shopify://shop_images/Brown_dog_on_sunny_veranda_lawn.png",
+        "min_height": 75,
+        "overlay": "dark_full",
+        "overlay_strength": 45,
+        "text_color": "#ffffff",
+        "eyebrow": "",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_product": "gps-wireless-dog-fence-training-collar",
+        "rating_label": "Excellent (11,321 Reviews)",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "heading": "Give Your Dog Freedom. Keep Your Peace of Mind.",
+        "text": "",
+        "button_1": "SHOP PAWRIMETRE",
+        "link_1": "",
+        "button_wide": true,
+        "trust_1": "90-day money-back guarantee",
+        "trust_2": "Free shipping",
+        "button_2": "",
+        "link_2": "",
+        "mobile_overlay": true,
+        "mobile_height": 55,
+        "mobile_focus": 60,
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": ""
+      }
+    },
+    "ticker": {
+      "type": "ticker",
+      "settings": {
+        "items": "Fence + trainer in one,No monthly fees,GPS boundary,Up to 3 dogs,Waterproof,90-day guarantee",
+        "bg": "#db6742",
+        "fg": "#ffffff",
+        "size": 14,
+        "caps": false,
+        "show_icon": false
+      }
+    },
+    "problem": {
+      "type": "story",
+      "settings": {
+        "anchor": "problem",
+        "image": "shopify://shop_images/002_0d6326d5-b7ff-46e3-ab73-dffdb59c884e_1.png",
+        "image_right": true,
+        "eyebrow": "The problem",
+        "label_style": "boxed",
+        "label_img_size": 95,
+        "label_img_tilt": 12,
+        "label_img_mirror": false,
+        "label_img_reuse": true,
+        "label_bg": "#fbf4e8",
+        "label_color": "#db6742",
+        "label_border": "#1c2d5a",
+        "heading_style": "caps",
+        "heading": "THE TRUTH ABOUT ESCAPE ARTIST DOGS",
+        "text": "<p><strong>Your dog doesn't mean to run.</strong> The door opens for two seconds, a squirrel darts by, the gate's left cracked — and he's gone. Down the driveway, into the street, three houses down before you've got your shoes on.</p><p>And every time, your stomach drops. You're chasing him down the block, praying a car doesn't come around the corner. <strong>It only takes once.</strong></p><p>So you try to fix it. A $30 shock collar off Amazon he figures out in a week. A trainer who wants $2,000 and eight sessions. A fence quote that makes you laugh out loud — <strong>$6,000 to bury wire in your yard</strong>, and he'd still dig under it.</p><p>That's the trap: expensive fixes that don't work, or cheap ones that don't last. Either way <strong>you're still standing at the window every time he's outside</strong>, unable to relax.</p><p>The truth? Your dog doesn't need a wall. <strong>He needs a boundary he understands — and a little guidance when he forgets it.</strong> What if you could set that boundary in an afternoon, <strong>train him from your hand anywhere you go, and finally stop chasing him down the street?</strong></p>",
+        "mobile_center": true,
+        "media_shadow": false,
+        "c_bg": "",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "solution": {
+      "type": "feature-grid",
+      "blocks": {
+        "f1": {
+          "type": "feature",
+          "settings": {
+            "icon": "clock",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_2.png",
+            "title": "Set  in minutes",
+            "text": ""
+          }
+        },
+        "f2": {
+          "type": "feature",
+          "settings": {
+            "icon": "no",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_446f3f8c-424c-4498-9dbb-d438e3b9a500.png",
+            "title": "No digging",
+            "text": ""
+          }
+        },
+        "f3": {
+          "type": "feature",
+          "settings": {
+            "icon": "tool",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_1.png",
+            "title": "FULLY ADJUSTABLE MODES",
+            "text": ""
+          }
+        },
+        "f4": {
+          "type": "feature",
+          "settings": {
+            "icon": "remote",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_3.png",
+            "title": "Trains anywhere",
+            "text": ""
+          }
+        },
+        "f5": {
+          "type": "feature",
+          "settings": {
+            "icon": "dogs",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_4.png",
+            "title": "1 remote, 3 dogs",
+            "text": ""
+          }
+        },
+        "f6": {
+          "type": "feature",
+          "settings": {
+            "icon": "drop",
+            "custom_icon": "shopify://shop_images/Enlarged_burnt_orange_benefit_icon_5.png",
+            "title": "Waterproof + tOUGH",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "f1",
+        "f2",
+        "f3",
+        "f4",
+        "f5",
+        "f6"
+      ],
+      "settings": {
+        "anchor": "solution",
+        "layout": "split",
+        "card_style": "boxed",
+        "bg": "#ffffff",
+        "eyebrow": "The solution",
+        "label_style": "boxed",
+        "label_img_left": "shopify://shop_images/Diagonal_black_training_remote_and_collar.png",
+        "label_img_right": "shopify://shop_images/Black_dog_training_remote_and_collar.png",
+        "label_img_size": 110,
+        "label_img_tilt": 12,
+        "label_img_mirror": false,
+        "label_img_reuse": true,
+        "label_bg": "#ffffff",
+        "label_color": "#db6742",
+        "label_border": "#1c2d5a",
+        "heading_style": "caps",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_label": "(4.8) 11,231+ Reviews",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "heading": "THE COLLAR THAT ACTUALLY KEEPS THEM HOME",
+        "text": "PawRimtre fixes what old fences and cheap collars get wrong — it contains and trains, with zero wires and zero monthly fees.",
+        "image": "shopify://shop_images/009_Golden_retriever_in_sunny_yard_202608081001_1.jpg",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "cta": "CLAIM 50% OFF TODAY",
+        "cta_note": "Secure checkout · 90-day money-back guarantee",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "compare": {
+      "type": "comparison",
+      "blocks": {
+        "r1": {
+          "type": "row",
+          "settings": {
+            "feature": "Wireless GPS boundary, no digging",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r2": {
+          "type": "row",
+          "settings": {
+            "feature": "Contains & trains your dog",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r3": {
+          "type": "row",
+          "settings": {
+            "feature": "One remote runs up to 3 dogs",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r4": {
+          "type": "row",
+          "settings": {
+            "feature": "No app, no monthly fees",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "r5": {
+          "type": "row",
+          "settings": {
+            "feature": "Set up the same day",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "row_hNYzyt": {
+          "type": "row",
+          "settings": {
+            "feature": "Set up in minutes, not days",
+            "c1": true,
+            "c2": false,
+            "c3": false
+          }
+        },
+        "t1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Finally stopped the escapes",
+            "text": "\"My old girl slipped out the gate constantly and it terrified me near the road. Set the boundary once and she stays put now. Just wish I'd found this sooner.\"",
+            "name": "Karen M.",
+            "location": "Portland, Oregon.",
+            "verified": false
+          }
+        },
+        "t2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Beats a $6,000 fence",
+            "text": "\"We were quoted thousands to fence our yard. Got this instead, set it up the same afternoon, and my lab hasn't crossed the line since. Saved us a fortune.\"",
+            "name": "Nancy T",
+            "location": "Tampa, Florida",
+            "verified": false
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4",
+        "r5",
+        "row_hNYzyt",
+        "t1",
+        "t2"
+      ],
+      "settings": {
+        "anchor": "compare",
+        "heading": "Why Choose [PAWRIMTRE] Over Old-School Fences?",
+        "heading_style": "caps",
+        "corner_label": "Us vs them",
+        "col_bg": "#f3e7d3",
+        "show_rating": true,
+        "rating_style": "stars",
+        "rating_label": "(4.8) 11,231+ Reviews",
+        "rating_count_text": "",
+        "rating_color": "#ff9900",
+        "col_us": "GPS fence",
+        "col_us_image": "shopify://shop_images/blomar-pets-logo-navy.png",
+        "col_2": "Others",
+        "col_3": "",
+        "button": "GET PAWRIMTRE TODAY",
+        "cta_note": "Secure checkout guaranteed",
+        "show_payment": true,
+        "product": "gps-wireless-dog-fence-training-collar",
+        "c_bg": "",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a"
+      }
+    },
+    "reviews": {
+      "type": "review-cards",
+      "blocks": {
+        "r1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "So easy to use",
+            "text": "\"Had the boundary set in one afternoon, no digging, no wires, nothing. My lab figured out the line in about three days. Easiest thing I've ever done for him.\"",
+            "name": "Amanda R.",
+            "location": "Camden, London",
+            "verified": true
+          }
+        },
+        "r2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Perfect for my senior boy",
+            "text": "\"My 11-year-old still likes to wander off. A gentle beep and he circles right back now. No stress, no chasing him down the road at 6am anymore.\"",
+            "name": "Greg P.",
+            "location": "Scarborough, Toronto",
+            "verified": true
+          }
+        },
+        "r3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Saved me thousands",
+            "text": "\"I was quoted $6,000 to fence our property. Got this instead, and my shepherd hasn't crossed the line since. Paid for itself the day it arrived.\"",
+            "name": "Amanda S.",
+            "location": "Didsbury, Manchester",
+            "verified": true
+          }
+        },
+        "r4": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Works for both our dogs",
+            "text": "\"Two escape artists, one remote. Set boundaries for both and I control them from one handheld. Total game changer — they finally just stay in the yard.\"",
+            "name": "Jack M.",
+            "location": "Kitsilano, Vancouver",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {
+        "anchor": "reviews",
+        "bg": "#f7efe3",
+        "photo_1": "shopify://shop_images/Smiling_woman_with_brown_dog_in_field_25040eb8-10fd-4214-85d7-f55c9e57da39.png",
+        "photo_2": "shopify://shop_images/Brown_dog_on_woodland_path_cc4b7d41-db12-4708-8e4e-f076a28fc99c.png",
+        "photo_3": "shopify://shop_images/Seated_Black_Labrador_in_a_Grassy_Field_85d554d0-572c-4795-96bf-6cb5222ee828.png",
+        "photo_4": "shopify://shop_images/Father_child_and_shepherd_outdoors_294b0d2c-a85f-46ac-a81e-d7bcbd3eb118.png",
+        "layout": "photos_first",
+        "show_stars": true,
+        "heading": "OVER [18,340+] DOG OWNERS KEEP THEIR DOGS [SAFE] DAILY",
+        "heading_style": "caps",
+        "highlight": "",
+        "text": "",
+        "button": "GET PAWRIMTRE TODAY",
+        "product": "gps-wireless-dog-fence-training-collar",
+        "note": "Secure checkout · 90-day money-back guarantee",
+        "c_text": "",
+        "c_heading": "",
+        "c_accent": "",
+        "c_btn_text": "",
+        "c_shadow": "#1c2d5a",
+        "c_stars": ""
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "ticker",
+    "problem",
+    "solution",
+    "compare",
+    "reviews"
+  ]
+}
