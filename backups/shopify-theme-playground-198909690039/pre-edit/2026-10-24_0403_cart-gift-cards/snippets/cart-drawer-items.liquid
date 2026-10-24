@@ -1,0 +1,116 @@
+{%- comment -%}
+  Cart drawer contents: banner, line items, optional add-on toggle, subtotal, checkout.
+  Re-rendered by sections/cart-drawer-content.liquid after every cart change.
+{%- endcomment -%}
+{%- liquid
+  assign addon = settings.cart_addon_product
+  assign addon_variant = blank
+  assign addon_key = blank
+  if addon != blank
+    assign addon_variant = addon.selected_or_first_available_variant
+    for item in cart.items
+      if item.product_id == addon.id
+        assign addon_key = item.key
+      endif
+    endfor
+  endif
+  assign shown_count = 0
+  for item in cart.items
+    unless addon != blank and item.product_id == addon.id
+      assign shown_count = shown_count | plus: 1
+    endunless
+  endfor
+-%}
+{%- if shown_count == 0 -%}
+  <div class="cd cd--empty">
+    <p class="cart-empty">{{ 'cart.empty' | t }}</p>
+    <a class="btn btn--accent btn--block" href="{{ routes.all_products_collection_url }}">{{ 'products.shop_now' | t }}</a>
+  </div>
+{%- else -%}
+  <div class="cd">
+    {%- if settings.cart_banner != blank or settings.cart_banner_2 != blank -%}
+      <div class="cd__banner"{% if settings.cart_banner_bg != blank %} style="--cd-banner-bg: {{ settings.cart_banner_bg }};"{% endif %}>
+        {%- if settings.cart_banner != blank -%}<p>{{ settings.cart_banner | escape | replace: '[', '<strong class="cd__em">' | replace: ']', '</strong>' }}</p>{%- endif -%}
+        {%- if settings.cart_banner_2 != blank -%}<p>{{ settings.cart_banner_2 | escape | replace: '[', '<strong>' | replace: ']', '</strong>' }}</p>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <ul class="cd__list" role="list">
+      {%- for item in cart.items -%}
+        {%- if addon != blank and item.product_id == addon.id -%}{%- continue -%}{%- endif -%}
+        {%- liquid
+          assign is_gift = false
+          if item.final_line_price == 0 and item.original_line_price > 0
+            assign is_gift = true
+          endif
+        -%}
+        <li class="cd__line{% if is_gift %} cd__line--gift{% endif %}" data-line="{{ forloop.index }}">
+          <a class="cd__img" href="{{ item.url }}">
+            {%- if item.image -%}{{ item.image | image_url: width: 240 | image_tag: loading: 'lazy', alt: item.product.title }}{%- endif -%}
+          </a>
+          <div class="cd__info">
+            <div class="cd__top">
+              <a href="{{ item.url }}" class="cd__title">{{ item.product.title }}</a>
+              {%- unless is_gift -%}<button type="button" class="cd__remove" data-qty-change="0" aria-label="{{ 'cart.remove' | t }}">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M5.5 7l1 12.5a1.5 1.5 0 0 0 1.5 1.5h8a1.5 1.5 0 0 0 1.5-1.5l1-12.5M9 7V4.5A1.5 1.5 0 0 1 10.5 3h3A1.5 1.5 0 0 1 15 4.5V7"/></svg>
+              </button>{%- endunless -%}
+            </div>
+            {%- unless item.product.has_only_default_variant -%}<p class="cd__meta">{{ item.variant.title }}</p>{%- endunless -%}
+            {%- for p in item.properties -%}
+              {%- assign first = p.first | slice: 0 -%}
+              {%- if p.last != blank and first != '_' -%}<p class="cd__meta">{{ p.first }}: {{ p.last }}</p>{%- endif -%}
+            {%- endfor -%}
+            <p class="cd__price">
+              {%- if item.original_line_price > item.final_line_price -%}<s>{% if settings.cart_currency_code %}{{ item.original_line_price | money_with_currency }}{% else %}{{ item.original_line_price | money }}{% endif %}</s> {% endif -%}
+              {%- if is_gift -%}<strong class="cd__free">{{ settings.cart_gift_label | default: 'FREE' }}</strong>{%- else -%}<strong>{% if settings.cart_currency_code %}{{ item.final_line_price | money_with_currency }}{% else %}{{ item.final_line_price | money }}{% endif %}</strong>{%- endif -%}
+            </p>
+            {%- unless is_gift -%}
+            <div class="cd__qty">
+              <button type="button" aria-label="Decrease" data-qty-change="{{ item.quantity | minus: 1 }}">&minus;</button>
+              <span>{{ item.quantity }}</span>
+              <button type="button" aria-label="Increase" data-qty-change="{{ item.quantity | plus: 1 }}">+</button>
+            </div>
+            {%- endunless -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+    <div class="cd__foot">
+      {%- if addon_variant != blank and addon_variant.available -%}
+        <label class="cd__addon">
+          <span class="cd__addon-icon">
+            {%- if settings.cart_addon_icon != blank -%}
+              {{ settings.cart_addon_icon | image_url: width: 140 | image_tag: loading: 'lazy', alt: '' }}
+            {%- elsif addon.featured_image -%}
+              {{ addon.featured_image | image_url: width: 140 | image_tag: loading: 'lazy', alt: '' }}
+            {%- else -%}
+              {% render 'icon', name: 'shield', size: 40 %}
+            {%- endif -%}
+          </span>
+          <span class="cd__addon-copy">
+            <span class="cd__addon-row">
+              <strong class="cd__addon-title">{{ settings.cart_addon_title | default: addon.title }}</strong>
+              <strong class="cd__addon-price">{% if settings.cart_currency_code %}{{ addon_variant.price | money_with_currency }}{% else %}{{ addon_variant.price | money }}{% endif %}</strong>
+            </span>
+            {%- if settings.cart_addon_text != blank -%}<span class="cd__addon-text">{{ settings.cart_addon_text }}</span>{%- endif -%}
+          </span>
+          <input class="cd__switch" type="checkbox" role="switch" data-addon-toggle data-variant="{{ addon_variant.id }}" data-key="{{ addon_key }}" {% if addon_key != blank %}checked{% endif %} aria-label="{{ settings.cart_addon_title | default: addon.title | escape }}">
+        </label>
+      {%- endif -%}
+      <div class="cd__subtotal">
+        <span>{{ 'cart.subtotal' | t }}</span>
+        <strong>{% if settings.cart_currency_code %}{{ cart.total_price | money_with_currency }}{% else %}{{ cart.total_price | money }}{% endif %}</strong>
+      </div>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button type="submit" name="checkout" class="btn btn--accent cd__checkout">{{ settings.cart_checkout_label | default: 'Go to checkout' }}</button>
+      </form>
+      {%- if settings.cart_note != blank -%}
+        <p class="cd__note"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 2.7 2.7L16.5 9"/></svg>{{ settings.cart_note }}</p>
+      {%- endif -%}
+      {%- if settings.cart_show_payment -%}
+        <div class="cd__pay">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'cd__pay-icon' }}{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}

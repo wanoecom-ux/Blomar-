@@ -1,0 +1,384 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Pawprint",
+    "theme_version": "1.0.0",
+    "theme_author": "Store team",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/"
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "All text uses fonts from your store's Shopify font library. Change them here and every page updates."
+      },
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Headings",
+        "default": "lora_n4"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Heading size",
+        "min": 80,
+        "max": 130,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Body",
+        "default": "work_sans_n4"
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "label": "Body size",
+        "min": 90,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      },
+      {
+        "type": "header",
+        "content": "Custom fonts (optional)"
+      },
+      {
+        "type": "paragraph",
+        "content": "To use a licensed font that isn't in Shopify's library (e.g. Copernicus or Neuzeit Grotesk), upload its .woff2 files in Content → Files, then paste each file's link below. These override the pickers above."
+      },
+      {
+        "type": "text",
+        "id": "custom_heading_name",
+        "label": "Heading font name",
+        "info": "e.g. Copernicus"
+      },
+      {
+        "type": "text",
+        "id": "custom_heading_url",
+        "label": "Heading font file link (.woff2)"
+      },
+      {
+        "type": "text",
+        "id": "custom_heading_weight",
+        "label": "Heading font weight",
+        "default": "600"
+      },
+      {
+        "type": "text",
+        "id": "custom_body_name",
+        "label": "Body font name",
+        "info": "e.g. Neuzeit Grotesk"
+      },
+      {
+        "type": "text",
+        "id": "custom_body_url",
+        "label": "Body font file link – regular (.woff2)"
+      },
+      {
+        "type": "text",
+        "id": "custom_body_bold_url",
+        "label": "Body font file link – bold (.woff2)"
+      }
+    ]
+  },
+  {
+    "name": "Colors",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color_ink",
+        "label": "Text",
+        "default": "#1E1F24"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Secondary text",
+        "default": "#5B5E66"
+      },
+      {
+        "type": "color",
+        "id": "color_bg",
+        "label": "Background",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_card",
+        "label": "Card background",
+        "default": "#F4F3EF"
+      },
+      {
+        "type": "color",
+        "id": "color_line",
+        "label": "Borders",
+        "default": "#E3E1DA"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Accent (buttons)",
+        "default": "#1F7A45"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_ink",
+        "label": "Accent text",
+        "default": "#FFFFFF"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_soft",
+        "label": "Accent tint",
+        "default": "#E7F3EC"
+      },
+      {
+        "type": "color",
+        "id": "color_dark",
+        "label": "Dark band background",
+        "default": "#101A2B"
+      },
+      {
+        "type": "color",
+        "id": "color_sale",
+        "label": "Sale / badge",
+        "default": "#C8372D"
+      },
+      {
+        "type": "color",
+        "id": "color_star",
+        "label": "Stars",
+        "default": "#F2A93B"
+      },
+      {
+        "type": "header",
+        "content": "Highlighted words"
+      },
+      {
+        "type": "paragraph",
+        "content": "In any heading or text box, put [square brackets] around words to highlight them, e.g. Keep your dog [safe] at home."
+      },
+      {
+        "type": "color",
+        "id": "color_highlight",
+        "label": "Highlight colour",
+        "default": "#DB6742"
+      },
+      {
+        "type": "select",
+        "id": "highlight_style",
+        "label": "Highlight style",
+        "default": "text",
+        "options": [
+          {
+            "value": "text",
+            "label": "Coloured words"
+          },
+          {
+            "value": "underline",
+            "label": "Coloured words, underlined"
+          },
+          {
+            "value": "marker",
+            "label": "Highlighter pen behind the words"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "Layout",
+    "settings": [
+      {
+        "type": "range",
+        "id": "page_width",
+        "label": "Page width",
+        "min": 1000,
+        "max": 1600,
+        "step": 20,
+        "unit": "px",
+        "default": 1240
+      },
+      {
+        "type": "range",
+        "id": "radius",
+        "label": "Card corner radius",
+        "min": 0,
+        "max": 32,
+        "step": 2,
+        "unit": "px",
+        "default": 16
+      },
+      {
+        "type": "range",
+        "id": "radius_button",
+        "label": "Button corner radius",
+        "min": 0,
+        "max": 40,
+        "step": 2,
+        "unit": "px",
+        "default": 40
+      }
+    ]
+  },
+  {
+    "name": "Brand",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Social sharing image"
+      }
+    ]
+  },
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Banner at the top"
+      },
+      {
+        "type": "text",
+        "id": "cart_banner",
+        "label": "Banner line 1",
+        "default": "Excellent choice! Enjoy [FREE] shipping.",
+        "info": "Put [square brackets] around words to make them bold and underlined."
+      },
+      {
+        "type": "text",
+        "id": "cart_banner_2",
+        "label": "Banner line 2",
+        "info": "Optional. Only use statements that are true, e.g. a real dispatch time."
+      },
+      {
+        "type": "color",
+        "id": "cart_banner_bg",
+        "label": "Banner background",
+        "default": "#F1F0EE"
+      },
+      {
+        "type": "header",
+        "content": "Add-on toggle"
+      },
+      {
+        "type": "paragraph",
+        "content": "Shows a switch above the subtotal that adds or removes a product, e.g. a priority processing fee. Choose a product to turn it on. That product is hidden from the item list and shown as the switch instead."
+      },
+      {
+        "type": "product",
+        "id": "cart_addon_product",
+        "label": "Add-on product"
+      },
+      {
+        "type": "text",
+        "id": "cart_addon_title",
+        "label": "Title",
+        "default": "Priority Processing"
+      },
+      {
+        "type": "text",
+        "id": "cart_addon_text",
+        "label": "Small text",
+        "default": "Your order is packed and shipped first.",
+        "info": "Only promise what you actually do. Don't invent queue numbers."
+      },
+      {
+        "type": "image_picker",
+        "id": "cart_addon_icon",
+        "label": "Icon",
+        "info": "Leave empty to use the product's image."
+      },
+      {
+        "type": "text",
+        "id": "cart_gift_label",
+        "label": "Label on free gift items",
+        "default": "FREE"
+      },
+      {
+        "type": "header",
+        "content": "Checkout"
+      },
+      {
+        "type": "text",
+        "id": "cart_checkout_label",
+        "label": "Checkout button text",
+        "default": "Go to checkout"
+      },
+      {
+        "type": "color",
+        "id": "cart_btn_bg",
+        "label": "Checkout button colour",
+        "info": "Leave empty to use your accent colour."
+      },
+      {
+        "type": "color",
+        "id": "cart_btn_text",
+        "label": "Checkout button text colour"
+      },
+      {
+        "type": "range",
+        "id": "cart_btn_radius",
+        "label": "Checkout button corners",
+        "min": 0,
+        "max": 30,
+        "step": 1,
+        "unit": "px",
+        "default": 6
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_btn_shadow",
+        "label": "Checkout button shadow",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "cart_btn_shadow_color",
+        "label": "Shadow colour",
+        "default": "#1C2D5A"
+      },
+      {
+        "type": "range",
+        "id": "cart_btn_shadow_size",
+        "label": "Shadow size",
+        "min": 1,
+        "max": 10,
+        "step": 1,
+        "unit": "px",
+        "default": 4
+      },
+      {
+        "type": "text",
+        "id": "cart_note",
+        "label": "Line under checkout button",
+        "default": "Secure Checkout · 90-Day Guarantee"
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_show_payment",
+        "label": "Show payment icons",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "cart_currency_code",
+        "label": "Show currency code on prices (e.g. £189.00 GBP)",
+        "default": true
+      }
+    ]
+  }
+]
