@@ -1,0 +1,146 @@
+{%- liquid
+  assign tpl_key = template.name
+  if template.suffix != blank
+    assign tpl_key = template.name | append: '.' | append: template.suffix
+  endif
+  assign hide_header = false
+  assign hide_list = section.settings.hide_on | split: ','
+  for h in hide_list
+    assign hh = h | strip
+    if hh == tpl_key
+      assign hide_header = true
+    endif
+  endfor
+-%}
+{%- unless hide_header -%}
+<header class="site-header" data-header style="--nav-active-bg: {{ section.settings.active_bg }}; --nav-active-text: {{ section.settings.active_text }};">
+  <div class="page-width site-header__inner">
+    <div class="site-header__left">
+      <button class="icon-btn hide-desktop" type="button" data-menu-open aria-label="{{ 'general.menu' | t }}">{% render 'icon', name: 'menu' %}</button>
+      <nav class="site-nav hide-mobile" aria-label="Main">
+        <ul role="list">
+          {%- for link in section.settings.menu.links -%}
+            <li class="site-nav__item{% if link.links.size > 0 %} has-dropdown{% endif %}">
+              <a href="{{ link.url }}" class="site-nav__link{% if link.current or link.child_active %} is-active{% endif %}"{% if link.current %} aria-current="page"{% endif %}>{{ link.title }}{% if link.links.size > 0 %} {% render 'icon', name: 'chevron', size: 14 %}{% endif %}</a>
+              {%- if link.links.size > 0 -%}
+                <ul class="site-nav__dropdown" role="list">
+                  {%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+      </nav>
+    </div>
+
+    <a href="{{ routes.root_url }}" class="site-logo" aria-label="{{ shop.name }}">
+      {%- if section.settings.logo -%}
+        {{ section.settings.logo | image_url: width: 400 | image_tag: width: section.settings.logo_width, height: nil, alt: shop.name, style: 'height:auto;' }}
+      {%- else -%}
+        <span class="site-logo__text">{{ shop.name }}</span>
+      {%- endif -%}
+    </a>
+
+    <div class="site-header__right">
+      {%- if section.settings.promo_text != blank -%}
+        <a class="site-header__promo hide-mobile" href="{{ section.settings.promo_link | default: '#' }}">{{ section.settings.promo_text }}</a>
+      {%- endif -%}
+      <a class="icon-btn hide-mobile" href="{{ routes.account_url }}" aria-label="Account">{% render 'icon', name: 'user' %}</a>
+      <a class="icon-btn hide-mobile" href="{{ routes.search_url }}" aria-label="{{ 'general.search' | t }}">{% render 'icon', name: 'search' %}</a>
+      {%- if section.settings.show_country and localization.available_countries.size > 1 -%}
+        {%- assign cur = localization.country -%}
+        {%- form 'localization', id: 'HeaderCountryForm', class: 'hdr-country', data-country-form: '' -%}
+          <span class="hdr-country__face" aria-hidden="true">
+            <img class="hdr-country__flag" src="https://flagcdn.com/w40/{{ cur.iso_code | downcase }}.png" width="22" height="16" alt="">
+            <span class="hdr-country__code">{{ cur.iso_code }}{% if section.settings.show_currency %} <span class="hdr-country__cur">| {{ cur.currency.iso_code }} {{ cur.currency.symbol }}</span>{% endif %}</span>
+            {% render 'icon', name: 'chevron', size: 14 %}
+          </span>
+          <label class="visually-hidden" for="HeaderCountrySelect">Country / currency</label>
+          <select id="HeaderCountrySelect" name="country_code" class="hdr-country__select" data-country-select>
+            {%- for c in localization.available_countries -%}
+              <option value="{{ c.iso_code }}"{% if c.iso_code == cur.iso_code %} selected{% endif %}>{{ c.name }} ({{ c.currency.iso_code }} {{ c.currency.symbol }})</option>
+            {%- endfor -%}
+          </select>
+          <input type="hidden" name="return_to" value="{{ request.path }}">
+        {%- endform -%}
+      {%- endif -%}
+      <a class="icon-btn cart-btn" href="{{ routes.cart_url }}" data-cart-open aria-label="{{ 'general.cart' | t }}">
+        {% render 'icon', name: 'cart' %}<span class="cart-btn__count" data-cart-count>{{ cart.item_count }}</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="mobile-menu" id="MobileMenu" aria-hidden="true">
+    <div class="mobile-menu__panel">
+      <button class="icon-btn" type="button" data-menu-close aria-label="{{ 'general.close' | t }}">{% render 'icon', name: 'x' %}</button>
+      <ul role="list">
+        {%- for link in section.settings.menu.links -%}
+          <li><a href="{{ link.url }}"{% if link.current %} class="is-active" aria-current="page"{% endif %}>{{ link.title }}</a>
+            {%- if link.links.size > 0 -%}<ul role="list">{%- for child in link.links -%}<li><a href="{{ child.url }}">{{ child.title }}</a></li>{%- endfor -%}</ul>{%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</header>
+<style>
+.hdr-country{position:relative;display:inline-flex;align-items:center;margin:0 4px}
+.hdr-country__face{display:inline-flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;font-size:.82rem;font-weight:var(--font-body-weight-medium);white-space:nowrap;color:var(--color-ink)}
+.hdr-country:hover .hdr-country__face{background:var(--color-card)}
+.hdr-country__flag{width:22px;height:16px;object-fit:cover;border-radius:2px;box-shadow:0 0 0 1px rgba(0,0,0,.08)}
+.hdr-country__select{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:pointer;font-size:16px}
+.hdr-country:focus-within .hdr-country__face{outline:2px solid var(--color-accent);outline-offset:1px}
+@media (max-width:749px){.hdr-country__cur{display:none}.hdr-country__face{padding:6px 4px;gap:4px}.hdr-country{margin:0}}
+.site-nav__link{letter-spacing:.04em;font-weight:var(--font-body-weight);padding:6px 10px;border-radius:4px}
+.site-nav__link.is-active{background:var(--nav-active-bg,#000);color:var(--nav-active-text,#fff);font-weight:var(--font-body-weight-bold)}
+.site-nav__link.is-active:hover{background:var(--nav-active-bg,#000)}
+.mobile-menu__panel a.is-active{font-weight:var(--font-body-weight-bold)}
+</style>
+{%- if section.settings.show_country and localization.available_countries.size > 1 -%}
+<script>
+(() => {
+  const form = document.querySelector('[data-country-form]');
+  const select = form && form.querySelector('[data-country-select]');
+  if (!select) return;
+  const store = (k, v) => { try { v === undefined ? null : localStorage.setItem(k, v); return localStorage.getItem(k); } catch (e) { return null; } };
+  select.addEventListener('change', () => { store('pf_country_chosen', '1'); form.submit(); });
+  {%- if section.settings.auto_country -%}
+  if (window.Shopify && Shopify.designMode) return;
+  let checked = null; try { checked = sessionStorage.getItem('pf_geo_checked'); } catch (e) {}
+  if (store('pf_country_chosen') || checked) return;
+  try { sessionStorage.setItem('pf_geo_checked', '1'); } catch (e) {}
+  const current = {{ localization.country.iso_code | json }};
+  fetch(`${(window.Shopify && Shopify.routes && Shopify.routes.root) || '/'}browsing_context_suggestions.json?country[enabled]=true&country[exclude]=${current}`)
+    .then((r) => r.json())
+    .then((d) => {
+      const code = d && d.detected_values && d.detected_values.country && d.detected_values.country.handle;
+      if (!code || code === current) return;
+      if (![...select.options].some((o) => o.value === code)) return;
+      select.value = code;
+      form.submit();
+    })
+    .catch(() => {});
+  {%- endif -%}
+})();
+</script>
+{%- endif -%}
+{%- endunless -%}
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    { "type": "text", "id": "hide_on", "label": "Hide the header on these page templates", "default": "page.listicle", "info": "Comma separated, e.g. page.listicle, page.landing" },
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "label": "Logo width", "min": 60, "max": 260, "step": 10, "unit": "px", "default": 140 },
+    { "type": "link_list", "id": "menu", "label": "Menu", "default": "main-menu" },
+    { "type": "color", "id": "active_bg", "label": "Current page menu highlight", "default": "#000000" },
+    { "type": "color", "id": "active_text", "label": "Current page menu text", "default": "#FFFFFF" },
+    { "type": "text", "id": "promo_text", "label": "Highlighted link text", "default": "Get $15" },
+    { "type": "url", "id": "promo_link", "label": "Highlighted link" },
+    { "type": "header", "content": "Country selector" },
+    { "type": "checkbox", "id": "show_country", "label": "Show country / currency selector", "default": true, "info": "Lists the countries in your Shopify Markets." },
+    { "type": "checkbox", "id": "show_currency", "label": "Show currency next to the country (desktop)", "default": true },
+    { "type": "checkbox", "id": "auto_country", "label": "Match each visitor's country automatically", "default": true, "info": "On a shopper's first visit, switches to the market for the country they're browsing from. If they pick a country themselves, their choice is kept." }
+  ]
+}
+{% endschema %}
