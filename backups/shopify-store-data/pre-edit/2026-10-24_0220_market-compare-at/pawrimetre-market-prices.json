@@ -1,0 +1,7 @@
+{
+  "note": "State before adding compare-at prices for Pawrimetre in Canada and UK price lists.",
+  "variant": "gid://shopify/ProductVariant/57834094330039",
+  "CANDA price list gid://shopify/PriceList/22827696311": {"price": "212.00 CAD", "compareAtPrice": null},
+  "UK GNG price list gid://shopify/PriceList/22827729079": {"price": "114.00 GBP", "compareAtPrice": null},
+  "USA price list gid://shopify/PriceList/22827663543": {"fixed_price": null}
+}
