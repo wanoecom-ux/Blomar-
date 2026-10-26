@@ -17,7 +17,7 @@
       {%- if s.rating != blank -%}<a class="zp__rating" href="#reviews"><span>★★★★★</span>{{ s.rating | escape }}</a>{%- endif -%}
       <h1 class="zp__title">{{ s.title | default: product.title | escape }}</h1>
       {%- if s.hook != blank -%}<p class="zp__hook">{% render 'hl', text: s.hook %}</p>{%- endif -%}
-      <ul class="zp__bul" role="list">{%- assign rows = s.bullets | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign t = r | strip -%}{%- if t != blank -%}{%- assign p = t | split: '|' -%}<li><span>{{ p[0] | strip }}</span>{{ p[1] | strip | escape }}</li>{%- endif -%}{%- endfor -%}</ul>
+      <ul class="zp__bul" role="list">{%- assign rows = s.bullets | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign t = r | strip -%}{%- if t != blank -%}{%- assign p = t | split: '|' -%}<li><span>{{ p[0] | strip }}</span>{{ p[1] | strip | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</li>{%- endif -%}{%- endfor -%}</ul>
       {%- if s.size_label != blank -%}<a class="zp__size" href="#size-guide">📏 <u>{{ s.size_label | escape }}</u> ↓</a>{%- endif -%}
       {%- if s.stock != blank -%}<p class="zp__stock">● {{ s.stock | escape }}</p>{%- endif -%}
       {%- if s.banner != blank -%}<p class="zp__banner">{{ s.banner | escape }}</p>{%- endif -%}
@@ -61,7 +61,7 @@
       <div class="zp__pay">{%- for type in shop.enabled_payment_types limit: 9 -%}{{ type | payment_type_svg_tag: class: 'zp__pay-icon' }}{%- endfor -%}</div>
       {%- if s.risk_title != blank -%}<div class="zp__risk"><span>🛡️</span><div><small>RISK-FREE PURCHASE</small><strong>{{ s.risk_title | escape }}</strong><p>{{ s.risk_text | escape }}</p></div></div>{%- endif -%}
       {%- if s.quote != blank -%}<div class="zp__quote"><span class="zp__avatar">{% render 'media-img', image: s.quote_img, width: 100, alt: '' %}</span><div><p>“{{ s.quote | escape }}”</p><small>{{ s.quote_by | escape }} <b>★★★★★</b></small></div></div>{%- endif -%}
-      {%- for block in section.blocks -%}<details class="zp__acc" {{ block.shopify_attributes }}><summary><span>{{ block.settings.icon }}</span>{{ block.settings.heading | escape }}{% render 'icon', name: 'chevron-down', size: 16 %}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- endfor -%}
+      {%- for block in section.blocks -%}<details class="zp__acc" {{ block.shopify_attributes }}><summary><span>{{ block.settings.icon }}</span>{{ block.settings.heading | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{% render 'icon', name: 'chevron-down', size: 16 %}</summary><div class="rte">{{ block.settings.content  | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</div></details>{%- endfor -%}
     </div>
   </div>
   <div class="zsb" data-sticky hidden>

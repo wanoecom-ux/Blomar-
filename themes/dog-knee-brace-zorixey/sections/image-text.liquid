@@ -1,6 +1,6 @@
 <section class="zit{% if section.settings.right %} zit--right{% endif %}"><div class="page-width zit__grid">
 <div class="zit__media">{% render 'media-img', image: section.settings.image, width: 1200, alt: '' %}</div>
-<div class="zit__copy"><h2>{{ section.settings.heading | escape }}</h2><div class="rte{% if section.settings.center %} zit__center{% endif %}">{{ section.settings.text }}</div></div></div></section>
+<div class="zit__copy"><h2>{{ section.settings.heading | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2><div class="rte{% if section.settings.center %} zit__center{% endif %}">{{ section.settings.text  | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</div></div></div></section>
 {% schema %}
 {"name":"Image with text","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"checkbox","id":"right","label":"Image on the right","default":false},{"type":"checkbox","id":"center","label":"Centre the text","default":true},{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"richtext","id":"text","label":"Text","default":"<p>Text</p>"}],"presets":[{"name":"Image with text"}]}
 {% endschema %}

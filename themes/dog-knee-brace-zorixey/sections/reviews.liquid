@@ -17,8 +17,8 @@
   <article class="zrv__item" {{ block.shopify_attributes }}>
     <p class="zrv__stars">★★★★★</p>
     <p class="zrv__name"><span>{{ block.settings.name | slice: 0 }}</span><b>{{ block.settings.name | escape }}{%- if block.settings.date != blank -%}<small>{{ block.settings.date | escape }}</small>{%- endif -%}</b></p>
-    {%- if block.settings.title != blank -%}<h3 class="zrv__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
-    <p>{{ block.settings.text | escape }}</p>
+    {%- if block.settings.title != blank -%}<h3 class="zrv__title">{{ block.settings.title | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h3>{%- endif -%}
+    <p>{{ block.settings.text | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p>
     <div class="zrv__img">{% render 'media-img', image: block.settings.image, width: 300, alt: '' %}</div>
   </article>
   {%- endfor -%}

@@ -6,11 +6,11 @@
   endif
 -%}
 <section class="zct"><div class="page-width zct__grid">
-  <div class="zct__copy"><h2>{{ s.heading | escape }}</h2><p>{{ s.sub | escape }}</p></div>
+  <div class="zct__copy"><h2>{{ s.heading | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</h2><p>{{ s.sub | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</p></div>
   <div class="zct__wrap">
     <div class="zct__head"><span></span><span class="zct__us">{%- if logo != blank -%}{{ logo | image_url: width: 300 | image_tag: alt: s.us, loading: 'lazy' }}{%- else -%}{{ s.us | escape }}{%- endif -%}</span><span>{{ s.them | escape }}</span></div>
     <div class="zct__table">
-      {%- for block in section.blocks -%}<div class="zct__row" {{ block.shopify_attributes }}><span class="zct__feat">{{ block.settings.feature | escape }}</span><span class="zct__yes"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-label="Yes"><path d="M4 12.5l5 5L20 6"/></svg></span><span class="zct__no"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-label="No"><path d="M5 5l14 14M19 5L5 19"/></svg></span></div>{%- endfor -%}
+      {%- for block in section.blocks -%}<div class="zct__row" {{ block.shopify_attributes }}><span class="zct__feat">{{ block.settings.feature | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</span><span class="zct__yes"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-label="Yes"><path d="M4 12.5l5 5L20 6"/></svg></span><span class="zct__no"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" aria-label="No"><path d="M5 5l14 14M19 5L5 19"/></svg></span></div>{%- endfor -%}
     </div>
   </div>
 </div></section>

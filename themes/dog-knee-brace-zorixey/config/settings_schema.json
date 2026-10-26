@@ -74,6 +74,12 @@
     "id": "color_sale",
     "label": "Green badge",
     "default": "#D43737"
+   },
+   {
+    "type": "color",
+    "id": "color_highlight",
+    "label": "[Bracket] word colour",
+    "default": "#233A2F"
    }
   ]
  },
