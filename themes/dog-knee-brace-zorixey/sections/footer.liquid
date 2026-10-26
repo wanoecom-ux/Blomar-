@@ -1,0 +1,8 @@
+<footer class="zf"><div class="page-width zf__inner">
+<div><img src="{{ 'blomar-logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255" loading="lazy" class="zf__logo"><p>{{ section.settings.text | escape }}</p></div>
+<ul class="zf__links" role="list"><li><a href="/products/dog-knee-brace-harness">Shop</a></li><li><a href="/pages/contact">Contact</a></li><li><a href="/pages/track-your-order">Track Your Order</a></li>{%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}</ul>
+<div class="zf__pay">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'zp__pay-icon' }}{%- endfor -%}</div>
+<p class="zf__copy">&copy; {{ 'now' | date: '%Y' }} Blomar</p></div></footer>
+{% schema %}
+{"name":"Footer","settings":[{"type":"textarea","id":"text","label":"Text","default":"Supportive gear for dogs who deserve to move freely. Not a substitute for veterinary care."}],"presets":[{"name":"Footer"}]}
+{% endschema %}

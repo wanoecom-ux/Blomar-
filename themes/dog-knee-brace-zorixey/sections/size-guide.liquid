@@ -1,0 +1,4 @@
+<section class="zsg" id="size-guide"><div class="page-width zsg__inner"><h2 class="zh2">{{ section.settings.heading | escape }}</h2><div class="zsg__img">{% render 'media-img', image: section.settings.image, width: 1200, alt: '' %}</div><div class="rte">{{ section.settings.text }}</div></div></section>
+{% schema %}
+{"name":"Size guide","settings":[{"type":"text","id":"heading","label":"Heading","default":"Size Guide"},{"type":"image_picker","id":"image","label":"Size chart image"},{"type":"richtext","id":"text","label":"Text","default":"<p>Measure your dog's thigh circumference and weight, then choose the size from the chart.</p>"}],"presets":[{"name":"Size guide"}]}
+{% endschema %}

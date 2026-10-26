@@ -1,0 +1,4 @@
+<div class="zann" style="--ann-bg: {{ section.settings.bg }};"><div class="zann__track">{%- for i in (1..4) -%}{%- assign items = section.settings.items | split: '|' -%}{%- for it in items -%}<span>{{ it | strip | escape }}</span>{%- endfor -%}{%- endfor -%}</div></div>
+{% schema %}
+{"name":"Scrolling announcement","settings":[{"type":"text","id":"items","label":"Messages, separated by |","default":"30-DAY MONEY-BACK GUARANTEE | TRACKED SHIPPING | FREE SIZE EXCHANGE"},{"type":"color","id":"bg","label":"Background","default":"#2C4A3E"}]}
+{% endschema %}

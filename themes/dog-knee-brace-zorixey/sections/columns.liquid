@@ -1,0 +1,4 @@
+<section class="zcol"><div class="page-width"><h2 class="zh2">{{ section.settings.heading | escape }}</h2><div class="zcol__grid">{%- for block in section.blocks -%}<div class="zcol__c" {{ block.shopify_attributes }}><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></div>{%- endfor -%}</div></div></section>
+{% schema %}
+{"name":"Three columns","settings":[{"type":"text","id":"heading","label":"Heading","default":"Why Choose Us"}],"blocks":[{"type":"col","name":"Column","settings":[{"type":"text","id":"title","label":"Title","default":"Title"},{"type":"textarea","id":"text","label":"Text","default":"Text"}]}],"presets":[{"name":"Three columns"}]}
+{% endschema %}

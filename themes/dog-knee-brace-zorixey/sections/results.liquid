@@ -1,0 +1,7 @@
+<section class="zr"><div class="page-width zr__grid">
+<div class="zr__left"><h2>{{ section.settings.heading | escape }}</h2><p>{{ section.settings.quote | escape }}</p></div>
+<div><h3>{{ section.settings.right_heading | escape }}</h3>{%- for block in section.blocks -%}<div class="zr__row" {{ block.shopify_attributes }}><span class="zr__ring">{{ block.settings.figure | escape }}</span><p>{{ block.settings.label | escape }}</p></div>{%- endfor -%}<p class="zr__note">{{ section.settings.note | escape }}</p></div></div></section>
+{% schema %}
+{"name":"Results","settings":[{"type":"text","id":"heading","label":"Heading","default":"Results"},{"type":"textarea","id":"quote","label":"Quote line","default":"From struggling to stand to walking with confidence."},{"type":"text","id":"right_heading","label":"Right heading","default":"What Owners Notice"},{"type":"textarea","id":"note","label":"Note","default":"Only show figures you can source."}],
+"blocks":[{"type":"stat","name":"Figure","settings":[{"type":"text","id":"figure","label":"Figure","default":"XX%","info":"Only use a figure you can back up."},{"type":"text","id":"label","label":"Label","default":"What it means"}]}],"presets":[{"name":"Results"}]}
+{% endschema %}

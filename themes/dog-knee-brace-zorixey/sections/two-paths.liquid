@@ -1,0 +1,14 @@
+<section class="z2p"><div class="page-width">
+<p class="z2p__eye">{{ section.settings.eyebrow | escape }}</p><h2 class="z2p__h">{{ section.settings.heading | escape }}<em>{{ section.settings.heading_2 | escape }}</em></h2><p class="z2p__sub">{{ section.settings.text | escape }}</p>
+<div class="z2p__cards">
+  <div class="z2p__card"><div class="z2p__head"><h3>{{ section.settings.left_title | escape }}</h3><strong>{{ section.settings.left_price | escape }}</strong><small>{{ section.settings.left_note | escape }}</small></div><ul role="list">{%- assign rows = section.settings.left_points | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- if r != blank -%}<li>– {{ r | strip | escape }}</li>{%- endif -%}{%- endfor -%}</ul></div>
+  <div class="z2p__card z2p__card--us"><div class="z2p__head"><h3>{{ section.settings.right_title | escape }}</h3><strong>{{ section.settings.right_price | escape }}</strong><small>{{ section.settings.right_note | escape }}</small></div><ul role="list">{%- assign rows = section.settings.right_points | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- if r != blank -%}<li>✓ {{ r | strip | escape }}</li>{%- endif -%}{%- endfor -%}</ul></div>
+</div>
+<div class="z2p__cta"><a class="zbtn" href="#MainProduct">{{ section.settings.button | escape }}</a></div>
+<p class="z2p__disc">{{ section.settings.disclaimer | escape }}</p></div></section>
+{% schema %}
+{"name":"Two paths comparison","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"A SIDE-BY-SIDE LOOK"},{"type":"text","id":"heading","label":"Heading line 1","default":"Two paths to a"},{"type":"text","id":"heading_2","label":"Heading line 2","default":"happier, steadier dog."},{"type":"textarea","id":"text","label":"Text","default":"Text"},
+{"type":"text","id":"left_title","label":"Left title","default":"Surgery"},{"type":"text","id":"left_price","label":"Left price","default":"$0"},{"type":"text","id":"left_note","label":"Left note","default":"note"},{"type":"textarea","id":"left_points","label":"Left points","default":"Point"},
+{"type":"text","id":"right_title","label":"Right title","default":"Our brace"},{"type":"text","id":"right_price","label":"Right price","default":"$0"},{"type":"text","id":"right_note","label":"Right note","default":"note"},{"type":"textarea","id":"right_points","label":"Right points","default":"Point"},
+{"type":"text","id":"button","label":"Button","default":"Try It Risk-Free"},{"type":"textarea","id":"disclaimer","label":"Disclaimer","default":"Disclaimer"}],"presets":[{"name":"Two paths comparison"}]}
+{% endschema %}

@@ -1,0 +1,24 @@
+<section class="pg page-width cartpage">
+  <h1 class="pg__title">Your cart</h1>
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post">
+      <ul class="cartpage__list" role="list">
+        {%- for item in cart.items -%}
+          <li class="cartpage__line">
+            {%- if item.image -%}{{ item.image | image_url: width: 200 | image_tag: loading: 'lazy', alt: item.title }}{%- endif -%}
+            <div><a href="{{ item.url }}">{{ item.product.title | escape }}</a>{%- unless item.product.has_only_default_variant -%}<small>{{ item.variant.title | escape }}</small>{%- endunless -%}</div>
+            <input type="number" name="updates[]" value="{{ item.quantity }}" min="0" aria-label="Quantity">
+            <strong>{{ item.final_line_price | money }}</strong>
+          </li>
+        {%- endfor -%}
+      </ul>
+      <div class="cartpage__foot"><span>Subtotal <strong>{{ cart.total_price | money }}</strong></span>
+        <button type="submit" name="update" class="btn btn--ghost">Update</button>
+        <button type="submit" name="checkout" class="btn btn--brand">Checkout</button></div>
+    </form>
+  {%- else -%}
+    <p>Your cart is empty.</p>
+    <a class="btn btn--brand" href="{{ routes.root_url }}">Continue shopping</a>
+  {%- endif -%}
+</section>
+{% schema %}{"name":"Cart","settings":[]}{% endschema %}

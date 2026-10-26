@@ -1,0 +1,6 @@
+<section class="zct"><div class="page-width zct__grid"><div><h2>{{ section.settings.heading | escape }}</h2><p>{{ section.settings.sub | escape }}</p></div>
+<div class="zct__table"><div class="zct__head"><span></span><span>{{ section.settings.us | escape }}</span><span>{{ section.settings.them | escape }}</span></div>
+{%- for block in section.blocks -%}<div class="zct__row" {{ block.shopify_attributes }}><span>{{ block.settings.feature | escape }}</span><span class="zct__yes">✓</span><span class="zct__no">✕</span></div>{%- endfor -%}</div></div></section>
+{% schema %}
+{"name":"Us vs others table","settings":[{"type":"text","id":"heading","label":"Heading","default":"How We Are Different:"},{"type":"text","id":"sub","label":"Small line","default":"Our brace vs others"},{"type":"text","id":"us","label":"Our column","default":"Blomar"},{"type":"text","id":"them","label":"Their column","default":"Others"}],"blocks":[{"type":"row","name":"Row","settings":[{"type":"text","id":"feature","label":"Feature","default":"Feature"}]}],"presets":[{"name":"Us vs others table"}]}
+{% endschema %}
