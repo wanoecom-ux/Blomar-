@@ -1,0 +1,99 @@
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+-%}
+<section class="kp" id="MainProduct" data-product>
+  <div class="page-width kp__grid">
+    <div class="kp__gallery" data-gallery>
+      <div class="mp__stage kp__stage">
+        {%- for media in product.media -%}
+          <div class="mp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}" data-media-id="{{ media.id }}">{{ media.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 45vw, 100vw', alt: product.title }}</div>
+        {%- endfor -%}
+        {%- if product.media.size == 0 -%}<div class="mp__slide is-active">{{ 'product-1' | placeholder_svg_tag }}</div>{%- endif -%}
+        {%- if product.media.size > 1 -%}
+          <button type="button" class="mp__arrow mp__arrow--prev" data-gallery-prev aria-label="Previous">{% render 'icon', name: 'chevron-right', size: 16 %}</button>
+          <button type="button" class="mp__arrow mp__arrow--next" data-gallery-next aria-label="Next">{% render 'icon', name: 'chevron-right', size: 16 %}</button>
+        {%- endif -%}
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="mp__thumbs kp__thumbs">{%- for media in product.media -%}<button type="button" class="mp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}">{{ media.preview_image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}</button>{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+    <div class="kp__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'rating' -%}
+            {%- if block.settings.text != blank -%}<a class="kp__rating" href="#reviews" {{ block.shopify_attributes }}><span class="kp__stars">{%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 16 %}{%- endfor -%}</span>{{ block.settings.text | escape }}</a>{%- endif -%}
+          {%- when 'badges' -%}
+            <div class="kp__badges" {{ block.shopify_attributes }}>
+              {%- if block.settings.badge_1 != blank -%}<span class="kp__badge">✦ {{ block.settings.badge_1 | escape }}</span>{%- endif -%}
+              {%- if block.settings.badge_2 != blank -%}<span class="kp__badge kp__badge--green">+ {{ block.settings.badge_2 | escape }}</span>{%- endif -%}
+            </div>
+          {%- when 'title' -%}
+            <h1 class="kp__title" {{ block.shopify_attributes }}>{% render 'hl', text: block.settings.title %}</h1>
+          {%- when 'checklist' -%}
+            <ul class="kp__checks" role="list" {{ block.shopify_attributes }}>
+              {%- assign rows = block.settings.items | newline_to_br | split: '<br />' -%}
+              {%- for r in rows -%}{%- assign t = r | strip -%}{%- if t != blank -%}{%- assign parts = t | split: '|' -%}<li>{% render 'icon', name: 'check-circle', size: 20 %}<span><strong>{{ parts[0] | strip | escape }}</strong>{% if parts[1] %} · {{ parts[1] | strip | escape }}{% endif %}</span></li>{%- endif -%}{%- endfor -%}
+            </ul>
+          {%- when 'ship' -%}
+            <div class="kp__ship" {{ block.shopify_attributes }}><span><i class="kp__dot"></i>{{ block.settings.left | escape }}</span><span>{{ block.settings.right | escape }}</span></div>
+          {%- when 'tiers' -%}
+            <div class="kp__tiers" {{ block.shopify_attributes }}>
+              {%- if block.settings.heading != blank -%}<p class="kp__tiers-title"><span>{{ block.settings.heading | escape }}</span></p>{%- endif -%}
+              {%- for variant in product.variants -%}
+                {%- assign nk = 'name_' | append: forloop.index -%}{%- assign sk = 'sub_' | append: forloop.index -%}{%- assign bk = 'badge_' | append: forloop.index -%}{%- assign uk = 'unit_' | append: forloop.index -%}
+                <label class="kp__tier{% if variant.id == current.id %} is-on{% endif %}">
+                  <input type="radio" name="kp-tier" value="{{ variant.id }}" data-tier data-price="{{ variant.price | money }}" {% if variant.id == current.id %}checked{% endif %}>
+                  {%- if block.settings[bk] != blank -%}<span class="kp__tier-badge{% if forloop.index == 3 %} kp__tier-badge--dark{% endif %}">{{ block.settings[bk] | escape }}</span>{%- endif -%}
+                  <span class="kp__radio"></span>
+                  <span class="kp__tier-copy"><strong>{{ block.settings[nk] | default: variant.title | escape }}</strong>{%- if block.settings[sk] != blank -%}<em>{{ block.settings[sk] | escape }}</em>{%- endif -%}
+                    {%- if variant.compare_at_price > variant.price -%}<span class="kp__save">You save {{ variant.compare_at_price | minus: variant.price | money_without_trailing_zeros }}</span>{%- endif -%}</span>
+                  <span class="kp__tier-price"><strong>{{ variant.price | money }}</strong>{%- if variant.compare_at_price > variant.price -%}<s>{{ variant.compare_at_price | money }}</s>{%- endif -%}{%- if block.settings[uk] != blank -%}<small>{{ block.settings[uk] | escape }}</small>{%- endif -%}</span>
+                </label>
+              {%- endfor -%}
+            </div>
+          {%- when 'buy' -%}
+            {%- form 'product', product, id: form_id, class: 'kp__form', data-product-form: '' -%}
+              <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+              <button type="submit" class="kp__atc" data-atc {% unless current.available %}disabled{% endunless %} {{ block.shopify_attributes }}><span data-atc-label>{{ block.settings.label | default: 'Add to cart' }}</span>{%- if block.settings.note != blank -%}<small>{% render 'icon', name: 'shield', size: 12 %} {{ block.settings.note | escape }}</small>{%- endif -%}</button>
+              <p class="mp__error" data-error hidden></p>
+            {%- endform -%}
+          {%- when 'videos' -%}
+            <div class="kp__vids" {{ block.shopify_attributes }}>
+              {%- for n in (1..3) -%}{%- assign vk = 'video_' | append: n -%}
+                <div class="kp__vid">{%- if block.settings[vk] != blank -%}{{ block.settings[vk] | video_tag: muted: true, loop: true, playsinline: true, controls: true, preload: 'metadata' }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag }}<span class="kp__play">▶</span>{%- endif -%}</div>
+              {%- endfor -%}
+            </div>
+          {%- when 'faq' -%}
+            <div class="kp__qq" {{ block.shopify_attributes }}>
+              <p class="eyebrow">{{ block.settings.heading | escape }}</p>
+              {%- assign qs = block.settings.questions | newline_to_br | split: '<br />' -%}
+              {%- for q in qs -%}{%- assign t = q | strip -%}{%- if t != blank -%}{%- assign parts = t | split: '|' -%}
+                <details class="kp__q"><summary>{{ parts[0] | strip | escape }}<span>+</span></summary><p>{{ parts[1] | strip | escape }}</p></details>
+              {%- endif -%}{%- endfor -%}
+            </div>
+          {%- when '@app' -%}{% render block %}
+        {%- endcase -%}
+      {%- endfor -%}
+      <script type="application/json" data-variants>{{ product.variants | json }}</script>
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Product page","settings":[],
+"blocks":[{"type":"@app"},
+{"type":"rating","name":"Rating","limit":1,"settings":[{"type":"text","id":"text","label":"Text","info":"Hidden when empty. Only show a real rating and count."}]},
+{"type":"badges","name":"Badges","limit":1,"settings":[{"type":"text","id":"badge_1","label":"Orange badge","default":"Kid-friendly formula"},{"type":"text","id":"badge_2","label":"Green badge","default":"3rd-party lab tested"}]},
+{"type":"title","name":"Headline","limit":1,"settings":[{"type":"text","id":"title","label":"Headline","default":"Finally, a [Calmer,] [Happier] Child Naturally.","info":"[Brackets] = orange accent."}]},
+{"type":"checklist","name":"Checklist","limit":1,"settings":[{"type":"textarea","id":"items","label":"Items (Bold part | rest, one per line)","default":"Key ingredient | what it does\nSecond ingredient | what it does\nNo stimulants | no jitters, no crash\nClean formula | no artificial colours\nTastes great | no daily battles"}]},
+{"type":"ship","name":"Shipping line","limit":1,"settings":[{"type":"text","id":"left","label":"Left","default":"Ships within 1–2 business days"},{"type":"text","id":"right","label":"Right","default":"Tracked shipping"}]},
+{"type":"tiers","name":"Bundle tiers","limit":1,"settings":[{"type":"paragraph","content":"Each tier is one product variant (e.g. Buy 1 / Buy 2 get 1 free). Crossed-out prices only show when a variant has a real compare-at price."},{"type":"text","id":"heading","label":"Heading","default":"Time Limited Offer"},
+{"type":"text","id":"name_1","label":"Tier 1 name","default":"Buy 1"},{"type":"text","id":"sub_1","label":"Tier 1 tag","default":"1 Month Supply"},{"type":"text","id":"badge_1","label":"Tier 1 badge"},{"type":"text","id":"unit_1","label":"Tier 1 per-unit line"},
+{"type":"text","id":"name_2","label":"Tier 2 name","default":"Buy 2, Get 1 Free"},{"type":"text","id":"sub_2","label":"Tier 2 tag","default":"3 Month Supply"},{"type":"text","id":"badge_2","label":"Tier 2 badge","default":"MOST POPULAR"},{"type":"text","id":"unit_2","label":"Tier 2 per-unit line"},
+{"type":"text","id":"name_3","label":"Tier 3 name","default":"Buy 3, Get 2 Free"},{"type":"text","id":"sub_3","label":"Tier 3 tag","default":"5 Month Supply"},{"type":"text","id":"badge_3","label":"Tier 3 badge","default":"BEST VALUE"},{"type":"text","id":"unit_3","label":"Tier 3 per-unit line"}]},
+{"type":"buy","name":"Add to cart","limit":1,"settings":[{"type":"text","id":"label","label":"Button","default":"ADD TO CART"},{"type":"text","id":"note","label":"Small line in button","default":"60-DAY MONEY-BACK GUARANTEE","info":"Must match your refund policy."}]},
+{"type":"videos","name":"Video clips","limit":1,"settings":[{"type":"video","id":"video_1","label":"Clip 1"},{"type":"video","id":"video_2","label":"Clip 2"},{"type":"video","id":"video_3","label":"Clip 3"}]},
+{"type":"faq","name":"Quick questions","limit":1,"settings":[{"type":"text","id":"heading","label":"Heading","default":"QUICK QUESTIONS"},{"type":"textarea","id":"questions","label":"Question | answer, one per line","default":"Is this safe for my child? | Answer here.\nWhat age can my child start? | Answer here.\nHow long before I see results? | Answer here.\nWhat if it doesn't work for my child? | Answer here."}]}]}
+{% endschema %}

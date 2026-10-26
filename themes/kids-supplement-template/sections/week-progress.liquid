@@ -1,0 +1,30 @@
+<section class="ks ks--cream" data-tabs>
+  <div class="page-width">
+    <p class="eyebrow eyebrow--center">{{ section.settings.eyebrow | escape }}</p>
+    <h2 class="kh2 kh2--center">{% render 'hl', text: section.settings.heading %}</h2>
+    <p class="ktext ktext--center">{{ section.settings.text | escape }}</p>
+    <div class="wp__grid">
+      <div class="wp__metrics"><p class="wp__label">SELECT A METRIC</p>{%- for block in section.blocks -%}<button type="button" class="wp__m{% if forloop.first %} is-active{% endif %}" data-tab="{{ forloop.index0 }}" {{ block.shopify_attributes }}><span>{{ block.settings.name | escape }}</span><b>{{ block.settings.badge | escape }}</b></button>{%- endfor -%}</div>
+      {%- for block in section.blocks -%}
+        {%- assign pts = block.settings.points | split: ',' -%}{%- assign labels = block.settings.labels | split: ',' -%}{%- assign last = pts.size | minus: 1 -%}
+        <div class="wp__panel" data-panel="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %}>
+          <div class="wp__head"><div><h3>{{ block.settings.name | escape }}</h3><p>{{ block.settings.sub | escape }}</p></div><div class="wp__big"><strong>{{ block.settings.badge | escape }}</strong><small>{{ block.settings.big_note | escape }}</small></div></div>
+          <div class="wp__card">
+            <div class="wp__vals">{%- for p in pts -%}<span>{{ p | strip }}%</span>{%- endfor -%}</div>
+            <svg viewBox="0 0 400 120" preserveAspectRatio="none" class="wp__svg" aria-hidden="true">
+              {%- capture path -%}{%- for p in pts -%}{%- assign v = p | strip | times: 1.0 -%}{%- assign x = forloop.index0 | times: 360.0 | divided_by: last | plus: 20 -%}{%- assign y = 100.0 | minus: v | plus: 10 -%}{% if forloop.first %}M{% else %} L{% endif %}{{ x | round: 1 }} {{ y | round: 1 }}{%- endfor -%}{%- endcapture -%}
+              <path d="{{ path }} L380 115 L20 115 Z" class="wp__area"/><path d="{{ path }}" class="wp__line"/>
+            </svg>
+            <div class="wp__x">{%- for l in labels -%}<span>{{ l | strip | escape }}</span>{%- endfor -%}</div>
+          </div>
+          <p class="wp__note">{{ section.settings.note | escape }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Week-by-week tabs","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"WEEK-BY-WEEK PROGRESS"},{"type":"text","id":"heading","label":"Heading","default":"What to Expect [Week by Week]"},{"type":"textarea","id":"text","label":"Text","default":"How families typically see things change over 8 weeks of daily use."},{"type":"text","id":"note","label":"Note","default":"Illustration only. Replace with your own sourced data."}],
+"blocks":[{"type":"metric","name":"Metric","settings":[{"type":"text","id":"name","label":"Name","default":"Metric name"},{"type":"text","id":"badge","label":"Headline figure","default":"XX%","info":"Only use a figure you can back up."},{"type":"text","id":"big_note","label":"Figure note","default":"at Day 60"},{"type":"text","id":"sub","label":"Description","default":"What this metric shows."},{"type":"text","id":"points","label":"Values 0–100, comma separated","default":"8,14,22,30,35,38"},{"type":"text","id":"labels","label":"Labels, comma separated","default":"Day 7,Day 21,Day 45,Day 60,Day 75,Day 90"}]}],
+"presets":[{"name":"Week-by-week tabs","blocks":[{"type":"metric"},{"type":"metric"},{"type":"metric"},{"type":"metric"}]}]}
+{% endschema %}

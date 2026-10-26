@@ -1,0 +1,22 @@
+<section class="ks ks--cream" data-tabs>
+  <div class="page-width">
+    <p class="eyebrow eyebrow--center">{{ section.settings.eyebrow | escape }}</p>
+    <h2 class="kh2 kh2--center">{% render 'hl', text: section.settings.heading %}</h2>
+    <p class="ktext ktext--center">{{ section.settings.text | escape }}</p>
+    <div class="ct__tabs" role="tablist">{%- for block in section.blocks -%}<button type="button" class="ct__tab{% if forloop.first %} is-active{% endif %}" data-tab="{{ forloop.index0 }}" {{ block.shopify_attributes }}><span>{{ block.settings.emoji }}</span>{{ block.settings.tab | escape }}</button>{%- endfor -%}</div>
+    {%- for block in section.blocks -%}
+      <div class="ct__panel" data-panel="{{ forloop.index0 }}"{% unless forloop.first %} hidden{% endunless %}>
+        <div class="ct__who"><span>{{ block.settings.emoji }}</span><em>{{ block.settings.tab | escape }}</em></div>
+        <div><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p>
+          <div class="ct__chips">{%- assign chips = block.settings.chips | split: '|' -%}{%- for c in chips -%}<span>{{ c | strip | escape }}</span>{%- endfor -%}</div>
+          {%- if block.settings.quote != blank -%}<blockquote class="ct__q">“{{ block.settings.quote | escape }}”<small>{{ block.settings.quote_by | escape }}</small></blockquote>{%- endif -%}
+          <a class="ct__link" href="#MainProduct">{{ section.settings.link_label | escape }} →</a></div>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Right for your child?","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"WHO THIS HELPS MOST"},{"type":"text","id":"heading","label":"Heading","default":"Is This Right for [Your Child?]"},{"type":"textarea","id":"text","label":"Text","default":"Works best for children who show one or more of these patterns."},{"type":"text","id":"link_label","label":"Link","default":"Formulated for this."}],
+"blocks":[{"type":"tab","name":"Tab","settings":[{"type":"text","id":"emoji","label":"Emoji","default":"😤"},{"type":"text","id":"tab","label":"Tab label","default":"THE MELTDOWN KID"},{"type":"text","id":"title","label":"Title","default":"Melts Down Over Small Things"},{"type":"textarea","id":"text","label":"Text","default":"Describe this pattern and how the formula supports it."},{"type":"text","id":"chips","label":"Chips, separated by |","default":"Sign one | Sign two | Sign three"},{"type":"textarea","id":"quote","label":"Parent quote","info":"Only use a real quote."},{"type":"text","id":"quote_by","label":"Quote source"}]}],
+"presets":[{"name":"Right for your child?","blocks":[{"type":"tab"},{"type":"tab"},{"type":"tab"}]}]}
+{% endschema %}

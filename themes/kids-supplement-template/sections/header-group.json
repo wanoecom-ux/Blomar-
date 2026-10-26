@@ -1,0 +1,1 @@
+{"type":"header","name":"Header group","sections":{"announcement":{"type":"announcement","settings":{"text":"Limited-time offer \u00b7 Ends in","bg":"#F76700","fg":"#FFFFFF","end":""}},"header":{"type":"header","settings":{"logo_width":120,"shop_label":"Shop","subbar":""}}},"order":["announcement","header"]}

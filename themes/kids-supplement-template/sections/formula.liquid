@@ -1,0 +1,19 @@
+<section class="ks ks--white">
+  <div class="page-width fm__grid">
+    <div>
+      <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      <h2 class="kh2">{% render 'hl', text: section.settings.heading %}</h2>
+      <p class="ktext">{{ section.settings.text | escape }}</p>
+      <div class="fm__list">{%- for block in section.blocks -%}
+        <details class="fm__item"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}><summary><span class="fm__n">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span><span><strong>{{ block.settings.name | escape }}</strong><em>{{ block.settings.tag | escape }}</em></span>{% render 'icon', name: 'chevron-down', size: 16 %}</summary>
+          {%- if block.settings.dose != blank -%}<p class="fm__dose">{{ block.settings.dose | escape }}</p>{%- endif -%}<p class="fm__text">{{ block.settings.text | escape }}</p></details>
+      {%- endfor -%}</div>
+    </div>
+    <div class="fm__media">{% render 'media-img', image: section.settings.image, width: 1000, alt: '' %}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"Numbered ingredients","settings":[{"type":"text","id":"eyebrow","label":"Eyebrow","default":"THE FORMULA"},{"type":"text","id":"heading","label":"Heading","default":"[Five Powerful Ingredients] Working Together"},{"type":"textarea","id":"text","label":"Text","default":"Explain how the ingredients work together."},{"type":"image_picker","id":"image","label":"Image"}],
+"blocks":[{"type":"ingredient","name":"Ingredient","settings":[{"type":"text","id":"name","label":"Name","default":"Ingredient name"},{"type":"text","id":"tag","label":"Tag","default":"KEY BENEFIT"},{"type":"text","id":"dose","label":"Dose","default":"00 MG"},{"type":"textarea","id":"text","label":"Description","default":"What it does and why it's included."}]}],
+"presets":[{"name":"Numbered ingredients","blocks":[{"type":"ingredient"},{"type":"ingredient"},{"type":"ingredient"},{"type":"ingredient"},{"type":"ingredient"}]}]}
+{% endschema %}

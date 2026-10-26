@@ -1,0 +1,11 @@
+<section class="tq" style="--tq-bg: {{ section.settings.bg }};">
+  <div class="tq__inner">
+    <h2 class="tq__h">{{ section.settings.heading | escape }}</h2>
+    <div class="tq__track">{%- for block in section.blocks -%}<div class="tq__card" {{ block.shopify_attributes }}><p class="tq__stars">★★★★★</p><p>“{{ block.settings.text | escape }}”</p><small>{{ block.settings.name | escape }}</small></div>{%- endfor -%}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"Trust quote band","settings":[{"type":"text","id":"heading","label":"Heading","default":"Trusted by Parents. Loved by Kids."},{"type":"color","id":"bg","label":"Background","default":"#F76700"}],
+"blocks":[{"type":"quote","name":"Quote","settings":[{"type":"textarea","id":"text","label":"Quote","default":"[Add a real parent review here.]"},{"type":"text","id":"name","label":"Name","default":"[Name], parent"}]}],
+"presets":[{"name":"Trust quote band","blocks":[{"type":"quote"},{"type":"quote"},{"type":"quote"}]}]}
+{% endschema %}

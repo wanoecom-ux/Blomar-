@@ -1,0 +1,10 @@
+<section class="ks ks--white ks--tight">
+  <div class="page-width"><div class="lab">
+    <div>{%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 300 | image_tag: class: 'lab__logo', alt: '' }}{%- endif -%}
+      <h2 class="kh2 lab__h">{% render 'hl', text: section.settings.heading %}</h2><p class="ktext">{{ section.settings.text | escape }}</p></div>
+    {%- if section.settings.button_label != blank -%}<a class="kbtn" href="{{ section.settings.button_link | default: '#' }}">{{ section.settings.button_label | escape }} →</a>{%- endif -%}
+  </div></div>
+</section>
+{% schema %}
+{"name":"Lab-tested band","settings":[{"type":"image_picker","id":"logo","label":"Lab logo"},{"type":"text","id":"heading","label":"Heading","default":"Tested. [Verified.] Clean."},{"type":"textarea","id":"text","label":"Text","default":"Every batch is independently tested for safety, potency and purity."},{"type":"text","id":"button_label","label":"Button","default":"View Recent Results"},{"type":"text","id":"button_link","label":"Button link"}],"presets":[{"name":"Lab-tested band"}]}
+{% endschema %}

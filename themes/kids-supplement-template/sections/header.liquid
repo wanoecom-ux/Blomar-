@@ -1,0 +1,32 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+-%}
+<header class="hdr">
+  <div class="hdr__bar page-width">
+    <a class="hdr__logo" href="{{ section.settings.logo_link | default: routes.root_url }}" style="--logo-w: {{ section.settings.logo_width }}px;">
+      {%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 500 | image_tag: alt: shop.name }}{%- else -%}<img src="{{ 'blomar-logo-navy.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255">{%- endif -%}
+    </a>
+    <div class="hdr__pill">
+      <button type="button" class="hdr__round" data-menu-open aria-label="Open menu">{% render 'icon', name: 'menu', size: 18 %}</button>
+      <nav class="hdr__nav">
+        {%- for link in menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- else -%}<a href="{{ section.settings.shop_url | default: routes.all_products_collection_url }}">{{ section.settings.shop_label | escape }}</a>{%- endfor -%}
+      </nav>
+      <button type="button" class="hdr__round hdr__cart" data-cart-open aria-label="Open cart">{% render 'icon', name: 'cart', size: 18 %}<span class="hdr__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span></button>
+    </div>
+  </div>
+  {%- if section.settings.subbar != blank -%}<div class="hdr__sub">{{ section.settings.subbar | escape }}</div>{%- endif -%}
+  <div class="mnav" data-menu hidden>
+    <div class="mnav__head"><span></span><button type="button" data-menu-close aria-label="Close menu">{% render 'icon', name: 'close' %}</button></div>
+    <nav class="mnav__links">{%- for link in menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- else -%}<a href="{{ section.settings.shop_url | default: routes.all_products_collection_url }}">{{ section.settings.shop_label | escape }}</a>{%- endfor -%}</nav>
+  </div>
+</header>
+{% schema %}
+{"name":"Header","settings":[
+{"type":"image_picker","id":"logo","label":"Logo"},
+{"type":"range","id":"logo_width","label":"Logo width","min":60,"max":220,"step":2,"unit":"px","default":120},
+{"type":"text","id":"logo_link","label":"Logo link"},
+{"type":"link_list","id":"menu","label":"Menu"},
+{"type":"text","id":"shop_label","label":"Link label when no menu","default":"Shop"},
+{"type":"text","id":"shop_url","label":"Link URL when no menu"},
+{"type":"text","id":"subbar","label":"Thin bar under header"}]}
+{% endschema %}

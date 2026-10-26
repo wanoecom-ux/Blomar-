@@ -1,0 +1,4 @@
+<div class="tick" style="--tick-bg: {{ section.settings.bg }};"><div class="tick__track">{%- for i in (1..2) -%}{%- assign items = section.settings.items | split: '|' -%}{%- for it in items -%}<span>✦ {{ it | strip | escape }}</span>{%- endfor -%}{%- endfor -%}</div></div>
+{% schema %}
+{"name":"Scrolling ticker","settings":[{"type":"text","id":"items","label":"Items, separated by |","default":"Ingredient one, dose per serving | Ingredient two, dose per serving | Ingredient three, dose per serving"},{"type":"color","id":"bg","label":"Background","default":"#F76700"}],"presets":[{"name":"Scrolling ticker"}]}
+{% endschema %}

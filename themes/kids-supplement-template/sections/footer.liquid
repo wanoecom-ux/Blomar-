@@ -1,0 +1,32 @@
+<div class="nl" style="--nl-bg: {{ section.settings.nl_bg }};">
+  <h2 class="nl__h">{{ section.settings.nl_heading | escape }}</h2>
+  {%- form 'customer', class: 'nl__form' -%}
+    <input type="hidden" name="contact[tags]" value="newsletter">
+    <input type="email" name="contact[email]" placeholder="Email" required aria-label="Email"><button type="submit">SUBSCRIBE</button>
+    {%- if form.posted_successfully? -%}<p class="nl__ok">Thanks for subscribing!</p>{%- endif -%}
+  {%- endform -%}
+</div>
+<footer class="kf" style="--kf-bg: {{ section.settings.bg }};">
+  <div class="page-width kf__top">
+    <div><a href="{{ section.settings.logo_link | default: routes.root_url }}" class="kf__logo">{%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name }}{%- else -%}<img src="{{ 'blomar-logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255" loading="lazy">{%- endif -%}</a>
+      {%- if section.settings.email != blank -%}<p class="kf__email">Support Email:<br>{{ section.settings.email | escape }}</p>{%- endif -%}</div>
+    <p class="kf__disc">{{ section.settings.disclaimer | escape }}</p>
+    <ul class="kf__links" role="list">{%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}{%- assign rows = section.settings.links | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign parts = r | strip | split: '|' -%}{%- if parts.size == 2 -%}<li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}</ul>
+  </div>
+  <div class="page-width kf__bottom">
+    <div class="kf__chips">{%- assign chips = section.settings.chips | split: '|' -%}{%- for c in chips -%}<span>{{ c | strip | escape }}</span>{%- endfor -%}</div>
+    <p>&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright | default: shop.name | escape }}. All Rights Reserved</p>
+  </div>
+</footer>
+{% schema %}
+{"name":"Footer","settings":[
+{"type":"text","id":"nl_heading","label":"Newsletter heading","default":"Sign up to our newsletter"},
+{"type":"color","id":"nl_bg","label":"Newsletter background","default":"#FFD24D"},
+{"type":"image_picker","id":"logo","label":"Logo (light)"},{"type":"text","id":"logo_link","label":"Logo link"},
+{"type":"text","id":"email","label":"Support email","default":"blomaradmin@gmail.com"},
+{"type":"textarea","id":"disclaimer","label":"Disclaimer","default":"These statements have not been evaluated by the Food and Drug Administration or TGA. This product is not intended to diagnose, treat, cure or prevent any disease."},
+{"type":"textarea","id":"links","label":"Extra links (Label | /url per line)","default":"Contact | /pages/contact"},
+{"type":"text","id":"chips","label":"Badges, separated by |","default":"THIRD-PARTY LAB TESTED | MONEY-BACK GUARANTEE"},
+{"type":"text","id":"copyright","label":"Copyright name","default":"Blomar"},
+{"type":"color","id":"bg","label":"Background","default":"#4A2A12"}],"presets":[{"name":"Footer"}]}
+{% endschema %}

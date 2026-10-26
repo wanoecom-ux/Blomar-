@@ -1,0 +1,18 @@
+[
+  {"name":"theme_info","theme_name":"Blomar Kids Supplement","theme_version":"1.0.0","theme_author":"Blomar","theme_documentation_url":"https://help.shopify.com/manual/online-store/themes","theme_support_url":"https://help.shopify.com/"},
+  {"name":"Typography","settings":[
+    {"type":"font_picker","id":"type_heading_font","label":"Headings","default":"montserrat_n8"},
+    {"type":"font_picker","id":"type_body_font","label":"Body","default":"poppins_n4"}]},
+  {"name":"Colors","settings":[
+    {"type":"color","id":"color_brand","label":"Accent (buttons, highlights)","default":"#F76700"},
+    {"type":"color","id":"color_brand_dark","label":"Dark brown","default":"#4A2A12"},
+    {"type":"color","id":"color_tint","label":"Cream section","default":"#FFF7E6"},
+    {"type":"color","id":"color_pill","label":"Soft card","default":"#FFF7F3"},
+    {"type":"color","id":"color_text","label":"Headings","default":"#1A1A1A"},
+    {"type":"color","id":"color_muted","label":"Body text","default":"#374151"},
+    {"type":"color","id":"color_bg","label":"Background","default":"#FFFFFF"},
+    {"type":"color","id":"color_sale","label":"Green badge","default":"#2E7D4F"}]},
+  {"name":"Layout","settings":[{"type":"range","id":"page_width","label":"Page width","min":1000,"max":1600,"step":20,"unit":"px","default":1200}]},
+  {"name":"Brand","settings":[{"type":"image_picker","id":"favicon","label":"Favicon"}]},
+  {"name":"Search engines","settings":[{"type":"checkbox","id":"noindex","label":"Hide this theme's pages from search engines","default":true}]}
+]

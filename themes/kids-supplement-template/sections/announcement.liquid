@@ -1,0 +1,19 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<div class="ann" style="--ann-bg: {{ s.bg }}; --ann-fg: {{ s.fg }};" {% if s.end != blank %}data-countdown="{{ s.end | escape }}"{% endif %}>
+  <div class="ann__inner">
+    <strong>{{ s.text | escape }}</strong>
+    {%- if s.end != blank -%}
+      <span class="ann__timer" aria-hidden="true"><b data-h>00</b>:<b data-m>00</b>:<b data-s>00</b></span>
+    {%- endif -%}
+  </div>
+</div>
+{% schema %}
+{"name":"Announcement bar","settings":[
+{"type":"text","id":"text","label":"Text","default":"Limited-time offer · Ends in"},
+{"type":"text","id":"end","label":"Countdown end (YYYY-MM-DD HH:MM)","info":"Leave empty to hide the timer. Only use a real end date."},
+{"type":"color","id":"bg","label":"Background","default":"#F76700"},
+{"type":"color","id":"fg","label":"Text","default":"#FFFFFF"}],
+"presets":[{"name":"Announcement bar"}]}
+{% endschema %}
