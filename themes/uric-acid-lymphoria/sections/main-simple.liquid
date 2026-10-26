@@ -1,0 +1,13 @@
+<section class="pg page-width">
+  {%- case request.page_type -%}
+    {%- when '404' -%}<h1 class="pg__title">Page not found</h1><p>The page you were looking for doesn't exist.</p><a class="btn btn--brand" href="{{ routes.root_url }}">Back to home</a>
+    {%- when 'search' -%}<h1 class="pg__title">Search</h1>
+      <form action="{{ routes.search_url }}" class="searchform"><input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search"><button class="btn btn--brand">Search</button></form>
+      {%- if search.performed -%}<ul class="grid-products" role="list">{%- for item in search.results -%}<li><a href="{{ item.url }}">{{ item.title | escape }}</a></li>{%- else -%}<li>No results.</li>{%- endfor -%}</ul>{%- endif -%}
+    {%- when 'list-collections' -%}<h1 class="pg__title">Collections</h1><ul role="list">{%- for c in collections -%}<li><a href="{{ c.url }}">{{ c.title | escape }}</a></li>{%- endfor -%}</ul>
+    {%- when 'blog' -%}<h1 class="pg__title">{{ blog.title | escape }}</h1><ul role="list">{%- for a in blog.articles -%}<li><a href="{{ a.url }}">{{ a.title | escape }}</a></li>{%- endfor -%}</ul>
+    {%- when 'article' -%}<h1 class="pg__title">{{ article.title | escape }}</h1><div class="rte">{{ article.content }}</div>
+
+  {%- endcase -%}
+</section>
+{% schema %}{"name":"Simple page","settings":[]}{% endschema %}

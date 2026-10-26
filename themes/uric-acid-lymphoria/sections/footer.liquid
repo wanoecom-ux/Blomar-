@@ -1,0 +1,11 @@
+<footer class="uf">
+  <div class="page-width uf__inner">
+    <a href="{{ routes.root_url }}" class="uf__logo"><img src="{{ 'blomar-logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255" loading="lazy"></a>
+    <ul class="uf__links" role="list">{%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}<li><a href="/pages/contact">Contact</a></li><li><a href="/pages/track-your-order">Track Your Order</a></li></ul>
+    <p class="uf__disc">{{ section.settings.disclaimer | escape }}</p>
+    <p class="uf__copy">&copy; {{ 'now' | date: '%Y' }} Blomar</p>
+  </div>
+</footer>
+{% schema %}
+{"name":"Footer","settings":[{"type":"textarea","id":"disclaimer","label":"Disclaimer","default":"These statements have not been evaluated by the FDA or TGA. This product is not intended to diagnose, treat, cure or prevent any disease. Speak to your doctor before use if you take medication, have kidney concerns, or are pregnant or breastfeeding."}],"presets":[{"name":"Footer"}]}
+{% endschema %}

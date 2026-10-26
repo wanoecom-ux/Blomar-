@@ -1,0 +1,10 @@
+<header class="uh">
+  <div class="page-width uh__bar">
+    <span></span>
+    <a class="uh__logo" href="{{ section.settings.logo_link | default: routes.root_url }}" style="--logo-w: {{ section.settings.logo_width }}px;">{%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name }}{%- else -%}<img src="{{ 'blomar-logo-navy.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255">{%- endif -%}</a>
+    <button type="button" class="uh__cart" data-cart-open aria-label="Open cart">{% render 'icon', name: 'cart', size: 24 %}<span class="hdr__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span></button>
+  </div>
+</header>
+{% schema %}
+{"name":"Header","settings":[{"type":"image_picker","id":"logo","label":"Logo"},{"type":"range","id":"logo_width","label":"Logo width","min":60,"max":200,"step":2,"unit":"px","default":96},{"type":"text","id":"logo_link","label":"Logo link","default":"/products/uric-acid-support"}]}
+{% endschema %}

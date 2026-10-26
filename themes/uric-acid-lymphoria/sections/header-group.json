@@ -1,0 +1,1 @@
+{"type":"header","name":"Header group","sections":{"announcement":{"type":"announcement","settings":{"text":"Limited-time offer \u2013 save up to 50%","bg":"#0E5A36","fg":"#FFFFFF"}},"header":{"type":"header","settings":{"logo_width":96,"logo_link":"/products/uric-acid-support"}}},"order":["announcement","header"]}

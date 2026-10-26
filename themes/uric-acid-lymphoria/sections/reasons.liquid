@@ -1,0 +1,10 @@
+<section class="urn">
+  <div class="page-width">
+    <h2 class="uh2">{{ section.settings.heading | escape }}</h2>
+    <div class="urn__track">{%- for block in section.blocks -%}<div class="urn__card" {{ block.shopify_attributes }}><span class="urn__n">{{ forloop.index }}</span><div class="urn__img">{% render 'media-img', image: block.settings.image, width: 600, alt: '' %}</div><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></div>{%- endfor -%}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"5 reasons slider","settings":[{"type":"text","id":"heading","label":"Heading","default":"5 Reasons People Switch to Blomar"}],
+"blocks":[{"type":"reason","name":"Reason","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"title","label":"Title","default":"Reason"},{"type":"textarea","id":"text","label":"Text","default":"Why it matters."}]}],"presets":[{"name":"5 reasons slider"}]}
+{% endschema %}

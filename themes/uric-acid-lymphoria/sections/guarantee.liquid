@@ -1,0 +1,10 @@
+<section class="ugb">
+  <div class="page-width ugb__inner">
+    <div class="ugb__seal">{{ section.settings.days | escape }}<small>DAY</small></div>
+    <div><h2>{{ section.settings.heading | escape }}</h2><p>{{ section.settings.text | escape }}</p></div>
+    <a class="ubtn ubtn--light" href="#MainProduct">{{ section.settings.button | escape }}</a>
+  </div>
+</section>
+{% schema %}
+{"name":"Risk-free band","settings":[{"type":"text","id":"days","label":"Days","default":"90"},{"type":"text","id":"heading","label":"Heading","default":"Try It Risk-Free for 90 Days"},{"type":"textarea","id":"text","label":"Text","default":"Must match your refund policy."},{"type":"text","id":"button","label":"Button","default":"Get Started"}],"presets":[{"name":"Risk-free band"}]}
+{% endschema %}

@@ -1,0 +1,12 @@
+<section class="pg page-width">
+  <h1 class="pg__title">{{ collection.title | default: 'Products' | escape }}</h1>
+  {%- paginate collection.products by 24 -%}
+  <ul class="grid-products" role="list">
+    {%- for product in collection.products -%}
+      <li><a href="{{ product.url }}">{%- if product.featured_image -%}{{ product.featured_image | image_url: width: 600 | image_tag: loading: 'lazy', alt: product.title }}{%- endif -%}<span>{{ product.title | escape }}</span><strong>{{ product.price | money }}</strong></a></li>
+    {%- else -%}<li>No products yet.</li>
+    {%- endfor -%}
+  </ul>
+  {%- endpaginate -%}
+</section>
+{% schema %}{"name":"Collection","settings":[]}{% endschema %}

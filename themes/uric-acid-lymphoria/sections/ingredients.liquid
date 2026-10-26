@@ -1,0 +1,11 @@
+<section class="uig">
+  <div class="page-width">
+    <h2 class="uh2">{{ section.settings.heading | escape }}</h2>
+    <p class="uig__sub">{{ section.settings.text | escape }}</p>
+    <div class="uig__grid">{%- for block in section.blocks -%}<div class="uig__card" {{ block.shopify_attributes }}><div class="uig__img">{% render 'media-img', image: block.settings.image, width: 400, alt: '' %}</div><h3>{{ block.settings.name | escape }}</h3>{%- if block.settings.dose != blank -%}<span class="uig__dose">{{ block.settings.dose | escape }}</span>{%- endif -%}<p>{{ block.settings.text | escape }}</p></div>{%- endfor -%}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"Ingredient grid","settings":[{"type":"text","id":"heading","label":"Heading","default":"What's Inside Every Capsule"},{"type":"textarea","id":"text","label":"Text","default":"Five botanicals, every dose on the label."}],
+"blocks":[{"type":"ingredient","name":"Ingredient","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"name","label":"Name","default":"Ingredient"},{"type":"text","id":"dose","label":"Dose"},{"type":"textarea","id":"text","label":"Text","default":"What it does."}]}],"presets":[{"name":"Ingredient grid"}]}
+{% endschema %}

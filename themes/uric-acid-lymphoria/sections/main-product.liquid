@@ -1,0 +1,82 @@
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+-%}
+<section class="up" id="MainProduct" data-product>
+  <div class="page-width up__grid">
+    <div class="up__left">
+      <div class="up__gallery" data-gallery>
+        {%- if product.media.size > 1 -%}<div class="up__thumbs">{%- for media in product.media -%}<button type="button" class="mp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}">{{ media.preview_image | image_url: width: 180 | image_tag: loading: 'lazy', alt: '' }}</button>{%- endfor -%}</div>{%- endif -%}
+        <div class="mp__stage up__stage">
+          {%- for media in product.media -%}<div class="mp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}" data-media-id="{{ media.id }}">{{ media.preview_image | image_url: width: 1200 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 45vw, 100vw', alt: product.title }}</div>{%- endfor -%}
+          {%- if product.media.size == 0 -%}<div class="mp__slide is-active up__ph">{{ 'product-2' | placeholder_svg_tag }}<span>Add product photos in Products → {{ product.title | escape }}</span></div>{%- endif -%}
+          {%- if product.media.size > 1 -%}<button type="button" class="mp__arrow mp__arrow--prev" data-gallery-prev aria-label="Previous">{% render 'icon', name: 'chevron-right', size: 16 %}</button><button type="button" class="mp__arrow mp__arrow--next" data-gallery-next aria-label="Next">{% render 'icon', name: 'chevron-right', size: 16 %}</button>{%- endif -%}
+        </div>
+      </div>
+      <div class="up__accs">
+        <details class="up__acc"><summary>ⓘ {{ s.acc_1_title | escape }}<span>›</span></summary><div class="rte">{{ product.description }}</div></details>
+        <details class="up__acc"><summary>❓ {{ s.acc_2_title | escape }}<span>›</span></summary><div class="rte">{{ s.acc_2 }}</div></details>
+        <details class="up__acc"><summary>⛟ {{ s.acc_3_title | escape }}<span>›</span></summary><div class="rte">{{ s.acc_3 }}</div></details>
+      </div>
+    </div>
+    <div class="up__info">
+      {%- if s.rating != blank -%}<a class="up__rating" href="#reviews"><span>★★★★★</span>{{ s.rating | escape }}</a>{%- endif -%}
+      <h1 class="up__title">{{ s.title | default: product.title | escape }}</h1>
+      {%- if s.subtitle != blank -%}<p class="up__sub">{{ s.subtitle | escape }}</p>{%- endif -%}
+      <ul class="up__bens" role="list">
+        {%- for n in (1..3) -%}{%- assign tk = 'ben_' | append: n -%}{%- assign xk = 'ben_' | append: n | append: '_text' -%}{%- assign ik = 'ben_' | append: n | append: '_icon' -%}
+          {%- if s[tk] != blank -%}<li><span class="up__ben-ico">{{ s[ik] }}</span><span><strong>{{ s[tk] | escape }}</strong>{{ s[xk] | escape }}</span></li>{%- endif -%}
+        {%- endfor -%}
+      </ul>
+      <div class="up__tiers">
+        {%- for variant in product.variants -%}
+          {%- assign bk = 'tier_badge_' | append: forloop.index -%}{%- assign pk = 'tier_per_' | append: forloop.index -%}
+          <label class="up__tier{% if variant.id == current.id %} is-on{% endif %}">
+            <input type="radio" name="up-tier" value="{{ variant.id }}" data-tier data-price="{{ variant.price | money }}" data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}" {% if variant.id == current.id %}checked{% endif %}>
+            {%- if s[bk] != blank -%}<span class="up__tier-badge">{{ s[bk] | escape }}</span>{%- endif -%}
+            <span class="up__tier-img">{%- if variant.image -%}{{ variant.image | image_url: width: 140 | image_tag: loading: 'lazy', alt: '' }}{%- elsif product.featured_image -%}{{ product.featured_image | image_url: width: 140 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}{{ 'product-2' | placeholder_svg_tag }}{%- endif -%}</span>
+            <span class="up__tier-copy"><strong>{{ variant.title | escape }}</strong>{%- if s[pk] != blank -%}<em>{{ s[pk] | escape }}</em>{%- endif -%}</span>
+            <span class="up__tier-price"><strong>{{ variant.price | money }}</strong>{%- if variant.compare_at_price > variant.price -%}<s>{{ variant.compare_at_price | money }}</s>{%- endif -%}</span>
+          </label>
+        {%- endfor -%}
+      </div>
+      {%- if s.ship_line != blank -%}<p class="up__ship"><i></i>{{ s.ship_line | escape }} <u data-arrive data-days="{{ s.arrive_days }}"></u></p>{%- endif -%}
+      {%- form 'product', product, id: form_id, class: 'up__form', data-product-form: '' -%}
+        <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+        <button type="submit" class="up__atc" data-atc {% unless current.available %}disabled{% endunless %}>
+          <span><span data-atc-label>{{ s.atc_label }}</span> – <span data-tier-price>{{ current.price | money }}</span> {% if current.compare_at_price > current.price %}<s data-tier-compare>{{ current.compare_at_price | money }}</s>{% endif %}</span>
+          {%- if s.atc_note != blank -%}<small>{% render 'icon', name: 'shield', size: 12 %} {{ s.atc_note | escape }}</small>{%- endif -%}
+        </button>
+        <p class="mp__error" data-error hidden></p>
+      {%- endform -%}
+      <div class="up__pay">{%- for type in shop.enabled_payment_types limit: 6 -%}{{ type | payment_type_svg_tag: class: 'up__pay-icon' }}{%- endfor -%}</div>
+      {%- if s.g_title != blank -%}<div class="up__guar"><span class="up__guar-ico">🤝</span><div><strong>{{ s.g_title | escape }}</strong><p>{{ s.g_text | escape }}</p></div></div>{%- endif -%}
+    </div>
+  </div>
+  <script type="application/json" data-variants>{{ product.variants | json }}</script>
+</section>
+{% schema %}
+{"name":"Product page","settings":[
+{"type":"text","id":"rating","label":"Rating line","info":"Hidden when empty. Only show a real rating."},
+{"type":"text","id":"title","label":"Title","info":"Leave empty to use the product title."},
+{"type":"textarea","id":"subtitle","label":"Subtitle","default":"Support healthy uric acid levels with two capsules a day."},
+{"type":"header","content":"Three main benefits"},
+{"type":"text","id":"ben_1_icon","label":"Benefit 1 emoji","default":"🧪"},{"type":"text","id":"ben_1","label":"Benefit 1","default":"Supports healthy uric acid levels"},{"type":"text","id":"ben_1_text","label":"Benefit 1 line","default":"Helps your body flush excess uric acid."},
+{"type":"text","id":"ben_2_icon","label":"Benefit 2 emoji","default":"🦶"},{"type":"text","id":"ben_2","label":"Benefit 2","default":"Eases everyday joint stiffness"},{"type":"text","id":"ben_2_text","label":"Benefit 2 line","default":"So you can move more freely."},
+{"type":"text","id":"ben_3_icon","label":"Benefit 3 emoji","default":"🌿"},{"type":"text","id":"ben_3","label":"Benefit 3","default":"Five botanicals, nothing hidden"},{"type":"text","id":"ben_3_text","label":"Benefit 3 line","default":"Every ingredient and dose on the label."},
+{"type":"header","content":"Bundle tiers (one per variant)"},
+{"type":"text","id":"tier_per_1","label":"Tier 1 per-bottle line"},{"type":"text","id":"tier_badge_1","label":"Tier 1 badge"},
+{"type":"text","id":"tier_per_2","label":"Tier 2 per-bottle line"},{"type":"text","id":"tier_badge_2","label":"Tier 2 badge","default":"Most Popular"},
+{"type":"text","id":"tier_per_3","label":"Tier 3 per-bottle line"},{"type":"text","id":"tier_badge_3","label":"Tier 3 badge","default":"Best Value"},
+{"type":"text","id":"ship_line","label":"Shipping line","default":"Ready to ship – arrives by"},
+{"type":"range","id":"arrive_days","label":"Typical delivery days","min":3,"max":21,"step":1,"default":10},
+{"type":"text","id":"atc_label","label":"Button","default":"Add To Cart"},
+{"type":"text","id":"atc_note","label":"Line in button","default":"90-Day Money-Back Guarantee"},
+{"type":"text","id":"g_title","label":"Guarantee title","default":"90-Day Guarantee"},
+{"type":"textarea","id":"g_text","label":"Guarantee text","default":"Take it daily for up to 90 days. Not happy? We'll refund you, even if the bottle is open."},
+{"type":"header","content":"Collapsible rows under the gallery"},
+{"type":"text","id":"acc_1_title","label":"Row 1 (shows product description)","default":"Product Description"},
+{"type":"text","id":"acc_2_title","label":"Row 2","default":"Frequently Asked Questions"},{"type":"richtext","id":"acc_2","label":"Row 2 text","default":"<p>Two capsules a day with a full glass of water. One bottle lasts 30 days.</p>"},
+{"type":"text","id":"acc_3_title","label":"Row 3","default":"Shipping, Returns & Guarantee"},{"type":"richtext","id":"acc_3","label":"Row 3 text","default":"<p>Dispatched within 1–2 business days with tracking. 90-day money-back guarantee.</p>"}]}
+{% endschema %}

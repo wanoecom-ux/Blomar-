@@ -1,0 +1,11 @@
+<section class="urs" id="reviews">
+  <div class="page-width">
+    <p class="urs__trust">★★★★★ {{ section.settings.eyebrow | escape }}</p>
+    <h2 class="uh2">{{ section.settings.heading | escape }}</h2>
+    <div class="urs__track">{%- for block in section.blocks -%}<article class="urs__card" {{ block.shopify_attributes }}><p class="urs__stars">5/5 ★★★★★</p><p>{{ block.settings.text | escape }}</p><p class="urs__name">{{ block.settings.name | escape }} <span>✓ Verified Buyer</span></p></article>{%- endfor -%}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"Review slider","settings":[{"type":"text","id":"eyebrow","label":"Small line","default":"Real reviews from real customers"},{"type":"text","id":"heading","label":"Heading","default":"What Customers Are Saying"}],
+"blocks":[{"type":"review","name":"Review","settings":[{"type":"textarea","id":"text","label":"Review","default":"[Add a real customer review here.]"},{"type":"text","id":"name","label":"Name","default":"Customer name"}]}],"presets":[{"name":"Review slider"}]}
+{% endschema %}

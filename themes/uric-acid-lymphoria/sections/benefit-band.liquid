@@ -1,0 +1,12 @@
+<section class="ub">
+  <div class="ub__media">{% render 'media-img', image: section.settings.image, width: 1200, alt: '' %}</div>
+  <div class="ub__copy">
+    <h2>{{ section.settings.heading | escape }}</h2>
+    <p>{{ section.settings.text | escape }}</p>
+    <div class="ub__pills">{%- for block in section.blocks -%}<span {{ block.shopify_attributes }}><b>{{ block.settings.icon }}</b>{{ block.settings.label | escape }}</span>{%- endfor -%}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"Benefit icons band","settings":[{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"heading","label":"Heading","default":"Feel the Difference Where It Hurts"},{"type":"textarea","id":"text","label":"Text","default":"Support your body's natural uric acid balance and move with more comfort."}],
+"blocks":[{"type":"pill","name":"Benefit","settings":[{"type":"text","id":"icon","label":"Emoji","default":"✓"},{"type":"text","id":"label","label":"Label","default":"Benefit"}]}],"presets":[{"name":"Benefit icons band"}]}
+{% endschema %}

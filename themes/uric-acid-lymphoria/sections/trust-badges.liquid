@@ -1,0 +1,11 @@
+<section class="utb">
+  <div class="page-width">
+    <h2 class="uh2 uh2--light">{{ section.settings.heading | escape }}</h2>
+    <div class="utb__badges">{%- for block in section.blocks -%}<div class="utb__badge" {{ block.shopify_attributes }}><b>{{ block.settings.icon }}</b><span>{{ block.settings.label | escape }}</span></div>{%- endfor -%}</div>
+    <div class="utb__chips">{%- assign chips = section.settings.chips | split: '|' -%}{%- for c in chips -%}<span>● {{ c | strip | escape }}</span>{%- endfor -%}</div>
+  </div>
+</section>
+{% schema %}
+{"name":"Trust badges","settings":[{"type":"text","id":"heading","label":"Heading","default":"Why Trust Blomar?"},{"type":"text","id":"chips","label":"Small chips, separated by |","default":"Vegan capsules | Non-GMO | Gluten-free | No artificial additives | No proprietary blends"}],
+"blocks":[{"type":"badge","name":"Badge","settings":[{"type":"text","id":"icon","label":"Emoji","default":"✓"},{"type":"text","id":"label","label":"Label","default":"Badge"}]}],"presets":[{"name":"Trust badges"}]}
+{% endschema %}

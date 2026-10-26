@@ -1,0 +1,14 @@
+<section class="ucmp">
+  <div class="page-width">
+    <h2 class="uh2">{{ section.settings.heading | escape }}</h2>
+    <div class="ucmp__table">
+      <div class="ucmp__row ucmp__row--head"><span></span><span class="ucmp__us">{{ section.settings.col_us | escape }}</span><span>{{ section.settings.col_them | escape }}</span></div>
+      {%- for block in section.blocks -%}<div class="ucmp__row" {{ block.shopify_attributes }}><span>{{ block.settings.feature | escape }}</span><span class="ucmp__us">{% if block.settings.us %}✓{% else %}✕{% endif %}</span><span>{% if block.settings.them %}✓{% else %}✕{% endif %}</span></div>{%- endfor -%}
+    </div>
+    <div class="ucmp__cta"><a class="ubtn" href="#MainProduct">{{ section.settings.button | escape }}</a></div>
+  </div>
+</section>
+{% schema %}
+{"name":"Us vs them","settings":[{"type":"text","id":"heading","label":"Heading","default":"Blomar vs. Other Options"},{"type":"text","id":"col_us","label":"Our column","default":"Blomar"},{"type":"text","id":"col_them","label":"Their column","default":"Others"},{"type":"text","id":"button","label":"Button","default":"Try It Risk-Free"}],
+"blocks":[{"type":"row","name":"Row","settings":[{"type":"text","id":"feature","label":"Feature","default":"Feature"},{"type":"checkbox","id":"us","label":"We have it","default":true},{"type":"checkbox","id":"them","label":"They have it","default":false}]}],"presets":[{"name":"Us vs them"}]}
+{% endschema %}
