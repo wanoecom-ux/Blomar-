@@ -1,0 +1,29 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="mc{% if s.image_right %} mc--right{% endif %}" style="--sec-bg: {{ s.bg }}; --sec-fg: {{ s.fg }};">
+  <div class="page-width mc__grid">
+    <div class="mc__media">
+      {% render 'media-img', image: s.image, asset: s.image_asset, width: 1400, sizes: '(min-width: 990px) 50vw, 100vw', class: 'mc__img', alt: s.image_alt %}
+    </div>
+    <div class="mc__copy">
+      {%- if s.heading != blank -%}<h2 class="mc__heading">{% render 'rich-heading', text: s.heading %}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="mc__text rte">{{ s.text }}</div>{%- endif -%}
+      {%- if s.button_label != blank -%}
+        <a class="btn-pill btn-pill--dark" href="{{ s.button_link | default: routes.all_products_collection_url }}"><span>{{ s.button_label | escape }}</span><span class="btn-pill__dot">{% render 'icon', name: 'chevron-right', size: 14 %}</span></a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Image with text","settings":[
+{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"image_asset","label":"Image (theme asset)","info":"Theme asset file name, used when no image is picked."},{"type":"text","id":"image_alt","label":"Image description"},
+{"type":"checkbox","id":"image_right","label":"Image on the right","default":false},
+{"type":"text","id":"heading","label":"Heading","default":"Ease bunion pain [at home]","info":"Put [square brackets] around words to set them in italics."},
+{"type":"richtext","id":"text","label":"Text","default":"<p>Tell your customers what makes this different.</p>"},
+{"type":"text","id":"button_label","label":"Button label"},
+{"type":"text","id":"button_link","label":"Button link"},
+{"type":"color","id":"bg","label":"Background","default":"#FFFFFF"},
+{"type":"color","id":"fg","label":"Text","default":"#111111"}],
+"presets":[{"name":"Image with text"}]}
+{% endschema %}

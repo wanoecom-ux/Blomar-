@@ -1,0 +1,4 @@
+{"type":"header","name":"Header group","sections":{
+"announcement":{"type":"announcement","settings":{"text":"Limited-time offer – save 40% today","link":"","show_icon":true,"bg":"#1D3D6A","fg":"#FFFFFF"}},
+"header":{"type":"header","settings":{"logo_width":96,"logo_link":"/pages/bunion-relief","link_1_label":"EMS Bunion Corrector","link_1_url":"/products/ems-bunion-corrector","link_2_label":"Help Center","link_2_url":"/pages/bunion-help"}}},
+"order":["announcement","header"]}

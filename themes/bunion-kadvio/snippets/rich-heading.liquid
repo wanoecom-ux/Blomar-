@@ -1,0 +1,2 @@
+{%- comment -%} Renders text where [words in brackets] become the italic accent. {%- endcomment -%}
+{{- text | escape | replace: '[', '<em>' | replace: ']', '</em>' -}}

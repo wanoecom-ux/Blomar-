@@ -1,0 +1,26 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="rtb{% if s.grid %} rtb--grid{% endif %}"{% if s.anchor != blank %} id="{{ s.anchor | handle }}"{% endif %} style="--sec-bg: {{ s.bg }}; --sec-fg: {{ s.fg }};">
+  <div class="page-width rtb__inner" style="--rtb-w: {{ s.width }}px;">
+    {%- if s.eyebrow != blank -%}<span class="rtb__eyebrow">{% render 'icon', name: 'sparkle', size: 13 %}{{ s.eyebrow | escape }}</span>{%- endif -%}
+    {%- if s.heading != blank -%}<h2 class="rtb__heading">{% render 'rich-heading', text: s.heading %}</h2>{%- endif -%}
+    {%- if s.text != blank -%}<div class="rtb__text rte">{{ s.text }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <a class="btn-pill btn-pill--light" href="{{ s.button_link | default: routes.all_products_collection_url }}"><span>{{ s.button_label | escape }}</span><span class="btn-pill__dot">{% render 'icon', name: 'chevron-right', size: 14 %}</span></a>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Rich text band","settings":[
+{"type":"text","id":"anchor","label":"Anchor id"},{"type":"text","id":"eyebrow","label":"Pill label"},
+{"type":"text","id":"heading","label":"Heading","info":"Put [square brackets] around words to set them in italics."},
+{"type":"richtext","id":"text","label":"Text"},
+{"type":"text","id":"button_label","label":"Button label"},
+{"type":"text","id":"button_link","label":"Button link"},
+{"type":"range","id":"width","label":"Text width","min":500,"max":1200,"step":20,"unit":"px","default":860},
+{"type":"checkbox","id":"grid","label":"Show faint grid pattern","default":true},
+{"type":"color","id":"bg","label":"Background","default":"#1D3D6A"},
+{"type":"color","id":"fg","label":"Text","default":"#FFFFFF"}],
+"presets":[{"name":"Rich text band"}]}
+{% endschema %}

@@ -1,0 +1,60 @@
+<footer class="ftr" style="--sec-bg: {{ section.settings.bg }};">
+  <div class="page-width">
+    <div class="ftr__top">
+      <div class="ftr__brand">
+        <a href="{{ section.settings.logo_link | default: routes.root_url }}" class="ftr__logo" style="--logo-w: {{ section.settings.logo_width }}px;">
+          {%- if section.settings.logo != blank -%}
+            {{ section.settings.logo | image_url: width: 600 | image_tag: alt: shop.name, loading: 'lazy' }}
+          {%- else -%}
+            <img src="{{ 'blomar-logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255" loading="lazy">
+          {%- endif -%}
+        </a>
+        {%- if section.settings.tagline != blank -%}<p class="ftr__tag">{{ section.settings.tagline | escape }}</p>{%- endif -%}
+      </div>
+      {%- for block in section.blocks -%}
+        <div class="ftr__col" {{ block.shopify_attributes }}>
+          <button type="button" class="ftr__col-head" data-ftr-toggle aria-expanded="false"><span>{{ block.settings.heading | escape }}</span>{% render 'icon', name: 'chevron-down', size: 16 %}</button>
+          <div class="ftr__col-body">
+            {%- case block.type -%}
+              {%- when 'menu' -%}
+                {%- assign list = linklists[block.settings.menu] -%}
+                <ul role="list">
+                  {%- if list.links.size > 0 -%}
+                    {%- for link in list.links -%}<li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>{%- endfor -%}
+                  {%- else -%}
+                    {%- assign rows = block.settings.links | newline_to_br | split: '<br />' -%}
+                    {%- for r in rows -%}{%- assign parts = r | strip | split: '|' -%}{%- if parts.size == 2 -%}<li><a href="{{ parts[1] | strip }}">{{ parts[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}
+                  {%- endif -%}
+                  {%- if block.settings.policies -%}
+                    {%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- endfor -%}
+                  {%- endif -%}
+                </ul>
+              {%- when 'text' -%}
+                <div class="ftr__text">{{ block.settings.text }}</div>
+            {%- endcase -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="ftr__bottom">
+      <p>&copy; {{ 'now' | date: '%Y' }} <a href="{{ section.settings.logo_link | default: routes.root_url }}">{{ section.settings.copyright | default: shop.name | escape }}</a></p>
+      {%- if section.settings.show_payment -%}
+        <div class="ftr__pay">{%- for type in shop.enabled_payment_types -%}{{ type | payment_type_svg_tag: class: 'ftr__pay-icon' }}{%- endfor -%}</div>
+      {%- endif -%}
+    </div>
+  </div>
+</footer>
+{% schema %}
+{"name":"Footer","class":"section-footer","settings":[
+{"type":"image_picker","id":"logo","label":"Logo (light, for the dark footer)","info":"Leave empty to use the built-in white Blomar logo."},
+{"type":"range","id":"logo_width","label":"Logo width","min":60,"max":220,"step":2,"unit":"px","default":110},
+{"type":"text","id":"logo_link","label":"Logo link"},
+{"type":"text","id":"tagline","label":"Tagline","default":"Small daily habits, real relief."},
+{"type":"text","id":"copyright","label":"Copyright name","default":"Blomar"},
+{"type":"checkbox","id":"show_payment","label":"Show payment icons","default":true},
+{"type":"color","id":"bg","label":"Background","default":"#1D3D6A"}],
+"blocks":[
+{"type":"menu","name":"Menu column","settings":[{"type":"text","id":"heading","label":"Heading","default":"Main Menu"},{"type":"link_list","id":"menu","label":"Menu"},{"type":"textarea","id":"links","label":"Links when no menu is chosen","info":"One per line: Label | /url"},{"type":"checkbox","id":"policies","label":"Also list the store's published policies","default":false}]},
+{"type":"text","name":"Text column","settings":[{"type":"text","id":"heading","label":"Heading","default":"Reach Us"},{"type":"richtext","id":"text","label":"Text","default":"<p>Customer support is available Monday to Friday.</p>"}]}],
+"presets":[{"name":"Footer"}]}
+{% endschema %}

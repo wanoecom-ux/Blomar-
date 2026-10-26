@@ -1,0 +1,17 @@
+{%- if section.settings.text != blank -%}
+<div class="ann" style="--ann-bg: {{ section.settings.bg }}; --ann-fg: {{ section.settings.fg }};">
+  {%- if section.settings.link != blank -%}<a href="{{ section.settings.link }}" class="ann__inner">{%- else -%}<div class="ann__inner">{%- endif -%}
+    {%- if section.settings.show_icon -%}{% render 'icon', name: 'clock' %}{%- endif -%}
+    <span>{{ section.settings.text | escape }}</span>
+  {%- if section.settings.link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+</div>
+{%- endif -%}
+{% schema %}
+{"name":"Announcement bar","class":"section-announcement","settings":[
+{"type":"text","id":"text","label":"Text","default":"Free shipping on every order"},
+{"type":"text","id":"link","label":"Link"},
+{"type":"checkbox","id":"show_icon","label":"Show clock icon","default":true},
+{"type":"color","id":"bg","label":"Background","default":"#1D3D6A"},
+{"type":"color","id":"fg","label":"Text","default":"#FFFFFF"}],
+"presets":[{"name":"Announcement bar"}]}
+{% endschema %}

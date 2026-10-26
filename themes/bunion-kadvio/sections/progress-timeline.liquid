@@ -1,0 +1,42 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="pt" style="--sec-bg: {{ s.bg }};">
+  <div class="page-width pt__grid">
+    <ol class="pt__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="pt__item" {{ block.shopify_attributes }}>
+          <span class="pt__pill">{{ block.settings.label | escape }}</span>
+          <h3 class="pt__title">{{ block.settings.title | escape }}</h3>
+          <p class="pt__text">{{ block.settings.text | escape }}</p>
+        </li>
+      {%- endfor -%}
+    </ol>
+    <div class="pt__media">
+      <div class="pt__img pt__img--a">
+        {% render 'media-img', image: s.image_1, asset: s.image_1_asset, width: 900, alt: '' %}
+      </div>
+      <div class="pt__img pt__img--b">
+        {% render 'media-img', image: s.image_2, asset: s.image_2_asset, width: 700, alt: '' %}
+      </div>
+      {%- if s.badge_text != blank -%}
+        <div class="pt__badge" aria-hidden="true">
+          <svg viewBox="0 0 120 120" class="pt__badge-ring"><defs><path id="ptCircle-{{ section.id }}" d="M60,60 m-44,0 a44,44 0 1,1 88,0 a44,44 0 1,1 -88,0"/></defs><text><textPath href="#ptCircle-{{ section.id }}">{{ s.badge_text | escape }}</textPath></text></svg>
+          <span class="pt__badge-icon">{% render 'icon', name: 'heart', size: 34 %}</span>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Progress timeline","settings":[
+{"type":"image_picker","id":"image_1","label":"Large image"},
+{"type":"image_picker","id":"image_2","label":"Small image"},{"type":"text","id":"image_1_asset","label":"Large image (theme asset)","info":"Theme asset file name, used when no image is picked."},{"type":"text","id":"image_2_asset","label":"Small image (theme asset)","info":"Theme asset file name, used when no image is picked."},
+{"type":"text","id":"badge_text","label":"Rotating badge text","default":"FEEL GOOD EVERY DAY · DAILY WELLNESS · "},
+{"type":"color","id":"bg","label":"Background","default":"#F0F6FF"}],
+"blocks":[{"type":"step","name":"Step","settings":[
+{"type":"text","id":"label","label":"Label","default":"First Use"},
+{"type":"text","id":"title","label":"Title","default":"Pressure Lifts"},
+{"type":"textarea","id":"text","label":"Text"}]}],
+"presets":[{"name":"Progress timeline"}]}
+{% endschema %}

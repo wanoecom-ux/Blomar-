@@ -1,0 +1,18 @@
+[
+  {"name":"theme_info","theme_name":"Blomar Falcon","theme_version":"1.0.0","theme_author":"Blomar","theme_documentation_url":"https://help.shopify.com/manual/online-store/themes","theme_support_url":"https://help.shopify.com/"},
+  {"name":"Typography","settings":[
+    {"type":"font_picker","id":"type_heading_font","label":"Headings","default":"instrument_serif_n4"},
+    {"type":"font_picker","id":"type_body_font","label":"Body","default":"dm_sans_n4"}]},
+  {"name":"Colors","settings":[
+    {"type":"color","id":"color_brand","label":"Brand (buttons, bands)","default":"#1D3D6A"},
+    {"type":"color","id":"color_brand_dark","label":"Brand dark","default":"#142A4A"},
+    {"type":"color","id":"color_tint","label":"Light tint","default":"#F0F6FF"},
+    {"type":"color","id":"color_pill","label":"Pill / badge","default":"#C0D0E8"},
+    {"type":"color","id":"color_text","label":"Text","default":"#111111"},
+    {"type":"color","id":"color_muted","label":"Muted text","default":"#4A5160"},
+    {"type":"color","id":"color_bg","label":"Background","default":"#FFFFFF"},
+    {"type":"color","id":"color_sale","label":"Sale","default":"#1D3D6A"}]},
+  {"name":"Layout","settings":[{"type":"range","id":"page_width","label":"Page width","min":1000,"max":1600,"step":20,"unit":"px","default":1440}]},
+  {"name":"Brand","settings":[{"type":"image_picker","id":"favicon","label":"Favicon"}]},
+  {"name":"Search engines","settings":[{"type":"checkbox","id":"noindex","label":"Hide this theme's pages from search engines","default":true}]}
+]

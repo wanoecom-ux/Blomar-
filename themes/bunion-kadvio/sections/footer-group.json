@@ -1,0 +1,109 @@
+{
+ "type": "footer",
+ "name": "Footer group",
+ "sections": {
+  "icons": {
+   "type": "icon-boxes",
+   "blocks": {
+    "b1": {
+     "type": "box",
+     "settings": {
+      "icon": "truck",
+      "title": "Tracked Shipping",
+      "text": "Every order ships with tracking"
+     }
+    },
+    "b2": {
+     "type": "box",
+     "settings": {
+      "icon": "box",
+      "title": "30 Days Guarantee",
+      "text": "Not for you? Send it back."
+     }
+    },
+    "b3": {
+     "type": "box",
+     "settings": {
+      "icon": "card",
+      "title": "Secure Payment",
+      "text": "Encrypted, trusted checkout"
+     }
+    },
+    "b4": {
+     "type": "box",
+     "settings": {
+      "icon": "star",
+      "title": "Real Support",
+      "text": "Friendly help when you need it"
+     }
+    }
+   },
+   "block_order": [
+    "b1",
+    "b2",
+    "b3",
+    "b4"
+   ],
+   "settings": {
+    "bg": "#F0F6FF"
+   }
+  },
+  "footer": {
+   "type": "footer",
+   "blocks": {
+    "c1": {
+     "type": "menu",
+     "settings": {
+      "heading": "Main Menu",
+      "menu": "",
+      "policies": false,
+      "links": "EMS Bunion Corrector | /products/ems-bunion-corrector\nHelp Center | /pages/bunion-help"
+     }
+    },
+    "c2": {
+     "type": "menu",
+     "settings": {
+      "heading": "Support",
+      "menu": "",
+      "policies": false,
+      "links": "Track My Order | /pages/track-your-order\nExchange / Refund | /pages/bunion-help#faq\nHelp Center | /pages/bunion-help"
+     }
+    },
+    "c3": {
+     "type": "menu",
+     "settings": {
+      "heading": "Legal",
+      "menu": "",
+      "policies": true,
+      "links": ""
+     }
+    },
+    "c4": {
+     "type": "text",
+     "settings": {
+      "heading": "Reach Us",
+      "text": "<p>Customer support is available Monday to Friday, 9 am \u2013 5 pm AEST.</p><p>blomaradmin@gmail.com</p>"
+     }
+    }
+   },
+   "block_order": [
+    "c1",
+    "c2",
+    "c3",
+    "c4"
+   ],
+   "settings": {
+    "logo_width": 110,
+    "logo_link": "/pages/bunion-relief",
+    "tagline": "Small daily habits, real relief.",
+    "copyright": "Blomar",
+    "show_payment": true,
+    "bg": "#1D3D6A"
+   }
+  }
+ },
+ "order": [
+  "icons",
+  "footer"
+ ]
+}

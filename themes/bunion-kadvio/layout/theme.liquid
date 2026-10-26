@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="canonical" href="{{ canonical_url }}">
+  {%- if settings.favicon != blank -%}<link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64 }}">{%- endif -%}
+  <title>{{ page_title }}{% unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless %}</title>
+  {%- if page_description -%}<meta name="description" content="{{ page_description | escape }}">{%- endif -%}
+  {%- if settings.noindex -%}<meta name="robots" content="noindex, nofollow">{%- endif -%}
+  {% render 'meta-tags' %}
+  {%- liquid
+    assign hf = settings.type_heading_font
+    assign hf_i = hf | font_modify: 'style', 'italic'
+    assign bf = settings.type_body_font
+    assign bf_m = bf | font_modify: 'weight', '500'
+    assign bf_b = bf | font_modify: 'weight', '700'
+    assign bf_i = bf | font_modify: 'style', 'italic'
+    assign bf_bi = bf_b | font_modify: 'style', 'italic'
+  -%}
+  <style>
+    {{ hf | font_face: font_display: 'swap' }}
+    {{ hf_i | font_face: font_display: 'swap' }}
+    {{ bf | font_face: font_display: 'swap' }}
+    {{ bf_m | font_face: font_display: 'swap' }}
+    {{ bf_b | font_face: font_display: 'swap' }}
+    {{ bf_i | font_face: font_display: 'swap' }}
+    {{ bf_bi | font_face: font_display: 'swap' }}
+    :root{
+      --font-heading:{{ hf.family }},{{ hf.fallback_families }};
+      --font-body:{{ bf.family }},{{ bf.fallback_families }};
+      --c-brand:{{ settings.color_brand }};
+      --c-brand-dark:{{ settings.color_brand_dark }};
+      --c-tint:{{ settings.color_tint }};
+      --c-pill:{{ settings.color_pill }};
+      --c-text:{{ settings.color_text }};
+      --c-muted:{{ settings.color_muted }};
+      --c-bg:{{ settings.color_bg }};
+      --c-sale:{{ settings.color_sale }};
+      --page-width:{{ settings.page_width }}px;
+    }
+  </style>
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ content_for_header }}
+</head>
+<body class="tpl-{{ template.name }}{% if template.suffix %} tpl-{{ template.name }}-{{ template.suffix }}{% endif %}">
+  <a class="skip-link" href="#MainContent">Skip to content</a>
+  {% sections 'header-group' %}
+  <main id="MainContent" role="main" tabindex="-1">
+    {{ content_for_layout }}
+  </main>
+  {% sections 'footer-group' %}
+  {% render 'cart-drawer' %}
+  <script>window.kvRoutes={cartAdd:'{{ routes.cart_add_url }}',cart:'{{ routes.cart_url }}',cartChange:'{{ routes.cart_change_url }}'};window.kvMoney={{ shop.money_format | json }};</script>
+  <script src="{{ 'theme.js' | asset_url }}" defer></script>
+</body>
+</html>

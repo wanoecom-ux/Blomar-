@@ -1,0 +1,165 @@
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign extras = s.extra_assets | split: ','
+  assign total_media = product.media.size | plus: extras.size
+-%}
+<section class="mp" id="MainProduct" data-product data-section="{{ section.id }}">
+  <div class="page-width mp__grid">
+    <div class="mp__gallery" data-gallery>
+      <div class="mp__stage">
+        {%- for media in product.media -%}
+          <div class="mp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}" data-media-id="{{ media.id }}">
+            {%- liquid
+              assign ld = 'lazy'
+              if forloop.first
+                assign ld = 'eager'
+              endif
+              assign alt = media.alt | default: product.title
+            -%}
+            {{ media.preview_image | image_url: width: 1400 | image_tag: loading: ld, sizes: '(min-width: 990px) 50vw, 100vw', widths: '600, 900, 1200, 1400', alt: alt }}
+          </div>
+        {%- endfor -%}
+        {%- for a in extras -%}
+          {%- assign an = a | strip -%}
+          {%- assign k = product.media.size | plus: forloop.index0 -%}
+          <div class="mp__slide{% if k == 0 %} is-active{% endif %}" data-slide="{{ k }}"><img src="{{ an | asset_url }}" alt="" loading="lazy"></div>
+        {%- endfor -%}
+        {%- if total_media == 0 -%}<div class="mp__slide is-active">{{ 'product-1' | placeholder_svg_tag }}</div>{%- endif -%}
+        {%- if total_media > 1 -%}
+          <span class="mp__counter"><span data-gallery-index>1</span> / {{ total_media }}</span>
+          <button type="button" class="mp__arrow mp__arrow--prev" data-gallery-prev aria-label="Previous image">{% render 'icon', name: 'chevron-right', size: 16 %}</button>
+          <button type="button" class="mp__arrow mp__arrow--next" data-gallery-next aria-label="Next image">{% render 'icon', name: 'chevron-right', size: 16 %}</button>
+        {%- endif -%}
+      </div>
+      {%- if total_media > 1 -%}
+        <div class="mp__thumbs">
+          {%- for media in product.media -%}
+            <button type="button" class="mp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">{{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}</button>
+          {%- endfor -%}
+          {%- for a in extras -%}
+            {%- assign k = product.media.size | plus: forloop.index0 -%}
+            <button type="button" class="mp__thumb" data-thumb="{{ k }}" aria-label="Show image {{ k | plus: 1 }}"><img src="{{ a | strip | asset_url }}" alt="" loading="lazy"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="mp__info">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'title' -%}
+            <h1 class="mp__title" {{ block.shopify_attributes }}>{{ block.settings.title | default: product.title | escape }}</h1>
+          {%- when 'rating' -%}
+            {%- if block.settings.text != blank -%}
+              <a class="mp__rating" href="{{ block.settings.link | default: '#reviews' }}" {{ block.shopify_attributes }}><span class="mp__stars">{%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 14 %}{%- endfor -%}</span><span>{{ block.settings.text | escape }}</span></a>
+            {%- endif -%}
+          {%- when 'price' -%}
+            <div class="mp__price" {{ block.shopify_attributes }}>
+              <span class="mp__now" data-price>{{ current.price | money }}</span>
+              <s class="mp__was" data-compare{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ current.compare_at_price | money }}</s>
+              {%- if block.settings.badge != blank -%}<span class="mp__badge" data-sale-badge{% unless current.compare_at_price > current.price %} hidden{% endunless %}>{{ block.settings.badge | escape }}</span>{%- endif -%}
+            </div>
+          {%- when 'benefits' -%}
+            <ul class="mp__benefits" role="list" {{ block.shopify_attributes }}>
+              {%- for n in (1..4) -%}
+                {%- assign tk = 'title_' | append: n -%}{%- assign xk = 'text_' | append: n -%}
+                {%- if block.settings[tk] != blank -%}
+                  <li class="mp__benefit">{% render 'icon', name: 'check-circle', size: 20 %}<span><strong>{{ block.settings[tk] | escape }}</strong>{{ block.settings[xk] | escape }}</span></li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- when 'risk' -%}
+            <div class="mp__risk" {{ block.shopify_attributes }}>
+              <span class="mp__risk-icon">{% render 'icon', name: 'sparkle', size: 16 %}</span>
+              <p><strong>{{ block.settings.title | escape }}</strong> {{ block.settings.text | escape }}</p>
+            </div>
+          {%- when 'variant_picker' -%}
+            {%- unless product.has_only_default_variant -%}
+              {%- for option in product.options_with_values -%}
+                <fieldset class="mp__opt" {{ block.shopify_attributes }}>
+                  <legend class="mp__opt-label">{{ option.name | escape }}: <span data-option-value="{{ forloop.index0 }}">{{ option.selected_value | escape }}</span></legend>
+                  <div class="mp__opt-grid">
+                    {%- assign oi = forloop.index0 -%}
+                    {%- for value in option.values -%}
+                      <label class="mp__radio">
+                        <input type="radio" name="option-{{ oi }}" value="{{ value | escape }}" data-option-index="{{ oi }}" {% if option.selected_value == value %}checked{% endif %}>
+                        <span class="mp__radio-dot"></span><span>{{ value | escape }}</span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endfor -%}
+            {%- endunless -%}
+            <script type="application/json" data-variants>{{ product.variants | json }}</script>
+          {%- when 'buy_buttons' -%}
+            {%- form 'product', product, id: form_id, class: 'mp__form', data-product-form: '' -%}
+              <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+              <button type="submit" class="btn btn--brand btn--block mp__atc" data-atc {% unless current.available %}disabled{% endunless %} {{ block.shopify_attributes }}>
+                <span data-atc-label>{% if current.available %}{{ block.settings.label | default: 'Add To Cart' }}{% else %}Sold out{% endif %}</span>
+              </button>
+              <p class="mp__error" data-error hidden></p>
+            {%- endform -%}
+          {%- when 'trust_strip' -%}
+            <div class="mp__strip" {{ block.shopify_attributes }}>
+              {%- if block.settings.text_1 != blank -%}<span>{% render 'icon', name: 'box', size: 16 %}<em>{{ block.settings.text_1 | escape }}</em></span>{%- endif -%}
+              {%- if block.settings.text_2 != blank -%}<span>{% render 'icon', name: 'return', size: 16 %}<em>{{ block.settings.text_2 | escape }}</em></span>{%- endif -%}
+            </div>
+          {%- when 'review_card' -%}
+            <div class="mp__review" {{ block.shopify_attributes }}>
+              <div class="mp__review-head">
+                <span class="mp__avatar">{%- if block.settings.avatar != blank -%}{{ block.settings.avatar | image_url: width: 100 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}{{ block.settings.name | slice: 0 }}{%- endif -%}</span>
+                <strong>{{ block.settings.name | escape }}</strong>
+                <span class="mp__review-stars">{%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 13 %}{%- endfor -%}</span>
+                <span class="mp__review-date">{{ block.settings.date | escape }}</span>
+              </div>
+              <p>{{ block.settings.text | escape }}</p>
+              {%- if block.settings.verified -%}<p class="mp__verified">{% render 'icon', name: 'check-circle', size: 15 %}Verified customer</p>{%- endif -%}
+            </div>
+          {%- when 'accordion' -%}
+            <details class="acc" {{ block.shopify_attributes }}>
+              <summary><span>{{ block.settings.heading | escape }}</span>{% render 'icon', name: 'chevron-down' %}</summary>
+              <div class="acc__body rte">{{ block.settings.content }}</div>
+            </details>
+          {%- when 'text' -%}
+            <div class="mp__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- when '@app' -%}
+            {% render block %}
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+
+  {%- if s.sticky -%}
+    <div class="mp-sticky" data-sticky hidden>
+      <div class="mp-sticky__inner">
+        {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 120 | image_tag: class: 'mp-sticky__img', alt: '' }}{%- endif -%}
+        <div class="mp-sticky__info"><span class="mp-sticky__title">{{ product.title | escape }}</span><span><strong data-sticky-price>{{ current.price | money }}</strong> {% if current.compare_at_price > current.price %}<s data-sticky-compare>{{ current.compare_at_price | money }}</s>{% endif %}</span></div>
+        <button type="submit" form="{{ form_id }}" class="btn btn--brand mp-sticky__btn">{{ s.sticky_label | default: 'Add' }}</button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+{% schema %}
+{"name":"Product page","settings":[
+{"type":"text","id":"extra_assets","label":"Extra gallery images (theme asset names, comma separated)"},{"type":"checkbox","id":"sticky","label":"Sticky add-to-cart bar on mobile","default":true},
+{"type":"text","id":"sticky_label","label":"Sticky button","default":"Add"}],
+"blocks":[
+{"type":"@app"},
+{"type":"title","name":"Title","limit":1,"settings":[{"type":"text","id":"title","label":"Title","info":"Leave empty to use the product title."}]},
+{"type":"rating","name":"Rating line","limit":1,"settings":[{"type":"text","id":"text","label":"Text","info":"Hidden when empty. Only show a rating and review count you really have."},{"type":"text","id":"link","label":"Link"}]},
+{"type":"price","name":"Price","limit":1,"settings":[{"type":"text","id":"badge","label":"Sale badge","default":"Sale"}]},
+{"type":"benefits","name":"Benefit cards","limit":1,"settings":[
+{"type":"text","id":"title_1","label":"Card 1 title","default":"Relief in Minutes"},{"type":"text","id":"text_1","label":"Card 1 text"},
+{"type":"text","id":"title_2","label":"Card 2 title"},{"type":"text","id":"text_2","label":"Card 2 text"},
+{"type":"text","id":"title_3","label":"Card 3 title"},{"type":"text","id":"text_3","label":"Card 3 text"},
+{"type":"text","id":"title_4","label":"Card 4 title"},{"type":"text","id":"text_4","label":"Card 4 text"}]},
+{"type":"risk","name":"Risk-free box","limit":1,"settings":[{"type":"text","id":"title","label":"Bold start","default":"Try it risk-free for 30 days"},{"type":"textarea","id":"text","label":"Text","info":"Must match your refund policy."}]},
+{"type":"variant_picker","name":"Variant picker","limit":1,"settings":[]},
+{"type":"buy_buttons","name":"Add to cart","limit":1,"settings":[{"type":"text","id":"label","label":"Button label","default":"Add To Cart"}]},
+{"type":"trust_strip","name":"Trust strip","limit":1,"settings":[{"type":"text","id":"text_1","label":"Text 1","default":"Tracked shipping"},{"type":"text","id":"text_2","label":"Text 2","default":"100% money-back"}]},
+{"type":"review_card","name":"Review card","settings":[{"type":"image_picker","id":"avatar","label":"Photo"},{"type":"text","id":"name","label":"Name","default":"Customer name"},{"type":"text","id":"date","label":"Date"},{"type":"textarea","id":"text","label":"Review","default":"[Add a real customer review here.]"},{"type":"checkbox","id":"verified","label":"Verified badge","default":true}]},
+{"type":"accordion","name":"Collapsible row","settings":[{"type":"text","id":"heading","label":"Heading","default":"Who is this for?"},{"type":"richtext","id":"content","label":"Content"}]},
+{"type":"text","name":"Text","settings":[{"type":"richtext","id":"text","label":"Text"}]}]}
+{% endschema %}

@@ -1,0 +1,38 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="gb" style="--sec-bg: {{ s.bg }};">
+  <div class="page-width gb__grid">
+    <div class="gb__copy">
+      <div class="gb__seal"><span class="gb__num">{{ s.days | escape }}</span><span class="gb__unit">{{ s.unit | escape }}</span></div>
+      {%- if s.heading != blank -%}<h2 class="gb__heading">{% render 'rich-heading', text: s.heading %}</h2>{%- endif -%}
+      {%- if s.text != blank -%}<div class="gb__text">{{ s.text }}</div>{%- endif -%}
+      <ul class="gb__chips" role="list">
+        {%- if s.chip_1 != blank -%}<li><span>{% render 'icon', name: 'star', size: 12 %}</span>{{ s.chip_1 | escape }}</li>{%- endif -%}
+        {%- if s.chip_2 != blank -%}<li><span>{% render 'icon', name: 'shield', size: 12 %}</span>{{ s.chip_2 | escape }}</li>{%- endif -%}
+        {%- if s.chip_3 != blank -%}<li><span>{% render 'icon', name: 'heart', size: 12 %}</span>{{ s.chip_3 | escape }}</li>{%- endif -%}
+      </ul>
+      {%- if s.button_label != blank -%}
+        <a class="btn-pill btn-pill--outline" href="{{ s.button_link | default: '#MainProduct' }}"><span>{{ s.button_label | escape }}</span><span class="btn-pill__dot">{% render 'icon', name: 'chevron-right', size: 14 %}</span></a>
+      {%- endif -%}
+    </div>
+    <div class="gb__media">
+      {% render 'media-img', image: s.image, asset: s.image_asset, width: 1400, sizes: '(min-width: 990px) 45vw, 100vw', alt: '' %}
+    </div>
+  </div>
+</section>
+{% schema %}
+{"name":"Guarantee band","settings":[
+{"type":"text","id":"days","label":"Seal number","default":"30"},
+{"type":"text","id":"unit","label":"Seal word","default":"DAYS"},
+{"type":"text","id":"heading","label":"Heading","default":"Less Pain, Straighter Toe, [Stronger Foot]"},
+{"type":"richtext","id":"text","label":"Text","default":"<p>Make sure this matches your refund policy.</p>"},
+{"type":"text","id":"chip_1","label":"Chip 1","default":"100% Satisfaction"},
+{"type":"text","id":"chip_2","label":"Chip 2","default":"Secure checkout"},
+{"type":"text","id":"chip_3","label":"Chip 3","default":"Real people on support"},
+{"type":"text","id":"button_label","label":"Button label","default":"Shop with confidence"},
+{"type":"text","id":"button_link","label":"Button link"},
+{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"image_asset","label":"Image (theme asset)","info":"Theme asset file name, used when no image is picked."},
+{"type":"color","id":"bg","label":"Background","default":"#1D3D6A"}],
+"presets":[{"name":"Guarantee band"}]}
+{% endschema %}

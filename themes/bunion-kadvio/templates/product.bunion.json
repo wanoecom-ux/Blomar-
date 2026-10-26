@@ -1,0 +1,363 @@
+{
+ "sections": {
+  "main": {
+   "type": "main-product",
+   "blocks": {
+    "title": {
+     "type": "title",
+     "settings": {
+      "title": "Blomar EMS Bunion Corrector"
+     }
+    },
+    "rating": {
+     "type": "rating",
+     "settings": {
+      "text": "",
+      "link": "#reviews"
+     }
+    },
+    "price": {
+     "type": "price",
+     "settings": {
+      "badge": "Sale"
+     }
+    },
+    "benefits": {
+     "type": "benefits",
+     "settings": {
+      "title_1": "Relief in Minutes",
+      "text_1": "Eases the throbbing pressure on the sore joint",
+      "title_2": "Realigns Your Toe",
+      "text_2": "Gently guides your big toe back toward straight",
+      "title_3": "2-in-1 Therapy",
+      "text_3": "Alignment frame plus EMS muscle work in one device",
+      "title_4": "Trains the Muscle",
+      "text_4": "Works the abductor hallucis so the correction can hold"
+     }
+    },
+    "risk": {
+     "type": "risk",
+     "settings": {
+      "title": "Try it risk-free for 30 days.",
+      "text": "If you don't feel less pain, less pressure and more control in your foot, we'll refund you in full."
+     }
+    },
+    "variants": {
+     "type": "variant_picker",
+     "settings": {}
+    },
+    "buy": {
+     "type": "buy_buttons",
+     "settings": {
+      "label": "Add To Cart"
+     }
+    },
+    "strip": {
+     "type": "trust_strip",
+     "settings": {
+      "text_1": "Tracked shipping",
+      "text_2": "30-day money-back"
+     }
+    },
+    "review": {
+     "type": "review_card",
+     "settings": {
+      "name": "Customer name",
+      "date": "",
+      "text": "[Add a real customer review here.]",
+      "verified": true
+     }
+    },
+    "acc1": {
+     "type": "accordion",
+     "settings": {
+      "heading": "Who is this for?",
+      "content": "<ul><li>Bunions (hallux valgus)</li><li>Pain and pressure at the big-toe joint</li><li>A red, swollen bump on the side of the foot</li><li>A big toe that drifts toward the other toes</li><li>Pain in narrow or tight shoes</li></ul>"
+     }
+    },
+    "acc2": {
+     "type": "accordion",
+     "settings": {
+      "heading": "How to use",
+      "content": "<p><strong>EMS muscle training.</strong> Wrap the corrector around your forefoot and fasten the strap so it's snug but comfortable. Slip the soft loop over your big toe so it's guided into a straighter line. Switch it on and raise the level until you feel a gentle tingling contraction, never pain. Relax for 15 minutes, hands free.</p><p><strong>Alignment frame.</strong> For the whole session the frame holds your big toe toward its natural line, taking pressure off the swollen joint.</p>"
+     }
+    },
+    "acc3": {
+     "type": "accordion",
+     "settings": {
+      "heading": "What's in the box?",
+      "content": "<ul><li>Blomar EMS Bunion Corrector with control unit</li><li>Padded big-toe strap</li><li>USB-C charging cable</li><li>Quick-start guide</li></ul>"
+     }
+    },
+    "acc4": {
+     "type": "accordion",
+     "settings": {
+      "heading": "Who shouldn't use it?",
+      "content": "<p>Don't use EMS if you have a pacemaker or other implanted device, are pregnant, have epilepsy, or have broken or irritated skin on the foot. If you have diabetes, circulation problems or a diagnosed foot condition, check with your doctor or podiatrist first.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "title",
+    "rating",
+    "price",
+    "benefits",
+    "risk",
+    "variants",
+    "buy",
+    "strip",
+    "review",
+    "acc1",
+    "acc2",
+    "acc3",
+    "acc4"
+   ],
+   "settings": {
+    "extra_assets": "bunion-before-after.jpg, bunion-painful-comfortable.jpg",
+    "sticky": true,
+    "sticky_label": "Add"
+   }
+  },
+  "band": {
+   "type": "rich-text-band",
+   "settings": {
+    "eyebrow": "Ease your bunion at the source",
+    "heading": "Calm bunion pain at home, in just [15 minutes a day]",
+    "text": "<p>Years of walking, narrow shoes and muscle imbalance slowly pull the big toe out of line. The joint drifts, the bump grows, and every step lands on the same sore, inflamed spot.</p><p><strong>Here's the part most people never hear about.</strong></p><p>It isn't only the bone. Along the inside of your foot runs a small muscle, <strong>the abductor hallucis</strong>, whose job is to pull your big toe <em>away</em> from the others and hold it straight. As the toe drifts, that muscle goes slack and quiet. <strong>Once it stops doing its job, the toe keeps sliding.</strong></p><p>Blomar's alignment frame eases your big toe back toward its natural line, lifting pressure off the joint so the swelling and throbbing can calm down. Meanwhile <strong>EMS pulses activate the abductor hallucis for you</strong>, the muscle you can't switch on by yourself, <a href=\"#MainProduct\">helping it learn to hold your toe where it belongs.</a></p>",
+    "button_label": "",
+    "width": 880,
+    "grid": true,
+    "bg": "#1D3D6A",
+    "fg": "#FFFFFF"
+   }
+  },
+  "chart": {
+   "type": "stat-chart",
+   "blocks": {
+    "t1": {
+     "type": "tab",
+     "settings": {
+      "tab": "Joint Pressure",
+      "heading": "[Take the pressure] off the sore joint and let it ((calm down))",
+      "checklist": "The frame lifts your big toe off the inflamed joint\nGentle EMS pulses ease tension around it\nMade for easy 15-minute sessions at home",
+      "chart_title": "Pressure on the joint",
+      "chart_sub": "How relief typically builds with daily use",
+      "badge": "",
+      "points": "100,62,34,16",
+      "labels": "Day 1,Day 3,Day 7,Day 14",
+      "y_label": "PRESSURE",
+      "x_label": "DAYS OF USE",
+      "footnote": "Illustration of how relief typically builds, not clinical data."
+     }
+    },
+    "t2": {
+     "type": "tab",
+     "settings": {
+      "tab": "Muscle Strength",
+      "heading": "[Wake up the muscle] that holds your toe ((straight))",
+      "checklist": "Targets the abductor hallucis on the inside of your foot\nRepeated contractions rebuild the nerve-to-muscle link\nAdjustable levels, from a light tingle up",
+      "chart_title": "Muscle activation",
+      "chart_sub": "How it builds with daily sessions",
+      "badge": "",
+      "points": "12,38,64,86",
+      "labels": "Day 1,Day 7,Day 14,Day 28",
+      "y_label": "ACTIVATION",
+      "x_label": "DAYS OF USE",
+      "footnote": "Illustration of how muscle activation typically builds, not clinical data."
+     }
+    },
+    "t3": {
+     "type": "tab",
+     "settings": {
+      "tab": "Toe Alignment",
+      "heading": "[Guide your big toe] back toward its ((natural line))",
+      "checklist": "Soft padded loop eases your toe away from the others\nAvailable for the left or right foot\nComfortable on the sofa or in bed",
+      "chart_title": "Toe drift",
+      "chart_sub": "How alignment improves with consistent use",
+      "badge": "",
+      "points": "100,82,62,44",
+      "labels": "Week 1,Week 2,Week 3,Week 4",
+      "y_label": "DRIFT",
+      "x_label": "WEEKS OF USE",
+      "footnote": "Illustration only, not clinical data. Results vary."
+     }
+    }
+   },
+   "block_order": [
+    "t1",
+    "t2",
+    "t3"
+   ],
+   "settings": {
+    "button_label": "Get yours today",
+    "button_link": "#MainProduct",
+    "bg": "#F0F6FF"
+   }
+  },
+  "source": {
+   "type": "media-content",
+   "settings": {
+    "image_asset": "bunion-painful-comfortable.jpg",
+    "image_alt": "A sore bunion compared with wearing the corrector",
+    "image_right": false,
+    "heading": "Fix your bunion at [the source]",
+    "text": "<p>Bunion surgery is costly, means weeks off your feet, and the recovery puts most people off for years. So they try the cheap options first, silicone spacers and stiff night splints, and keep hitting the same wall.</p><p>The moment those come off, the toe drifts back, because <strong>a toe that's held isn't a toe that's trained. Passive supports can even let the muscle weaken further.</strong></p><p>Blomar gives you <strong>the mechanical alignment</strong> that eases pressure and gives the joint room to breathe, and the EMS adds <strong>the active muscle work</strong> on the abductor hallucis, the exact muscle that keeps your big toe in line.</p>",
+    "button_label": "",
+    "bg": "#FFFFFF",
+    "fg": "#111111"
+   }
+  },
+  "teach": {
+   "type": "media-content",
+   "settings": {
+    "image": "shopify://shop_images/blomar-bunion-3.jpg",
+    "image_alt": "Wearing the corrector on the sofa",
+    "image_right": true,
+    "heading": "Teaches your toe to [hold itself straight]",
+    "text": "<p>Night splints and toe spacers share the same flaw: the second you take them off, nothing holds your toe except the same weak muscle that let it drift in the first place.</p><p>Blomar's EMS <strong>trains that muscle to do the holding itself.</strong> Repeated, gentle contractions rebuild the connection between nerve and muscle and strengthen the abductor hallucis,</p><p>so it kicks in during everyday standing and walking, keeping your big toe in line long after the device is off.</p>",
+    "button_label": "",
+    "bg": "#FFFFFF",
+    "fg": "#111111"
+   }
+  },
+  "rh": {
+   "type": "review-highlight",
+   "settings": {
+    "heading": "Loved by [our customers]",
+    "quote": "[Add a real customer review here.] Put [square brackets] around the phrases you want highlighted.",
+    "author": "Reviewed by [customer name]",
+    "date": "Verified customer",
+    "bg": "#1D3D6A"
+   }
+  },
+  "timeline": {
+   "type": "progress-timeline",
+   "blocks": {
+    "s1": {
+     "type": "step",
+     "settings": {
+      "label": "First Use",
+      "title": "Pressure Eases",
+      "text": "Wear it for 15 minutes while the frame gently eases your big toe off the inflamed joint and the EMS starts working the muscle around it. Many people notice that hot, throbbing pressure soften in the very first session."
+     }
+    },
+    "s2": {
+     "type": "step",
+     "settings": {
+      "label": "Week 1\u20132",
+      "title": "Things Calm Down",
+      "text": "Redness and swelling around the joint start to settle. Steps feel softer, your usual shoes stop fighting you, and the night-time throbbing quietens so you can sleep."
+     }
+    },
+    "s3": {
+     "type": "step",
+     "settings": {
+      "label": "Week 3\u20134",
+      "title": "The Muscle Switches On",
+      "text": "The abductor hallucis, the muscle that holds your big toe straight, starts doing its job again. As it gets stronger, your toe sits straighter, stiffness eases and the correction begins to hold on its own."
+     }
+    },
+    "s4": {
+     "type": "step",
+     "settings": {
+      "label": "Week 5\u20139",
+      "title": "Feeling Like Yourself Again",
+      "text": "A few minutes a day keeps the muscle strong and the toe aligned. Flare-ups stop running your day, and the shoes you'd given up on come back into rotation."
+     }
+    }
+   },
+   "block_order": [
+    "s1",
+    "s2",
+    "s3",
+    "s4"
+   ],
+   "settings": {
+    "image_1_asset": "bunion-timeline-a.jpg",
+    "image_2_asset": "bunion-timeline-b.jpg",
+    "badge_text": "FEEL GOOD EVERY DAY \u00b7 DAILY WELLNESS \u00b7 ",
+    "bg": "#F0F6FF"
+   }
+  },
+  "designed": {
+   "type": "media-content",
+   "settings": {
+    "image_asset": "bunion-designed.jpg",
+    "image_alt": "Holding the bunion corrector",
+    "image_right": false,
+    "heading": "Designed around how your foot [really works]",
+    "text": "<p>Blomar pairs a soft alignment frame with EMS muscle stimulation, the same principle physical therapists use to activate weak muscles, in a device built for everyday use at home: adjustable levels, a rechargeable control unit and a fit for the left or right foot.</p>",
+    "button_label": "",
+    "bg": "#FFFFFF",
+    "fg": "#111111"
+   }
+  },
+  "guarantee": {
+   "type": "guarantee-band",
+   "settings": {
+    "days": "30",
+    "unit": "DAYS",
+    "heading": "Less Pain, Straighter Toe, [Stronger Foot]",
+    "text": "<p>If you don't feel less pain, less pressure and more control within 30 days, send it back for a full refund.</p>",
+    "chip_1": "100% Satisfaction",
+    "chip_2": "Secure checkout",
+    "chip_3": "Real people on support",
+    "button_label": "Shop with confidence",
+    "button_link": "#MainProduct",
+    "image_asset": "bunion-guarantee.jpg",
+    "bg": "#1D3D6A"
+   }
+  },
+  "reviews": {
+   "type": "reviews",
+   "blocks": {
+    "r1": {
+     "type": "review",
+     "settings": {
+      "text": "[Add a real customer review here.]",
+      "name": "Customer name",
+      "verified": true
+     }
+    },
+    "r2": {
+     "type": "review",
+     "settings": {
+      "text": "[Add a real customer review here.]",
+      "name": "Customer name",
+      "verified": true
+     }
+    },
+    "r3": {
+     "type": "review",
+     "settings": {
+      "text": "[Add a real customer review here.]",
+      "name": "Customer name",
+      "verified": true
+     }
+    }
+   },
+   "block_order": [
+    "r1",
+    "r2",
+    "r3"
+   ],
+   "settings": {
+    "heading": "Customer [Reviews]",
+    "subheading": "Real reviews from real customers.",
+    "bg": "#FFFFFF"
+   }
+  }
+ },
+ "order": [
+  "main",
+  "band",
+  "chart",
+  "source",
+  "teach",
+  "rh",
+  "timeline",
+  "designed",
+  "guarantee",
+  "reviews"
+ ]
+}

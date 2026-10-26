@@ -1,0 +1,35 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="rh" style="--sec-bg: {{ s.bg }};">
+  <div class="page-width rh__inner">
+    {%- if s.heading != blank -%}<h2 class="rh__heading">{% render 'rich-heading', text: s.heading %}</h2>{%- endif -%}
+    {%- if s.quote != blank -%}<blockquote class="rh__quote">{{ s.quote | escape | replace: '[', '<mark>' | replace: ']', '</mark>' }}</blockquote>{%- endif -%}
+    {%- if s.author != blank -%}<p class="rh__author">{{ s.author | escape }}</p>{%- endif -%}
+    {%- if s.date != blank -%}<p class="rh__date">{% render 'icon', name: 'check-circle', size: 16 %}{{ s.date | escape }}</p>{%- endif -%}
+    {%- if section.blocks.size > 0 -%}
+      <div class="rh__cards">
+        {%- for block in section.blocks -%}
+          <div class="rh__card" {{ block.shopify_attributes }}>
+            <p class="rh__card-name{% if block.settings.serif %} rh__card-name--serif{% endif %}">{{ block.settings.name | escape }}</p>
+            {%- if block.settings.rating != blank -%}<p class="rh__card-rating">{{ block.settings.rating | escape }}</p>{%- endif -%}
+            <p class="rh__stars">{%- for i in (1..5) -%}{% render 'icon', name: 'star', size: 15 %}{%- endfor -%}</p>
+          </div>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Review highlight","settings":[
+{"type":"text","id":"heading","label":"Heading","default":"Loved by [our customers]","info":"Put [square brackets] around words to set them in italics. Only quote numbers you can prove."},
+{"type":"textarea","id":"quote","label":"Quote","default":"[Add a real customer review here.] Put [square brackets] around the phrases you want highlighted.","info":"Use a real customer review."},
+{"type":"text","id":"author","label":"Reviewer","default":"Reviewed by [customer name]"},
+{"type":"text","id":"date","label":"Date line","default":"Verified customer"},
+{"type":"color","id":"bg","label":"Background","default":"#1D3D6A"}],
+"blocks":[{"type":"platform","name":"Rating card","settings":[
+{"type":"text","id":"name","label":"Platform name","default":"Google"},
+{"type":"checkbox","id":"serif","label":"Show the name in the heading font","default":false},
+{"type":"text","id":"rating","label":"Rating line","info":"Only show a rating you really have, e.g. Rating 4.8."}]}],
+"presets":[{"name":"Review highlight"}]}
+{% endschema %}

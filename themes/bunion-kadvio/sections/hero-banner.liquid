@@ -1,0 +1,28 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<section class="hero{% if s.overlay_header %} hero--overlay{% endif %}" style="--hero-h: {{ s.height }}vh; --hero-h-m: {{ s.height_mobile }}vh; --hero-dim: {{ s.dim | divided_by: 100.0 }};">
+  <div class="hero__media">
+    {% render 'media-img', image: s.image, asset: s.image_asset, width: 2400, loading: 'eager', class: 'hero__img', alt: '' %}
+  </div>
+  <div class="hero__content page-width">
+    {%- if s.heading != blank -%}<h1 class="hero__heading">{% render 'rich-heading', text: s.heading %}</h1>{%- endif -%}
+    {%- if s.text != blank -%}<div class="hero__text">{{ s.text }}</div>{%- endif -%}
+    {%- if s.button_label != blank -%}
+      <a class="btn-pill btn-pill--light" href="{{ s.button_link | default: routes.all_products_collection_url }}"><span>{{ s.button_label | escape }}</span><span class="btn-pill__dot">{% render 'icon', name: 'chevron-right', size: 14 %}</span></a>
+    {%- endif -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Hero banner","settings":[
+{"type":"image_picker","id":"image","label":"Image"},{"type":"text","id":"image_asset","label":"Image (theme asset)","info":"Theme asset file name, used when no image is picked."},
+{"type":"text","id":"heading","label":"Heading","default":"Fix your bunion at the [source]","info":"Put [square brackets] around words to set them in italics."},
+{"type":"richtext","id":"text","label":"Text"},
+{"type":"text","id":"button_label","label":"Button label","default":"Shop Now"},
+{"type":"text","id":"button_link","label":"Button link"},
+{"type":"range","id":"height","label":"Height (desktop)","min":40,"max":100,"step":5,"unit":"vh","default":90},
+{"type":"range","id":"height_mobile","label":"Height (mobile)","min":40,"max":100,"step":5,"unit":"vh","default":75},
+{"type":"range","id":"dim","label":"Image darkening","min":0,"max":70,"step":5,"unit":"%","default":20},
+{"type":"checkbox","id":"overlay_header","label":"Float the header over this banner","default":true}],
+"presets":[{"name":"Hero banner"}]}
+{% endschema %}

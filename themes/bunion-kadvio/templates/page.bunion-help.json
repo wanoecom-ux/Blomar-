@@ -1,0 +1,170 @@
+{
+ "sections": {
+  "hero": {
+   "type": "hero-banner",
+   "settings": {
+    "image_asset": "bunion-help-hero.jpg",
+    "heading": "Welcome to the help center",
+    "text": "<p>Answers about your order and your corrector, all in one place.<br>Our support team is here Monday to Friday, 9 am \u2013 5 pm AEST.</p>",
+    "button_label": "",
+    "height": 60,
+    "height_mobile": 60,
+    "dim": 40,
+    "overlay_header": true
+   }
+  },
+  "cards": {
+   "type": "help-cards",
+   "blocks": {
+    "c1": {
+     "type": "card",
+     "settings": {
+      "icon": "track",
+      "label": "Track Order",
+      "link": "/pages/track-your-order"
+     }
+    },
+    "c2": {
+     "type": "card",
+     "settings": {
+      "icon": "exchange",
+      "label": "Exchanges/Returns",
+      "link": "#faq"
+     }
+    },
+    "c3": {
+     "type": "card",
+     "settings": {
+      "icon": "cancel",
+      "label": "Cancel Order",
+      "link": "#contact"
+     }
+    },
+    "c4": {
+     "type": "card",
+     "settings": {
+      "icon": "cancel",
+      "label": "Report a problem",
+      "link": "#contact"
+     }
+    }
+   },
+   "block_order": [
+    "c1",
+    "c2",
+    "c3",
+    "c4"
+   ],
+   "settings": {}
+  },
+  "links": {
+   "type": "help-links",
+   "blocks": {
+    "l1": {
+     "type": "row",
+     "settings": {
+      "icon": "question",
+      "title": "Frequently asked questions",
+      "text": "Answers to common questions about orders and the corrector.",
+      "link": "#faq"
+     }
+    },
+    "l2": {
+     "type": "row",
+     "settings": {
+      "icon": "send",
+      "title": "Contact Us",
+      "text": "How to reach us for help or questions.",
+      "link": "#contact"
+     }
+    }
+   },
+   "block_order": [
+    "l1",
+    "l2"
+   ],
+   "settings": {}
+  },
+  "faq": {
+   "type": "faq",
+   "blocks": {
+    "q1": {
+     "type": "question",
+     "settings": {
+      "question": "Where is my order?",
+      "answer": "<p>Once your order ships we email you a tracking link. You can also check it any time on our <a href=\"/pages/track-your-order\">Track Your Order</a> page.</p>"
+     }
+    },
+    "q2": {
+     "type": "question",
+     "settings": {
+      "question": "How long does shipping take?",
+      "answer": "<p>Orders are processed within 1\u20132 business days and usually arrive within 7\u201315 business days.</p>"
+     }
+    },
+    "q3": {
+     "type": "question",
+     "settings": {
+      "question": "Can I return it?",
+      "answer": "<p>Yes. You have 30 days to try it. If it isn't right for you, contact us within 30 days of delivery and we'll arrange a full refund.</p>"
+     }
+    },
+    "q4": {
+     "type": "question",
+     "settings": {
+      "question": "I ordered the wrong foot.",
+      "answer": "<p>No problem. Contact us before it ships and we'll switch it, or after delivery and we'll help you exchange it.</p>"
+     }
+    },
+    "q5": {
+     "type": "question",
+     "settings": {
+      "question": "How do I cancel my order?",
+      "answer": "<p>Email us as soon as possible with your order number. If it hasn't shipped yet, we'll cancel it and refund you in full.</p>"
+     }
+    },
+    "q6": {
+     "type": "question",
+     "settings": {
+      "question": "How do I use and charge it?",
+      "answer": "<p>Fit the toe loop, wrap the frame over your forefoot and fasten it, then switch on and choose a comfortable level. Charge with the USB-C cable included.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "q1",
+    "q2",
+    "q3",
+    "q4",
+    "q5",
+    "q6"
+   ],
+   "settings": {
+    "heading": "Frequently asked [questions]",
+    "anchor": "faq",
+    "bg": "#FFFFFF"
+   }
+  },
+  "contact": {
+   "type": "rich-text-band",
+   "settings": {
+    "eyebrow": "",
+    "heading": "How to [contact] us?",
+    "text": "<p>Our team is happy to help. Email us at blomaradmin@gmail.com and we'll get back to you as soon as we can, Monday to Friday.</p><p>We hope the answers above cover most questions. If you need anything else, please don't hesitate to get in touch.</p>",
+    "button_label": "",
+    "width": 760,
+    "grid": true,
+    "bg": "#1D3D6A",
+    "fg": "#FFFFFF",
+    "anchor": "contact"
+   }
+  }
+ },
+ "order": [
+  "hero",
+  "cards",
+  "links",
+  "faq",
+  "contact"
+ ]
+}

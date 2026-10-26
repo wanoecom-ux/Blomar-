@@ -1,0 +1,50 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign logo_w = section.settings.logo_width
+-%}
+<header class="hdr" data-header>
+  <div class="hdr__bar page-width">
+    <button type="button" class="hdr__burger" data-menu-open aria-label="Open menu">{% render 'icon', name: 'menu' %}</button>
+    <nav class="hdr__nav" aria-label="Main">
+      {%- if menu.links.size > 0 -%}
+        {%- for link in menu.links -%}<a href="{{ link.url }}"{% if link.active %} aria-current="page"{% endif %}>{{ link.title | escape }}</a>{%- endfor -%}
+      {%- else -%}
+        {%- if section.settings.link_1_label != blank -%}<a href="{{ section.settings.link_1_url }}">{{ section.settings.link_1_label | escape }}</a>{%- endif -%}
+        {%- if section.settings.link_2_label != blank -%}<a href="{{ section.settings.link_2_url }}">{{ section.settings.link_2_label | escape }}</a>{%- endif -%}
+      {%- endif -%}
+    </nav>
+    <a class="hdr__logo" href="{{ section.settings.logo_link | default: routes.root_url }}" style="--logo-w: {{ logo_w }}px;">
+      {%- if section.settings.logo != blank -%}
+        {{ section.settings.logo | image_url: width: 600 | image_tag: alt: shop.name, class: 'hdr__logo-img', loading: 'eager' }}
+      {%- else -%}
+        <img class="hdr__logo-img" src="{{ 'blomar-logo-navy.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255">
+      {%- endif -%}
+    </a>
+    <button type="button" class="hdr__cart" data-cart-open aria-label="Open cart">
+      {% render 'icon', name: 'cart' %}<span class="hdr__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span>
+    </button>
+  </div>
+  <div class="mnav" data-menu hidden>
+    <div class="mnav__head"><span></span><button type="button" data-menu-close aria-label="Close menu">{% render 'icon', name: 'close' %}</button></div>
+    <nav class="mnav__links">
+      {%- if menu.links.size > 0 -%}
+        {%- for link in menu.links -%}<a href="{{ link.url }}">{{ link.title | escape }}</a>{%- endfor -%}
+      {%- else -%}
+        {%- if section.settings.link_1_label != blank -%}<a href="{{ section.settings.link_1_url }}">{{ section.settings.link_1_label | escape }}</a>{%- endif -%}
+        {%- if section.settings.link_2_label != blank -%}<a href="{{ section.settings.link_2_url }}">{{ section.settings.link_2_label | escape }}</a>{%- endif -%}
+      {%- endif -%}
+    </nav>
+  </div>
+</header>
+{% schema %}
+{"name":"Header","class":"section-header","settings":[
+{"type":"image_picker","id":"logo","label":"Logo (dark, for light backgrounds)","info":"Leave empty to use the built-in navy Blomar logo."},
+{"type":"range","id":"logo_width","label":"Logo width","min":60,"max":220,"step":2,"unit":"px","default":96},
+{"type":"text","id":"logo_link","label":"Logo link"},
+{"type":"link_list","id":"menu","label":"Menu"},
+{"type":"paragraph","content":"Used only when no menu is chosen."},
+{"type":"text","id":"link_1_label","label":"Link 1 label","default":"EMS Bunion Corrector"},
+{"type":"text","id":"link_1_url","label":"Link 1 URL"},
+{"type":"text","id":"link_2_label","label":"Link 2 label","default":"Help Center"},
+{"type":"text","id":"link_2_url","label":"Link 2 URL"}]}
+{% endschema %}

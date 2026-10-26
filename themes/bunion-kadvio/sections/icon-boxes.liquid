@@ -1,0 +1,19 @@
+<section class="iboxes" style="--sec-bg: {{ section.settings.bg }};">
+  <div class="page-width iboxes__grid">
+    {%- for block in section.blocks -%}
+      <div class="ibox" {{ block.shopify_attributes }}>
+        <span class="ibox__icon">{% render 'icon', name: block.settings.icon, size: 26 %}</span>
+        <h3 class="ibox__title">{{ block.settings.title | escape }}</h3>
+        <p class="ibox__text">{{ block.settings.text | escape }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Icon boxes","settings":[{"type":"color","id":"bg","label":"Background","default":"#F0F6FF"}],
+"blocks":[{"type":"box","name":"Box","settings":[
+{"type":"select","id":"icon","label":"Icon","options":[{"value":"truck","label":"Truck"},{"value":"box","label":"Box"},{"value":"card","label":"Card"},{"value":"star","label":"Star"},{"value":"shield","label":"Shield"},{"value":"heart","label":"Heart"}],"default":"truck"},
+{"type":"text","id":"title","label":"Title","default":"Fast Shipping"},
+{"type":"text","id":"text","label":"Text","default":"Tracked delivery to your door"}]}],
+"presets":[{"name":"Icon boxes"}]}
+{% endschema %}

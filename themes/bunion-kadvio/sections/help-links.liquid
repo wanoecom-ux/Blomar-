@@ -1,0 +1,18 @@
+<section class="hl">
+  <div class="page-width hl__list">
+    {%- for block in section.blocks -%}
+      <a class="hl__row" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+        <span class="hl__icon">{% render 'icon', name: block.settings.icon, size: 40 %}</span>
+        <span><strong>{{ block.settings.title | escape }}</strong><small>{{ block.settings.text | escape }}</small></span>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Help links","blocks":[{"type":"row","name":"Row","settings":[
+{"type":"select","id":"icon","label":"Icon","options":[{"value":"question","label":"Question mark"},{"value":"send","label":"Send"}],"default":"question"},
+{"type":"text","id":"title","label":"Title","default":"Frequently asked questions"},
+{"type":"text","id":"text","label":"Text"},
+{"type":"text","id":"link","label":"Link"}]}],
+"presets":[{"name":"Help links"}]}
+{% endschema %}

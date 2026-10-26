@@ -1,0 +1,17 @@
+<section class="hc">
+  <div class="page-width hc__grid">
+    {%- for block in section.blocks -%}
+      <a class="hc__card" href="{{ block.settings.link | default: '#' }}" {{ block.shopify_attributes }}>
+        {% render 'icon', name: block.settings.icon, size: 38 %}
+        <span>{{ block.settings.label | escape }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+</section>
+{% schema %}
+{"name":"Help cards","blocks":[{"type":"card","name":"Card","settings":[
+{"type":"select","id":"icon","label":"Icon","options":[{"value":"track","label":"Track"},{"value":"exchange","label":"Exchange"},{"value":"cancel","label":"Cancel"}],"default":"track"},
+{"type":"text","id":"label","label":"Label","default":"Track Order"},
+{"type":"text","id":"link","label":"Link"}]}],
+"presets":[{"name":"Help cards"}]}
+{% endschema %}
