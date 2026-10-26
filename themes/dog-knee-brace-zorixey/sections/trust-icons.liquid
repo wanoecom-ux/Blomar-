@@ -1,0 +1,5 @@
+<section class="ztr"><div class="page-width"><h2 class="ztr__h">{{ section.settings.heading | escape }}</h2>
+<div class="ztr__grid">{%- for block in section.blocks -%}<div class="ztr__item" {{ block.shopify_attributes }}>{% render 'icon', name: block.settings.icon, size: 26 %}<p>{{ block.settings.label | escape }}</p></div>{%- endfor -%}</div></div></section>
+{% schema %}
+{"name":"Shop with confidence","settings":[{"type":"text","id":"heading","label":"Heading","default":"Shop With Confidence"}],"blocks":[{"type":"item","name":"Item","settings":[{"type":"select","id":"icon","label":"Icon","options":[{"value":"truck","label":"Truck"},{"value":"heart","label":"Heart"},{"value":"send","label":"Chat"},{"value":"shield","label":"Shield"},{"value":"return","label":"Return"},{"value":"card","label":"Card"}],"default":"truck"},{"type":"text","id":"label","label":"Label","default":"Free Shipping"}]}],"presets":[{"name":"Shop with confidence"}]}
+{% endschema %}

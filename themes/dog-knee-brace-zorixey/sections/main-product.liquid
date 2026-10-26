@@ -21,19 +21,38 @@
       {%- if s.size_label != blank -%}<a class="zp__size" href="#size-guide">📏 <u>{{ s.size_label | escape }}</u> ↓</a>{%- endif -%}
       {%- if s.stock != blank -%}<p class="zp__stock">● {{ s.stock | escape }}</p>{%- endif -%}
       {%- if s.banner != blank -%}<p class="zp__banner">{{ s.banner | escape }}</p>{%- endif -%}
-      {%- form 'product', product, id: form_id, class: 'zp__form', data-product-form: '' -%}
+      {%- form 'product', product, id: form_id, class: 'zp__form', data-product-form: '', data-tiers: '' -%}
         <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
-        <div class="zp__offer is-on">
-          <div class="zp__offer-top"><span class="zp__radio"></span><span><strong>{{ s.offer_title | escape }}</strong><small>{{ s.offer_sub | escape }}</small></span>
-            <span class="zp__offer-price"><strong data-price>{{ current.price | money }}</strong>{%- if current.compare_at_price > current.price -%}<s data-compare>{{ current.compare_at_price | money }}</s>{%- endif -%}</span></div>
-          {%- unless product.has_only_default_variant -%}
-            <label class="zp__select"><b>{{ s.size_select | escape }}</b>
-              <select data-variant-select aria-label="Size">{%- for v in product.variants -%}<option value="{{ v.id }}" data-price="{{ v.price | money }}" {% if v.id == current.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select></label>
-          {%- endunless -%}
-          {%- if s.gift_1 != blank -%}
-            <ul class="zp__gifts" role="list">{%- for n in (1..4) -%}{%- assign gk = 'gift_' | append: n -%}{%- assign vk = 'gift_' | append: n | append: '_value' -%}{%- assign ik = 'gift_' | append: n | append: '_image' -%}
-              {%- if s[gk] != blank -%}<li><span class="zp__gift-img">{% render 'media-img', image: s[ik], width: 120, alt: '' %}</span><span><b>FREE</b> {{ s[gk] | escape }}</span><span class="zp__gift-val">{%- if s[vk] != blank -%}<s>{{ s[vk] | escape }}</s>{%- endif -%}<b>$0</b></span></li>{%- endif -%}{%- endfor -%}</ul>
+        <input type="hidden" name="quantity" value="1" data-tier-qty>
+        {%- assign def = s.tier_default | default: 2 -%}
+        <div class="zp__tiers" role="radiogroup" aria-label="Choose your offer">
+        {%- for n in (1..3) -%}
+          {%- assign tk = 'tier_' | append: n -%}{%- assign sk = tk | append: '_sub' -%}{%- assign qk = tk | append: '_qty' -%}{%- assign gk = tk | append: '_gifts' -%}{%- assign bk = tk | append: '_badge' -%}
+          {%- if s[tk] != blank -%}
+          {%- assign q = s[qk] | default: 1 -%}
+          <label class="zp__offer{% if n == def %} is-on{% endif %}" data-tier="{{ n }}" data-qty="{{ q }}">
+            <input type="radio" name="kb-tier" value="{{ n }}" class="zp__tier-input" {% if n == def %}checked{% endif %}>
+            {%- if s[bk] != blank -%}<span class="zp__badge">{{ s[bk] | escape }}</span>{%- endif -%}
+            <span class="zp__offer-top"><span class="zp__radio"></span><span><strong>{{ s[tk] | escape }}</strong><small>{{ s[sk] | escape }}</small></span>
+              <span class="zp__offer-price"><strong data-tier-price>{{ current.price | times: q | money }}</strong>{%- if current.compare_at_price > current.price -%}<s data-tier-compare>{{ current.compare_at_price | times: q | money }}</s>{%- endif -%}</span></span>
+            <span class="zp__offer-body">
+              {%- unless product.has_only_default_variant -%}
+                {%- for k in (1..q) -%}
+                <span class="zp__select"><b>{% if q > 1 %}#{{ k }} {% endif %}{{ s.size_select | escape }}</b>
+                  <select data-tier-select aria-label="Size {{ k }}">{%- for v in product.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" data-compare="{{ v.compare_at_price }}" {% if v.id == current.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select></span>
+                {%- endfor -%}
+              {%- endunless -%}
+              {%- assign gn = s[gk] | default: 0 -%}
+              {%- if gn > 0 -%}
+              <span class="zp__gifts">{%- for g in (1..gn) -%}{%- assign gi = g | modulo: 4 -%}{%- if gi == 0 -%}{%- assign gi = 4 -%}{%- endif -%}
+                {%- assign nk = 'gift_' | append: gi -%}{%- assign vk = nk | append: '_value' -%}{%- assign ik = nk | append: '_image' -%}{%- assign ek = nk | append: '_emoji' -%}
+                {%- if s[nk] != blank -%}<span class="zp__gift"><span class="zp__gift-img">{%- if s[ik] != blank -%}{{ s[ik] | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}{{ s[ek] }}{%- endif -%}</span><span><b>FREE</b> {{ s[nk] | escape }}</span><span class="zp__gift-val">{%- if s[vk] != blank -%}<s>{{ s[vk] | escape }}</s>{%- endif -%}<em>FREE</em></span></span>{%- endif -%}
+              {%- endfor -%}</span>
+              {%- endif -%}
+            </span>
+          </label>
           {%- endif -%}
+        {%- endfor -%}
         </div>
         <button type="submit" class="zp__atc" data-atc {% unless current.available %}disabled{% endunless %}><span data-atc-label>{{ s.atc | default: 'ADD TO CART' }}</span></button>
         <p class="mp__error" data-error hidden></p>
@@ -43,6 +62,14 @@
       {%- if s.risk_title != blank -%}<div class="zp__risk"><span>🛡️</span><div><small>RISK-FREE PURCHASE</small><strong>{{ s.risk_title | escape }}</strong><p>{{ s.risk_text | escape }}</p></div></div>{%- endif -%}
       {%- if s.quote != blank -%}<div class="zp__quote"><span class="zp__avatar">{% render 'media-img', image: s.quote_img, width: 100, alt: '' %}</span><div><p>“{{ s.quote | escape }}”</p><small>{{ s.quote_by | escape }} <b>★★★★★</b></small></div></div>{%- endif -%}
       {%- for block in section.blocks -%}<details class="zp__acc" {{ block.shopify_attributes }}><summary><span>{{ block.settings.icon }}</span>{{ block.settings.heading | escape }}{% render 'icon', name: 'chevron-down', size: 16 %}</summary><div class="rte">{{ block.settings.content }}</div></details>{%- endfor -%}
+    </div>
+  </div>
+  <div class="zsb" data-sticky hidden>
+    <div class="page-width zsb__in">
+      <div class="zsb__info"><strong>{{ s.title | default: product.title | escape }}</strong>
+        <span><b data-sticky-price>{{ current.price | money }}</b>{%- if current.compare_at_price > current.price -%}<s data-sticky-compare>{{ current.compare_at_price | money }}</s>{%- assign off = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price -%}<em>Save {{ off }}%</em>{%- endif -%}</span></div>
+      {%- unless product.has_only_default_variant -%}<select class="zsb__sel" data-sticky-select aria-label="Size">{%- for v in product.variants -%}<option value="{{ v.id }}" {% if v.id == current.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select>{%- endunless -%}
+      <button type="submit" form="{{ form_id }}" class="zsb__btn">Add to Cart</button>
     </div>
   </div>
   <script type="application/json" data-variants>{{ product.variants | json }}</script>
@@ -57,14 +84,17 @@
 {"type":"text","id":"size_label","label":"Size guide link","default":"Size Guide"},
 {"type":"text","id":"stock","label":"Stock line","info":"Only show if true."},
 {"type":"text","id":"banner","label":"Offer banner","default":"LIMITED-TIME OFFER: UP TO 50% OFF"},
-{"type":"text","id":"offer_title","label":"Offer title","default":"Buy 1 + Free Gifts"},
-{"type":"text","id":"offer_sub","label":"Offer subline","default":"+ Tracked Shipping"},
+{"type":"header","content":"Offer tiers"},
+{"type":"range","id":"tier_default","label":"Selected tier","min":1,"max":3,"step":1,"default":2},
+{"type":"text","id":"tier_1","label":"Tier 1 title","default":"Buy 1 Get 2 Free Gifts"},{"type":"text","id":"tier_1_sub","label":"Tier 1 subline","default":"+ Free Shipping"},{"type":"range","id":"tier_1_qty","label":"Tier 1 braces","min":1,"max":3,"step":1,"default":1},{"type":"range","id":"tier_1_gifts","label":"Tier 1 gifts shown","min":0,"max":4,"step":1,"default":2},{"type":"text","id":"tier_1_badge","label":"Tier 1 badge"},
+{"type":"text","id":"tier_2","label":"Tier 2 title","default":"Buy 1 Get Full Recovery Kit"},{"type":"text","id":"tier_2_sub","label":"Tier 2 subline","default":"+ Free Shipping"},{"type":"range","id":"tier_2_qty","label":"Tier 2 braces","min":1,"max":3,"step":1,"default":1},{"type":"range","id":"tier_2_gifts","label":"Tier 2 gifts shown","min":0,"max":4,"step":1,"default":4},{"type":"text","id":"tier_2_badge","label":"Tier 2 badge","default":"Most Popular"},
+{"type":"text","id":"tier_3","label":"Tier 3 title","default":"Buy 2 Get 4 Free Gifts"},{"type":"text","id":"tier_3_sub","label":"Tier 3 subline","default":"+ Free Shipping"},{"type":"range","id":"tier_3_qty","label":"Tier 3 braces","min":1,"max":3,"step":1,"default":2},{"type":"range","id":"tier_3_gifts","label":"Tier 3 gifts shown","min":0,"max":4,"step":1,"default":4},{"type":"text","id":"tier_3_badge","label":"Tier 3 badge","default":"Best Value"},
 {"type":"text","id":"size_select","label":"Size label","default":"Select size"},
 {"type":"header","content":"Free gifts (only list gifts you really include)"},
-{"type":"text","id":"gift_1","label":"Gift 1"},{"type":"text","id":"gift_1_value","label":"Gift 1 normal price"},{"type":"image_picker","id":"gift_1_image","label":"Gift 1 image"},
-{"type":"text","id":"gift_2","label":"Gift 2"},{"type":"text","id":"gift_2_value","label":"Gift 2 normal price"},{"type":"image_picker","id":"gift_2_image","label":"Gift 2 image"},
-{"type":"text","id":"gift_3","label":"Gift 3"},{"type":"text","id":"gift_3_value","label":"Gift 3 normal price"},{"type":"image_picker","id":"gift_3_image","label":"Gift 3 image"},
-{"type":"text","id":"gift_4","label":"Gift 4"},{"type":"text","id":"gift_4_value","label":"Gift 4 normal price"},{"type":"image_picker","id":"gift_4_image","label":"Gift 4 image"},
+{"type":"text","id":"gift_1","label":"Gift 1"},{"type":"text","id":"gift_1_value","label":"Gift 1 normal price"},{"type":"image_picker","id":"gift_1_image","label":"Gift 1 image"},{"type":"text","id":"gift_1_emoji","label":"Gift 1 emoji (if no image)"},
+{"type":"text","id":"gift_2","label":"Gift 2"},{"type":"text","id":"gift_2_value","label":"Gift 2 normal price"},{"type":"image_picker","id":"gift_2_image","label":"Gift 2 image"},{"type":"text","id":"gift_2_emoji","label":"Gift 2 emoji (if no image)"},
+{"type":"text","id":"gift_3","label":"Gift 3"},{"type":"text","id":"gift_3_value","label":"Gift 3 normal price"},{"type":"image_picker","id":"gift_3_image","label":"Gift 3 image"},{"type":"text","id":"gift_3_emoji","label":"Gift 3 emoji (if no image)"},
+{"type":"text","id":"gift_4","label":"Gift 4"},{"type":"text","id":"gift_4_value","label":"Gift 4 normal price"},{"type":"image_picker","id":"gift_4_image","label":"Gift 4 image"},{"type":"text","id":"gift_4_emoji","label":"Gift 4 emoji (if no image)"},
 {"type":"text","id":"atc","label":"Button","default":"ADD TO CART"},
 {"type":"text","id":"exchange","label":"Line under button","default":"Free size exchange if the fit isn't right."},
 {"type":"text","id":"risk_title","label":"Guarantee title","default":"30-Day Money-Back Guarantee"},

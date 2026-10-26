@@ -1,5 +1,29 @@
-<section class="zrv" id="reviews"><div class="page-width"><h2 class="zrv__h">{{ section.settings.heading | escape }}</h2>
-{%- for block in section.blocks -%}{%- if block.type == '@app' -%}{% render block %}{%- continue -%}{%- endif -%}<article class="zrv__item" {{ block.shopify_attributes }}><p class="zrv__stars">★★★★★</p><p class="zrv__name"><span>{{ block.settings.name | slice: 0 }}</span>{{ block.settings.name | escape }}</p><p>{{ block.settings.text | escape }}</p></article>{%- endfor -%}</div></section>
+{%- liquid
+  assign s = section.settings
+  assign has_img = false
+  for block in section.blocks
+    if block.type == 'review'
+      assign has_img = true
+    endif
+  endfor
+-%}
+<section class="zrv" id="reviews" data-rv data-per="{{ s.per_page }}"><div class="page-width zrv__wrap">
+  <div class="zrv__top">
+    <div><h2 class="zrv__h">{{ s.heading | escape }}</h2>{%- if s.rating != blank -%}<p class="zrv__sum"><b>{{ s.rating | escape }}</b> <span class="zrv__stars">★★★★★</span> {{ s.count | escape }}</p>{%- endif -%}</div>
+    {%- if s.button != blank -%}<a class="zrv__btn" href="{{ s.button_link | default: '#' }}">{{ s.button | escape }}</a>{%- endif -%}
+  </div>
+  {%- if has_img and s.strip -%}<div class="zrv__strip">{%- for block in section.blocks -%}{%- if block.type == 'review' -%}<span>{% render 'media-img', image: block.settings.image, width: 240, alt: '' %}</span>{%- endif -%}{%- endfor -%}</div>{%- endif -%}
+  {%- for block in section.blocks -%}{%- if block.type == '@app' -%}{% render block %}{%- continue -%}{%- endif -%}
+  <article class="zrv__item" {{ block.shopify_attributes }}>
+    <p class="zrv__stars">★★★★★</p>
+    <p class="zrv__name"><span>{{ block.settings.name | slice: 0 }}</span><b>{{ block.settings.name | escape }}{%- if block.settings.date != blank -%}<small>{{ block.settings.date | escape }}</small>{%- endif -%}</b></p>
+    {%- if block.settings.title != blank -%}<h3 class="zrv__title">{{ block.settings.title | escape }}</h3>{%- endif -%}
+    <p>{{ block.settings.text | escape }}</p>
+    <div class="zrv__img">{% render 'media-img', image: block.settings.image, width: 300, alt: '' %}</div>
+  </article>
+  {%- endfor -%}
+  <div class="zrv__pages" data-rv-pages></div>
+</div></section>
 {% schema %}
-{"name":"Customer reviews","settings":[{"type":"text","id":"heading","label":"Heading","default":"Customer Reviews"}],"blocks":[{"type":"@app"},{"type":"review","name":"Review","settings":[{"type":"text","id":"name","label":"Name","default":"Customer name"},{"type":"textarea","id":"text","label":"Review","default":"[Add a real customer review here.]"}]}],"presets":[{"name":"Customer reviews"}]}
+{"name":"Customer reviews","settings":[{"type":"text","id":"heading","label":"Heading","default":"Customer Reviews"},{"type":"text","id":"rating","label":"Average rating","info":"Hidden when empty. Only show real figures."},{"type":"text","id":"count","label":"Review count text"},{"type":"text","id":"button","label":"Button","default":"Write A Review"},{"type":"text","id":"button_link","label":"Button link"},{"type":"checkbox","id":"strip","label":"Show photo strip","default":true},{"type":"range","id":"per_page","label":"Reviews per page","min":3,"max":10,"step":1,"default":5}],"blocks":[{"type":"@app"},{"type":"review","name":"Review","settings":[{"type":"text","id":"name","label":"Name","default":"Customer name"},{"type":"text","id":"date","label":"Date"},{"type":"text","id":"title","label":"Title","default":"[Review title]"},{"type":"textarea","id":"text","label":"Review","default":"[Add a real customer review here.]"},{"type":"image_picker","id":"image","label":"Photo"}]}],"presets":[{"name":"Customer reviews"}]}
 {% endschema %}

@@ -118,7 +118,8 @@
     const err = form.querySelector('[data-error]'); if (err) err.hidden = true;
     const btns = $$('button[type=submit]', document).filter(b => b.form === form || form.contains(b)); btns.forEach(b => b.disabled = true);
     try {
-      const r = await fetch('/cart/add.js', { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
+      const items = form.kbItems ? form.kbItems() : null;
+      const r = await fetch('/cart/add.js', items ? { method: 'POST', headers: { Accept: 'application/json', 'Content-Type': 'application/json' }, body: JSON.stringify({ items }) } : { method: 'POST', headers: { Accept: 'application/json' }, body: new FormData(form) });
       const d = await r.json();
       if (!r.ok) throw new Error(d.description || d.message || 'Could not add to cart');
       await renderCart(); openCart();
@@ -127,9 +128,54 @@
   }));
 })();
 (function () {
-  document.querySelectorAll('[data-variant-select]').forEach(sel => sel.addEventListener('change', () => {
-    const root = sel.closest('[data-product]'); const o = sel.selectedOptions[0];
-    const input = root.querySelector('[data-variant-id]'); if (input) input.value = sel.value;
-    const p = root.querySelector('[data-price]'); if (p && o.dataset.price) p.textContent = o.dataset.price;
-  }));
+  const money = c => { const v = (c / 100).toFixed(2); const f = window.kvMoney || '${{amount}}'; return f.replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(c / 100)).replace(/\{\{\s*amount_with_comma_separator\s*\}\}/, v.replace('.', ',')).replace(/\{\{\s*amount\s*\}\}/, v.replace(/\B(?=(\d{3})+(?!\d))/g, ',')); };
+
+  /* Offer tiers */
+  document.querySelectorAll('[data-tiers]').forEach(form => {
+    const root = form.closest('[data-product]');
+    const tiers = [...form.querySelectorAll('[data-tier]')];
+    const idIn = form.querySelector('[data-variant-id]'), qtyIn = form.querySelector('[data-tier-qty]');
+    const stickySel = root.querySelector('[data-sticky-select]');
+    const active = () => tiers.find(t => t.classList.contains('is-on')) || tiers[0];
+    const update = () => {
+      tiers.forEach(t => {
+        let p = 0, c = 0;
+        t.querySelectorAll('[data-tier-select]').forEach(sel => { const o = sel.selectedOptions[0]; p += +o.dataset.price; c += +(o.dataset.compare || 0); });
+        const pe = t.querySelector('[data-tier-price]'), ce = t.querySelector('[data-tier-compare]');
+        if (p && pe) pe.textContent = money(p);
+        if (c && ce) ce.textContent = money(c);
+      });
+      const t = active(); if (!t) return;
+      const sels = [...t.querySelectorAll('[data-tier-select]')];
+      if (sels[0]) idIn.value = sels[0].value;
+      qtyIn.value = t.dataset.qty;
+      if (stickySel && sels[0]) stickySel.value = sels[0].value;
+    };
+    tiers.forEach(t => t.querySelector('.zp__tier-input').addEventListener('change', () => { tiers.forEach(x => x.classList.toggle('is-on', x === t)); update(); }));
+    form.querySelectorAll('[data-tier-select]').forEach(sel => sel.addEventListener('change', update));
+    if (stickySel) stickySel.addEventListener('change', () => { const s0 = active().querySelector('[data-tier-select]'); if (s0) { s0.value = stickySel.value; update(); } });
+    form.kbItems = () => {
+      const t = active(); const sels = [...t.querySelectorAll('[data-tier-select]')];
+      if (!sels.length) return [{ id: +idIn.value, quantity: +t.dataset.qty }];
+      const m = {}; sels.forEach(s => { m[s.value] = (m[s.value] || 0) + 1; });
+      return Object.keys(m).map(id => ({ id: +id, quantity: m[id] }));
+    };
+    update();
+  });
+
+  /* Size guide popup */
+  const dlg = document.getElementById('size-guide');
+  if (dlg && dlg.showModal) {
+    document.querySelectorAll('a[href="#size-guide"]').forEach(a => a.addEventListener('click', e => { e.preventDefault(); dlg.showModal(); }));
+    dlg.addEventListener('click', e => { if (e.target === dlg || e.target.closest('[data-dlg-close]')) dlg.close(); });
+  }
+
+  /* Review pages */
+  document.querySelectorAll('[data-rv]').forEach(rv => {
+    const items = [...rv.querySelectorAll('.zrv__item')], per = +rv.dataset.per || 5, nav = rv.querySelector('[data-rv-pages]');
+    const pages = Math.ceil(items.length / per); if (!nav || pages < 2) return;
+    const go = n => { items.forEach((it, i) => { it.hidden = Math.floor(i / per) !== n; }); [...nav.children].forEach((b, i) => b.classList.toggle('is-on', i === n)); };
+    for (let i = 0; i < pages; i++) { const b = document.createElement('button'); b.type = 'button'; b.setAttribute('aria-label', 'Page ' + (i + 1)); b.addEventListener('click', () => { go(i); rv.scrollIntoView({ behavior: 'smooth' }); }); nav.appendChild(b); }
+    go(0);
+  });
 })();
