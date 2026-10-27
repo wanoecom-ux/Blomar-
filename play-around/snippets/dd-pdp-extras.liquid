@@ -1,0 +1,181 @@
+{% comment %}
+  Extra buy box blocks for dd-main-product: trust pill, check list, link card (e.g. the Parent Guide),
+  shipping strip, guarantee box, review slider and icon row.
+  Called three times by the section: part 'style' (once, the CSS), part 'block' (one block's markup)
+  and part 'script' (once, the review slider arrows). Pass section_id with the script part.
+{% endcomment %}
+{%- case part -%}
+{%- when 'style' -%}
+<style>
+  /* Buy box extras: trust pill, check list, link card, shipping strip, guarantee box, review slider, icon row */
+  .dd-trust { margin: 0 0 10px; }
+  .dd-trust__pill { display: inline-flex; align-items: center; gap: 8px; padding: 6px 14px; border-radius: 999px; border: 1px solid var(--dd-border); background: var(--dd-sky); font-size: 13.5px; font-weight: 700; line-height: 1.3; color: var(--dd-navy); }
+  .dd-checks { display: grid; gap: 9px; margin: 14px 0 16px; padding: 0; list-style: none; }
+  .dd-checks li { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 15px; font-weight: 700; line-height: 1.35; color: var(--dd-ink); text-align: left; }
+  .dd-checks svg { flex: none; width: 19px; height: 19px; color: var(--dd-navy); }
+  .dd-checks__icon { flex: none; width: 19px; font-size: 16px; line-height: 1; text-align: center; }
+  .dd-linkcard { margin: 0 0 18px; padding: 12px 14px; border: 1px solid var(--lc-border, #f6cadb); border-radius: 12px; background: var(--lc-bg, #fdf0f5); text-align: left; }
+  .dd-linkcard__head { display: flex; align-items: center; gap: 8px; margin: 0 0 9px; font-size: 14px; font-weight: 800; line-height: 1.3; color: var(--dd-ink); }
+  .dd-linkcard__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dd-linkcard__chips a { display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border: 1px solid var(--dd-border); border-radius: 8px; background: #fff; font-size: 12.5px; font-weight: 700; line-height: 1.3; color: var(--dd-navy); text-decoration: none; transition: border-color var(--dd-speed), color var(--dd-speed); }
+  .dd-linkcard__chips a:hover { border-color: var(--dd-pink); color: var(--dd-pink); }
+  .dd-strip { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; margin: 14px 0; padding: 11px 16px; border-radius: 12px; background: var(--dd-sky); font-size: 13px; font-weight: 800; line-height: 1.35; color: var(--dd-ink); }
+  .dd-strip > span { display: inline-flex; align-items: center; gap: 8px; }
+  .dd-strip__dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--dd-green); box-shadow: 0 0 0 3px color-mix(in srgb, var(--dd-green) 22%, transparent); }
+  .dd-guar { display: flex; align-items: flex-start; gap: 14px; margin: 14px 0; padding: 16px 18px; border: 2px dashed var(--dd-yellow); border-radius: 14px; background: #fffbea; text-align: left; }
+  .dd-guar__badge { flex: none; position: relative; width: 40px; height: 46px; color: var(--dd-navy); }
+  .dd-guar__badge svg { width: 100%; height: 100%; }
+  .dd-guar__badge span { position: absolute; inset: 9px 0 0; font-size: 13px; font-weight: 900; line-height: 1; text-align: center; }
+  .dd-guar__badge small { display: block; font-size: 6.5px; font-weight: 800; letter-spacing: .04em; }
+  .dd-guar__title { margin: 0 0 4px; font-size: 15.5px; font-weight: 800; line-height: 1.3; color: var(--dd-navy); }
+  .dd-guar__text { margin: 0; font-size: 13.5px; font-weight: 600; line-height: 1.55; color: var(--dd-muted); }
+  .dd-rslider { position: relative; margin: 16px 0; padding: 18px 18px 16px; border: 2px solid var(--dd-yellow); border-radius: 16px; background: #fff; text-align: left; }
+  .dd-rslider__track { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .dd-rslider__track::-webkit-scrollbar { display: none; }
+  .dd-rslider__slide { flex: 0 0 100%; display: flex; gap: 14px; scroll-snap-align: start; }
+  .dd-rslider__avatar { flex: none; display: grid; place-items: center; width: 58px; height: 58px; overflow: hidden; border-radius: 50%; background: var(--dd-sky-strong); font-size: 22px; font-weight: 800; color: var(--dd-navy); }
+  .dd-rslider__avatar img { width: 100%; height: 100%; object-fit: cover; }
+  .dd-rslider__name { margin: 2px 0 2px; padding-right: 76px; font-size: 15px; font-weight: 800; color: var(--dd-ink); }
+  .dd-rslider__stars { color: var(--dd-star); font-size: 16px; letter-spacing: 2px; line-height: 1.2; }
+  .dd-rslider__quote { margin: 8px 0 10px; font-size: 14.5px; font-weight: 700; line-height: 1.55; color: var(--dd-ink); }
+  .dd-rslider__verified { display: inline-flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 700; color: var(--dd-muted); }
+  .dd-rslider__verified svg { width: 18px; height: 18px; color: var(--dd-pink); }
+  .dd-rslider__nav { position: absolute; top: 16px; right: 16px; display: flex; gap: 8px; }
+  .dd-rslider__nav button { display: grid; place-items: center; width: 30px; height: 30px; padding: 0; border: 0; border-radius: 50%; background: var(--dd-pink); color: #fff; cursor: pointer; transition: opacity var(--dd-speed); }
+  .dd-rslider__nav button:disabled { opacity: .35; cursor: default; }
+  .dd-rslider__nav svg { width: 14px; height: 14px; }
+  .dd-icons { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 24px 0 6px; padding: 0; list-style: none; text-align: center; }
+  .dd-icons li { display: flex; flex-direction: column; align-items: center; gap: 8px; margin: 0; font-size: 12.5px; font-weight: 700; line-height: 1.35; color: var(--dd-ink); }
+  .dd-icons svg { width: 36px; height: 36px; color: var(--dd-navy); }
+</style>
+{%- when 'script' -%}
+<script>
+  (function () {
+    /* Review slider in the buy box: arrows move one review at a time. */
+    document.querySelectorAll('#dd-main-{{ section_id }} [data-dd-rslider]').forEach(function (box) {
+      var track = box.querySelector('[data-dd-rslider-track]');
+      var prev = box.querySelector('[data-dd-rslider-prev]');
+      var next = box.querySelector('[data-dd-rslider-next]');
+      if (!track || !prev || !next) return;
+      function sync() {
+        var max = track.scrollWidth - track.clientWidth - 2;
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = track.scrollLeft >= max;
+      }
+      prev.addEventListener('click', function () { track.scrollBy({ left: -track.clientWidth, behavior: 'smooth' }); });
+      next.addEventListener('click', function () { track.scrollBy({ left: track.clientWidth, behavior: 'smooth' }); });
+      track.addEventListener('scroll', sync, { passive: true });
+      sync();
+    });
+  })();
+</script>
+{%- when 'block' -%}
+{%- case block.type -%}
+  {%- when 'trust_pill' -%}
+    <div class="dd-trust" {{ block.shopify_attributes }}>
+      <span class="dd-trust__pill">{%- if block.settings.icon != blank -%}<span aria-hidden="true">{{ block.settings.icon }}</span>{%- endif -%}{{ block.settings.text }}</span>
+    </div>
+
+  {%- when 'check_list' -%}
+    <ul class="dd-checks" {{ block.shopify_attributes }}>
+      {%- assign lines = block.settings.items | newline_to_br | split: '<br />' -%}
+      {%- for line in lines -%}
+        {%- assign l = line | strip -%}
+        {%- if l != blank -%}
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M7.8 12.3l2.8 2.8 5.6-6"/></svg>{{ l }}</li>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- if block.settings.note != blank -%}
+        <li><span class="dd-checks__icon" aria-hidden="true">{{ block.settings.note_icon }}</span>{{ block.settings.note }}</li>
+      {%- endif -%}
+    </ul>
+
+  {%- when 'link_card' -%}
+    <div class="dd-linkcard" style="--lc-bg: {{ block.settings.background }}; --lc-border: {{ block.settings.border }};" {{ block.shopify_attributes }}>
+      <p class="dd-linkcard__head">{%- if block.settings.icon != blank -%}<span aria-hidden="true">{{ block.settings.icon }}</span>{%- endif -%}{{ block.settings.heading }}</p>
+      <div class="dd-linkcard__chips">
+        {%- for i in (1..4) -%}
+          {%- capture k_label %}chip_{{ i }}_label{% endcapture -%}
+          {%- capture k_url %}chip_{{ i }}_url{% endcapture -%}
+          {%- if block.settings[k_label] != blank -%}
+            <a href="{{ block.settings[k_url] | default: '#' }}">{{ block.settings[k_label] }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+
+  {%- when 'info_strip' -%}
+    <div class="dd-strip" {{ block.shopify_attributes }}>
+      {%- if block.settings.left != blank -%}<span><span class="dd-strip__dot" aria-hidden="true"></span>{{ block.settings.left }}</span>{%- endif -%}
+      {%- if block.settings.right != blank -%}<span>{%- if block.settings.right_icon != blank -%}<span aria-hidden="true">{{ block.settings.right_icon }}</span>{%- endif -%}{{ block.settings.right }}</span>{%- endif -%}
+    </div>
+
+  {%- when 'guarantee_box' -%}
+    <div class="dd-guar" {{ block.shopify_attributes }}>
+      <span class="dd-guar__badge" aria-hidden="true">
+        <svg viewBox="0 0 40 46" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 2l16 6v12c0 11-7 20-16 24C11 40 4 31 4 20V8z"/></svg>
+        <span>{{ block.settings.days }}<small>{{ block.settings.days_label }}</small></span>
+      </span>
+      <div>
+        <p class="dd-guar__title">{{ block.settings.heading }}</p>
+        {%- if block.settings.text != blank -%}<p class="dd-guar__text">{{ block.settings.text }}</p>{%- endif -%}
+      </div>
+    </div>
+
+  {%- when 'review_slider' -%}
+    {%- assign slide_count = 0 -%}
+    {%- for i in (1..3) -%}{%- capture k_text %}review_{{ i }}_text{% endcapture -%}{%- if block.settings[k_text] != blank -%}{%- assign slide_count = slide_count | plus: 1 -%}{%- endif -%}{%- endfor -%}
+    {%- if slide_count > 0 -%}
+      <div class="dd-rslider" data-dd-rslider {{ block.shopify_attributes }}>
+        <div class="dd-rslider__track" data-dd-rslider-track>
+          {%- for i in (1..3) -%}
+            {%- capture k_text %}review_{{ i }}_text{% endcapture -%}
+            {%- capture k_name %}review_{{ i }}_name{% endcapture -%}
+            {%- capture k_photo %}review_{{ i }}_photo{% endcapture -%}
+            {%- if block.settings[k_text] != blank -%}
+              <figure class="dd-rslider__slide" style="margin: 0;">
+                <span class="dd-rslider__avatar" aria-hidden="true">
+                  {%- if block.settings[k_photo] != blank -%}{{ block.settings[k_photo] | image_url: width: 160 | image_tag: alt: '', loading: 'lazy' }}{%- else -%}{{ block.settings[k_name] | slice: 0 }}{%- endif -%}
+                </span>
+                <div>
+                  <p class="dd-rslider__name">{{ block.settings[k_name] }}</p>
+                  <span class="dd-rslider__stars" aria-label="5 out of 5 stars">★★★★★</span>
+                  <blockquote class="dd-rslider__quote" style="margin: 8px 0 10px; padding: 0; border: 0;">“{{ block.settings[k_text] }}”</blockquote>
+                  {%- if block.settings.verified_label != blank -%}
+                    <figcaption class="dd-rslider__verified"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="currentColor"/><path d="M7.5 12.5l3 3 6-6.5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>{{ block.settings.verified_label }}</figcaption>
+                  {%- endif -%}
+                </div>
+              </figure>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        {%- if slide_count > 1 -%}
+          <div class="dd-rslider__nav">
+            <button type="button" data-dd-rslider-prev aria-label="Previous review" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+            <button type="button" data-dd-rslider-next aria-label="Next review"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+          </div>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+  {%- when 'icon_row' -%}
+    <ul class="dd-icons" {{ block.shopify_attributes }}>
+      {%- for i in (1..3) -%}
+        {%- capture k_icon %}item_{{ i }}_icon{% endcapture -%}
+        {%- capture k_text %}item_{{ i }}_text{% endcapture -%}
+        {%- if block.settings[k_text] != blank -%}
+          <li>
+            {%- case block.settings[k_icon] -%}
+              {%- when 'clock' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>
+              {%- when 'shield' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5l8 3v6c0 5-3.4 9-8 10.5C7.4 20.5 4 16.5 4 11.5v-6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+              {%- when 'leaf' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 19c0-8 5-14 15-14 0 10-6 15-14 15"/><path d="M5 19l7-7"/></svg>
+              {%- when 'heart' -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7.5-4.6-7.5-10.2A4.3 4.3 0 0 1 12 7.2a4.3 4.3 0 0 1 7.5 2.6C19.5 15.4 12 20 12 20z"/></svg>
+              {%- else -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1.5 6h13v10h-13z"/><path d="M14.5 9h4l3 3.5V16h-7z"/><circle cx="5.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+            {%- endcase -%}
+            <span>{{ block.settings[k_text] }}</span>
+          </li>
+        {%- endif -%}
+      {%- endfor -%}
+    </ul>
+{%- endcase -%}
+{%- endcase -%}

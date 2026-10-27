@@ -1,0 +1,760 @@
+{% comment %}
+  Dream Drops main product: gallery, buy box, bundle tiers, sticky add to cart.
+  Also holds the page design settings (colours, fonts, sizes) that every dd-* section reads.
+
+  Bundle tiers are the product's variants, in admin order. Add one "Bundle tier" block per variant
+  to give it a sub-line and a badge; the block's "Variant position" says which variant it styles.
+  A subscribe tier appears only when the product has a selling plan (from a subscriptions app).
+  Prices, compare-at prices and stock all come from the product in Shopify admin.
+{% endcomment %}
+
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign default_position = 1
+  for block in section.blocks
+    if block.type == 'tier' and block.settings.default
+      assign default_position = block.settings.position
+    endif
+  endfor
+  if product.variants.size < default_position
+    assign default_position = 1
+  endif
+  assign default_index = default_position | minus: 1
+  assign default_variant = product.variants[default_index]
+  if product.selected_variant
+    assign default_variant = product.selected_variant
+  endif
+  unless default_variant.available
+    assign default_variant = current
+  endunless
+  assign first_plan = product.selling_plan_groups.first.selling_plans.first
+-%}
+
+{%- assign body_bold = s.body_font | font_modify: 'weight', 'bolder' -%}
+<style>
+  {{ s.heading_font | font_face: font_display: 'swap' }}
+  {{ s.body_font | font_face: font_display: 'swap' }}
+  {{ body_bold | font_face: font_display: 'swap' }}
+  :root {
+    --dd-navy: {{ s.color_primary }};
+    --dd-ink: {{ s.color_text }};
+    --dd-pink: {{ s.color_accent }};
+    --dd-yellow: {{ s.color_highlight }};
+    --dd-green: {{ s.color_success }};
+    --dd-sky: {{ s.color_surface }};
+    --dd-sky-strong: {{ s.color_surface_strong }};
+    --dd-card: {{ s.color_card }};
+    --dd-border: {{ s.color_border }};
+    --dd-muted: {{ s.color_muted }};
+    --dd-sale: {{ s.color_sale }};
+    --dd-star: {{ s.color_star }};
+    --dd-font-heading: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
+    --dd-font-body: {{ s.body_font.family }}, {{ s.body_font.fallback_families }};
+    --dd-h2: {{ s.h2_size }}px;
+    --dd-h2-mobile: {{ s.h2_size_mobile }}px;
+    --dd-body: {{ s.body_size }}px;
+    --dd-radius-card: {{ s.radius_card }}px;
+    --dd-radius-button: {{ s.radius_button }}px;
+    --dd-section-pad: {{ s.section_padding }}px;
+    --dd-section-pad-mobile: {{ s.section_padding_mobile }}px;
+    --dd-container: {{ s.container_width }}px;
+    --dd-button-height: {{ s.button_height }}px;
+    --dd-speed: {{ s.animation_speed }}ms;
+    --dd-gallery-ratio: {{ s.gallery_ratio }};
+  }
+  .dd-acc + .dd-acc { margin-top: 0; border-top: 0; }
+  .dd-acc__image { width: 100%; max-width: 420px; height: auto; margin-top: 10px; border-radius: 10px; }
+  .dd-ship { margin: 16px 0 6px; padding: 16px 18px 14px; border-radius: 16px; background: var(--ship-bg); color: var(--ship-text); text-align: left; }
+  .dd-ship__head { display: flex; align-items: center; gap: 10px; margin: 0; font-size: 15px; font-weight: 600; line-height: 1.4; color: var(--ship-text); }
+  .dd-ship__head svg { flex: none; width: 22px; height: 22px; color: var(--ship-text); }
+  .dd-ship__head strong { font-weight: 800; white-space: nowrap; }
+  .dd-ship__steps { display: grid; grid-template-columns: repeat(3, 1fr); margin: 16px 0 0; padding: 0; list-style: none; }
+  .dd-ship__steps li { position: relative; display: flex; flex-direction: column; align-items: center; text-align: center; }
+  .dd-ship__steps li + li::before { content: ''; position: absolute; top: 17px; right: 50%; width: 100%; height: 1.5px; background: var(--ship-accent); opacity: .55; }
+  .dd-ship__dot { position: relative; z-index: 1; display: grid; place-items: center; width: 36px; height: 36px; margin-bottom: 8px; border-radius: 50%; border: 2px solid var(--ship-accent); background: #fff; color: var(--ship-accent); }
+  .dd-ship__dot svg { width: 18px; height: 18px; }
+  .dd-ship__steps li.is-done .dd-ship__dot { background: var(--ship-accent); color: #fff; }
+  .dd-ship__steps strong { font-size: 13.5px; font-weight: 800; line-height: 1.3; color: var(--ship-text); }
+  .dd-ship__steps span:not(.dd-ship__dot) { margin-top: 2px; font-size: 12.5px; font-weight: 600; line-height: 1.35; color: var(--ship-muted); }
+  .dd-pay { margin: 18px 0 6px; text-align: center; }
+  .dd-pay__head { display: inline-flex; align-items: center; gap: 6px; margin: 0 0 10px; font-size: 13.5px; font-weight: 700; line-height: 1.4; color: var(--dd-muted); }
+  .dd-pay__head svg { flex: none; width: 13px; height: 13px; }
+  .dd-pay__icons { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: 0 auto; padding: 0; list-style: none; max-width: 360px; }
+  .dd-pay__icons li { margin: 0; }
+  .dd-pay__icons svg { display: block; width: 50px; height: auto; }
+  .dd-ship__note { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid rgba(0, 0, 0, .08); font-size: 13px; font-weight: 600; line-height: 1.55; text-align: center; color: var(--ship-muted); }
+
+  /* ---------- Pediatrician pill + Science card (Mood Munchies buy box) ----------
+     Same body font, weight and letter spacing as the benefit pills; title uses the heading font. */
+  .dd-info .bm-peds { display: flex; justify-content: center; }
+  .dd-info .bm-peds__pill { display: inline-flex; align-items: center; gap: 9px; padding: 6px 16px 6px 6px; border-radius: var(--dd-radius-pill, 999px); background: #eaf0fd; border: 1.5px solid #c3c9ef; color: var(--dd-ink); font-family: var(--dd-font-body) !important; font-size: 13px; font-weight: 800; letter-spacing: .04em; line-height: 1.3; }
+  .dd-info .bm-peds__icon { position: relative; flex: none; display: grid; place-items: center; width: 26px; height: 26px; border-radius: 50%; background: #fff; color: var(--dd-navy); box-shadow: 0 1px 3px rgba(43, 58, 143, .18); }
+  .dd-info .bm-peds__icon > svg { width: 15px; height: 15px; }
+  .dd-info .bm-peds__tick { position: absolute; top: -3px; right: -4px; display: grid; place-items: center; width: 13px; height: 13px; border-radius: 50%; background: #3b82f6; border: 1.5px solid #fff; }
+  .dd-info .bm-peds__tick svg { width: 7px; height: 7px; }
+  .dd-info .bm-sci { padding: 14px 16px 16px; border-radius: var(--dd-radius-card); background: #fdf0f5; border: 1.5px solid #f5cddd; text-align: left; }
+  .dd-info .bm-sci__title { display: flex; align-items: center; gap: 8px; margin: 0 0 10px; color: var(--dd-ink); font-family: var(--dd-font-heading) !important; font-size: 15px; font-weight: 700; line-height: 1.3; }
+  .dd-info .bm-sci__title svg { flex: none; width: 18px; height: 18px; color: var(--dd-pink); }
+  .dd-info .bm-sci__chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .dd-info .bm-sci__chip { display: inline-flex; align-items: center; gap: 7px; padding: 5px 12px 5px 5px; border-radius: 10px; background: #fff; border: 1.5px solid #f1d6e2; color: var(--dd-ink) !important; font-family: var(--dd-font-body) !important; font-size: 13px; font-weight: 800; letter-spacing: .04em; text-decoration: none !important; transition: border-color var(--dd-speed); }
+  .dd-info a.bm-sci__chip:hover { border-color: var(--dd-pink); }
+  .dd-info .bm-sci__logo { display: grid; place-items: center; width: 20px; height: 20px; border-radius: 5px; background: var(--dd-navy); color: #fff; font-size: 10px; font-weight: 900; letter-spacing: 0; line-height: 1; }
+  /* The theme forces tight letter spacing and lighter weights with !important; match the benefit pills instead. */
+  .dd-info :is(.bm-peds__pill, .bm-sci__chip, .bm-sci__title, .bm-sci__title span, #dd-x) { font-family: var(--dd-font-body) !important; font-weight: 800 !important; letter-spacing: .074em !important; }
+  .dd-info :is(.bm-peds__pill, .bm-sci__chip, #dd-x) { font-size: 13px !important; }
+  .dd-info :is(.bm-sci__title, .bm-sci__title span, #dd-x) { font-size: 15px !important; font-weight: 900 !important; letter-spacing: .03em !important; }
+  .dd-info :is(.bm-sci__logo, #dd-x) { font-weight: 900 !important; letter-spacing: 0 !important; }
+  @media (min-width: 750px) {
+    .dd-info :is(.bm-peds__pill, .bm-sci__chip, #dd-x) { font-size: 14px !important; }
+  }
+  {%- if template.suffix contains 'mood-munchies' %}
+  /* Rating row above the title, Evoura style */
+  html body :is(.dd-rating--evt, #dd-x) { display: flex; justify-content: center; align-items: center; margin: 5px 0 8px !important; padding: 0; }
+  html body :is(.dd-rating--evt .dd-rating__link, #dd-x) { display: inline-flex; align-items: center; gap: 8px; color: inherit; text-decoration: none !important; }
+  html body :is(.dd-rating--evt .dd-rating__stars, #dd-x) { display: inline-flex; gap: 2px; }
+  html body :is(.dd-rating--evt .dd-rating__stars svg, #dd-x) { display: block; width: 15px; height: 15px; }
+  html body :is(.dd-rating--evt .dd-rating__count, #dd-x) { font-family: 'Nunito', var(--dd-font-body) !important; font-size: 13px !important; font-weight: 800 !important; letter-spacing: .9px !important; line-height: 23.4px !important; color: #4d5a9e !important; text-transform: none !important; }
+  @media (min-width: 750px) {
+    html body :is(.dd-rating--evt, #dd-x) { margin-bottom: 10px !important; }
+    html body :is(.dd-rating--evt .dd-rating__stars svg, #dd-x) { width: 17px; height: 17px; }
+    html body :is(.dd-rating--evt .dd-rating__count, #dd-x) { letter-spacing: .96px !important; }
+  }
+  {%- endif %}
+</style>
+
+{{ 'dd-product.css' | asset_url | stylesheet_tag }}
+{%- render 'dd-pdp-extras', part: 'style' -%}
+{{ 'dd-theme-overrides.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'dd-product.js' | asset_url }}" defer></script>
+
+<section class="dd dd-main" id="dd-main-{{ section.id }}" data-dd-product data-section="{{ section.id }}" style="background: {{ s.background }};">
+  <div class="dd-container dd-main__grid" style="max-width: {{ s.main_width }}px;">
+
+    {%- comment -%} Gallery {%- endcomment -%}
+    <div class="dd-gallery" data-dd-gallery>
+      <div class="dd-gallery__stage">
+        <div class="dd-gallery__track" data-dd-track tabindex="0" aria-label="{{ product.title | escape }} images">
+          {%- for media in product.media -%}
+            <div class="dd-gallery__slide" data-index="{{ forloop.index0 }}">
+              {%- assign alt = media.alt | default: product.title -%}
+              {%- if forloop.first -%}{%- assign loading = 'eager' -%}{%- else -%}{%- assign loading = 'lazy' -%}{%- endif -%}
+              {{ media.preview_image | image_url: width: 1400 | image_tag: alt: alt, loading: loading, widths: '400, 700, 1000, 1400', sizes: '(min-width: 990px) 55vw, 100vw' }}
+            </div>
+          {%- else -%}
+            <div class="dd-gallery__slide">{{ 'product-1' | placeholder_svg_tag }}</div>
+          {%- endfor -%}
+        </div>
+      </div>
+      {%- if product.media.size > 1 -%}
+        <div class="dd-gallery__thumbs">
+          <button type="button" class="dd-gallery__arrow" data-dd-prev aria-label="Previous image">‹</button>
+          <div class="dd-gallery__thumb-list">
+            {%- for media in product.media -%}
+              <button type="button" class="dd-gallery__thumb" data-dd-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}">
+                {{ media.preview_image | image_url: width: 200 | image_tag: alt: '', loading: 'lazy' }}
+              </button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="dd-gallery__arrow" data-dd-next aria-label="Next image">›</button>
+        </div>
+        <div class="dd-gallery__dots">
+          {%- for media in product.media -%}
+            <button type="button" class="dd-gallery__dot" data-dd-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- comment -%} Buy box {%- endcomment -%}
+    <div class="dd-info" id="dd-buybox">
+      {%- assign form_id = 'dd-form-' | append: section.id -%}
+      {%- form 'product', product, id: form_id, novalidate: 'novalidate', data-dd-form: '' -%}
+        <input type="hidden" name="id" value="{{ default_variant.id }}" data-dd-variant-input>
+        <input type="hidden" name="quantity" value="1">
+        <input type="hidden" name="selling_plan" value="" data-dd-plan-input disabled>
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'badge' -%}
+              <div class="dd-info__badge" {{ block.shopify_attributes }}>{{ block.settings.text_left }}{% if block.settings.text_right != blank %}<span>|</span>{{ block.settings.text_right }}{% endif %}</div>
+
+            {%- when 'rating' -%}
+              {%- if template.suffix contains 'mood-munchies' -%}
+                {%- comment -%} Evoura-style row: blue stars, the last one filled to match the score. Hidden while score and count are empty. {%- endcomment -%}
+                {%- if block.settings.score != blank or block.settings.count != blank -%}
+                  {%- assign score_num = block.settings.score | plus: 0 -%}
+                  {%- assign last_fill = 100 -%}
+                  {%- if score_num > 4 and score_num < 5 -%}{%- assign last_fill = score_num | minus: 4 | times: 100 | round -%}{%- endif -%}
+                  <div class="dd-rating dd-rating--evt" {{ block.shopify_attributes }}>
+                    <a class="dd-rating__link" href="#{{ block.settings.anchor }}">
+                      <span class="dd-rating__stars" aria-hidden="true">
+                        {%- for i in (1..5) -%}
+                          {%- if forloop.last and last_fill < 100 -%}
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="dd-star-{{ block.id }}"><stop offset="{{ last_fill }}%" stop-color="{{ block.settings.star_color }}"/><stop offset="{{ last_fill }}%" stop-color="#d4daf3"/></linearGradient></defs><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" fill="url(#dd-star-{{ block.id }})"/></svg>
+                          {%- else -%}
+                            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" fill="{{ block.settings.star_color }}"/></svg>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </span>
+                      <span class="dd-rating__count">
+                        {%- if block.settings.label != blank -%}<span class="dd-rating__label">{{ block.settings.label }}</span> {% endif -%}
+                        <span class="dd-rating__score">{{ block.settings.score }}</span>
+                        {%- if block.settings.score != blank and block.settings.count != blank %} · {% endif -%}
+                        <span class="dd-rating__reviews">{{ block.settings.count }}</span>
+                      </span>
+                    </a>
+                  </div>
+                {%- endif -%}
+              {%- else -%}
+              <div class="dd-rating" {{ block.shopify_attributes }}>
+                <span class="dd-stars" aria-hidden="true">★★★★★</span>
+                <a href="#{{ block.settings.anchor }}">{{ block.settings.score }} · {{ block.settings.count }}</a>
+              </div>
+              {%- endif -%}
+
+            {%- when 'title' -%}
+              <h1 class="dd-info__title" {{ block.shopify_attributes }}>
+                {{ block.settings.line_one | default: product.title }}
+                {%- if block.settings.highlight != blank %} <span class="dd-hl">{{ block.settings.highlight }}</span>{% endif %}
+              </h1>
+              {%- if block.settings.tags != blank -%}
+                <ul class="dd-list-reset dd-info__tags">
+                  {%- assign tags = block.settings.tags | split: ',' -%}
+                  {%- for t in tags -%}<li>{{ t | strip }}</li>{%- endfor -%}
+                </ul>
+              {%- endif -%}
+
+            {%- when 'peds_badge' -%}
+              {%- comment -%} Trust pill above the badge: Blomar pill styling with a doctor icon and a blue verified tick. {%- endcomment -%}
+              <div class="bm-peds" {{ block.shopify_attributes }}>
+                <span class="bm-peds__pill">
+                  <span class="bm-peds__icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3v6a4 4 0 0 0 8 0V3"/><path d="M10 13v2a5 5 0 0 0 10 0v-2"/><circle cx="20" cy="11" r="2"/></svg>
+                    <span class="bm-peds__tick"><svg viewBox="0 0 10 10" fill="none" stroke="#fff" stroke-width="2"><path d="M2 5.2 4.2 7.4 8 3"/></svg></span>
+                  </span>
+                  {{ block.settings.text }}
+                </span>
+              </div>
+
+            {%- when 'science_box' -%}
+              {%- comment -%} "The Science Behind Saffron" card: soft pink card, heading-font title, white source chips. {%- endcomment -%}
+              <div class="bm-sci" {{ block.shopify_attributes }}>
+                <p class="bm-sci__title">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3h6"/><path d="M10 3v6L4.5 18.5A1.7 1.7 0 0 0 6 21h12a1.7 1.7 0 0 0 1.5-2.5L14 9V3"/><path d="M7 15h10"/></svg>
+                  <span>{{ block.settings.heading }}</span>
+                </p>
+                <div class="bm-sci__chips">
+                  {%- for i in (1..3) -%}
+                    {%- assign c_label = 'chip_' | append: i | append: '_label' -%}
+                    {%- assign c_icon = 'chip_' | append: i | append: '_icon' -%}
+                    {%- assign c_url = 'chip_' | append: i | append: '_url' -%}
+                    {%- if block.settings[c_label] != blank -%}
+                      {%- if block.settings[c_url] != blank -%}<a class="bm-sci__chip" href="{{ block.settings[c_url] }}" target="_blank" rel="noopener">{%- else -%}<span class="bm-sci__chip">{%- endif -%}
+                        <span class="bm-sci__logo" aria-hidden="true">{{ block.settings[c_icon] }}</span>{{ block.settings[c_label] }}
+                      {%- if block.settings[c_url] != blank -%}</a>{%- else -%}</span>{%- endif -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+
+            {%- when 'pill' -%}
+              <div class="dd-pills" {{ block.shopify_attributes }}>
+                <span class="dd-pill"><span class="dd-pill__dot" style="background: {{ block.settings.dot_color }};" aria-hidden="true">✓</span>{{ block.settings.text }}</span>
+              </div>
+
+            {%- when 'stock' -%}
+              {%- comment -%}
+                With "Fixed number left" filled in, the bar always shows that number. Otherwise it is only shown when
+                Shopify tracks stock and the real count is at or under the threshold; JS keeps it in sync with the chosen tier.
+              {%- endcomment -%}
+              {%- assign bar_max = block.settings.bar_max | default: block.settings.threshold -%}
+              {%- assign stock_count = default_variant.inventory_quantity -%}
+              {%- assign stock_show = false -%}
+              {%- if default_variant.inventory_management == 'shopify' and stock_count > 0 and stock_count <= block.settings.threshold -%}{%- assign stock_show = true -%}{%- endif -%}
+              {%- if block.settings.manual_count > 0 -%}{%- assign stock_count = block.settings.manual_count -%}{%- assign stock_show = true -%}{%- endif -%}
+              <div class="dd-stock" data-dd-stock data-threshold="{{ block.settings.threshold }}" data-bar-max="{{ bar_max }}" data-template="{{ block.settings.text | escape }}" {{ block.shopify_attributes }}
+                {% unless stock_show %}hidden{% endunless %}>
+                <span data-dd-stock-text>{{ block.settings.text | replace: '[count]', stock_count }}</span>
+                {%- assign pct = stock_count | times: 100 | divided_by: bar_max -%}
+                <div class="dd-stock__bar" aria-hidden="true"><span data-dd-stock-bar style="width: {{ pct | at_most: 100 }}%;"></span></div>
+              </div>
+
+            {%- when 'divider_label' -%}
+              <div class="dd-divider-label" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+
+            {%- when 'bundle_selector' -%}
+              {%- comment -%} A bundle app's widget (e.g. Kaching Bundles) is moved into this slot by dd-product.js. {%- endcomment -%}
+              <div class="dd-bundle-slot" data-dd-bundle-slot></div>
+              {%- if product.variants.size > 1 or first_plan -%}
+              <fieldset class="dd-tiers" {{ block.shopify_attributes }}>
+                <legend class="visually-hidden">Choose your bundle</legend>
+                {%- for variant in product.variants -%}
+                  {%- assign tier = nil -%}
+                  {%- for b in section.blocks -%}
+                    {%- if b.type == 'tier' and b.settings.position == forloop.parentloop.index -%}{%- assign tier = b -%}{%- endif -%}
+                  {%- endfor -%}
+                  {%- capture tier_title -%}{% if variant.title == 'Default Title' %}{{ tier.settings.title | default: product.title }}{% else %}{{ tier.settings.title | default: variant.title }}{% endif %}{%- endcapture -%}
+                  <label class="dd-tier">
+                    <input type="radio" name="dd-tier-{{ section.id }}" value="{{ variant.id }}"
+                      data-price="{{ variant.price | money }}"
+                      data-compare="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}"
+                      data-save="{% if variant.compare_at_price > variant.price %}{{ variant.compare_at_price | minus: variant.price | times: 100 | divided_by: variant.compare_at_price }}{% endif %}"
+                      data-tracked="{% if variant.inventory_management == 'shopify' %}1{% endif %}"
+                      data-inventory="{{ variant.inventory_quantity }}"
+                      data-available="{% if variant.available %}1{% endif %}"
+                      {% unless variant.available %}disabled{% endunless %}
+                      {% if variant.id == default_variant.id %}checked{% endif %}>
+                    {%- if tier.settings.badge != blank -%}
+                      <span class="dd-tier__badge" style="background: {{ tier.settings.badge_color }};">{{ tier.settings.badge }}</span>
+                    {%- endif -%}
+                    <span class="dd-tier__box">
+                      <span class="dd-tier__radio" aria-hidden="true"></span>
+                      <span>
+                        <span class="dd-tier__title">{{ tier_title }}</span><br>
+                        <span class="dd-tier__sub">{% if variant.available %}{{ tier.settings.subtitle }}{% else %}Sold out{% endif %}</span>
+                      </span>
+                      <span class="dd-tier__price">
+                        {{ variant.price | money }}
+                        {%- if variant.compare_at_price > variant.price %}<s>{{ variant.compare_at_price | money }}</s>{% endif -%}
+                      </span>
+                    </span>
+                  </label>
+                {%- endfor -%}
+
+                {%- if first_plan and block.settings.show_subscription -%}
+                  {%- assign allocation = default_variant.selling_plan_allocations | where: 'selling_plan_id', first_plan.id | first -%}
+                  <label class="dd-tier">
+                    <input type="radio" name="dd-tier-{{ section.id }}" value="{{ default_variant.id }}" data-plan="{{ first_plan.id }}"
+                      data-price="{{ allocation.price | default: default_variant.price | money }}" data-compare="{% if allocation.compare_at_price > allocation.price %}{{ allocation.compare_at_price | money }}{% endif %}"
+                      data-save="{% if allocation.compare_at_price > allocation.price %}{{ allocation.compare_at_price | minus: allocation.price | times: 100 | divided_by: allocation.compare_at_price }}{% endif %}"
+                      data-tracked="{% if default_variant.inventory_management == 'shopify' %}1{% endif %}" data-inventory="{{ default_variant.inventory_quantity }}" data-available="1">
+                    <span class="dd-tier__box">
+                      <span class="dd-tier__radio" aria-hidden="true"></span>
+                      <span>
+                        <span class="dd-tier__title">{{ block.settings.subscribe_title }}</span><br>
+                        <span class="dd-tier__sub">{{ first_plan.name }}</span>
+                      </span>
+                      {%- if allocation.price_adjustments.first.value > 0 and allocation.price_adjustments.first.value_type == 'percentage' -%}
+                        <span class="dd-tier__save">Save {{ allocation.price_adjustments.first.value }}%</span>
+                      {%- else -%}
+                        <span class="dd-tier__price">{{ allocation.price | default: default_variant.price | money }}</span>
+                      {%- endif -%}
+                    </span>
+                  </label>
+                  {%- if block.settings.subscribe_note != blank -%}<p class="dd-tier__note">{{ block.settings.subscribe_note }}</p>{%- endif -%}
+                {%- endif -%}
+              </fieldset>
+              {%- endif -%}
+
+            {%- when 'perks' -%}
+              <div class="dd-perks" {{ block.shopify_attributes }}>
+                {%- if block.settings.banner != blank -%}<div class="dd-perks__banner">{{ block.settings.banner }}</div>{%- endif -%}
+                <ul class="dd-list-reset dd-perks__grid">
+                  {%- assign lines = block.settings.checks | newline_to_br | split: '<br />' -%}
+                  {%- for line in lines -%}{%- assign l = line | strip -%}{%- if l != blank -%}<li>{{ l }}</li>{%- endif -%}{%- endfor -%}
+                </ul>
+                {%- if block.settings.fine_print != blank -%}<p class="dd-perks__fine">{{ block.settings.fine_print }}</p>{%- endif -%}
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              {%- if s.gifts_show -%}{% render 'dd-free-gifts', s: s %}{%- endif -%}
+              <div class="dd-buy" {{ block.shopify_attributes }}>
+                <button type="submit" class="dd-btn dd-btn--primary" data-dd-add data-label="{{ block.settings.label | escape }}" {% unless default_variant.available %}disabled{% endunless %}>
+                  {%- if default_variant.available -%}{{ block.settings.label }}{%- else -%}Sold out{%- endif -%}
+                </button>
+                <p class="dd-buy__error" role="alert" data-dd-error></p>
+                {%- if block.settings.show_dynamic_checkout -%}{{ form | payment_button }}{%- endif -%}
+              </div>
+
+            {%- when 'delivery' -%}
+              {%- comment -%}
+                Delivery estimate: dates are worked out from today in the shopper's browser. The country comes from
+                Shopify (localization), then from Shopify's location lookup, and picks that country's delivery days
+                and date format (UK: 21 Oct, US and Canada: Oct 21). The Liquid dates are a first guess for the first paint.
+              {%- endcomment -%}
+              {%- liquid
+                assign d = block.settings
+                assign cc = localization.country.iso_code | default: 'US'
+                case cc
+                  when 'GB'
+                    assign dmin = d.gb_min
+                    assign dmax = d.gb_max
+                  when 'CA'
+                    assign dmin = d.ca_min
+                    assign dmax = d.ca_max
+                  when 'US'
+                    assign dmin = d.us_min
+                    assign dmax = d.us_max
+                  else
+                    assign dmin = d.other_min
+                    assign dmax = d.other_max
+                endcase
+                if cc == 'GB' or cc == 'IE' or cc == 'AU' or cc == 'NZ'
+                  assign fmt = '%-d %b'
+                else
+                  assign fmt = '%b %-d'
+                endif
+                assign now_s = 'now' | date: '%s' | plus: 0
+                assign day = 86400
+                assign s1 = d.process_min | times: day | plus: now_s | date: fmt
+                assign s2 = d.process_max | times: day | plus: now_s | date: fmt
+                assign a1 = dmin | times: day | plus: now_s | date: fmt
+                assign a2 = dmax | times: day | plus: now_s | date: fmt
+                assign note = d.note | replace: '[process_min]', d.process_min | replace: '[process_max]', d.process_max | replace: '[min]', dmin | replace: '[max]', dmax
+              -%}
+              <div class="dd-ship" data-dd-ship data-country="{{ cc }}" data-p="{{ d.process_min }}-{{ d.process_max }}"
+                data-gb="{{ d.gb_min }}-{{ d.gb_max }}" data-ca="{{ d.ca_min }}-{{ d.ca_max }}" data-us="{{ d.us_min }}-{{ d.us_max }}" data-other="{{ d.other_min }}-{{ d.other_max }}"
+                data-note="{{ d.note | escape }}" {{ block.shopify_attributes }}
+                style="--ship-bg: {{ d.background }}; --ship-accent: {{ d.accent }}; --ship-text: {{ d.text_color }}; --ship-muted: {{ d.muted_color }};">
+                <p class="dd-ship__head">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h13v10H1z"/><path d="M14 9h4l3 3v4h-7z"/><circle cx="5.5" cy="17.5" r="1.8"/><circle cx="17.5" cy="17.5" r="1.8"/></svg>
+                  <span>{{ d.heading }} <strong data-dd-ship-range>{{ a1 }} – {{ a2 }}</strong></span>
+                </p>
+                <ol class="dd-ship__steps">
+                  <li class="is-done">
+                    <span class="dd-ship__dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span>
+                    <strong>{{ d.step_1 }}</strong><span>{{ d.step_1_sub }}</span>
+                  </li>
+                  <li>
+                    <span class="dd-ship__dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7h11v9H2z"/><path d="M13 10h4l3 3v3h-7z"/><circle cx="6" cy="17" r="1.6"/><circle cx="17" cy="17" r="1.6"/></svg></span>
+                    <strong>{{ d.step_2 }}</strong><span data-dd-ship-sent>{{ s1 }} – {{ s2 }}</span>
+                  </li>
+                  <li>
+                    <span class="dd-ship__dot" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg></span>
+                    <strong>{{ d.step_3 }}</strong><span data-dd-ship-arrive>{{ a1 }} – {{ a2 }}</span>
+                  </li>
+                </ol>
+                {%- if d.note != blank -%}<p class="dd-ship__note" data-dd-ship-note>{{ note }}</p>{%- endif -%}
+              </div>
+
+            {%- when 'payment_icons' -%}
+              {%- comment -%} The store's enabled payment methods, as set in Shopify payments settings. {%- endcomment -%}
+              {%- if shop.enabled_payment_types.size > 0 -%}
+                <div class="dd-pay" {{ block.shopify_attributes }}>
+                  {%- if block.settings.heading != blank -%}
+                    <p class="dd-pay__head"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>{{ block.settings.heading }}</p>
+                  {%- endif -%}
+                  <ul class="dd-pay__icons" role="list">
+                    {%- for type in shop.enabled_payment_types -%}<li>{{ type | payment_type_svg_tag }}</li>{%- endfor -%}
+                  </ul>
+                </div>
+              {%- endif -%}
+
+            {%- when 'accordion' -%}
+              <div class="dd-acc" {{ block.shopify_attributes }}>
+                <details>
+                  <summary>{{ block.settings.heading }}</summary>
+                  <div class="dd-acc__body">
+                    {{ block.settings.content }}
+                    {%- if block.settings.image != blank -%}
+                      {{ block.settings.image | image_url: width: 900 | image_tag: loading: 'lazy', class: 'dd-acc__image', alt: block.settings.image.alt | default: block.settings.heading, widths: '400, 600, 900' }}
+                    {%- endif -%}
+                  </div>
+                </details>
+              </div>
+
+            {%- when 'trust_pill', 'check_list', 'link_card', 'info_strip', 'guarantee_box', 'review_slider', 'icon_row' -%}
+              {%- render 'dd-pdp-extras', part: 'block', block: block -%}
+
+            {%- when '@app' -%}
+              {% render block %}
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}<div class="dd-acc__body" style="padding-left: 0;" {{ block.shopify_attributes }}>{{ product.description }}</div>{%- endif -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endform -%}
+    </div>
+  </div>
+
+  {%- if s.show_sticky -%}
+    <div class="dd-sticky" data-dd-sticky aria-hidden="true">
+      <div class="dd-sticky__inner">
+        <div>
+          <div class="dd-sticky__title">{{ s.sticky_title | default: product.title }}</div>
+          <div class="dd-sticky__price">
+            <span data-dd-sticky-price>{{ default_variant.price | money }}</span>
+            <s data-dd-sticky-compare>{% if default_variant.compare_at_price > default_variant.price %}{{ default_variant.compare_at_price | money }}{% endif %}</s>
+            <span class="dd-sticky__save" data-dd-sticky-save {% unless default_variant.compare_at_price > default_variant.price %}hidden{% endunless %}>
+              Save <span data-dd-sticky-save-pct>{% if default_variant.compare_at_price > default_variant.price %}{{ default_variant.compare_at_price | minus: default_variant.price | times: 100 | divided_by: default_variant.compare_at_price }}{% endif %}</span>%
+            </span>
+          </div>
+        </div>
+        <button type="button" class="dd-btn dd-btn--primary" data-dd-sticky-add tabindex="-1">{{ s.sticky_label }}</button>
+      </div>
+    </div>
+  {%- endif -%}
+</section>
+
+<script type="application/ld+json">
+  {{ product | structured_data }}
+</script>
+
+<script>
+  (function () {
+    /* Delivery estimate: fill in the dates for the shopper's country from today's date. */
+    var boxes = document.querySelectorAll('#dd-main-{{ section.id }} [data-dd-ship]');
+    if (!boxes.length) return;
+    var LOCALES = { GB: 'en-GB', IE: 'en-GB', AU: 'en-AU', NZ: 'en-NZ', CA: 'en-CA', US: 'en-US' };
+    function addBusinessDays(date, n) {
+      var d = new Date(date);
+      while (n > 0) { d.setDate(d.getDate() + 1); if (d.getDay() !== 0 && d.getDay() !== 6) n--; }
+      return d;
+    }
+    function addDays(date, n) { var d = new Date(date); d.setDate(d.getDate() + n); return d; }
+    function render(box, country) {
+      var key = { GB: 'gb', CA: 'ca', US: 'us' }[country] || 'other';
+      var days = (box.dataset[key] || '7-15').split('-').map(Number);
+      var proc = (box.dataset.p || '1-2').split('-').map(Number);
+      var fmt = new Intl.DateTimeFormat(LOCALES[country] || 'en-US', { day: 'numeric', month: 'short' });
+      var today = new Date();
+      var range = fmt.format(addDays(today, days[0])) + ' – ' + fmt.format(addDays(today, days[1]));
+      box.querySelector('[data-dd-ship-range]').textContent = range;
+      box.querySelector('[data-dd-ship-arrive]').textContent = range;
+      box.querySelector('[data-dd-ship-sent]').textContent = fmt.format(addBusinessDays(today, proc[0])) + ' – ' + fmt.format(addBusinessDays(today, proc[1]));
+      var note = box.querySelector('[data-dd-ship-note]');
+      if (note) note.textContent = box.dataset.note.replace('[process_min]', proc[0]).replace('[process_max]', proc[1]).replace('[min]', days[0]).replace('[max]', days[1]);
+    }
+    function renderAll(country) { boxes.forEach(function (box) { render(box, country); }); }
+    renderAll((window.Shopify && Shopify.country) || boxes[0].dataset.country);
+    /* Shopify's own location lookup gives the visitor's real country when the store is shown in a default market. */
+    fetch('/browsing_context_suggestions.json?country[enabled]=true')
+      .then(function (r) { return r.json(); })
+      .then(function (j) { var c = j && j.detected_values && j.detected_values.country && j.detected_values.country.handle; if (c) renderAll(c); })
+      .catch(function () {});
+  })();
+</script>
+
+{%- render 'dd-pdp-extras', part: 'script', section_id: section.id -%}
+
+{% schema %}
+{
+  "name": "Dream Drops main product",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    { "type": "header", "content": "Layout" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "range", "id": "main_width", "label": "Max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1340 },
+    { "type": "select", "id": "gallery_ratio", "label": "Gallery image shape", "default": "1 / 1", "options": [
+      { "value": "1 / 1", "label": "Square" }, { "value": "4 / 5", "label": "Portrait" }, { "value": "4 / 3", "label": "Landscape" }
+    ] },
+    { "type": "checkbox", "id": "show_sticky", "label": "Show sticky add to cart bar", "default": true },
+    { "type": "text", "id": "sticky_title", "label": "Sticky bar title", "info": "Leave empty to use the product title." },
+    { "type": "text", "id": "sticky_label", "label": "Sticky bar button", "default": "Add to cart" },
+
+    { "type": "header", "content": "Free gifts", "info": "Shown just above the add to cart button. Gift products are found by their handle, so they can stay Unlisted." },
+    { "type": "checkbox", "id": "gifts_show", "label": "Show free gifts", "default": true },
+    { "type": "checkbox", "id": "gifts_auto_add", "label": "Add the gifts to the cart with Dream Drops", "default": true },
+    { "type": "text", "id": "gifts_heading", "label": "Heading, highlighted part", "default": "Special offer!" },
+    { "type": "text", "id": "gifts_heading_after", "label": "Heading, rest", "default": "Free gifts with your first order" },
+    { "type": "text", "id": "gifts_shipping_label", "label": "Shipping tile label", "default": "Free Shipping" },
+    { "type": "text", "id": "gifts_shipping_value", "label": "Shipping tile value", "info": "Shown crossed out in the pill, e.g. £4.99. Leave empty to show just FREE." },
+    { "type": "image_picker", "id": "gifts_shipping_image", "label": "Shipping tile image" },
+    { "type": "text", "id": "gift_1_handle", "label": "Gift 1 product handle", "default": "free-gift-audio-bedtime-stories" },
+    { "type": "text", "id": "gift_1_label", "label": "Gift 1 label", "default": "Audio Bedtime Stories" },
+    { "type": "text", "id": "gift_1_value", "label": "Gift 1 value", "info": "Leave empty to use the product's compare-at price." },
+    { "type": "text", "id": "gift_2_handle", "label": "Gift 2 product handle", "default": "free-gift-sleepy-teddy-bear" },
+    { "type": "text", "id": "gift_2_label", "label": "Gift 2 label", "default": "Sleepy Teddy Bear" },
+    { "type": "text", "id": "gift_2_value", "label": "Gift 2 value", "info": "Leave empty to use the product's compare-at price." },
+
+    { "type": "header", "content": "Page design: colours", "info": "These apply to every Dream Drops section on this template." },
+    { "type": "color", "id": "color_primary", "label": "Primary (buttons, dark band)", "default": "#2b3a8f" },
+    { "type": "color", "id": "color_text", "label": "Text", "default": "#1f2559" },
+    { "type": "color", "id": "color_accent", "label": "Accent (highlight words, CTA)", "default": "#e9488b" },
+    { "type": "color", "id": "color_highlight", "label": "Highlight (yellow)", "default": "#f6c744" },
+    { "type": "color", "id": "color_success", "label": "Success / guarantee", "default": "#2e9d5b" },
+    { "type": "color", "id": "color_surface", "label": "Light surface", "default": "#e7f0fd" },
+    { "type": "color", "id": "color_surface_strong", "label": "Light surface, stronger", "default": "#d6e4fb" },
+    { "type": "color", "id": "color_card", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "color_border", "label": "Borders", "default": "#cfdcf6" },
+    { "type": "color", "id": "color_muted", "label": "Secondary text", "default": "#5a6290" },
+    { "type": "color", "id": "color_sale", "label": "Sale / urgency", "default": "#e9488b" },
+    { "type": "color", "id": "color_star", "label": "Review stars", "default": "#f6b500" },
+
+    { "type": "header", "content": "Page design: type" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "poppins_n7" },
+    { "type": "font_picker", "id": "body_font", "label": "Body font", "default": "nunito_sans_n4" },
+    { "type": "range", "id": "h2_size", "label": "Section heading size, desktop", "min": 22, "max": 56, "step": 1, "unit": "px", "default": 34 },
+    { "type": "range", "id": "h2_size_mobile", "label": "Section heading size, mobile", "min": 18, "max": 40, "step": 1, "unit": "px", "default": 26 },
+    { "type": "range", "id": "body_size", "label": "Body text size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 15 },
+
+    { "type": "header", "content": "Page design: shape and spacing" },
+    { "type": "range", "id": "radius_card", "label": "Card corner radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 16 },
+    { "type": "range", "id": "radius_button", "label": "Button corner radius", "min": 0, "max": 40, "step": 1, "unit": "px", "default": 12 },
+    { "type": "range", "id": "button_height", "label": "Button height", "min": 40, "max": 70, "step": 2, "unit": "px", "default": 54 },
+    { "type": "range", "id": "container_width", "label": "Content width (sections below)", "min": 700, "max": 1400, "step": 20, "unit": "px", "default": 1100 },
+    { "type": "range", "id": "section_padding", "label": "Section padding, desktop", "min": 20, "max": 140, "step": 4, "unit": "px", "default": 72 },
+    { "type": "range", "id": "section_padding_mobile", "label": "Section padding, mobile", "min": 16, "max": 100, "step": 4, "unit": "px", "default": 48 },
+    { "type": "range", "id": "animation_speed", "label": "Hover animation speed", "min": 0, "max": 600, "step": 25, "unit": "ms", "default": 250 }
+  ],
+  "blocks": [
+    { "type": "peds_badge", "name": "Pediatrician pill", "limit": 1, "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "Pediatrician-Recommended Formula" }
+    ] },
+    { "type": "science_box", "name": "Science card", "limit": 1, "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "The Science Behind Saffron" },
+      { "type": "text", "id": "chip_1_label", "label": "Source 1 name", "default": "PIP" },
+      { "type": "text", "id": "chip_1_icon", "label": "Source 1 icon letter", "default": "P" },
+      { "type": "url", "id": "chip_1_url", "label": "Source 1 link" },
+      { "type": "text", "id": "chip_2_label", "label": "Source 2 name", "default": "NIH" },
+      { "type": "text", "id": "chip_2_icon", "label": "Source 2 icon letter", "default": "▶" },
+      { "type": "url", "id": "chip_2_url", "label": "Source 2 link" },
+      { "type": "text", "id": "chip_3_label", "label": "Source 3 name", "default": "Healthline" },
+      { "type": "text", "id": "chip_3_icon", "label": "Source 3 icon letter", "default": "h" },
+      { "type": "url", "id": "chip_3_url", "label": "Source 3 link" }
+    ] },
+    { "type": "badge", "name": "Badge", "limit": 1, "settings": [
+      { "type": "text", "id": "text_left", "label": "Left text", "default": "New" },
+      { "type": "text", "id": "text_right", "label": "Right text", "default": "Liquid drops" }
+    ] },
+    { "type": "rating", "name": "Rating summary", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Use your real rating and review count only. On the Mood Munchies page the row stays hidden while both are empty." },
+      { "type": "text", "id": "score", "label": "Score", "default": "REPLACE_ME_RATING", "info": "For example 4.8. The last star fills to match." },
+      { "type": "text", "id": "count", "label": "Count text", "default": "REPLACE_ME_REVIEW_COUNT Reviews" },
+      { "type": "text", "id": "anchor", "label": "Link to section id", "default": "dd-reviews" },
+      { "type": "color", "id": "star_color", "label": "Star colour (Mood Munchies page)", "default": "#5b6acf" },
+      { "type": "text", "id": "label", "label": "Word before the score (Mood Munchies page)", "info": "Optional, for example Excellent." }
+    ] },
+    { "type": "title", "name": "Title", "limit": 1, "settings": [
+      { "type": "text", "id": "line_one", "label": "First line", "default": "Blomar Kids Magnesium" },
+      { "type": "text", "id": "highlight", "label": "Highlighted line", "default": "Dream Drops" },
+      { "type": "text", "id": "tags", "label": "Tags (comma separated)", "default": "Magnesium glycinate, Strawberry flavour, Liquid drops" }
+    ] },
+    { "type": "pill", "name": "Benefit pill", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "REPLACE_ME_PRODUCT_CLAIM" },
+      { "type": "color", "id": "dot_color", "label": "Tick colour", "default": "#e9488b" }
+    ] },
+    { "type": "stock", "name": "Low stock bar", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Uses the variant's real stock count, hidden when stock isn't tracked or is above the threshold. Or fill in Fixed number left below to always show a number you choose." },
+      { "type": "range", "id": "threshold", "label": "Show when stock is at or below", "min": 1, "max": 100, "step": 1, "default": 20 },
+      { "type": "range", "id": "bar_max", "label": "Bar is full at", "min": 5, "max": 200, "step": 5, "default": 50, "info": "The bar shows stock as a share of this number. 11 left with 50 here fills about a fifth of the bar." },
+      { "type": "text", "id": "text", "label": "Text ([count] is replaced)", "default": "Hurry! Only <strong>[count] left</strong> in stock." },
+      { "type": "number", "id": "manual_count", "label": "Fixed number left", "info": "Optional. Fill this in to always show the bar with this number instead of the real stock count. It doesn't count down, so update it yourself." }
+    ] },
+    { "type": "divider_label", "name": "Divider label", "settings": [
+      { "type": "text", "id": "text", "label": "Text", "default": "Choose your bundle" }
+    ] },
+    { "type": "bundle_selector", "name": "Bundle selector", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shows one option per variant (hidden when the product has a single variant and no subscription). A bundle app's widget, such as Kaching Bundles, is moved to this spot." },
+      { "type": "checkbox", "id": "show_subscription", "label": "Show subscribe option when a selling plan exists", "default": true },
+      { "type": "text", "id": "subscribe_title", "label": "Subscribe option title", "default": "Subscribe & Save" },
+      { "type": "text", "id": "subscribe_note", "label": "Note under subscribe option", "default": "Pause or cancel anytime" }
+    ] },
+    { "type": "tier", "name": "Bundle tier", "settings": [
+      { "type": "number", "id": "position", "label": "Variant position (1 = first variant)", "default": 1 },
+      { "type": "text", "id": "title", "label": "Title", "info": "Leave empty to use the variant name." },
+      { "type": "text", "id": "subtitle", "label": "Sub-line", "default": "1 bottle · 60 ml" },
+      { "type": "text", "id": "badge", "label": "Badge" },
+      { "type": "color", "id": "badge_color", "label": "Badge colour", "default": "#5b63c9" },
+      { "type": "checkbox", "id": "default", "label": "Selected by default", "default": false }
+    ] },
+    { "type": "perks", "name": "Perks box", "limit": 1, "settings": [
+      { "type": "text", "id": "banner", "label": "Banner", "default": "REPLACE_ME_SHIPPING_OFFER" },
+      { "type": "textarea", "id": "checks", "label": "Ticks (one per line)", "default": "Adjustable dose\nREPLACE_ME_DISPATCH_TIME\nEasy to give\nREPLACE_ME_GUARANTEE" },
+      { "type": "text", "id": "fine_print", "label": "Fine print" }
+    ] },
+    { "type": "buy_buttons", "name": "Buy buttons", "limit": 1, "settings": [
+      { "type": "text", "id": "label", "label": "Button label", "default": "Add to cart" },
+      { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show Shop Pay / express buttons", "default": true }
+    ] },
+    { "type": "accordion", "name": "Accordion row", "settings": [
+      { "type": "text", "id": "heading", "label": "Heading", "default": "How do I use Dream Drops?" },
+      { "type": "richtext", "id": "content", "label": "Content", "default": "<p>REPLACE_ME_USAGE</p>" },
+      { "type": "image_picker", "id": "image", "label": "Image", "info": "Shown under the text, e.g. a supplement facts panel." }
+    ] },
+    { "type": "delivery", "name": "Delivery estimate", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Dates are worked out from today for the visitor's country (UK, Canada, US, or everywhere else), with that country's date format." },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Order today, arrives" },
+      { "type": "range", "id": "process_min", "label": "Processing, fewest business days", "min": 0, "max": 10, "step": 1, "default": 1 },
+      { "type": "range", "id": "process_max", "label": "Processing, most business days", "min": 0, "max": 10, "step": 1, "default": 2 },
+      { "type": "header", "content": "Delivery days from the order date" },
+      { "type": "range", "id": "gb_min", "label": "United Kingdom, fewest", "min": 1, "max": 40, "step": 1, "default": 7 },
+      { "type": "range", "id": "gb_max", "label": "United Kingdom, most", "min": 1, "max": 40, "step": 1, "default": 15 },
+      { "type": "range", "id": "ca_min", "label": "Canada, fewest", "min": 1, "max": 40, "step": 1, "default": 7 },
+      { "type": "range", "id": "ca_max", "label": "Canada, most", "min": 1, "max": 40, "step": 1, "default": 15 },
+      { "type": "range", "id": "us_min", "label": "United States, fewest", "min": 1, "max": 40, "step": 1, "default": 7 },
+      { "type": "range", "id": "us_max", "label": "United States, most", "min": 1, "max": 40, "step": 1, "default": 15 },
+      { "type": "range", "id": "other_min", "label": "Other countries, fewest", "min": 1, "max": 40, "step": 1, "default": 7 },
+      { "type": "range", "id": "other_max", "label": "Other countries, most", "min": 1, "max": 40, "step": 1, "default": 15 },
+      { "type": "header", "content": "Steps" },
+      { "type": "text", "id": "step_1", "label": "Step 1", "default": "Ordered" },
+      { "type": "text", "id": "step_1_sub", "label": "Step 1 line", "default": "Today" },
+      { "type": "text", "id": "step_2", "label": "Step 2", "default": "Shipped" },
+      { "type": "text", "id": "step_3", "label": "Step 3", "default": "Delivered" },
+      { "type": "textarea", "id": "note", "label": "Note", "default": "Orders are processed within [process_min]–[process_max] business days. Most orders are shipped and delivered within [min]–[max] days.", "info": "[process_min], [process_max], [min] and [max] are filled in for the visitor's country." },
+      { "type": "header", "content": "Colours" },
+      { "type": "color", "id": "background", "label": "Background", "default": "#e8f6fb" },
+      { "type": "color", "id": "accent", "label": "Circles and line", "default": "#2d3a8c" },
+      { "type": "color", "id": "text_color", "label": "Text", "default": "#1e2554" },
+      { "type": "color", "id": "muted_color", "label": "Small text", "default": "#4d5a9e" }
+    ] },
+    { "type": "payment_icons", "name": "Payment icons", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Shows the payment methods switched on in your Shopify payment settings." },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "Secure payment with" }
+    ] },
+    { "type": "trust_pill", "name": "Trust pill", "limit": 1, "settings": [
+      { "type": "text", "id": "icon", "label": "Emoji", "default": "🌸" },
+      { "type": "text", "id": "text", "label": "Text", "default": "Saffron-Powered Mood Support" }
+    ] },
+    { "type": "check_list", "name": "Check list", "settings": [
+      { "type": "textarea", "id": "items", "label": "Ticked lines (one per line)", "default": "REPLACE_ME_PRODUCT_CLAIM" },
+      { "type": "text", "id": "note", "label": "Last line (with an emoji instead of a tick)" },
+      { "type": "text", "id": "note_icon", "label": "Last line emoji", "default": "🍬" }
+    ] },
+    { "type": "link_card", "name": "Link card", "settings": [
+      { "type": "text", "id": "icon", "label": "Emoji", "default": "📋" },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "The Parent Guide" },
+      { "type": "text", "id": "chip_1_label", "label": "Link 1 text" },
+      { "type": "url", "id": "chip_1_url", "label": "Link 1" },
+      { "type": "text", "id": "chip_2_label", "label": "Link 2 text" },
+      { "type": "url", "id": "chip_2_url", "label": "Link 2" },
+      { "type": "text", "id": "chip_3_label", "label": "Link 3 text" },
+      { "type": "url", "id": "chip_3_url", "label": "Link 3" },
+      { "type": "text", "id": "chip_4_label", "label": "Link 4 text" },
+      { "type": "url", "id": "chip_4_url", "label": "Link 4" },
+      { "type": "color", "id": "background", "label": "Background", "default": "#fdf0f5" },
+      { "type": "color", "id": "border", "label": "Border", "default": "#f6cadb" }
+    ] },
+    { "type": "info_strip", "name": "Shipping strip", "limit": 1, "settings": [
+      { "type": "text", "id": "left", "label": "Left text (green dot)", "default": "REPLACE_ME_DISPATCH_TIME" },
+      { "type": "text", "id": "right_icon", "label": "Right emoji", "default": "🚚" },
+      { "type": "text", "id": "right", "label": "Right text", "default": "REPLACE_ME_SHIPPING_OFFER" }
+    ] },
+    { "type": "guarantee_box", "name": "Guarantee box", "limit": 1, "settings": [
+      { "type": "text", "id": "days", "label": "Number on the badge", "default": "60" },
+      { "type": "text", "id": "days_label", "label": "Word under the number", "default": "DAYS" },
+      { "type": "text", "id": "heading", "label": "Heading", "default": "REPLACE_ME_GUARANTEE" },
+      { "type": "textarea", "id": "text", "label": "Text" }
+    ] },
+    { "type": "review_slider", "name": "Review slider", "limit": 1, "settings": [
+      { "type": "paragraph", "content": "Use genuine customer reviews only." },
+      { "type": "text", "id": "verified_label", "label": "Verified label", "default": "Verified Customer" },
+      { "type": "header", "content": "Review 1" },
+      { "type": "image_picker", "id": "review_1_photo", "label": "Photo", "info": "Leave empty to show the first letter of the name." },
+      { "type": "text", "id": "review_1_name", "label": "Name" },
+      { "type": "textarea", "id": "review_1_text", "label": "Review" },
+      { "type": "header", "content": "Review 2" },
+      { "type": "image_picker", "id": "review_2_photo", "label": "Photo" },
+      { "type": "text", "id": "review_2_name", "label": "Name" },
+      { "type": "textarea", "id": "review_2_text", "label": "Review" },
+      { "type": "header", "content": "Review 3" },
+      { "type": "image_picker", "id": "review_3_photo", "label": "Photo" },
+      { "type": "text", "id": "review_3_name", "label": "Name" },
+      { "type": "textarea", "id": "review_3_text", "label": "Review" }
+    ] },
+    { "type": "icon_row", "name": "Icon row", "limit": 1, "settings": [
+      { "type": "select", "id": "item_1_icon", "label": "Icon 1", "default": "truck", "options": [ { "value": "truck", "label": "Delivery van" }, { "value": "clock", "label": "Clock" }, { "value": "shield", "label": "Shield" }, { "value": "leaf", "label": "Leaf" }, { "value": "heart", "label": "Heart" } ] },
+      { "type": "text", "id": "item_1_text", "label": "Text 1" },
+      { "type": "select", "id": "item_2_icon", "label": "Icon 2", "default": "clock", "options": [ { "value": "truck", "label": "Delivery van" }, { "value": "clock", "label": "Clock" }, { "value": "shield", "label": "Shield" }, { "value": "leaf", "label": "Leaf" }, { "value": "heart", "label": "Heart" } ] },
+      { "type": "text", "id": "item_2_text", "label": "Text 2" },
+      { "type": "select", "id": "item_3_icon", "label": "Icon 3", "default": "shield", "options": [ { "value": "truck", "label": "Delivery van" }, { "value": "clock", "label": "Clock" }, { "value": "shield", "label": "Shield" }, { "value": "leaf", "label": "Leaf" }, { "value": "heart", "label": "Heart" } ] },
+      { "type": "text", "id": "item_3_text", "label": "Text 3" }
+    ] },
+    { "type": "description", "name": "Product description", "limit": 1, "settings": [] },
+    { "type": "@app" }
+  ]
+}
+{% endschema %}
+

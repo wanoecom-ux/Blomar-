@@ -1,0 +1,1199 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "announcement": {
+      "type": "dd-announcement",
+      "settings": {
+        "text": "Back to school sale - Free shipping on all orders",
+        "link": "",
+        "sale_end": "2026-10-31T23:59:00+11:00",
+        "hide_theme_bar": true,
+        "layout": "compact",
+        "show_decorations": true,
+        "sky_top": "#78b4dc",
+        "sky_bottom": "#4a8dbf",
+        "text_color": "#ffffff",
+        "timer_color": "#e9488b",
+        "leaf_color": "#c0502e",
+        "font_size": 19,
+        "font_size_mobile": 17,
+        "height": 54,
+        "height_mobile": 64
+      }
+    },
+    "sale_strip": {
+      "type": "dd-sale-strip",
+      "settings": {
+        "text": "Back to school sale ends in",
+        "sale_end": "2026-10-31T23:59:00+11:00",
+        "background": "#2d3a8c",
+        "text_color": "#ffffff",
+        "timer_color": "#f5c842",
+        "font_size": 13
+      }
+    },
+    "main": {
+      "type": "dd-main-product",
+      "blocks": {
+        "trust_1": {
+          "type": "trust_pill",
+          "settings": {
+            "icon": "🌸",
+            "text": "Saffron-Powered Mood Support"
+          }
+        },
+        "rating_1": {
+          "type": "rating",
+          "settings": {
+            "score": "4.8",
+            "count": "9,381 Reviews",
+            "anchor": "dd-reviews",
+            "star_color": "#f5c842",
+            "label": "Excellent"
+          }
+        },
+        "title_2": {
+          "type": "title",
+          "settings": {
+            "line_one": "Blomar Saffron",
+            "highlight": "Mood Munchies Gummies",
+            "tags": ""
+          }
+        },
+        "checks_3": {
+          "type": "check_list",
+          "settings": {
+            "items": "Saffron extract in every gummy\nSupports calmer moods & fewer meltdowns\nSugar-free, gluten-free & vegan\nAn easy daily routine kids love",
+            "note": "60 gummies per pack",
+            "note_icon": "🍬"
+          }
+        },
+        "guide_4": {
+          "type": "link_card",
+          "settings": {
+            "icon": "📋",
+            "heading": "The Parent Guide: what's inside and how to use it",
+            "chip_1_label": "🌸 Ingredients",
+            "chip_1_url": "/pages/parent-guide-mood-munchies",
+            "chip_2_label": "🥄 Dosage",
+            "chip_2_url": "/pages/parent-guide-mood-munchies",
+            "chip_3_label": "🛡️ Safety",
+            "chip_3_url": "/pages/parent-guide-mood-munchies",
+            "chip_4_label": "",
+            "background": "#fdf0f5",
+            "border": "#f6cadb"
+          }
+        },
+        "stock_6": {
+          "type": "stock",
+          "settings": {
+            "threshold": 20,
+            "bar_max": 50,
+            "text": "Hurry! Only [count] left in this batch!",
+            "manual_count": 11
+          }
+        },
+        "divider_label_7": {
+          "type": "divider_label",
+          "settings": {
+            "text": "Free shipping — limited time"
+          }
+        },
+        "kaching_bundles_app_block_xCwbeE": {
+          "type": "shopify://apps/kaching-bundles/blocks/app-block/6c637362-a106-4a32-94ac-94dcfd68cdb8",
+          "settings": {
+            "product": "blomar-saffron-mood-munchies-gummies",
+            "manual_deal_block_id": ""
+          }
+        },
+        "buy_buttons_9": {
+          "type": "buy_buttons",
+          "settings": {
+            "label": "Add to cart",
+            "show_dynamic_checkout": true
+          }
+        },
+        "strip_10": {
+          "type": "info_strip",
+          "settings": {
+            "left": "Ships in 1–2 business days",
+            "right_icon": "🚚",
+            "right": "Free shipping on all orders"
+          }
+        },
+        "guarantee_11": {
+          "type": "guarantee_box",
+          "settings": {
+            "days": "60",
+            "days_label": "DAYS",
+            "heading": "60-Day Money-Back Guarantee",
+            "text": "Give Mood Munchies a full 60 days. If you can't honestly say your child is calmer, email us for a complete refund. No forms, no fuss."
+          }
+        },
+        "reviews_12": {
+          "type": "review_slider",
+          "settings": {
+            "verified_label": "Verified Customer",
+            "review_1_photo": "shopify://shop_images/020_randomppl3.jpg",
+            "review_1_name": "Emily T.",
+            "review_1_text": "My daughter used to cry every morning before school. Since Mood Munchies she gets ready without a single meltdown. I genuinely didn't think this was possible.",
+            "review_2_photo": "shopify://shop_images/021_randomppl2.jpg",
+            "review_2_name": "Joanna R.",
+            "review_2_text": "Our son went from daily tantrums to handling disappointment calmly in under 3 weeks. We have our evenings back. Worth every penny.",
+            "review_3_photo": "shopify://shop_images/022_randomppl1.jpg",
+            "review_3_name": "Maria S.",
+            "review_3_text": "My girl is calmer, happier and actually listens now. No stimulants, no side effects, just a gummy she loves. We will never stop using these."
+          }
+        },
+        "accordion_10": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How do I use Mood Munchies?",
+            "content": "<p>Have your child chew the gummy thoroughly before swallowing.&nbsp;<br/>Make it a consistent part of their daily routine for best results.</p><ul><li>Ages 4–13: 1 gummy daily, ideally with breakfast or an afternoon snack</li><li>Ages 14+: 2 gummies daily — can be split morning and after school</li></ul>"
+          }
+        },
+        "accordion_11": {
+          "type": "accordion",
+          "settings": {
+            "heading": "How long until I see results?",
+            "content": "<p>Many parents notice their child handling frustration more calmly within the first 1–2 weeks. Deeper emotional regulation, reduced meltdown frequency, and better resilience typically become noticeable after 2–4 weeks of consistent daily use.Every child is different, but consistency is key — and you're covered by our 60-day money-back guarantee if you don't see the results you were hoping for.</p>"
+          }
+        },
+        "accordion_12": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Is it safe for daily use?",
+            "content": "<p>Yes, for most healthy children ages 4 and above. Limit to the recommended dose for your child's age. If your child is on medication or has a diagnosed medical condition, consult your GP before use.Not suitable for children under 4. Pregnant or breastfeeding women should not use.</p>"
+          }
+        },
+        "accordion_13": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Ingredients",
+            "content": "<p>Tap the image to view full size 🔍</p><p><a href=\"/pages/parent-guide-mood-munchies\" title=\"Parent Guide\">📋 Read our full Parent Guide: ingredients, dosage and safety</a></p>",
+            "image": "shopify://shop_images/supplement-facts-upscaled.png"
+          }
+        },
+        "accordion_14": {
+          "type": "accordion",
+          "settings": {
+            "heading": "Shipping & guarantee",
+            "content": "<p>Orders are processed within 1–2 business days, and most are shipped and delivered within 7–15 days. Shipping is free on all orders.</p><p>Every order is covered by our 60-day money-back guarantee: if Mood Munchies isn't right for your family, email us for a complete refund.</p>"
+          }
+        },
+        "icons_15": {
+          "type": "icon_row",
+          "settings": {
+            "item_1_icon": "truck",
+            "item_1_text": "Free shipping on all orders",
+            "item_2_icon": "clock",
+            "item_2_text": "Ships in 1–2 business days",
+            "item_3_icon": "shield",
+            "item_3_text": "60-day money-back guarantee"
+          }
+        }
+      },
+      "block_order": [
+        "trust_1",
+        "rating_1",
+        "title_2",
+        "checks_3",
+        "guide_4",
+        "stock_6",
+        "divider_label_7",
+        "kaching_bundles_app_block_xCwbeE",
+        "buy_buttons_9",
+        "strip_10",
+        "guarantee_11",
+        "reviews_12",
+        "accordion_10",
+        "accordion_11",
+        "accordion_12",
+        "accordion_13",
+        "accordion_14",
+        "icons_15"
+      ],
+      "settings": {
+        "background": "#ffffff",
+        "main_width": 1340,
+        "gallery_ratio": "1 / 1",
+        "show_sticky": true,
+        "sticky_title": "Blomar Saffron Mood Munchies",
+        "sticky_label": "Add to cart",
+        "gifts_show": false,
+        "gifts_auto_add": false,
+        "gifts_heading": "Special offer!",
+        "gifts_heading_after": "Free gifts with your first order",
+        "gifts_shipping_label": "Free Shipping",
+        "gifts_shipping_value": "",
+        "gift_1_handle": "free-gift-audio-bedtime-stories",
+        "gift_1_label": "Audio Bedtime Stories",
+        "gift_1_value": "",
+        "gift_2_handle": "free-gift-sleepy-teddy-bear",
+        "gift_2_label": "Sleepy Teddy Bear",
+        "gift_2_value": "",
+        "color_primary": "#2d3a8c",
+        "color_text": "#1e2554",
+        "color_accent": "#e84b8a",
+        "color_highlight": "#f5c842",
+        "color_success": "#2e9e5b",
+        "color_surface": "#e8f6fb",
+        "color_surface_strong": "#d6e4fb",
+        "color_card": "#ffffff",
+        "color_border": "#cfdcf6",
+        "color_muted": "#4d5a9e",
+        "color_sale": "#e84b8a",
+        "color_star": "#f6b500",
+        "heading_font": "poppins_n7",
+        "body_font": "nunito_sans_n4",
+        "h2_size": 34,
+        "h2_size_mobile": 26,
+        "body_size": 15,
+        "radius_card": 16,
+        "radius_button": 12,
+        "button_height": 54,
+        "container_width": 1060,
+        "section_padding": 72,
+        "section_padding_mobile": 48,
+        "animation_speed": 250
+      }
+    },
+    "formula": {
+      "type": "dd-feature-split",
+      "blocks": {
+        "chip_1": {
+          "type": "chip",
+          "settings": {
+            "icon": "🌸",
+            "title": "Saffron",
+            "text": "The world's most studied mood botanical for kids"
+          }
+        },
+        "chip_2": {
+          "type": "chip",
+          "settings": {
+            "icon": "🧠",
+            "title": "GABA",
+            "text": "Supports calm focus without drowsiness"
+          }
+        },
+        "chip_3": {
+          "type": "chip",
+          "settings": {
+            "icon": "🌿",
+            "title": "Passionflower",
+            "text": "Traditional support for emotional balance"
+          }
+        },
+        "chip_4": {
+          "type": "chip",
+          "settings": {
+            "icon": "🌼",
+            "title": "St. John's Wort",
+            "text": "Gentle herbal mood support"
+          }
+        }
+      },
+      "block_order": [
+        "chip_1",
+        "chip_2",
+        "chip_3",
+        "chip_4"
+      ],
+      "settings": {
+        "eyebrow": "THE CALM FORMULA",
+        "heading": "Your Child's Calm,",
+        "highlight": "Supported From Within",
+        "underline_highlight": true,
+        "heading_after": "",
+        "text": "<p>New term, new teacher, new routine. Forget guessing, trial and error, or harsh stimulants. Mood Munchies combines four powerful botanicals into one berry-flavoured gummy your child will actually ask for.</p>",
+        "link_label": "",
+        "link_url": "",
+        "footnote": "",
+        "note": "No stimulants, no chemicals, 100% herbal formula",
+        "image_alt": "Blomar Saffron Mood Munchies pouch",
+        "video": "shopify://files/videos/030_050f44db0e8245509dca3e0de9aa4c90.mp4",
+        "video_url": "",
+        "media_position": "left",
+        "mobile_media_first": true,
+        "media_ratio": "9 / 16",
+        "media_width": 46,
+        "media_limit_height": false,
+        "media_max_height": 640,
+        "media_max_height_mobile": 560,
+        "media_frame": true,
+        "media_radius": 20,
+        "align": "left",
+        "vertical_align": "center",
+        "chip_columns": "2",
+        "background": "#e8f6fb",
+        "text_color": "",
+        "width": 1060
+      }
+    },
+    "figures": {
+      "type": "dd-stat-band",
+      "blocks": {
+        "tile_1": {
+          "type": "tile",
+          "settings": {
+            "figure": "1-5",
+            "label": "Children experience significant emotional regulation difficulties"
+          }
+        },
+        "tile_2": {
+          "type": "tile",
+          "settings": {
+            "figure": "70%",
+            "label": "Of parents say meltdowns affect their whole household daily"
+          }
+        },
+        "tile_3": {
+          "type": "tile",
+          "settings": {
+            "figure": "3x",
+            "label": "More likely to struggle at school with poor emotional regulation"
+          }
+        }
+      },
+      "block_order": [
+        "tile_1",
+        "tile_2",
+        "tile_3"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "The Term-Time Struggle Parents",
+        "highlight": "Don't Talk About",
+        "heading_after": "",
+        "text": "<p>What's happening in your child's developing nervous system</p>",
+        "source": "Source: Child Development Research",
+        "card_background": "#2d3a8c",
+        "accent": "#f5c842",
+        "background": "#ffffff",
+        "width": 1060
+      }
+    },
+    "struggle": {
+      "type": "dd-moments",
+      "blocks": {
+        "moment_1": {
+          "type": "moment",
+          "settings": {
+            "label": "7:45am",
+            "text": "Shoes, bags, lunchboxes and one more thing that has gone missing. Mornings can unravel before the school gate."
+          }
+        },
+        "moment_2": {
+          "type": "moment",
+          "settings": {
+            "label": "3:30pm",
+            "text": "They held it together all day, and it all comes out at pick-up. The after-school wobble is something most parents know well."
+          }
+        },
+        "moment_3": {
+          "type": "moment",
+          "settings": {
+            "label": "7:30pm",
+            "text": "The house is quiet, but their mind is still replaying the day: the friendship fall-out, the spelling test, tomorrow."
+          }
+        }
+      },
+      "block_order": [
+        "moment_1",
+        "moment_2",
+        "moment_3"
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "THE SCIENCE",
+        "heading": "SIMPLY",
+        "highlight": "stay at school",
+        "heading_after": "",
+        "text": "<p>Three moments parents tell us about most.</p>",
+        "background": "#2b3a8f",
+        "text_color": "#ffffff",
+        "align": "left",
+        "width": 960
+      }
+    },
+    "why": {
+      "type": "dd-feature-split",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "figure": "91%",
+            "label": "Saw fewer meltdowns within 4 weeks"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "figure": "88%",
+            "label": "Noticed improved focus and school behaviour"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "figure": "94%",
+            "label": "Would recommend to another parent"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3"
+      ],
+      "settings": {
+        "eyebrow": "THE SCIENCE, SIMPLY",
+        "heading": "Why Your Child Struggles To Regulate,",
+        "highlight": "And What Actually Helps",
+        "underline_highlight": true,
+        "heading_after": "",
+        "text": "<p>Children's brains are still developing the pathways needed to process frustration, transitions and disappointment. A new school year piles all three on at once, and without the right support, that tension spills over into meltdowns, outbursts and sleepless nights.</p><p>Most solutions mask the problem or rely on stimulants. Mood Munchies works with your child's body, gently supporting the brain's natural mood balance through clinically-studied botanicals.</p>",
+        "link_label": "📋 Read the full Parent Guide, ingredients, dosage & safety",
+        "link_url": "/pages/parent-guide-mood-munchies",
+        "footnote": "",
+        "note": "",
+        "image": "shopify://shop_images/Blueproductpouchwithwhiteblomarlogo-2.png",
+        "image_alt": "Blomar Mood Munchies gummies",
+        "video_url": "",
+        "media_position": "right",
+        "mobile_media_first": false,
+        "media_ratio": "1 / 1",
+        "media_width": 45,
+        "media_limit_height": true,
+        "media_max_height": 640,
+        "media_max_height_mobile": 560,
+        "media_frame": false,
+        "media_radius": 20,
+        "align": "left",
+        "vertical_align": "center",
+        "chip_columns": "2",
+        "background": "#e8f6fb",
+        "text_color": "",
+        "width": 1060
+      }
+    },
+    "ingredients": {
+      "type": "dd-feature-split",
+      "blocks": {
+        "ing_1": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "🌸",
+            "title": "Saffron",
+            "text": "Traditionally used to support mood balance"
+          }
+        },
+        "ing_2": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "🌿",
+            "title": "Passion flower",
+            "text": "Botanicals known for their calming properties"
+          }
+        },
+        "ing_3": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "🌼",
+            "title": "St John's Wort",
+            "text": "Inspired by ingredients studied for emotional wellness"
+          }
+        },
+        "ing_4": {
+          "type": "ingredient",
+          "settings": {
+            "icon": "🧠",
+            "title": "GABA",
+            "text": "A nutrient often used to support calm"
+          }
+        }
+      },
+      "block_order": [
+        "ing_1",
+        "ing_2",
+        "ing_3",
+        "ing_4"
+      ],
+      "settings": {
+        "eyebrow": "FOUR BOTANICALS, ONE GUMMY",
+        "heading": "What's Inside",
+        "highlight": "Every Munchie",
+        "underline_highlight": true,
+        "heading_after": "",
+        "text": "",
+        "link_label": "",
+        "link_url": "",
+        "footnote": "",
+        "note": "",
+        "image": "shopify://shop_images/017_Ingredients_update.jpg",
+        "image_alt": "The ingredients in Mood Munchies: saffron, passion flower, St John's Wort and GABA",
+        "video_url": "",
+        "media_position": "left",
+        "mobile_media_first": true,
+        "media_ratio": "1 / 1",
+        "media_width": 45,
+        "media_limit_height": true,
+        "media_max_height": 640,
+        "media_max_height_mobile": 560,
+        "media_frame": false,
+        "media_radius": 20,
+        "align": "left",
+        "vertical_align": "center",
+        "chip_columns": "2",
+        "background": "#ffffff",
+        "text_color": "",
+        "width": 1060
+      }
+    },
+    "how": {
+      "type": "dd-feature-split",
+      "blocks": {
+        "dose_1": {
+          "type": "dose",
+          "settings": {
+            "age": "Ages 4 to 13",
+            "number": "1",
+            "unit": "gummy daily",
+            "note": "With breakfast or an after-school snack"
+          }
+        },
+        "dose_2": {
+          "type": "dose",
+          "settings": {
+            "age": "Ages 14+",
+            "number": "2",
+            "unit": "gummies daily",
+            "note": "Can be split morning and after school"
+          }
+        }
+      },
+      "block_order": [
+        "dose_1",
+        "dose_2"
+      ],
+      "settings": {
+        "eyebrow": "EASY SCHOOL-DAY ROUTINE",
+        "heading": "One Berry Gummy.",
+        "highlight": "Zero Battles.",
+        "underline_highlight": true,
+        "heading_after": "",
+        "text": "<p>Have your child chew the gummy thoroughly before swallowing, and make it part of the same daily moment, breakfast before school or the after-school snack, for best results.</p>",
+        "link_label": "",
+        "link_url": "",
+        "footnote": "",
+        "note": "",
+        "image": "shopify://shop_images/Whiteblomarlogoonbluepouch-1.png",
+        "image_alt": "A pack of Blomar Mood Munchies",
+        "video_url": "",
+        "media_position": "right",
+        "mobile_media_first": true,
+        "media_ratio": "1 / 1",
+        "media_width": 45,
+        "media_limit_height": true,
+        "media_max_height": 640,
+        "media_max_height_mobile": 560,
+        "media_frame": false,
+        "media_radius": 20,
+        "align": "left",
+        "vertical_align": "center",
+        "chip_columns": "2",
+        "background": "#e8f6fb",
+        "text_color": "",
+        "width": 1060
+      }
+    },
+    "families": {
+      "type": "dd-review-cards",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "title": "",
+            "body": "My daughter used to cry every morning before school. Since Mood Munchies she gets ready without a single meltdown. I genuinely didn't think this was possible.",
+            "name": "Emily T.",
+            "photo": "shopify://shop_images/020_randomppl3.jpg",
+            "detail": "",
+            "verified": true
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "title": "",
+            "body": "Our son went from daily tantrums to handling disappointment calmly in under 3 weeks. We have our evenings back. Worth every penny.",
+            "name": "Joanna R.",
+            "photo": "shopify://shop_images/021_randomppl2.jpg",
+            "detail": "",
+            "verified": true
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "title": "",
+            "body": "My girl is calmer, happier and actually listens now. No stimulants, no side effects, just a gummy she loves. We will never stop using these.",
+            "name": "Maria S.",
+            "photo": "shopify://shop_images/022_randomppl1.jpg",
+            "detail": "",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "settings": {
+        "eyebrow": "A CALMER TERM AHEAD",
+        "heading": "Join 9,381+",
+        "highlight": "Happy Families",
+        "heading_after": "",
+        "text": "",
+        "columns": "3",
+        "avatar_colours": "#5b6cc4, #2f3f8f, #2f9a50, #d15b88",
+        "verified_label": "Verified",
+        "background": "#ffffff",
+        "width": 1060
+      }
+    },
+    "photo_reviews": {
+      "type": "dd-photo-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/022_randomppl1.jpg",
+            "photo_tag": "Illustrative photo",
+            "stars": 5,
+            "title": "No more school-gate tears",
+            "body": "My daughter used to cry every morning before school. Since Mood Munchies she gets ready without a single meltdown. I genuinely didn't think this was possible.",
+            "name": "Emily T.",
+            "detail": "",
+            "verified": true
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/021_randomppl2.jpg",
+            "photo_tag": "Illustrative photo",
+            "stars": 5,
+            "title": "Our evenings are back",
+            "body": "Our son went from daily tantrums to handling disappointment calmly in under 3 weeks. We have our evenings back. Worth every penny.",
+            "name": "Joanna R.",
+            "detail": "",
+            "verified": true
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "photo": "shopify://shop_images/020_randomppl3.jpg",
+            "photo_tag": "Illustrative photo",
+            "stars": 5,
+            "title": "Calmer, happier and listening",
+            "body": "My girl is calmer, happier and actually listens now. No stimulants, no side effects, just a gummy she loves. We will never stop using these.",
+            "name": "Maria S.",
+            "detail": "",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3"
+      ],
+      "disabled": true,
+      "settings": {
+        "eyebrow": "In parents' own words",
+        "heading": "“Back to their calm, happy selves”",
+        "text": "<p>Calmer mornings, smoother pick-ups and no fuss at gummy time. Here's what families noticed once Mood Munchies became part of the routine.</p>",
+        "score": "",
+        "count": "",
+        "verified_label": "Verified Buyer",
+        "hint": "Scroll for more reviews →",
+        "product_fallback": true,
+        "background": "#e8f6fb",
+        "ink": "#1e2554",
+        "muted": "#4d5a9e",
+        "accent": "#2d3a8c",
+        "star": "#e84b8a",
+        "star_empty": "#f9d3e3",
+        "media_bg": "#d6e4fb",
+        "track": "#cfdcf6",
+        "width": 1240
+      }
+    },
+    "video_reviews": {
+      "type": "dd-video-reviews",
+      "blocks": {
+        "video_1": {
+          "type": "review",
+          "settings": {
+            "video": "shopify://files/videos/031_b76204482a48475fb55de558bfe28059.mp4",
+            "stars": 5,
+            "quote": "We were at our wit's end with afternoon meltdowns every single day. Within 2 weeks our daughter was handling disappointment like a completely different child. This product changed our family.",
+            "name": "Sarah K.",
+            "verified": true
+          }
+        },
+        "video_2": {
+          "type": "review",
+          "settings": {
+            "video": "shopify://files/videos/032_7fcdd30368f1465d91d63602b603f1c7.mp4",
+            "stars": 5,
+            "quote": "Our son's teacher pulled me aside to say she'd noticed a real improvement in how he was handling group activities. I hadn't even told her we'd started Mood Munchies. That unsolicited feedback meant everything.",
+            "name": "Rachel M.",
+            "verified": true
+          }
+        },
+        "video_3": {
+          "type": "review",
+          "settings": {
+            "video": "shopify://files/videos/033_fde07332fb574795a63bc7b71e06f1eb.mp4",
+            "stars": 5,
+            "quote": "Our 9-year-old used to come home from school completely dysregulated every single day. Since starting Mood Munchies she bounces back so much faster. We actually enjoy our evenings now.",
+            "name": "Claire T.",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3"
+      ],
+      "settings": {
+        "eyebrow": "PROOF IN MOTION",
+        "heading": "Real Parents.",
+        "highlight": "Real Results.",
+        "heading_after": "",
+        "text": "",
+        "columns": "3",
+        "ratio": "4 / 5",
+        "background": "#2d3a8c",
+        "text_color": "#ffffff",
+        "highlight_color": "#f5c842",
+        "width": 1060
+      }
+    },
+    "compare": {
+      "type": "dd-compare",
+      "blocks": {
+        "row_1": {
+          "type": "row",
+          "settings": {
+            "feature": "100% herbal, no stimulants",
+            "values": "yes | warn often additives | yes"
+          }
+        },
+        "row_2": {
+          "type": "row",
+          "settings": {
+            "feature": "4 botanicals in one (Saffron, GABA, Passionflower, St. John's Wort)",
+            "values": "yes | no rarely saffron | no one herb only"
+          }
+        },
+        "row_3": {
+          "type": "row",
+          "settings": {
+            "feature": "Sugar-free & gluten-free",
+            "values": "yes | no added sugars | warn varies"
+          }
+        },
+        "row_4": {
+          "type": "row",
+          "settings": {
+            "feature": "Kids actually want to take it",
+            "values": "yes berry flavour  |  warn hit or miss  | no capsules or drops"
+          }
+        },
+        "row_5": {
+          "type": "row",
+          "settings": {
+            "feature": "60-day money-back guarantee",
+            "values": "yes | no | no"
+          }
+        }
+      },
+      "block_order": [
+        "row_1",
+        "row_2",
+        "row_3",
+        "row_4",
+        "row_5"
+      ],
+      "settings": {
+        "eyebrow": "SIDE BY SIDE",
+        "heading": "How Mood Munchies",
+        "highlight": "Compares",
+        "heading_after": "",
+        "text": "<p>Not all children's mood supplements are made equal.</p>",
+        "background": "#ffffff",
+        "text_color": "",
+        "align": "center",
+        "width": 1060,
+        "columns": "Mood Munchies | Typical kids' gummies | TABLETS",
+        "note": "Most children's supplements do one thing. Only Mood Munchies combines Saffron, GABA, Passionflower and St. John's Wort in one berry-flavoured gummy your child will actually ask for."
+      }
+    },
+    "guarantee": {
+      "type": "dd-guarantee",
+      "settings": {
+        "big_number": "60",
+        "unit": "Days",
+        "heading": "Calmer Kid Or Your Money Back",
+        "text": "<p>Give Mood Munchies a full 60 days, right through to half term and beyond. If you honestly cannot say your child is calmer, happier and easier to be around, email us for a complete refund. No forms, no fuss, no questions asked.</p>",
+        "button_label": "Start The 60 Days",
+        "background": "",
+        "width": 1000
+      }
+    },
+    "faq": {
+      "type": "dd-faq",
+      "blocks": {
+        "q_1": {
+          "type": "question",
+          "settings": {
+            "question": "How many gummies does my child take?",
+            "answer": "<p>1 gummy a day for ages 4 to 13, and 2 gummies a day for ages 14 and over. Ask your child to chew each one properly before swallowing.</p>"
+          }
+        },
+        "q_2": {
+          "type": "question",
+          "settings": {
+            "question": "What age is it suitable for?",
+            "answer": "<p>Mood Munchies are for children aged 4 and over. We do not recommend them for younger children.</p>"
+          }
+        },
+        "q_3": {
+          "type": "question",
+          "settings": {
+            "question": "Can my child take it with medication?",
+            "answer": "<p>Mood Munchies contain St John's Wort, which can interact with a number of medicines. If your child takes any medication, please speak to your GP or pharmacist before starting.</p>"
+          }
+        },
+        "q_4": {
+          "type": "question",
+          "settings": {
+            "question": "What do they taste like?",
+            "answer": "<p>A mixed berry flavour, from natural raspberry and blueberry flavourings. They are sugar-free, gluten-free and 100% vegan.</p>"
+          }
+        },
+        "q_5": {
+          "type": "question",
+          "settings": {
+            "question": "How long does a pack last?",
+            "answer": "<p>Each pack holds 60 gummies: about 60 days for ages 4 to 13, or about 30 days for ages 14 and over.</p>"
+          }
+        },
+        "q_6": {
+          "type": "question",
+          "settings": {
+            "question": "What if they're not right for us?",
+            "answer": "<p>Every order comes with our 60-day money-back guarantee. Get in touch within 60 days and we will refund you.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "q_1",
+        "q_2",
+        "q_3",
+        "q_4",
+        "q_5",
+        "q_6"
+      ],
+      "settings": {
+        "eyebrow": "Before you ask",
+        "heading": "Questions parents",
+        "highlight": "ask",
+        "heading_after": "",
+        "text": "",
+        "background": "#ffffff",
+        "text_color": "",
+        "align": "center",
+        "width": 820,
+        "link_label": "📋 Want more detail? Read the full Parent Guide",
+        "link_url": "/pages/parent-guide-mood-munchies"
+      }
+    },
+    "cta": {
+      "type": "dd-cta",
+      "blocks": {
+        "chip_1": {
+          "type": "chip",
+          "settings": {
+            "text": "🍬1 berry gummy a day"
+          }
+        },
+        "chip_2": {
+          "type": "chip",
+          "settings": {
+            "text": "🚚 Free shipping"
+          }
+        },
+        "chip_3": {
+          "type": "chip",
+          "settings": {
+            "text": "🛡️ 60-day guarantee"
+          }
+        },
+        "chip_4": {
+          "type": "chip",
+          "settings": {
+            "text": "🌱 100% Herbal"
+          }
+        }
+      },
+      "block_order": [
+        "chip_1",
+        "chip_2",
+        "chip_3",
+        "chip_4"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "Give Them A",
+        "highlight": "Calmer Term",
+        "heading_after": "",
+        "text": "",
+        "image": "shopify://shop_images/Whiteblomarlogoonbluepouch-1.png",
+        "button_label": "Choose your bundle",
+        "button_link": "",
+        "button2_label": "",
+        "button2_link": "",
+        "caption": "Takes you back to the options at the top of this page",
+        "background": "#e8f6fb",
+        "width": 1060
+      }
+    },
+    "reviews": {
+      "type": "dd-reviews",
+      "blocks": {
+        "review_1": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "April 15, 2026",
+            "tag": "MELTDOWNS ",
+            "title": "Finally something that actually works",
+            "body": "We were at our wit’s end with afternoon meltdowns every single day. Within 2 weeks of starting Mood Munchies, our son was handling disappointment like a completely different child. His teacher texted to ask what we’d changed. This product changed our family.",
+            "name": "Sarah K.",
+            "detail": "Parent of 7-year-old · London",
+            "verified": true
+          }
+        },
+        "review_2": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "April 12, 2026",
+            "tag": "SCHOOL",
+            "title": "Teacher noticed before I even mentioned it",
+            "body": "Our daughter’s teacher pulled me aside to say she’d noticed a real improvement in how she was handling group activities. I hadn’t even told her we’d started Mood Munchies. That unsolicited feedback from school meant everything.",
+            "name": "Rachel M.",
+            "detail": "Parent of 9-year-old · Manchester",
+            "verified": true
+          }
+        },
+        "review_3": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "April 10, 2026",
+            "tag": "TEENS",
+            "title": "My teen actually reminded me to order more",
+            "body": "My 14-year-old said she feels ‘less in her head’ during the school day. For a teenager to volunteer that kind of feedback — and then remind me not to run out — says everything about how much difference these are making.",
+            "name": "Claire T.",
+            "detail": "Parent of 14-year-old · Edinburgh",
+            "verified": true
+          }
+        },
+        "review_4": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "April 4th, 2026",
+            "tag": "Meltdowns",
+            "title": "Car rides are no longer a nightmare",
+            "body": "Long journeys used to guarantee a meltdown within 30 minutes. We did a 4-hour drive last weekend and it was genuinely lovely. I kept waiting for it to go wrong. It didn't. I cried with relief at the services.",
+            "name": "Joanna P.",
+            "detail": "Parent of 8 and 11-year-olds · Bristol",
+            "verified": true
+          }
+        },
+        "review_5": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "September 6th, 2026",
+            "tag": "Anxiety",
+            "title": "His anxiety around school is so much better",
+            "body": "My son has always had anticipatory anxiety about Mondays. For the past 3 weeks he's been getting ready without the crying and the stomach aches. We haven't had a single school-morning meltdown since we started.",
+            "name": "Laura H.",
+            "detail": "Parent of 6-year-old · Leeds",
+            "verified": true
+          }
+        },
+        "review_6": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "May 13th, 2026",
+            "tag": "School",
+            "title": "The substitute teacher day was fine. FINE.",
+            "body": "Parents of anxious kids know what I mean when I say ‘substitute teacher day.’ It used to ruin the whole week. Last month it just... wasn't a big deal. My daughter came home happy. I'm still processing this.",
+            "name": "Nadia F.",
+            "detail": "Parent of 8-year-old · Brighton",
+            "verified": true
+          }
+        },
+        "review_jQCyNB": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "April 1, 2026",
+            "tag": "Sleep",
+            "title": "Bedtime battles have dramatically reduced",
+            "body": "The emotional spillover into bedtime was destroying our evenings. He’d lie there ruminating about something that happened at school. Now he settles within 20 minutes and actually sleeps. Nights are peaceful again.",
+            "name": "Tom B.",
+            "detail": "Parent of 9-year-old · Birmingham",
+            "verified": true
+          }
+        },
+        "review_m7wE3T": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "March 28, 2026",
+            "tag": "School",
+            "title": "Friendship drama handled so much better",
+            "body": "At 10, friendship drama is constant. Our daughter used to come home absolutely devastated by normal friendship stuff — and it would spiral for days. Now she’s upset for a bit, then moves on. The resilience is incredible.",
+            "name": "Karen W.",
+            "detail": "Parent of 10-year-old · Oxford",
+            "verified": true
+          }
+        },
+        "review_8JNaHH": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "March 25, 2026",
+            "tag": "SCHOOL",
+            "title": "My teenager opened up to me this week",
+            "body": "My 16-year-old has been pulling away for two years. This week he sat down and talked to me properly for 40 minutes about how he’s been feeling. I don’t know if it’s the gummies but the timing is not lost on me.",
+            "name": "Mike D.",
+            "detail": "Parent of 16-year-old · Newcastle",
+            "verified": true
+          }
+        },
+        "review_An9DqN": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "March 22, 2026",
+            "tag": "Sleep",
+            "title": "She sleeps through the night now",
+            "body": "Our daughter was waking multiple times crying — all from worries. Monsters, friendships, tests — all of it coming out at 2am. Since Mood Munchies she’s sleeping straight through and the night wakings have completely stopped.",
+            "name": "Anna C.",
+            "detail": "Parent of 7-year-old · Cardiff",
+            "verified": true
+          }
+        },
+        "review_ybNBKK": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "March 18, 2026",
+            "tag": "Meltdowns",
+            "title": "Losing at sports doesn’t end the world anymore",
+            "body": "Saturday football used to be a gamble. One bad game and we’d all pay for it for the rest of the weekend. Now he’s disappointed briefly and then moves on. His teammates’ parents have noticed too — he’s become a better sport.",
+            "name": "James R.",
+            "detail": "Parent of 11-year-old · Sheffield",
+            "verified": true
+          }
+        },
+        "review_4rL7wV": {
+          "type": "review",
+          "settings": {
+            "stars": 5,
+            "date": "March 14, 2026",
+            "tag": "School",
+            "title": "Starting secondary school went smoothly",
+            "body": "I was terrified about the secondary school transition given how she normally handles change. We started Mood Munchies in August. The transition was genuinely fine. I cannot overstate how unexpected that was.",
+            "name": "Sophie L.",
+            "detail": "Parent of 11-year-old · Glasgow",
+            "verified": true
+          }
+        }
+      },
+      "block_order": [
+        "review_1",
+        "review_2",
+        "review_3",
+        "review_4",
+        "review_5",
+        "review_6",
+        "review_jQCyNB",
+        "review_m7wE3T",
+        "review_8JNaHH",
+        "review_An9DqN",
+        "review_ybNBKK",
+        "review_4rL7wV"
+      ],
+      "settings": {
+        "eyebrow": "",
+        "heading": "What",
+        "highlight": "parents",
+        "heading_after": "are saying 💛",
+        "text": "<p>Real families, real results. Over 3,241 verified parent reviews&nbsp;</p>",
+        "show_summary": true,
+        "score": "4.8",
+        "count": "3,241 Verified Reviews",
+        "filters": "🌊Meltdowns, ⛪️School, 🌸Teens, ☁Anxiety, 🌙Sleep",
+        "per_page": 6,
+        "more_label": "Load more reviews 🍬",
+        "background": "",
+        "width": 1100
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "sale_strip",
+    "main",
+    "formula",
+    "figures",
+    "struggle",
+    "why",
+    "ingredients",
+    "how",
+    "families",
+    "photo_reviews",
+    "video_reviews",
+    "compare",
+    "guarantee",
+    "faq",
+    "cta",
+    "reviews"
+  ]
+}

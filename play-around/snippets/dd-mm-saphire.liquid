@@ -1,0 +1,63 @@
+{% comment %}
+  "Play around" variant of the Mood Munchies product page (template product.mood-munchies-play-around).
+  Restyles only the product section (gallery and buy box) in the Saphire layout, with Blomar's fonts and colours:
+  navy text, pink accents, yellow outlines. Thumbnail row under the photo, a left-aligned buy box, bundle rows
+  with a yellow outline on the chosen one, an outlined pink add to cart button and divided accordions.
+  Rendered by dd-menu-style after dd-mm-evoura, so equal-strength rules here win.
+{% endcomment %}
+<style>
+  /* Gallery: thumbnail row with arrows instead of dots. min-width 0 stops the thumb row stretching the grid column. */
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery, .dd-info, .dd-gallery__thumbs, .dd-gallery__thumb-list, #dd-x) { min-width: 0 !important; max-width: 100%; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__thumbs, #dd-x) { display: flex !important; align-items: center; gap: 6px; margin-top: 12px !important; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__dots, #dd-x) { display: none !important; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__thumb-list, #dd-x) { display: flex !important; gap: 8px !important; overflow-x: auto; scrollbar-width: none; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__thumb, #dd-x) { flex: 0 0 auto !important; width: 84px !important; height: 84px !important; padding: 0 !important; overflow: hidden; border: 2px solid transparent !important; border-radius: 12px !important; background: #f3f5fb !important; opacity: 1 !important; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__thumb[aria-current="true"], #dd-x) { border-color: #2d3a8c !important; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__thumb img, #dd-x) { width: 100% !important; height: 100% !important; object-fit: cover; border-radius: 10px; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__arrow, #dd-x) { flex: none; display: grid !important; place-items: center; width: 28px; height: 28px; padding: 0; border: 0; background: none; font-size: 26px; line-height: 1; color: #4d5a9e; cursor: pointer; }
+  html body :is(.dd-main, #dd-x) :is(.dd-gallery__stage, .dd-gallery__slide img, #dd-x) { border-radius: 16px !important; }
+
+  /* Buy box: left aligned, Saphire spacing */
+  html body :is(.dd-main .dd-info, #dd-x) { text-align: left !important; }
+  html body :is(.dd-rating--evt, #dd-x) { justify-content: flex-start !important; margin: 8px 0 4px !important; }
+  html body :is(.dd-rating--evt .dd-rating__count, #dd-x) { text-decoration: none !important; letter-spacing: .02em !important; color: #1e2554 !important; }
+  html body :is(.dd-rating--evt .dd-rating__score, #dd-x) { color: #e84b8a; font-weight: 900; font-size: 15px; }
+  html body :is(.dd-rating--evt .dd-rating__reviews, #dd-x) { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+  html body :is(.dd-main .dd-info__title, #dd-x) { margin: 6px 0 4px !important; text-align: left !important; font-size: 30px !important; line-height: 1.12 !important; color: #1e2554 !important; }
+  html body :is(.dd-main .dd-info__title .dd-hl, #dd-x) { color: #e84b8a !important; }
+  html body :is(.dd-main .dd-trust, #dd-x) { margin: 0 0 6px !important; }
+  html body :is(.dd-main .dd-trust__pill, #dd-x) { border-color: #f5c842 !important; background: #fffbea !important; color: #2d3a8c !important; }
+  html body :is(.dd-main .dd-checks, #dd-x) { margin: 14px 0 16px !important; }
+  html body :is(.dd-main .dd-checks svg, #dd-x) { color: #e84b8a !important; }
+  html body :is(.dd-main .dd-stock, #dd-x) { margin: 4px 0 14px !important; }
+
+  /* "Free shipping, limited time" label: thin lines either side */
+  html body :is(.dd-main .dd-divider-label, #dd-x) { display: flex !important; align-items: center; gap: 12px; margin: 10px 0 12px !important; font-size: 13.5px !important; font-weight: 900 !important; letter-spacing: .08em !important; text-transform: uppercase; color: #1e2554 !important; }
+  html body :is(.dd-main .dd-divider-label, #dd-x)::before, html body :is(.dd-main .dd-divider-label, #dd-x)::after { content: ''; flex: 1; height: 1.5px; background: #f5c842 !important; }
+
+  /* Bundle rows (Kaching): grey rows, the chosen one cream with a yellow outline, no tags */
+  html body :is(.kaching-bundles__bars, #dd-x) { gap: 10px !important; }
+  html body :is(.kaching-bundles__bar-main, #dd-x) { padding: 16px 16px !important; border: 1.5px solid #dde2f0 !important; background: #f6f7fb !important; border-radius: 14px !important; outline: 0 !important; }
+  html body :is(.kaching-bundles__bar--selected, #dd-x) :is(.kaching-bundles__bar-main, #dd-x) { border: 2.5px solid #f5c842 !important; background: #fffbea !important; outline: 0 !important; box-shadow: 0 4px 14px rgba(245, 200, 66, .25); }
+  html body :is(.kaching-bundles__bar-main, #dd-x)::before { width: 24px !important; height: 24px !important; border: 2px solid #c9cfe3 !important; }
+  html body :is(.kaching-bundles__bar--selected, #dd-x) :is(.kaching-bundles__bar-main, #dd-x)::before { border-color: #e84b8a !important; background: radial-gradient(circle, #e84b8a 0 5.5px, #fff 6px) !important; }
+  html body :is(.kaching-bundles__bar:nth-child(2 of .kaching-bundles__bar), .kaching-bundles__bar:nth-child(3 of .kaching-bundles__bar), #dd-x) :is(.kaching-bundles__bar-container, #dd-x)::before { display: none !important; }
+  html body :is(.kaching-bundles__bar-title, #dd-x) { font-size: 17px !important; font-weight: 700 !important; color: #1e2554 !important; }
+  html body :is(.kaching-bundles__bar-subtitle, #dd-x) { font-size: 13px !important; font-weight: 700 !important; color: #4d5a9e !important; }
+  html body :is(.kaching-bundles__bar-price, #dd-x) { font-size: 19px !important; font-weight: 800 !important; color: #1e2554 !important; }
+  html body :is(.kaching-bundles__bar-full-price, #dd-x) { font-size: 14px !important; color: #8a93bf !important; }
+
+  /* Add to cart: outlined pink, fills on hover */
+  html body :is(.dd-main, #dd-x) :is(.dd-info, #dd-x) :is(.dd-buy, #dd-x) :is(.dd-btn--primary, #dd-x) { min-height: 54px !important; border: 2px solid #e84b8a !important; border-radius: 12px !important; background: #fff !important; color: #e84b8a !important; box-shadow: none !important; font-size: 17px !important; font-weight: 800 !important; letter-spacing: .04em !important; transition: background .2s, color .2s; }
+  html body :is(.dd-main, #dd-x) :is(.dd-info, #dd-x) :is(.dd-buy, #dd-x) :is(.dd-btn--primary:hover, #dd-x) { background: #e84b8a !important; color: #fff !important; }
+
+  /* Accordions: full-width rows divided by thin lines */
+  html body :is(.dd-main .dd-acc, #dd-x) { margin: 0 !important; border: 0 !important; border-bottom: 1px solid #e3e7f2 !important; border-radius: 0 !important; background: none !important; box-shadow: none !important; }
+  html body :is(.dd-main .dd-acc:first-of-type, .dd-main .dd-icons + .dd-acc, .dd-main .dd-rslider + .dd-acc, #dd-x) { border-top: 1px solid #e3e7f2 !important; margin-top: 18px !important; }
+  html body :is(.dd-main .dd-acc summary, #dd-x) { padding: 18px 2px !important; font-size: 17px !important; font-weight: 700 !important; color: #1e2554 !important; background: none !important; }
+  html body :is(.dd-main .dd-acc__body, #dd-x) { padding: 0 2px 18px !important; }
+
+  @media (min-width: 750px) {
+    html body :is(.dd-main .dd-info__title, #dd-x) { font-size: 38px !important; }
+  }
+</style>

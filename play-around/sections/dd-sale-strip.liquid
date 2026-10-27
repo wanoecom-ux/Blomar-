@@ -1,0 +1,53 @@
+{% comment %}
+  Sale countdown strip: one line under the header ("Back to school sale ends in 9d : 04h : 12m : 30s").
+  Counts down to the real sale end date set here and hides itself once the sale is over.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{%- assign end_ts = s.sale_end | date: '%s' | plus: 0 -%}
+{%- assign now_ts = 'now' | date: '%s' | plus: 0 -%}
+{%- if s.sale_end != blank and end_ts > now_ts -%}
+<style>
+  #dd-strip-{{ section.id }} { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 4px 10px; padding: 8px 14px; background: {{ s.background }}; color: {{ s.text_color }}; font-family: var(--dd-font-body, inherit); text-align: center; }
+  #dd-strip-{{ section.id }} .dd-strip-cd__label { font-size: {{ s.font_size }}px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  #dd-strip-{{ section.id }} .dd-strip-cd__time { display: inline-flex; align-items: baseline; gap: 4px; font-size: {{ s.font_size | plus: 1 }}px; font-weight: 900; font-variant-numeric: tabular-nums; color: {{ s.timer_color }}; }
+  #dd-strip-{{ section.id }} .dd-strip-cd__time small { font-size: .62em; font-weight: 700; opacity: .9; }
+</style>
+<div class="dd-strip-cd" id="dd-strip-{{ section.id }}" data-end="{{ end_ts }}" role="timer" aria-live="off">
+  <span class="dd-strip-cd__label">{{ s.text }}</span>
+  <span class="dd-strip-cd__time" data-dd-strip-time></span>
+</div>
+<script>
+  (function () {
+    var box = document.getElementById('dd-strip-{{ section.id }}');
+    if (!box) return;
+    var end = Number(box.dataset.end) * 1000;
+    var out = box.querySelector('[data-dd-strip-time]');
+    function pad(n) { return (n < 10 ? '0' : '') + n; }
+    function tick() {
+      var left = Math.max(0, Math.floor((end - Date.now()) / 1000));
+      if (!left) { box.hidden = true; return; }
+      var d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60), sec = left % 60;
+      out.innerHTML = (d ? d + '<small>d</small> : ' : '') + pad(h) + '<small>h</small> : ' + pad(m) + '<small>m</small> : ' + pad(sec) + '<small>s</small>';
+      setTimeout(tick, 1000);
+    }
+    tick();
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Sale countdown strip",
+  "tag": "div",
+  "class": "section dd-strip-cd-section",
+  "settings": [
+    { "type": "text", "id": "text", "label": "Text", "default": "Back to school sale ends in" },
+    { "type": "text", "id": "sale_end", "label": "Sale end date and time", "default": "2026-10-31T23:59:00+11:00", "info": "Format 2026-10-31T23:59:00+11:00. The strip hides itself after this time." },
+    { "type": "color", "id": "background", "label": "Background", "default": "#2d3a8c" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "timer_color", "label": "Countdown", "default": "#f5c842" },
+    { "type": "range", "id": "font_size", "label": "Text size", "min": 11, "max": 18, "step": 1, "unit": "px", "default": 13 }
+  ],
+  "presets": [ { "name": "Sale countdown strip" } ]
+}
+{% endschema %}

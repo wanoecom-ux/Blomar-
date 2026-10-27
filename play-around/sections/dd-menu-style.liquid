@@ -1,0 +1,316 @@
+{% comment %}
+  Header menu styling. Sits in the header group, so it applies on every page of the theme.
+  Also sets the site-wide heading and body fonts so every page matches the product pages.
+  Also holds the free gift guard: because it loads on every page, it watches the cart and removes the free
+  gift lines whenever no paid item is left, so gifts can never sit in the cart on their own.
+  Desktop: menu font, no hover underline, and the current page shown as a bold pill.
+  Mobile: the menu opens as a panel from the left with a "Menu" title, a close button and a dimmed
+  backdrop (tapping the backdrop closes it). White drawer, near-black text, a light grey row for the
+  current page and hover, light grey dividers. Outputs no markup of its own; a small script adds the panel title and close button.
+{% endcomment %}
+{%- assign s = section.settings -%}
+{%- liquid
+  # The cart page and every product page except Mood Munchies keep the theme's own fonts and sizes.
+  # Mood Munchies covers its product template and any variant of it (product.mood-munchies-*).
+  # The Mood Munchies lander (page.5-reasons) is styled like the Mood Munchies product page.
+  assign mm_style = false
+  if template.suffix contains 'mood-munchies' or template.suffix == '5-reasons'
+    assign mm_style = true
+  endif
+  assign keep_theme = false
+  if template.name == 'cart'
+    assign keep_theme = true
+  elsif template.name == 'product'
+    unless template.suffix contains 'mood-munchies'
+      assign keep_theme = true
+    endunless
+  endif
+-%}
+{%- assign menu_bold = s.menu_font | font_modify: 'weight', 'bold' -%}
+{%- assign site_body_bold = s.site_body_font | font_modify: 'weight', 'bold' -%}
+{%- assign site_body_800 = s.site_body_font | font_modify: 'weight', '800' -%}
+{%- assign site_body_900 = s.site_body_font | font_modify: 'weight', '900' -%}
+{%- assign site_heading_700 = s.site_heading_font | font_modify: 'weight', '700' -%}
+{%- assign sans_400 = s.site_sans_font | font_modify: 'weight', '400' -%}
+{%- assign sans_700 = s.site_sans_font | font_modify: 'weight', '700' -%}
+{%- assign sans_800 = s.site_sans_font | font_modify: 'weight', '800' -%}
+<style>
+  {%- if s.site_fonts and keep_theme == false %}
+  /* ---------- Site-wide fonts: the same heading and body fonts as the product pages ---------- */
+  {%- comment -%} Mood Munchies loads only the bold heading face, like Evoura, so heavier headings render in bold. {%- endcomment -%}
+  {%- unless mm_style %}{{ s.site_heading_font | font_face: font_display: 'swap' }}{% endunless %}
+  {{ s.site_body_font | font_face: font_display: 'swap' }}
+  {{ site_body_bold | font_face: font_display: 'swap' }}
+  {%- if site_body_800 %}{{ site_body_800 | font_face: font_display: 'swap' }}{% endif %}
+  {%- if site_body_900 %}{{ site_body_900 | font_face: font_display: 'swap' }}{% endif %}
+  {%- if site_heading_700 %}{{ site_heading_700 | font_face: font_display: 'swap' }}{% endif %}
+  {{ s.site_sans_font | font_face: font_display: 'swap' }}
+  {%- if sans_400 %}{{ sans_400 | font_face: font_display: 'swap' }}{% endif %}
+  {%- if sans_700 %}{{ sans_700 | font_face: font_display: 'swap' }}{% endif %}
+  {%- if sans_800 %}{{ sans_800 | font_face: font_display: 'swap' }}{% endif %}
+  /* The product and guide sections read their fonts from these variables. */
+  :root {
+    --dd-font-heading: {{ s.site_heading_font.family }}, {{ s.site_heading_font.fallback_families }} !important;
+    --dd-font-body: {{ s.site_body_font.family }}, {{ s.site_body_font.fallback_families }} !important;
+    --dd-font-sans: {{ s.site_sans_font.family }}, {{ s.site_sans_font.fallback_families }};
+  }
+  /* The cart drawer keeps the fonts it has always used (Poppins headings, Nunito Sans text). */
+  cart-drawer {
+    --dd-font-heading: {{ s.site_heading_font.family }}, {{ s.site_heading_font.fallback_families }};
+    --dd-font-body: {{ s.site_sans_font.family }}, {{ s.site_sans_font.fallback_families }};
+  }
+  cart-drawer :is(*, #dd-x) { font-family: var(--dd-font-body) !important; }
+  cart-drawer :is(h1, h2, h3, h4, h5, h6, [class*="title"], [class*="heading"], [class*="price"], [class*="total"], button, .button, [class*="btn"], #dd-x) { font-family: var(--dd-font-heading) !important; }
+  html body .dd { font-weight: {{ s.site_body_font.weight }}; letter-spacing: {{ s.body_letter_spacing | divided_by: 100.0 }}em; }
+  html body .dd :is(h1, h2, h3, h4, .dd-h2, #dd-x) { font-weight: {{ s.site_heading_font.weight }} !important; letter-spacing: {{ s.heading_letter_spacing | divided_by: 100.0 }}em !important; }
+  {%- if s.product_title_body_font %}
+  html body .dd :is(.dd-info__title, .dd-reviews .dd-h2, #dd-x) { font-family: var(--dd-font-body) !important; font-weight: 900 !important; letter-spacing: -.01em; }
+  {%- endif %}
+  /* The cart drawer is left out so it keeps the theme's own fonts. */
+  html body :is(p, a, span, li, button, input, select, textarea, label, summary, td, th, div, small, strong, em, b, dt, dd, address, blockquote, legend):not(.dd):not(.dd *):not(cart-drawer *) {
+    font-family: {{ s.site_body_font.family }}, {{ s.site_body_font.fallback_families }} !important;
+    letter-spacing: {{ s.body_letter_spacing | divided_by: 100.0 }}em;
+  }
+  html body :is(h1, h2, h3, h4, h5, h6, .h0, .h1, .h2, .h3, .h4, .h5):not(.dd):not(.dd *):not(cart-drawer *) {
+    font-family: {{ s.site_heading_font.family }}, {{ s.site_heading_font.fallback_families }} !important;
+    font-weight: {{ s.site_heading_font.weight }} !important;
+    letter-spacing: {{ s.heading_letter_spacing | divided_by: 100.0 }}em !important;
+  }
+  {%- endif %}
+
+  /* The menu font is loaded under its own name so it never changes how that font renders elsewhere on the page. */
+  @font-face { font-family: 'dd-menu'; font-weight: 400; font-style: normal; font-display: swap; src: url("{{ s.menu_font | font_url }}") format("woff2"); }
+  @font-face { font-family: 'dd-menu'; font-weight: 700; font-style: normal; font-display: swap; src: url("{{ menu_bold | font_url }}") format("woff2"); }
+
+  /* ---------- Desktop menu ---------- */
+  .header-wrapper .header__inline-menu :is(.header__menu-item, #dd-x) {
+    font-family: 'dd-menu', {{ s.menu_font.fallback_families }} !important;
+    font-size: {{ s.font_size }}px !important; font-weight: {{ s.menu_font.weight }} !important;
+    letter-spacing: {{ s.letter_spacing | divided_by: 100.0 }}em !important; color: {{ s.desktop_text }} !important;
+  }
+  {%- if s.desktop_pill %}
+  .header-wrapper .header__inline-menu .header__menu-item > span::after { display: none !important; }
+  .header-wrapper .header__inline-menu .header__menu-item:hover span { text-decoration: none !important; }
+  .header-wrapper .header__inline-menu :is(span.header__active-menu-item, #dd-x) {
+    position: relative; z-index: 0; padding: 0 .7em; font-weight: 700 !important; color: {{ s.pill_text }} !important; text-decoration: none !important;
+  }
+  .header-wrapper .header__inline-menu span.header__active-menu-item::before {
+    content: ''; position: absolute; inset: 0; z-index: -1; transform: scaleY(1.4);
+    background: {{ s.pill_background }}; border-radius: {{ s.pill_radius }}px;
+  }
+  {%- endif %}
+
+  /* ---------- Mobile drawer ---------- */
+  #menu-drawer:is(.menu-drawer, #dd-x),
+  #menu-drawer :is(.menu-drawer__inner-container, .menu-drawer__navigation-container, .menu-drawer__navigation, .menu-drawer__menu, .menu-drawer__submenu, #dd-x) {
+    background: {{ s.background }} !important; background-image: none !important;
+  }
+  #menu-drawer :is(.menu-drawer__navigation, #dd-x) { border-top: 1px solid {{ s.divider }}; border-bottom: 1px solid {{ s.divider }}; padding: 10px 0 !important; }
+  #menu-drawer :is(.menu-drawer__menu > li, #dd-x) { border: 0 !important; margin: 0 !important; }
+  #menu-drawer :is(.menu-drawer__menu-item, #dd-x) {
+    color: {{ s.text }} !important; background: transparent !important; border: 0 !important;
+    padding: 12px 20px !important; letter-spacing: {{ s.letter_spacing | divided_by: 100.0 }}em;
+    font-family: 'dd-menu', {{ s.menu_font.fallback_families }} !important; font-size: {{ s.mobile_font_size }}px !important;
+  }
+  #menu-drawer :is(.menu-drawer__menu-item--active, .menu-drawer__menu-item:hover, .menu-drawer__menu-item:focus-visible, #dd-x) { background: {{ s.active }} !important; color: {{ s.text }} !important; }
+  #menu-drawer :is(.menu-drawer__utility-links, #dd-x) { background: {{ s.background }} !important; }
+  #menu-drawer :is(.menu-drawer__utility-links a, .menu-drawer__account, .list-social__link, .localization-selector, #dd-x) { color: {{ s.text }} !important; }
+  #menu-drawer :is(.menu-drawer__account, #dd-x) { font-weight: 700 !important; }
+  #menu-drawer :is(svg, #dd-x) { fill: {{ s.text }} !important; color: {{ s.text }} !important; }
+  #menu-drawer :is(.menu-drawer__account svg, #dd-x) { fill: none !important; stroke: {{ s.text }}; }
+  .header__icon--menu :is(svg, #dd-x) { color: {{ s.text }} !important; }
+  .dd-drawer-head { display: none; }
+
+  {%- if s.side_drawer %}
+  @media screen and (max-width: 989px) {
+    .js #menu-drawer:is(.menu-drawer, #dd-x) {
+      position: fixed !important; top: 0 !important; left: 0 !important; bottom: 0 !important;
+      width: min({{ s.drawer_width }}px, 90vw) !important; height: 100vh !important; height: 100dvh !important;
+      z-index: 1001 !important; border: 0 !important; box-shadow: 4px 0 24px rgba(0, 0, 0, .18);
+      transition: transform .3s ease, visibility .3s ease;
+    }
+    #menu-drawer .menu-drawer__inner-container { height: 100%; }
+    #menu-drawer .menu-drawer__navigation-container { height: auto; min-height: calc(100% - 64px); display: flex; flex-direction: column; overflow-y: auto; }
+    #menu-drawer .menu-drawer__utility-links { margin-top: 0; padding-top: 14px; }
+    /* Lift the header (and the panel inside it) above the sale bar while the menu is open. */
+    .shopify-section-group-header-group:has(#Details-menu-drawer-container[open]) { z-index: 1000 !important; }
+    #Details-menu-drawer-container[open] > summary::before {
+      content: ''; position: fixed; inset: 0; z-index: 1000; background: rgba(0, 0, 0, {{ s.backdrop_opacity | divided_by: 100.0 }}); cursor: default;
+    }
+    .dd-drawer-head {
+      display: flex; align-items: center; justify-content: space-between; height: 64px; padding: 0 12px 0 20px;
+    }
+    .dd-drawer-head__title {
+      margin: 0; font-family: 'dd-menu', {{ menu_bold.fallback_families }}; font-weight: 700; font-size: 22px;
+      letter-spacing: {{ s.letter_spacing | divided_by: 100.0 }}em; color: {{ s.text }};
+    }
+    .dd-drawer-head__close {
+      display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: none; cursor: pointer; color: {{ s.text }};
+    }
+    .dd-drawer-head__close svg { width: 22px; height: 22px; }
+    .dd-drawer-head__close:focus-visible { outline: 2px solid {{ s.text }}; outline-offset: -2px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js #menu-drawer.menu-drawer { transition: none !important; }
+  }
+  {%- endif %}
+</style>
+{%- if s.site_fonts and s.type_scale and keep_theme == false -%}
+  {%- capture heading_stack %}{{ s.site_heading_font.family }}, {{ s.site_heading_font.fallback_families }}{% endcapture -%}
+  {%- capture body_stack %}{{ s.site_body_font.family }}, {{ s.site_body_font.fallback_families }}{% endcapture -%}
+  {%- capture sans_stack %}{{ s.site_sans_font.family }}, {{ s.site_sans_font.fallback_families }}{% endcapture -%}
+  {%- render 'dd-evoura-type', heading: heading_stack, body: body_stack, sans: sans_stack -%}
+  {%- if mm_style -%}{%- render 'dd-mm-evoura' -%}{%- endif -%}
+  {%- comment -%} "Play around" variant of the Mood Munchies product page: Saphire-style product section. {%- endcomment -%}
+  {%- if template.suffix == 'mood-munchies-play-around' -%}{%- render 'dd-mm-saphire' -%}{%- endif -%}
+{%- endif %}
+
+<script>
+  (function () {
+    /* Pages that sit under a menu link (for example /pages/parent-guide-mood-munchies under
+       /pages/parent-guide) show that link as the current page too. */
+    function markParent() {
+      var menu = document.querySelector('.header__inline-menu');
+      if (!menu || menu.querySelector('.header__active-menu-item')) return;
+      var path = location.pathname.replace(/\/$/, '');
+      Array.prototype.some.call(menu.querySelectorAll('a.header__menu-item'), function (a) {
+        var base = a.pathname.replace(/\/$/, '');
+        if (base.length < 2 || path.indexOf(base + '-') !== 0) return false;
+        var span = a.querySelector('span');
+        if (span) span.classList.add('header__active-menu-item');
+        a.setAttribute('aria-current', 'page');
+        return true;
+      });
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', markParent); else markParent();
+  })();
+</script>
+
+<script>
+  (() => {
+    if (window.ddGiftGuard) return;
+    window.ddGiftGuard = true;
+    const isGift = (i) => (i.properties && i.properties._free_gift) || i.product_type === 'Free gift';
+    let busy = false;
+    let timer;
+
+    const refreshDrawer = async (drawer, state) => {
+      if (!drawer) return;
+      if (drawer.classList.contains('active') && state && state.sections && drawer.renderContents) {
+        drawer.renderContents(state);
+        return;
+      }
+      // Drawer closed: swap in the fresh markup without opening it.
+      const ids = ['cart-drawer', 'cart-icon-bubble'];
+      const html = await (await fetch(`${location.pathname}?sections=${ids.join(',')}`)).json();
+      const parse = (markup, sel) => new DOMParser().parseFromString(markup, 'text/html').querySelector(sel);
+      const fresh = html['cart-drawer'] && parse(html['cart-drawer'], '#CartDrawer');
+      const current = document.getElementById('CartDrawer');
+      if (fresh && current) current.innerHTML = fresh.innerHTML;
+      const bubble = document.getElementById('cart-icon-bubble');
+      const freshBubble = html['cart-icon-bubble'] && parse(html['cart-icon-bubble'], '.shopify-section');
+      if (bubble && freshBubble) bubble.innerHTML = freshBubble.innerHTML;
+      const drawerEl = document.querySelector('cart-drawer');
+      drawerEl && drawerEl.classList.add('is-empty');
+    };
+
+    const check = async () => {
+      if (busy) return;
+      busy = true;
+      try {
+        const cart = await (await fetch('/cart.js', { headers: { Accept: 'application/json' } })).json();
+        const gifts = cart.items.filter(isGift);
+        if (!gifts.length || cart.items.some((i) => !isGift(i))) return;
+        const updates = {};
+        gifts.forEach((i) => { updates[i.key] = 0; });
+        const drawer = document.querySelector('cart-drawer');
+        const sections = drawer && drawer.getSectionsToRender ? drawer.getSectionsToRender().map((x) => x.id) : [];
+        const res = await fetch('/cart/update.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify({ updates, sections, sections_url: location.pathname }),
+        });
+        await refreshDrawer(drawer, await res.json());
+      } catch (e) {
+        /* Never block the page over the gift check. */
+      } finally {
+        busy = false;
+      }
+    };
+    const later = () => { clearTimeout(timer); timer = setTimeout(check, 400); };
+
+    const start = () => {
+      later();
+      if (typeof subscribe === 'function' && window.PUB_SUB_EVENTS) subscribe(PUB_SUB_EVENTS.cartUpdate, later);
+      const drawer = document.querySelector('cart-drawer');
+      if (drawer) new MutationObserver(later).observe(drawer, { childList: true, subtree: true });
+    };
+    document.addEventListener('cart-drawer:render', later);
+    document.readyState === 'loading' ? document.addEventListener('DOMContentLoaded', start) : start();
+  })();
+</script>
+
+{%- if s.side_drawer -%}
+<script>
+  (function () {
+    /* Adds the "Menu" title and close button to the top of the mobile menu panel. */
+    function addHead() {
+      var inner = document.querySelector('#menu-drawer .menu-drawer__inner-container');
+      if (!inner || inner.querySelector('.dd-drawer-head')) return;
+      var head = document.createElement('div');
+      head.className = 'dd-drawer-head';
+      head.innerHTML = '<p class="dd-drawer-head__title">{{ s.drawer_title | escape }}</p>' +
+        '<button type="button" class="dd-drawer-head__close" aria-label="{{ 'accessibility.close' | t | escape }}">' +
+        '<svg viewBox="0 0 18 17" fill="none" aria-hidden="true"><path d="M1 1l16 15M17 1L1 16" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>';
+      head.querySelector('button').addEventListener('click', function () {
+        var summary = document.querySelector('#Details-menu-drawer-container > summary');
+        if (summary) summary.click();
+      });
+      inner.insertBefore(head, inner.firstChild);
+    }
+    if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', addHead); else addHead();
+    document.addEventListener('shopify:section:load', addHead);
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Menu style",
+  "tag": "div",
+  "class": "dd-menu-style",
+  "settings": [
+    { "type": "header", "content": "Site fonts" },
+    { "type": "checkbox", "id": "site_fonts", "label": "Use these fonts across the whole site", "default": true, "info": "Matches the rest of the store to the product pages." },
+    { "type": "font_picker", "id": "site_heading_font", "label": "Heading font", "default": "poppins_n9" },
+    { "type": "font_picker", "id": "site_body_font", "label": "Body font", "default": "nunito_n6" },
+    { "type": "range", "id": "heading_letter_spacing", "label": "Heading letter spacing", "min": -5, "max": 10, "step": 1, "unit": "%", "default": 2 },
+    { "type": "range", "id": "body_letter_spacing", "label": "Body letter spacing", "min": -5, "max": 10, "step": 1, "unit": "%", "default": 6 },
+    { "type": "font_picker", "id": "site_sans_font", "label": "Secondary body font", "default": "nunito_sans_n6", "info": "Used for guide page text, product accordions and reviews." },
+    { "type": "checkbox", "id": "type_scale", "label": "Use the matched type sizes", "default": true, "info": "Sets every heading and text size on the product and guide sections. Turn off to use each section's own sizes." },
+    { "type": "checkbox", "id": "product_title_body_font", "label": "Product title and reviews heading in the body font (extra bold)", "default": true },
+    { "type": "header", "content": "Menu text" },
+    { "type": "font_picker", "id": "menu_font", "label": "Menu font", "default": "poppins_n4" },
+    { "type": "range", "id": "font_size", "label": "Desktop font size", "min": 12, "max": 20, "step": 1, "unit": "px", "default": 14 },
+    { "type": "range", "id": "mobile_font_size", "label": "Mobile font size", "min": 14, "max": 24, "step": 1, "unit": "px", "default": 18 },
+    { "type": "range", "id": "letter_spacing", "label": "Letter spacing", "min": 0, "max": 20, "step": 1, "unit": "%", "default": 7 },
+    { "type": "color", "id": "desktop_text", "label": "Desktop text colour", "default": "#121212" },
+    { "type": "header", "content": "Current page (desktop)" },
+    { "type": "checkbox", "id": "desktop_pill", "label": "Show current page as a pill", "default": true, "info": "Off keeps the theme's underline instead." },
+    { "type": "color", "id": "pill_background", "label": "Pill background", "default": "#2b3a8f" },
+    { "type": "color", "id": "pill_text", "label": "Pill text", "default": "#ffffff" },
+    { "type": "range", "id": "pill_radius", "label": "Pill corner radius", "min": 0, "max": 20, "step": 1, "unit": "px", "default": 3 },
+    { "type": "header", "content": "Mobile menu" },
+    { "type": "checkbox", "id": "side_drawer", "label": "Open as a side panel", "default": true, "info": "Slides in from the left with a Menu title, a close button and a dimmed backdrop." },
+    { "type": "text", "id": "drawer_title", "label": "Panel title", "default": "Menu" },
+    { "type": "range", "id": "drawer_width", "label": "Panel width", "min": 260, "max": 420, "step": 10, "unit": "px", "default": 350 },
+    { "type": "range", "id": "backdrop_opacity", "label": "Backdrop darkness", "min": 0, "max": 80, "step": 5, "unit": "%", "default": 45 },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "text", "label": "Text and icons", "default": "#111111" },
+    { "type": "color", "id": "active", "label": "Current page and hover", "default": "#f5f5f5" },
+    { "type": "color", "id": "divider", "label": "Divider lines", "default": "#e5e5e5" }
+  ],
+  "presets": [{ "name": "Menu style" }],
+  "enabled_on": { "groups": ["header"] }
+}
+{% endschema %}
