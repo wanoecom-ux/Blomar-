@@ -1,0 +1,15 @@
+<header class="zh"{% if section.settings.bg != blank %} style="background: {{ section.settings.bg }};"{% endif %}>
+  <div class="page-width zh__bar">
+    <button type="button" class="zh__burger" data-menu-open aria-label="Open menu">{% render 'icon', name: 'menu' %}</button>
+    <nav class="zh__nav">{%- assign rows = section.settings.links | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign p = r | strip | split: '|' -%}{%- if p.size == 2 -%}<a href="{{ p[1] | strip }}" class="{% if forloop.first %}zh__pill{% endif %}">{{ p[0] | strip | escape }}</a>{%- endif -%}{%- endfor -%}</nav>
+    <a class="zh__logo" href="{{ section.settings.logo_link | default: routes.root_url }}" style="--logo-w: {{ section.settings.logo_width }}px;">{%- if section.settings.logo != blank -%}{{ section.settings.logo | image_url: width: 400 | image_tag: alt: shop.name }}{%- else -%}<img src="{{ 'blomar-logo-navy.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255">{%- endif -%}</a>
+    <div class="zh__icons"><a href="{{ routes.search_url }}" class="zh__ico" aria-label="Search"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg></a><a href="{{ routes.account_url }}" class="zh__ico zh__acct" aria-label="Account"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.5-4 4.5-6 8-6s6.5 2 8 6"/></svg></a>
+    <button type="button" class="zh__cart" data-cart-open aria-label="Open cart">{% render 'icon', name: 'cart', size: 24 %}<span class="hdr__count" data-cart-count{% if cart.item_count == 0 %} hidden{% endif %}>{{ cart.item_count }}</span></button></div>
+  </div>
+  <div class="mnav" data-menu hidden><div class="mnav__head"><span></span><button type="button" data-menu-close aria-label="Close">{% render 'icon', name: 'close' %}</button></div>
+    <nav class="mnav__links">{%- for r in rows -%}{%- assign p = r | strip | split: '|' -%}{%- if p.size == 2 -%}<a href="{{ p[1] | strip }}">{{ p[0] | strip | escape }}</a>{%- endif -%}{%- endfor -%}</nav></div>
+</header>
+{% schema %}
+{"name":"Header","settings":[{"type":"image_picker","id":"logo","label":"Logo"},{"type":"color","id":"bg","label":"Background","info":"Match your logo file's background so no box shows around it."},{"type":"range","id":"logo_width","label":"Logo width","min":60,"max":200,"step":2,"unit":"px","default":110},{"type":"text","id":"logo_link","label":"Logo link","default":"/products/dog-knee-brace-harness"},
+{"type":"textarea","id":"links","label":"Links (Label | /url per line, first one is the green pill)","default":"Shop | /products/dog-knee-brace-harness\nContact | /pages/contact\nTrack Your Order | /pages/track-your-order\nSize Guide | #size-guide"}]}
+{% endschema %}

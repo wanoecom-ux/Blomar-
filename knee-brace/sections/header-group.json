@@ -1,0 +1,27 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement": {
+      "type": "announcement",
+      "settings": {
+        "items": "50% OFF TODAY ONLY  | FREE SHIPPING ON ALL ORDERS",
+        "bg": "#2c4a3e"
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo": "shopify://shop_images/Blomar_logo_with_uppercase_B.png",
+        "logo_width": 150,
+        "logo_link": "/products/dog-knee-brace-harness",
+        "links": "Shop | /products/dog-knee-brace-harness\nContact | /pages/contact\nTrack Your Order | /pages/track-your-order\nSize Guide | #size-guide",
+        "bg": "#F4F2ED"
+      }
+    }
+  },
+  "order": [
+    "announcement",
+    "header"
+  ]
+}

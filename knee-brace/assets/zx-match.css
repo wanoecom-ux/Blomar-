@@ -1,0 +1,97 @@
+/* ---------- Reference-layout match pass (knee brace page) ---------- */
+:root{--c-ink-soft:rgba(44,74,62,.78);--track:.04em}
+/* Gallery: arrows either side of the thumbnail row, play badge on video */
+.zp__thumbs-wrap{display:flex;align-items:center;gap:6px;margin-top:10px}
+.zp__thumbs-wrap .zp__thumbs{flex:1;min-width:0;margin-top:0;justify-content:flex-start;scroll-snap-type:x mandatory;scrollbar-width:none}
+.zp__thumbs-wrap .zp__thumbs::-webkit-scrollbar{display:none}
+.zp__thumbs .mp__thumb{position:relative;scroll-snap-align:start;flex-basis:calc((100% - 30px)/4);height:auto;aspect-ratio:1/1;border:2px solid transparent;border-radius:3px}
+.zp__thumbs .mp__thumb.is-active{border-color:#2c2c2c}
+.zp__tarrow{flex:none;width:28px;height:28px;border:0;background:none;color:#555;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.zp__tarrow--prev svg{transform:rotate(180deg)}
+.zp__tarrow:hover{color:#111}
+.zp__play{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:50%;background:#fff;color:#2c2c2c;display:flex;align-items:center;justify-content:center;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.mp__slide video{width:100%;height:100%;object-fit:cover;background:#000;display:block}
+/* Buy box type scale and tracking */
+.zp__info{letter-spacing:var(--track)}
+.zp__rating{font-size:17px;align-items:center}
+.zp__rating span{color:var(--c-brand);letter-spacing:2px;font-size:19px}
+.zp__title{font-size:clamp(22px,1.9vw,25px);letter-spacing:.02em;margin:2px 0 6px}
+.zp__hook{font-size:18px;font-weight:800}
+.zp__hook .hl{font-weight:800}
+.zp__bul li{font-size:14.5px}
+.zp__size{font-size:20px}
+.zp__stock{display:flex;align-items:center;gap:6px;color:var(--c-sale);font-size:16px;font-weight:500;margin:0 0 12px}
+.zp__stock::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;flex:none}
+.zp__banner{background:var(--c-brand-dark);font-size:17px;border-radius:8px;padding:9px 12px}
+/* Offer rows */
+.zp__offer{border:2px solid #d6d6d6;border-radius:8px;padding:16px 18px}
+.zp__offer.is-on{border-color:var(--c-brand);background:#e9eeeb}
+.zp__offer-top strong{font-size:17px;letter-spacing:.03em}
+.zp__offer-top small{font-size:15px;color:#444}
+.zp__offer-price strong{font-size:18px}
+.zp__offer-price s{font-size:15px;color:#555}
+.zp__select{margin:14px 0 0 34px;font-size:17px;gap:10px}
+.zp__select select{font-size:16px;font-weight:700;padding:6px 32px 6px 12px;border:1px solid #888;border-radius:3px}
+.zp__gifts{margin-top:16px}
+.zp__gift{grid-template-columns:46px 1fr auto;font-size:17px}
+.zp__gift-img{width:46px;height:46px;border:0;background:#fff;border-radius:4px}
+.zp__gift b{color:#1f8a3a}
+.zp__gift-val{font-size:12px;font-weight:700}
+.zp__gift-val s{color:#777;font-weight:600}
+.zp__gift-val em{background:none;color:#1f8a3a;padding:0;font-size:14px;margin-top:2px;border-radius:0}
+.zp__atc{width:76%;min-height:58px;border-radius:8px;font-size:21px;letter-spacing:.05em;box-shadow:none;transition:filter .2s}
+.zp__atc:hover{filter:brightness(1.12)}
+.zp__risk{border-radius:10px;padding:14px 18px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.zp__risk-ico{width:44px;height:44px;border-radius:50%;background:var(--c-brand);color:#fff;display:flex;align-items:center;justify-content:center;flex:none}
+.zp__risk small{color:#a2734a;font-weight:700}
+.zp__risk strong{color:var(--c-brand);font-size:17px}
+.zp__risk p{font-weight:600;font-size:12.5px;color:#7a5a3c}
+.zp__quote p{font-size:16px;line-height:1.55}
+.zp__avatar{width:56px;height:56px;border-radius:50%}
+.zp__acc summary{grid-template-columns:26px 1fr 16px;font-size:15px;padding:16px 0}
+.zp__acc-ico{display:flex;align-items:center;justify-content:center;color:#2c2c2c}
+/* Sticky bar */
+.zsb__info strong{font-size:17px;letter-spacing:.03em}
+.zsb__info b{font-size:16px;color:var(--c-brand)}
+.zsb__btn{padding:14px 32px;font-size:17px;border-radius:8px}
+/* Testimonial cards */
+.zt__card p{font-size:16px;line-height:1.85;letter-spacing:var(--track);color:rgba(44,44,44,.9)}
+.zt__card b{display:block;margin:16px 18px 0;padding-top:14px;border-top:1px solid #e2e2e2;font-style:italic;font-weight:600}
+.zt__q{width:46px;height:46px;font-size:26px}
+@media (max-width:749px){
+  .zt__grid{grid-template-columns:none;grid-auto-flow:column;grid-auto-columns:88%;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding-bottom:4px}
+  .zt__grid::-webkit-scrollbar{display:none}
+  .zt__card{scroll-snap-align:start}
+}
+/* Image with text */
+.zit__copy h2{color:var(--c-brand);font-size:clamp(24px,2.4vw,32px);letter-spacing:.02em;line-height:1.3}
+.zit__copy .rte{font-size:16px;line-height:1.85;letter-spacing:var(--track);color:var(--c-ink-soft)}
+.zit__copy .rte strong{color:var(--c-brand)}
+/* Two paths: serif display face */
+.z2p__h,.z2p__head h3,.z2p__head strong{font-family:Fraunces,Georgia,'Times New Roman',serif}
+.z2p__h{font-size:clamp(30px,3.2vw,44px);line-height:1.15;color:#1a1a1a}
+.z2p__head strong{font-size:26px}
+.z2p__cta .zbtn{padding:14px 28px}
+/* Comparison table: lift the logo file's off-white background to white */
+.zct__us img{filter:contrast(1.12) brightness(1.06)}
+/* Results: progress rings */
+.zr__ring{position:relative;width:64px;height:64px;border:0;background:conic-gradient(var(--c-brand) calc(var(--p,100)*1%),#dfe6e2 0)}
+.zr__ring::before{content:'';position:absolute;inset:6px;border-radius:50%;background:#fff}
+.zr__ring b{position:relative;font-size:15px}
+.zr__row{padding:12px 0;margin:0;border-top:1px solid #e6e6e6}
+.zr__row p{font-size:16px;letter-spacing:var(--track)}
+.zr__grid h3{font-size:22px}
+@media (max-width:749px){
+  .zp__thumbs .mp__thumb{flex-basis:calc((100% - 40px)/5)}
+  .zp__atc{width:100%}
+  .zp__title{font-size:22px}
+  .zp__offer-top strong{font-size:15px}
+  .zp__offer-top small{font-size:14px}
+  .zp__gift{font-size:14px}
+  .zit__copy .rte{font-size:15px}
+  /* Gallery runs edge to edge directly under the header, as on the reference */
+  .zp{padding-top:0}
+  .zp__gallery{margin-inline:-16px}
+  .zp__stage{border-radius:0}
+  .zp__thumbs-wrap{padding-inline:4px}
+}
