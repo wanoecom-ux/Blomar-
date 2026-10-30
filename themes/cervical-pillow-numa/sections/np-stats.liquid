@@ -1,0 +1,24 @@
+{%- liquid
+  assign s = section.settings
+  assign fig = s.figure | plus: 0
+-%}
+<section class="npst" style="--sec-bg: {{ s.bg }};"><div class="page-width">
+  <div class="np-center"><h2 class="np-h2 np-h2--brand">{{ s.heading | escape }}</h2><p class="np-lead">{{ s.text | escape }}</p></div>
+  <div class="npst__card">
+    <div class="npst__main">
+      {%- if s.eyebrow != blank -%}<p class="npst__eye">{% render 'np-icon', name: 'check', size: 13 %} {{ s.eyebrow | escape }}</p>{%- endif -%}
+      <p class="npst__big">{{ s.figure | default: 'XX' | escape }}<sup>%</sup></p>
+      <p class="npst__label">{{ s.figure_text | escape | replace: '[', '<mark>' | replace: ']', '</mark>' }}</p>
+      {%- if fig > 0 -%}<div class="npst__dots" aria-hidden="true">{%- for i in (1..100) -%}<i{% if i > fig %} class="is-off"{% endif %}></i>{%- endfor -%}</div><p class="npst__dotnote"><i></i> {{ fig }} of every 100 {{ s.unit | escape }}</p>{%- endif -%}
+    </div>
+    <div class="npst__side">
+      {%- for block in section.blocks -%}<div class="npst__stat" {{ block.shopify_attributes }}><p class="npst__num">{{ block.settings.figure | default: 'XX' | escape }}{%- if block.settings.suffix != blank -%}<sup>{{ block.settings.suffix | escape }}</sup>{%- endif -%}</p><div>{%- if block.settings.stars -%}{% render 'np-stars', size: 15 %}{%- endif -%}<p>{{ block.settings.text | escape }}</p>{%- if block.settings.bar > 0 -%}<span class="npst__bar"><i style="width: {{ block.settings.bar }}%"></i></span>{%- endif -%}</div></div>{%- endfor -%}
+      <a class="np-btn np-btn--brand np-btn--block" href="{{ s.btn_link | default: '#MainProduct' }}">{{ s.btn | escape }} {% render 'np-icon', name: 'arrow', size: 15 %}</a>
+      <p class="npst__mini"><span>{% render 'np-icon', name: 'moon', size: 13 %} 30-night trial</span><span>{% render 'np-icon', name: 'truck', size: 13 %} Free shipping</span><span>{% render 'np-icon', name: 'return', size: 13 %} Easy returns</span></p>
+    </div>
+  </div>
+  {%- if s.foot != blank -%}<p class="np-note np-center">{{ s.foot | escape }}</p>{%- endif -%}
+</div></section>
+{% schema %}
+{"name":"Results stats card","settings":[{"type":"color","id":"bg","label":"Background","default":"#E6E2F6"},{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"textarea","id":"text","label":"Text","default":"Text"},{"type":"text","id":"eyebrow","label":"Card label","default":"CUSTOMER SURVEY"},{"type":"text","id":"figure","label":"Big figure (number only)","info":"REPLACE_ME with a real survey result. Shows XX until set."},{"type":"text","id":"figure_text","label":"Figure text","default":"of customers REPLACE_ME [result]"},{"type":"text","id":"unit","label":"Dot grid unit","default":"customers"},{"type":"text","id":"btn","label":"Button","default":"Start sleeping better tonight"},{"type":"text","id":"btn_link","label":"Button link","default":"#MainProduct"},{"type":"textarea","id":"foot","label":"Source note","default":"REPLACE_ME: say where these figures come from (e.g. survey of X verified buyers, month/year)."}],"blocks":[{"type":"stat","name":"Stat","settings":[{"type":"text","id":"figure","label":"Figure"},{"type":"text","id":"suffix","label":"Suffix (e.g. %)"},{"type":"checkbox","id":"stars","label":"Show stars","default":false},{"type":"text","id":"text","label":"Text","default":"REPLACE_ME stat description"},{"type":"range","id":"bar","label":"Progress bar % (0 = hidden)","min":0,"max":100,"step":1,"default":0}]}],"presets":[{"name":"Results stats card"}]}
+{% endschema %}

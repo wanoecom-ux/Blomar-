@@ -1,0 +1,116 @@
+{%- liquid
+  assign s = section.settings
+  assign current = product.selected_or_first_available_variant
+  assign form_id = 'ProductForm-' | append: section.id
+  assign has_compare = false
+  if current.compare_at_price > current.price
+    assign has_compare = true
+    assign off_pct = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price
+  endif
+  assign def = s.tier_default | default: 2
+-%}
+<section class="npm" id="MainProduct" data-product>
+  <div class="page-width npm__grid">
+    <div class="npm__left">
+      <div class="npm__gallery" data-gallery>
+        <div class="mp__stage npm__stage">
+          {%- for media in product.media -%}<div class="mp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}" data-media-id="{{ media.id }}">{{ media.preview_image | image_url: width: 1300 | image_tag: loading: 'eager', sizes: '(min-width: 990px) 45vw, 100vw', alt: media.alt | default: product.title }}</div>{%- endfor -%}
+          {%- if product.media.size == 0 -%}<div class="mp__slide is-active npm__ph">{{ 'product-1' | placeholder_svg_tag }}<span>REPLACE_ME_PRODUCT_IMAGES: add photos in Products → {{ product.title | escape }}</span></div>{%- endif -%}
+          {%- if has_compare and s.show_badge -%}<span class="npm__badge">SAVE {{ off_pct }}%</span>{%- endif -%}
+          {%- if product.media.size > 1 -%}
+            <button type="button" class="npm__arrow npm__arrow--prev" data-gallery-prev aria-label="Previous image">{% render 'np-icon', name: 'chevron', size: 18 %}</button>
+            <button type="button" class="npm__arrow npm__arrow--next" data-gallery-next aria-label="Next image">{% render 'np-icon', name: 'chevron', size: 18 %}</button>
+          {%- endif -%}
+        </div>
+        {%- if product.media.size > 1 -%}<div class="mp__thumbs npm__thumbs">{%- for media in product.media -%}<button type="button" class="mp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Show image {{ forloop.index }}">{{ media.preview_image | image_url: width: 200 | image_tag: loading: 'lazy', alt: '' }}</button>{%- endfor -%}</div>{%- endif -%}
+      </div>
+      {%- if s.quote != blank -%}
+      <figure class="npm__quote">{% render 'np-stars', size: 15 %}<blockquote>“{{ s.quote | escape }}”</blockquote><figcaption><strong>{{ s.quote_by | escape }}</strong>{%- if s.quote_verified -%}<span>{% render 'np-icon', name: 'check', size: 12 %} Verified customer</span>{%- endif -%}</figcaption></figure>
+      {%- endif -%}
+    </div>
+
+    <div class="npm__info">
+      {%- if s.rating_count != blank or s.sold != blank -%}<p class="npm__meta">{%- if s.rating_count != blank -%}<a href="#reviews">{% render 'np-stars', size: 14 %}<span>({{ s.rating_count | escape }})</span></a>{%- endif -%}{%- if s.sold != blank -%}<b>{{ s.sold | escape }}</b>{%- endif -%}</p>{%- endif -%}
+      <h1 class="npm__title">{{ s.title | default: product.title | escape }}</h1>
+      {%- if s.eyebrow != blank -%}<p class="npm__eyebrow">{{ s.eyebrow | escape }}</p>{%- endif -%}
+      <ul class="npm__bul" role="list">{%- assign rows = s.bullets | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign t = r | strip -%}{%- if t != blank -%}{%- assign p = t | split: '|' -%}{%- assign bi = p[0] | strip -%}<li><span class="npm__bul-ico">{% render 'np-icon', name: bi, size: 14 %}</span><span>{{ p[1] | strip | escape | replace: '[', '<strong>' | replace: ']', '</strong>' }}</span></li>{%- endif -%}{%- endfor -%}</ul>
+
+      {%- if s.offer_label != blank -%}
+      <div class="npm__offer" {% if s.timer_end != blank %}data-countdown="{{ s.timer_end | escape }}"{% endif %}>
+        <span>{% render 'np-icon', name: 'check', size: 14 %} {{ s.offer_label | escape }}</span>
+        {%- if s.timer_end != blank -%}<span class="npm__timer" aria-label="Offer ends in"><span><b data-cd="h">00</b><small>HRS</small></span>:<span><b data-cd="m">00</b><small>MIN</small></span>:<span><b data-cd="s">00</b><small>SEC</small></span></span>{%- endif -%}
+      </div>
+      {%- endif -%}
+
+      {%- form 'product', product, id: form_id, class: 'npm__form', data-product-form: '', data-np-tiers: '' -%}
+        <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
+        <input type="hidden" name="quantity" value="{{ def }}" data-np-qty>
+        <div class="npm__tiers" role="radiogroup" aria-label="Choose quantity">
+          {%- for n in (1..3) -%}
+            {%- assign tk = 'tier_' | append: n -%}{%- assign bk = tk | append: '_badge' -%}{%- assign sk = tk | append: '_sub' -%}
+            {%- if s[tk] != blank -%}
+            <label class="npm__tier{% if n == def %} is-on{% endif %}{% if s[bk] != blank and n == 3 %} npm__tier--alt{% endif %}" data-np-tier data-qty="{{ n }}" data-price="{{ current.price | times: n }}">
+              <input type="radio" name="np-tier-{{ section.id }}" value="{{ n }}" {% if n == def %}checked{% endif %}>
+              {%- if s[bk] != blank -%}<span class="npm__tier-badge">{{ s[bk] | escape }}</span>{%- endif -%}
+              <span class="npm__radio"></span>
+              <span class="npm__tier-name"><strong>{{ s[tk] | escape }}</strong><small>{{ s[sk] | escape }}</small></span>
+              <span class="npm__tier-price">{%- if has_compare -%}<s>{{ current.compare_at_price | times: n | money }}</s>{%- endif -%}<strong>{{ current.price | times: n | money }}</strong>
+                {%- if has_compare -%}<em>{%- if n == 1 -%}SAVE {{ off_pct }}%{%- else -%}SAVE {{ current.compare_at_price | minus: current.price | times: n | money_without_trailing_zeros }}{%- endif -%}</em>{%- endif -%}</span>
+            </label>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+        <button type="submit" class="np-btn np-btn--grad npm__atc" data-atc {% unless current.available %}disabled{% endunless %}><span data-atc-label>{{ s.atc | default: 'ADD TO CART' | escape }}</span></button>
+        {%- if s.show_dynamic -%}<div class="npm__dyn">{{ form | payment_button }}</div>{%- endif -%}
+        <p class="mp__error" data-error hidden></p>
+      {%- endform -%}
+      {%- if s.trust_line != blank -%}<p class="npm__trustline">{% render 'np-icon', name: 'lock', size: 14 %} {{ s.trust_line | escape }}</p>{%- endif -%}
+      <ul class="npm__icons" role="list">{%- for n in (1..3) -%}{%- assign ik = 'icon_' | append: n -%}{%- assign tk = 'icon_' | append: n | append: '_text' -%}{%- if s[tk] != blank -%}<li>{% render 'np-icon', name: s[ik], size: 24 %}<span>{{ s[tk] | escape }}</span></li>{%- endif -%}{%- endfor -%}</ul>
+      {%- for block in section.blocks -%}<details class="npm__acc" {{ block.shopify_attributes }}><summary>{{ block.settings.heading | escape }}<span class="npm__acc-ico">{% render 'np-icon', name: 'plus', size: 14 %}</span></summary><div class="rte">{{ block.settings.content }}</div></details>{%- endfor -%}
+    </div>
+  </div>
+
+  <div class="npsb" data-sticky hidden>
+    <div class="page-width npsb__in">
+      <div class="npsb__prod">
+        <span class="npsb__img">{%- if product.featured_media -%}{{ product.featured_media | image_url: width: 120 | image_tag: alt: '' }}{%- endif -%}</span>
+        <span><strong>{{ s.sticky_name | default: product.title | escape }}</strong><small>{%- if s.rating_value != blank -%}<i>★</i> {{ s.rating_value | escape }} · {% endif -%}<span data-np-sticky-qty>{{ def }} {{ s.unit | default: 'Pillow' | escape }}{% if def > 1 %}s{% endif %}</span>{%- if has_compare -%} <em data-np-sticky-save>Save {{ current.compare_at_price | minus: current.price | times: def | money_without_trailing_zeros }}</em>{%- endif -%}</small></span>
+      </div>
+      <button type="submit" form="{{ form_id }}" class="npsb__btn"><span>Add to cart</span><span class="npsb__price"><b data-np-sticky-price>{{ current.price | times: def | money }}</b>{%- if has_compare -%}<s data-np-sticky-compare>{{ current.compare_at_price | times: def | money }}</s>{%- endif -%}</span></button>
+    </div>
+  </div>
+  <script type="application/json" data-variants>{{ product.variants | json }}</script>
+  <script type="application/json" data-np-unit>{{ s.unit | default: 'Pillow' | json }}</script>
+  <script type="application/json" data-np-prices>{"price":{{ current.price }},"compare":{{ current.compare_at_price | default: 0 }}}</script>
+</section>
+{% schema %}
+{"name":"Product (pillow)","settings":[
+{"type":"checkbox","id":"show_badge","label":"Show SAVE % badge on gallery","default":true},
+{"type":"textarea","id":"quote","label":"Quote under gallery","default":"REPLACE_ME_REVIEW: paste a real customer review here."},
+{"type":"text","id":"quote_by","label":"Quote name","default":"REPLACE_ME name"},
+{"type":"checkbox","id":"quote_verified","label":"Show 'Verified customer' (only for real orders)","default":false},
+{"type":"text","id":"rating_count","label":"Review count next to stars","info":"Hidden when empty. Real figures only."},
+{"type":"text","id":"rating_value","label":"Average rating (sticky bar)","info":"e.g. 4.8. Hidden when empty."},
+{"type":"text","id":"sold","label":"Sold line","info":"e.g. 1,000+ PILLOWS SOLD. Hidden when empty."},
+{"type":"text","id":"title","label":"Title"},
+{"type":"text","id":"eyebrow","label":"Line under title","default":"CONTOURED MEMORY FOAM · TWO HEIGHTS"},
+{"type":"textarea","id":"bullets","label":"Bullets (icon | text per line)","info":"Icons: trophy, shield, layers, snow, leaf, heart, moon, spine, star. [Brackets] = bold.","default":"spine | Keeps your [head, neck and spine] in line\nlayers | [Two heights] in one, for back and side sleepers\nsnow | Breathable cover that [stays cool]\nleaf | Hypoallergenic memory foam\nmoon | [30-night] sleep trial\nshield | Easy returns if it isn't right for you"},
+{"type":"header","content":"Offer bar"},
+{"type":"text","id":"offer_label","label":"Offer text","default":"LAUNCH PRICE APPLIED","info":"Hidden when empty."},
+{"type":"text","id":"timer_end","label":"Countdown end (real sale end)","info":"Format 2026-11-30T23:59:00+10:00. Timer hidden when empty or past."},
+{"type":"header","content":"Quantity options"},
+{"type":"range","id":"tier_default","label":"Selected by default","min":1,"max":3,"step":1,"default":2},
+{"type":"text","id":"tier_1","label":"Option 1","default":"1 Pillow"},{"type":"text","id":"tier_1_sub","label":"Option 1 subline","default":"Free shipping"},{"type":"text","id":"tier_1_badge","label":"Option 1 badge"},
+{"type":"text","id":"tier_2","label":"Option 2","default":"2 Pillows"},{"type":"text","id":"tier_2_sub","label":"Option 2 subline","default":"Free shipping"},{"type":"text","id":"tier_2_badge","label":"Option 2 badge","default":"MOST POPULAR"},
+{"type":"text","id":"tier_3","label":"Option 3","default":"3 Pillows"},{"type":"text","id":"tier_3_sub","label":"Option 3 subline","default":"Free shipping"},{"type":"text","id":"tier_3_badge","label":"Option 3 badge","default":"BEST VALUE"},
+{"type":"text","id":"unit","label":"Unit name (sticky bar)","default":"Pillow"},
+{"type":"text","id":"sticky_name","label":"Sticky bar name","default":"Cervical Pillow"},
+{"type":"text","id":"atc","label":"Button","default":"START SLEEPING BETTER TONIGHT"},
+{"type":"checkbox","id":"show_dynamic","label":"Show express checkout button","default":true},
+{"type":"text","id":"trust_line","label":"Line under buttons","default":"30-night trial · Easy returns · Tracked shipping"},
+{"type":"header","content":"Icon row"},
+{"type":"select","id":"icon_1","label":"Icon 1","options":[{"value":"truck","label":"Truck"},{"value":"box","label":"Box"},{"value":"moon","label":"Moon"},{"value":"shield","label":"Shield"},{"value":"return","label":"Return"}],"default":"truck"},{"type":"text","id":"icon_1_text","label":"Text 1","default":"FREE SHIPPING ON EVERY ORDER"},
+{"type":"select","id":"icon_2","label":"Icon 2","options":[{"value":"truck","label":"Truck"},{"value":"box","label":"Box"},{"value":"moon","label":"Moon"},{"value":"shield","label":"Shield"},{"value":"return","label":"Return"}],"default":"box"},{"type":"text","id":"icon_2_text","label":"Text 2","default":"TRACKED DELIVERY"},
+{"type":"select","id":"icon_3","label":"Icon 3","options":[{"value":"truck","label":"Truck"},{"value":"box","label":"Box"},{"value":"moon","label":"Moon"},{"value":"shield","label":"Shield"},{"value":"return","label":"Return"}],"default":"moon"},{"type":"text","id":"icon_3_text","label":"Text 3","default":"30-NIGHT SLEEP TRIAL"}],
+"blocks":[{"type":"acc","name":"Collapsible row","settings":[{"type":"text","id":"heading","label":"Heading","default":"Which side do I sleep on?"},{"type":"richtext","id":"content","label":"Content","default":"<p>Content</p>"}]}]}
+{% endschema %}

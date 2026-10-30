@@ -1,0 +1,13 @@
+{%- comment -%} Renders an image picker image, else a theme asset image, else a placeholder. {%- endcomment -%}
+{%- liquid
+  assign w = width | default: 1600
+  assign ld = loading | default: 'lazy'
+  assign sz = sizes | default: '100vw'
+-%}
+{%- if image != blank -%}
+  {{ image | image_url: width: w | image_tag: loading: ld, sizes: sz, class: class, alt: image.alt }}
+{%- elsif asset != blank -%}
+  <img src="{{ asset | asset_url }}" alt="{{ alt | escape }}" class="{{ class }}" loading="{{ ld }}"{% if ld == 'eager' %} fetchpriority="high"{% endif %}>
+{%- else -%}
+  {{ 'lifestyle-1' | placeholder_svg_tag: class }}
+{%- endif -%}

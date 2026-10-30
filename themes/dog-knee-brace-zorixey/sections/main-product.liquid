@@ -1,25 +1,72 @@
 {%- liquid
   assign s = section.settings
+  if s.product != blank
+    assign product = s.product
+  endif
   assign current = product.selected_or_first_available_variant
   assign form_id = 'ProductForm-' | append: section.id
+  assign stock_n = 0
+  assign tracked = false
+  for v in product.variants
+    if v.inventory_management == 'shopify'
+      assign tracked = true
+      if v.inventory_quantity > 0
+        assign stock_n = stock_n | plus: v.inventory_quantity
+      endif
+    endif
+  endfor
+  assign free_price = 0 | money_without_trailing_zeros
 -%}
 <section class="zp" id="MainProduct" data-product>
   <div class="page-width zp__grid">
     <div class="zp__gallery" data-gallery>
       <div class="mp__stage zp__stage">
-        {%- for media in product.media -%}<div class="mp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}" data-media-id="{{ media.id }}">{{ media.preview_image | image_url: width: 1300 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 45vw, 100vw', alt: product.title }}</div>{%- endfor -%}
+        {%- for media in product.media -%}
+          <div class="mp__slide{% if forloop.first %} is-active{% endif %}" data-slide="{{ forloop.index0 }}" data-media-id="{{ media.id }}">
+            {%- case media.media_type -%}
+              {%- when 'video' -%}{{ media | video_tag: controls: true, muted: true, playsinline: true, preload: 'none', image_size: '1300x' }}
+              {%- when 'external_video' -%}{{ media | external_video_tag }}
+              {%- else -%}
+                {%- if forloop.first -%}{%- assign ld = 'eager' -%}{%- else -%}{%- assign ld = 'lazy' -%}{%- endif -%}
+                {{ media.preview_image | image_url: width: 1300 | image_tag: loading: ld, sizes: '(min-width: 990px) 45vw, 100vw', alt: product.title }}
+            {%- endcase -%}
+          </div>
+        {%- endfor -%}
         {%- if product.media.size == 0 -%}<div class="mp__slide is-active zp__ph">{{ 'product-1' | placeholder_svg_tag }}<span>Add product photos in Products → {{ product.title | escape }}</span></div>{%- endif -%}
         {%- if s.seal != blank -%}<span class="zp__seal">{{ s.seal | escape }}</span>{%- endif -%}
       </div>
-      {%- if product.media.size > 1 -%}<div class="mp__thumbs zp__thumbs">{%- for media in product.media -%}<button type="button" class="mp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="Image {{ forloop.index }}">{{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}</button>{%- endfor -%}</div>{%- endif -%}
+      {%- if product.media.size > 1 -%}
+        <div class="zp__thumbs-wrap">
+          <button type="button" class="zp__tarrow zp__tarrow--prev" data-gallery-prev aria-label="Previous image">{% render 'icon', name: 'chevron-right', size: 18 %}</button>
+          <div class="mp__thumbs zp__thumbs">
+            {%- for media in product.media -%}
+              {%- liquid
+                assign is_video = false
+                if media.media_type == 'video' or media.media_type == 'external_video'
+                  assign is_video = true
+                endif
+              -%}
+              <button type="button" class="mp__thumb{% if forloop.first %} is-active{% endif %}" data-thumb="{{ forloop.index0 }}" aria-label="{% if is_video %}Video{% else %}Image {{ forloop.index }}{% endif %}">{{ media.preview_image | image_url: width: 240 | image_tag: loading: 'lazy', alt: '' }}{%- if is_video -%}<span class="zp__play">{% render 'icon-x', name: 'play', size: 14 %}</span>{%- endif -%}</button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="zp__tarrow" data-gallery-next aria-label="Next image">{% render 'icon', name: 'chevron-right', size: 18 %}</button>
+        </div>
+      {%- endif -%}
     </div>
     <div class="zp__info">
-      {%- if s.rating != blank -%}<a class="zp__rating" href="#reviews"><span>★★★★★</span>{{ s.rating | escape }}</a>{%- endif -%}
+      {%- if s.rating != blank -%}<a class="zp__rating" href="#reviews"><span>{{ s.stars | escape }}</span>{{ s.rating | escape }}</a>{%- endif -%}
       <h1 class="zp__title">{{ s.title | default: product.title | escape }}</h1>
       {%- if s.hook != blank -%}<p class="zp__hook">{% render 'hl', text: s.hook %}</p>{%- endif -%}
       <ul class="zp__bul" role="list">{%- assign rows = s.bullets | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign t = r | strip -%}{%- if t != blank -%}{%- assign p = t | split: '|' -%}<li><span>{{ p[0] | strip }}</span>{{ p[1] | strip | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</li>{%- endif -%}{%- endfor -%}</ul>
-      {%- if s.size_label != blank -%}<a class="zp__size" href="#size-guide">📏 <u>{{ s.size_label | escape }}</u> ↓</a>{%- endif -%}
-      {%- if s.stock != blank -%}<p class="zp__stock">● {{ s.stock | escape }}</p>{%- endif -%}
+      {%- if s.size_label != blank -%}<a class="zp__size" href="{{ s.size_url | default: '#size-guide' }}">{% if s.size_icon != blank %}{{ s.size_icon | escape }} {% endif %}<u>{{ s.size_label | escape }}</u>{% if s.size_arrow != blank %} {{ s.size_arrow | escape }}{% endif %}</a>{%- endif -%}
+      {%- comment -%} Stock line runs on real data: the low-stock message only shows when inventory is tracked and at or under the threshold. {%- endcomment -%}
+      {%- if s.stock_show and product.available -%}
+        {%- if tracked and stock_n > 0 and stock_n <= s.stock_threshold -%}
+          <p class="zp__stock is-low">{{ s.stock_low | escape | replace: '[count]', stock_n }}</p>
+        {%- elsif s.stock_in != blank -%}
+          <p class="zp__stock">{{ s.stock_in | escape }}</p>
+        {%- endif -%}
+      {%- endif -%}
       {%- if s.banner != blank -%}<p class="zp__banner">{{ s.banner | escape }}</p>{%- endif -%}
       {%- form 'product', product, id: form_id, class: 'zp__form', data-product-form: '', data-tiers: '' -%}
         <input type="hidden" name="id" value="{{ current.id }}" data-variant-id>
@@ -38,7 +85,7 @@
             <span class="zp__offer-body">
               {%- unless product.has_only_default_variant -%}
                 {%- for k in (1..q) -%}
-                <span class="zp__select"><b>{% if q > 1 %}#{{ k }} {% endif %}{{ s.size_select | escape }}</b>
+                <span class="zp__select"><b>{% if s.size_numbered %}#{{ k }} {% endif %}{{ s.size_select | escape }}</b>
                   <select data-tier-select aria-label="Size {{ k }}">{%- for v in product.variants -%}<option value="{{ v.id }}" data-price="{{ v.price }}" data-compare="{{ v.compare_at_price }}" {% if v.id == current.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select></span>
                 {%- endfor -%}
               {%- endunless -%}
@@ -46,7 +93,7 @@
               {%- if gn > 0 -%}
               <span class="zp__gifts">{%- for g in (1..gn) -%}{%- assign gi = g | modulo: 4 -%}{%- if gi == 0 -%}{%- assign gi = 4 -%}{%- endif -%}
                 {%- assign nk = 'gift_' | append: gi -%}{%- assign vk = nk | append: '_value' -%}{%- assign ik = nk | append: '_image' -%}{%- assign ek = nk | append: '_emoji' -%}
-                {%- if s[nk] != blank -%}<span class="zp__gift"><span class="zp__gift-img">{%- if s[ik] != blank -%}{{ s[ik] | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}{{ s[ek] }}{%- endif -%}</span><span><b>FREE</b> {{ s[nk] | escape }}</span><span class="zp__gift-val">{%- if s[vk] != blank -%}<s>{{ s[vk] | escape }}</s>{%- endif -%}<em>FREE</em></span></span>{%- endif -%}
+                {%- if s[nk] != blank -%}<span class="zp__gift"><span class="zp__gift-img">{%- if s[ik] != blank -%}{{ s[ik] | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}{%- else -%}{{ s[ek] }}{%- endif -%}</span><span>{% if s.gift_word != blank %}<b>{{ s.gift_word | escape }}</b> {% endif %}{{ s[nk] | escape }}</span><span class="zp__gift-val">{%- if s[vk] != blank -%}<s>{{ s[vk] | escape }}</s>{%- endif -%}<em>{{ s.gift_free | default: free_price | escape }}</em></span></span>{%- endif -%}
               {%- endfor -%}</span>
               {%- endif -%}
             </span>
@@ -59,30 +106,40 @@
       {%- endform -%}
       {%- if s.exchange != blank -%}<p class="zp__exch">{{ s.exchange | escape }}</p>{%- endif -%}
       <div class="zp__pay">{%- for type in shop.enabled_payment_types limit: 9 -%}{{ type | payment_type_svg_tag: class: 'zp__pay-icon' }}{%- endfor -%}</div>
-      {%- if s.risk_title != blank -%}<div class="zp__risk"><span>🛡️</span><div><small>RISK-FREE PURCHASE</small><strong>{{ s.risk_title | escape }}</strong><p>{{ s.risk_text | escape }}</p></div></div>{%- endif -%}
-      {%- if s.quote != blank -%}<div class="zp__quote"><span class="zp__avatar">{% render 'media-img', image: s.quote_img, width: 100, alt: '' %}</span><div><p>“{{ s.quote | escape }}”</p><small>{{ s.quote_by | escape }} <b>★★★★★</b></small></div></div>{%- endif -%}
-      {%- for block in section.blocks -%}<details class="zp__acc" {{ block.shopify_attributes }}><summary><span>{{ block.settings.icon }}</span>{{ block.settings.heading | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{% render 'icon', name: 'chevron-down', size: 16 %}</summary><div class="rte">{{ block.settings.content  | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}</div></details>{%- endfor -%}
+      {%- if s.risk_title != blank -%}<div class="zp__risk"><span class="zp__risk-ico{% if s.risk_img != blank %} has-img{% endif %}">{%- if s.risk_img != blank -%}{{ s.risk_img | image_url: width: 160 | image_tag: loading: 'lazy', alt: s.risk_title }}{%- else -%}{% render 'icon-x', name: 'shield-check', size: 22 %}{%- endif -%}</span><div>{%- if s.risk_eyebrow != blank -%}<small>{{ s.risk_eyebrow | escape }}</small>{%- endif -%}<strong>{{ s.risk_title | escape }}</strong><p>{{ s.risk_text | escape }}</p></div></div>{%- endif -%}
+      {%- if s.quote != blank -%}<div class="zp__quote">{%- if s.quote_img != blank -%}<span class="zp__avatar">{{ s.quote_img | image_url: width: 120 | image_tag: loading: 'lazy', alt: '' }}</span>{%- endif -%}<div><p>“{{ s.quote | escape }}”</p><small>{{ s.quote_by | escape }} <b>{{ s.stars | escape }}</b></small></div></div>{%- endif -%}
+      {%- for block in section.blocks -%}<details class="zp__acc" {{ block.shopify_attributes }}><summary><span class="zp__acc-ico">{%- if block.settings.svg != blank and block.settings.svg != 'none' -%}{% render 'icon-x', name: block.settings.svg, size: 20 %}{%- else -%}{{ block.settings.icon }}{%- endif -%}</span>{{ block.settings.heading | escape | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{% render 'icon', name: 'chevron-down', size: 16 %}</summary><div class="rte">{%- if block.settings.image != blank -%}<div class="zp__acc-img">{{ block.settings.image | image_url: width: 1100 | image_tag: loading: 'lazy', sizes: '(min-width: 990px) 40vw, 100vw', alt: block.settings.heading }}</div>{%- endif -%}{%- if block.settings.content != blank -%}{{ block.settings.content  | replace: '[', '<span class="hl">' | replace: ']', '</span>' }}{%- endif -%}</div></details>{%- endfor -%}
     </div>
   </div>
   <div class="zsb" data-sticky hidden>
     <div class="page-width zsb__in">
       <div class="zsb__info"><strong>{{ s.title | default: product.title | escape }}</strong>
-        <span><b data-sticky-price>{{ current.price | money }}</b>{%- if current.compare_at_price > current.price -%}<s data-sticky-compare>{{ current.compare_at_price | money }}</s>{%- assign off = current.compare_at_price | minus: current.price | times: 100 | divided_by: current.compare_at_price -%}<em>Save {{ off }}%</em>{%- endif -%}</span></div>
+        <span><b data-sticky-price>{{ current.price | money }}</b>{%- if current.compare_at_price > current.price -%}<s data-sticky-compare>{{ current.compare_at_price | money }}</s>{%- assign off = current.compare_at_price | minus: current.price | times: 100.0 | divided_by: current.compare_at_price | round -%}{%- if s.sticky_save != blank -%}<em>{{ s.sticky_save | escape | replace: '[percent]', off }}</em>{%- endif -%}{%- endif -%}</span></div>
       {%- unless product.has_only_default_variant -%}<select class="zsb__sel" data-sticky-select aria-label="Size">{%- for v in product.variants -%}<option value="{{ v.id }}" {% if v.id == current.id %}selected{% endif %} {% unless v.available %}disabled{% endunless %}>{{ v.title | escape }}</option>{%- endfor -%}</select>{%- endunless -%}
-      <button type="submit" form="{{ form_id }}" class="zsb__btn">Add to Cart</button>
+      <button type="submit" form="{{ form_id }}" class="zsb__btn">{{ s.sticky_btn | default: 'Add to Cart' | escape }}</button>
     </div>
   </div>
   <script type="application/json" data-variants>{{ product.variants | json }}</script>
 </section>
 {% schema %}
 {"name":"Product page","settings":[
+{"type":"product","id":"product","label":"Product","info":"Only needed outside product pages, e.g. on the home page."},
 {"type":"text","id":"seal","label":"Gallery seal text","default":"30-DAY MONEY-BACK GUARANTEE"},
 {"type":"text","id":"rating","label":"Rating line","info":"Hidden when empty. Only show a real review count."},
+{"type":"text","id":"stars","label":"Stars (rating line and quote)","default":"★★★★★"},
 {"type":"text","id":"title","label":"Title"},
-{"type":"text","id":"hook","label":"Hook line","default":"Support both knees before you commit to [costly surgery.]","info":"[Brackets] = red accent."},
+{"type":"text","id":"hook","label":"Hook line","default":"Support both knees before you commit to [costly surgery.]","info":"[Brackets] = accent colour (Theme settings → Colors → [Bracket] word colour)."},
 {"type":"textarea","id":"bullets","label":"Bullets (emoji | text per line)","default":"✔️ | Bullet one\n🛡️ | Bullet two"},
-{"type":"text","id":"size_label","label":"Size guide link","default":"Size Guide"},
-{"type":"text","id":"stock","label":"Stock line","info":"Only show if true."},
+{"type":"header","content":"Size guide link"},
+{"type":"text","id":"size_label","label":"Size guide link text","default":"Size Guide","info":"Leave empty to hide the link."},
+{"type":"text","id":"size_url","label":"Size guide link goes to","default":"#size-guide","info":"#size-guide opens the size guide popup. Or use a page, e.g. /pages/dogs-size-chart"},
+{"type":"text","id":"size_icon","label":"Icon before link","default":"📏"},
+{"type":"text","id":"size_arrow","label":"Arrow after link","default":"↓"},
+{"type":"header","content":"Stock line"},
+{"type":"checkbox","id":"stock_show","label":"Show stock line","default":true},
+{"type":"text","id":"stock_in","label":"In-stock text","default":"In stock","info":"Shown while the product can be bought."},
+{"type":"text","id":"stock_low","label":"Low-stock text","default":"Only [count] left in stock","info":"Shown only when inventory is tracked and at or under the threshold. [count] = real units left."},
+{"type":"range","id":"stock_threshold","label":"Low-stock threshold","min":1,"max":50,"step":1,"default":10},
 {"type":"text","id":"banner","label":"Offer banner","default":"LIMITED-TIME OFFER: UP TO 50% OFF"},
 {"type":"header","content":"Offer tiers"},
 {"type":"range","id":"tier_default","label":"Selected tier","min":1,"max":3,"step":1,"default":2},
@@ -90,15 +147,25 @@
 {"type":"text","id":"tier_2","label":"Tier 2 title","default":"Buy 1 Get Full Recovery Kit"},{"type":"text","id":"tier_2_sub","label":"Tier 2 subline","default":"+ Free Shipping"},{"type":"range","id":"tier_2_qty","label":"Tier 2 braces","min":1,"max":3,"step":1,"default":1},{"type":"range","id":"tier_2_gifts","label":"Tier 2 gifts shown","min":0,"max":4,"step":1,"default":4},{"type":"text","id":"tier_2_badge","label":"Tier 2 badge","default":"Most Popular"},
 {"type":"text","id":"tier_3","label":"Tier 3 title","default":"Buy 2 Get 4 Free Gifts"},{"type":"text","id":"tier_3_sub","label":"Tier 3 subline","default":"+ Free Shipping"},{"type":"range","id":"tier_3_qty","label":"Tier 3 braces","min":1,"max":3,"step":1,"default":2},{"type":"range","id":"tier_3_gifts","label":"Tier 3 gifts shown","min":0,"max":4,"step":1,"default":4},{"type":"text","id":"tier_3_badge","label":"Tier 3 badge","default":"Best Value"},
 {"type":"text","id":"size_select","label":"Size label","default":"Select size"},
+{"type":"checkbox","id":"size_numbered","label":"Number the size pickers (#1, #2)","default":true},
 {"type":"header","content":"Free gifts (only list gifts you really include)"},
+{"type":"text","id":"gift_word","label":"Word before each gift","default":"FREE"},
+{"type":"text","id":"gift_free","label":"Free price text","info":"Leave empty to show $0 in your store currency."},
 {"type":"text","id":"gift_1","label":"Gift 1"},{"type":"text","id":"gift_1_value","label":"Gift 1 normal price"},{"type":"image_picker","id":"gift_1_image","label":"Gift 1 image"},{"type":"text","id":"gift_1_emoji","label":"Gift 1 emoji (if no image)"},
 {"type":"text","id":"gift_2","label":"Gift 2"},{"type":"text","id":"gift_2_value","label":"Gift 2 normal price"},{"type":"image_picker","id":"gift_2_image","label":"Gift 2 image"},{"type":"text","id":"gift_2_emoji","label":"Gift 2 emoji (if no image)"},
 {"type":"text","id":"gift_3","label":"Gift 3"},{"type":"text","id":"gift_3_value","label":"Gift 3 normal price"},{"type":"image_picker","id":"gift_3_image","label":"Gift 3 image"},{"type":"text","id":"gift_3_emoji","label":"Gift 3 emoji (if no image)"},
 {"type":"text","id":"gift_4","label":"Gift 4"},{"type":"text","id":"gift_4_value","label":"Gift 4 normal price"},{"type":"image_picker","id":"gift_4_image","label":"Gift 4 image"},{"type":"text","id":"gift_4_emoji","label":"Gift 4 emoji (if no image)"},
+{"type":"header","content":"Button and guarantee"},
 {"type":"text","id":"atc","label":"Button","default":"ADD TO CART"},
 {"type":"text","id":"exchange","label":"Line under button","default":"Free size exchange if the fit isn't right."},
-{"type":"text","id":"risk_title","label":"Guarantee title","default":"30-Day Money-Back Guarantee"},
+{"type":"text","id":"risk_eyebrow","label":"Guarantee small label","default":"RISK-FREE PURCHASE"},
+{"type":"image_picker","id":"risk_img","label":"Guarantee image","info":"Replaces the shield icon in the circle, e.g. your guarantee badge."},
+{"type":"text","id":"risk_title","label":"Guarantee title","default":"30-Day Money-Back Guarantee","info":"Leave empty to hide the guarantee box."},
 {"type":"textarea","id":"risk_text","label":"Guarantee text","default":"Must match your refund policy."},
-{"type":"textarea","id":"quote","label":"Quote","default":"[Add a real customer quote here.]"},{"type":"text","id":"quote_by","label":"Quote by","default":"— Customer name"},{"type":"image_picker","id":"quote_img","label":"Quote photo"}],
-"blocks":[{"type":"acc","name":"Collapsible row","settings":[{"type":"text","id":"icon","label":"Emoji","default":"ⓘ"},{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"richtext","id":"content","label":"Content","default":"<p>Content</p>"}]}]}
+{"type":"header","content":"Customer quote"},
+{"type":"textarea","id":"quote","label":"Quote","default":"[Add a real customer quote here.]","info":"Leave empty to hide the quote."},{"type":"text","id":"quote_by","label":"Quote by","default":"— Customer name"},{"type":"image_picker","id":"quote_img","label":"Quote photo"},
+{"type":"header","content":"Sticky add-to-cart bar"},
+{"type":"text","id":"sticky_btn","label":"Sticky bar button","default":"Add to Cart"},
+{"type":"text","id":"sticky_save","label":"Sticky bar saving text","default":"Save [percent]%","info":"[percent] = real discount from the compare-at price. Leave empty to hide."}],
+"blocks":[{"type":"acc","name":"Collapsible row","settings":[{"type":"select","id":"svg","label":"Icon","default":"none","options":[{"value":"none","label":"Use emoji below"},{"value":"help-circle","label":"Question"},{"value":"star-outline","label":"Star"},{"value":"box","label":"Box"},{"value":"truck","label":"Truck"},{"value":"heart","label":"Heart"},{"value":"shield-check","label":"Shield"},{"value":"return","label":"Return"},{"value":"clock","label":"Clock"}]},{"type":"text","id":"icon","label":"Emoji","default":"ⓘ"},{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"image_picker","id":"image","label":"Image","info":"Shown inside the row when opened. Leave the text below empty to show only the image."},{"type":"richtext","id":"content","label":"Content","default":"<p>Content</p>"}]}]}
 {% endschema %}

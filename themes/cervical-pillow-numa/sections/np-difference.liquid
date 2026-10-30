@@ -1,0 +1,17 @@
+{%- assign s = section.settings -%}
+<section class="npd" style="--sec-bg: {{ s.bg }};"><div class="page-width">
+  <div class="npd__top">
+    <div class="npd__ba" data-ba style="--pos:50%;">
+      <div class="npd__ba-img">{% render 'media-img', image: s.image_after, width: 900, alt: s.label_after %}</div>
+      <div class="npd__ba-img npd__ba-before">{% render 'media-img', image: s.image_before, width: 900, alt: s.label_before %}</div>
+      <span class="npd__tag npd__tag--l">{{ s.label_before | escape }}</span><span class="npd__tag npd__tag--r">{{ s.label_after | escape }}</span>
+      <span class="npd__handle" aria-hidden="true">{% render 'np-icon', name: 'drag', size: 16 %}</span>
+      <input type="range" min="0" max="100" value="50" aria-label="Compare before and after" data-ba-range>
+    </div>
+    <div class="npd__copy"><h2 class="np-h2">{{ s.heading | escape | replace: '[', '<span class="np-acc">' | replace: ']', '</span>' }}</h2><p>{{ s.text | escape }}</p></div>
+  </div>
+  <ul class="npd__cols" role="list">{%- for block in section.blocks -%}<li {{ block.shopify_attributes }}><span class="npd__ico">{% render 'np-icon', name: block.settings.icon, size: 26 %}</span><h3>{{ block.settings.title | escape }}</h3><p>{{ block.settings.text | escape }}</p></li>{%- endfor -%}</ul>
+</div></section>
+{% schema %}
+{"name":"Before/after + features","settings":[{"type":"color","id":"bg","label":"Background","default":"#F8F7FD"},{"type":"image_picker","id":"image_before","label":"Before image (REPLACE_ME)"},{"type":"image_picker","id":"image_after","label":"After image (REPLACE_ME)"},{"type":"text","id":"label_before","label":"Before label","default":"Before"},{"type":"text","id":"label_after","label":"After label","default":"After"},{"type":"text","id":"heading","label":"Heading","default":"Feel the [difference]","info":"[Brackets] = accent colour."},{"type":"textarea","id":"text","label":"Text","default":"Drag the slider to see how a contoured pillow keeps your neck in line instead of letting it bend."}],"blocks":[{"type":"col","name":"Feature","settings":[{"type":"select","id":"icon","label":"Icon","options":[{"value":"spine","label":"Spine"},{"value":"sun","label":"Sunrise"},{"value":"ruler","label":"Ruler"},{"value":"snow","label":"Snowflake"},{"value":"moon","label":"Moon"},{"value":"heart","label":"Heart"}],"default":"spine"},{"type":"text","id":"title","label":"Title","default":"Feature"},{"type":"textarea","id":"text","label":"Text","default":"Short description."}]}],"presets":[{"name":"Before/after + features"}]}
+{% endschema %}

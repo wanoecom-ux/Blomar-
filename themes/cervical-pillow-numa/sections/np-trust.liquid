@@ -1,0 +1,6 @@
+<section class="nptr" style="--sec-bg: {{ section.settings.bg }};"><div class="page-width"><ul class="nptr__grid" role="list">
+{%- for block in section.blocks -%}<li class="nptr__card" {{ block.shopify_attributes }}><span class="nptr__ico">{% render 'np-icon', name: block.settings.icon, size: 22 %}</span><span>{{ block.settings.label | escape }}</span></li>{%- endfor -%}
+</ul></div></section>
+{% schema %}
+{"name":"Feature cards strip","settings":[{"type":"color","id":"bg","label":"Background","default":"#EEEBFA"}],"blocks":[{"type":"card","name":"Card","settings":[{"type":"select","id":"icon","label":"Icon","options":[{"value":"star","label":"Star"},{"value":"wave","label":"Wave"},{"value":"snow","label":"Snowflake"},{"value":"moon","label":"Moon"},{"value":"shield","label":"Shield"},{"value":"spine","label":"Spine"},{"value":"layers","label":"Layers"},{"value":"leaf","label":"Leaf"},{"value":"heart","label":"Heart"}],"default":"star"},{"type":"text","id":"label","label":"Label","default":"Feature"}]}],"presets":[{"name":"Feature cards strip"}]}
+{% endschema %}

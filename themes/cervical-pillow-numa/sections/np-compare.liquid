@@ -1,0 +1,17 @@
+{%- liquid
+  assign s = section.settings
+  assign logo = s.us_logo
+  if logo == blank
+    assign logo = images['Blomar_logo_with_uppercase_B.png']
+  endif
+-%}
+<section class="npc" style="--sec-bg: {{ s.bg }};"><div class="page-width npc__grid">
+  <div class="npc__copy"><h2 class="np-h2 np-h2--xl">{{ s.heading | escape | replace: '[', '<span class="np-acc">' | replace: ']', '</span>' }}</h2><p>{{ s.text | escape }}</p></div>
+  <div class="npc__wrap">
+    <div class="npc__head"><span></span><span class="npc__us">{{ s.us | escape }}</span><span>{{ s.them | escape }}</span></div>
+    <div class="npc__table">{%- for block in section.blocks -%}<div class="npc__row" {{ block.shopify_attributes }}><span class="npc__feat">{{ block.settings.feature | escape }}</span><span class="npc__cell">{%- if block.settings.us -%}<span class="npc__yes">{% render 'np-icon', name: 'check', size: 18 %}</span>{%- else -%}<span class="npc__no">{% render 'np-icon', name: 'cross', size: 15 %}</span>{%- endif -%}</span><span class="npc__cell">{%- if block.settings.them -%}<span class="npc__yes">{% render 'np-icon', name: 'check', size: 18 %}</span>{%- else -%}<span class="npc__no">{% render 'np-icon', name: 'cross', size: 15 %}</span>{%- endif -%}</span></div>{%- endfor -%}</div>
+  </div>
+</div></section>
+{% schema %}
+{"name":"Us vs others table","settings":[{"type":"color","id":"bg","label":"Background","default":"#F8F7FD"},{"type":"text","id":"heading","label":"Heading","default":"Your neck deserves [better support]"},{"type":"textarea","id":"text","label":"Text","default":"Text"},{"type":"image_picker","id":"us_logo","label":"Our logo (unused if empty)"},{"type":"text","id":"us","label":"Our column","default":"Blomar"},{"type":"text","id":"them","label":"Their column","default":"Others"}],"blocks":[{"type":"row","name":"Row","settings":[{"type":"text","id":"feature","label":"Feature","default":"Feature"},{"type":"checkbox","id":"us","label":"Ours has it","default":true},{"type":"checkbox","id":"them","label":"Others have it","default":false}]}],"presets":[{"name":"Us vs others table"}]}
+{% endschema %}

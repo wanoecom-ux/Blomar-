@@ -361,3 +361,10 @@ h1,h2,h3{letter-spacing:.01em;font-weight:700}
 /* [Bracket] words */
 .hl{color:var(--c-hl);font-style:normal}
 .zct__feat .hl,.zrt[style*="#2c4a3e"] .hl,.z2p__card--us .z2p__head .hl,.zf .hl,.zp__banner .hl{color:inherit;text-decoration:underline}
+
+/* Show the product photo as-is: hide the theme seal when the gallery has real photos */
+.zp__stage:has(.mp__slide img,.mp__slide video) .zp__seal{display:none}
+.zp__acc-img{margin:0 0 12px;border-radius:10px;overflow:hidden}
+.zp__acc-img img{width:100%;height:auto;display:block}
+.zp__risk .zp__risk-ico.has-img{flex:none;border-radius:50%;background:none;width:56px;height:56px;overflow:hidden}
+.zp__risk .zp__risk-ico.has-img img{width:100%;height:100%;object-fit:contain}

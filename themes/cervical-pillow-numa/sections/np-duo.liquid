@@ -1,0 +1,8 @@
+{%- assign s = section.settings -%}
+<section class="npduo" style="--sec-bg: {{ s.bg }};"><div class="page-width">
+  <div class="np-center"><h2 class="np-h2 np-h2--brand">{{ s.heading | escape }}</h2><p class="np-lead">{{ s.text | escape }}</p></div>
+  <div class="npduo__grid"><div class="npduo__img">{% render 'media-img', image: s.image_1, width: 1000, alt: s.heading %}</div><div class="npduo__img npduo__img--tint">{% render 'media-img', image: s.image_2, width: 1000, alt: s.heading %}</div></div>
+</div></section>
+{% schema %}
+{"name":"Two images","settings":[{"type":"color","id":"bg","label":"Background","default":"#EEEBFA"},{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"textarea","id":"text","label":"Text","default":"Text"},{"type":"image_picker","id":"image_1","label":"Image 1 (REPLACE_ME)"},{"type":"image_picker","id":"image_2","label":"Image 2 (REPLACE_ME)"}],"presets":[{"name":"Two images"}]}
+{% endschema %}

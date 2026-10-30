@@ -1,0 +1,20 @@
+{
+ "current": {
+  "type_heading_font": "poppins_n6",
+  "type_body_font": "inter_n4",
+  "color_brand": "#4C4184",
+  "color_brand_dark": "#2F2756",
+  "color_tint": "#EEEBFA",
+  "color_pill": "#E6E2F6",
+  "color_text": "#3D3470",
+  "color_muted": "#6B6590",
+  "color_bg": "#FFFFFF",
+  "color_sale": "#EE7B53",
+  "color_highlight": "#EE7B53",
+  "color_cta_2": "#E86A45",
+  "noindex": true
+ },
+ "presets": {
+  "Default": {}
+ }
+}

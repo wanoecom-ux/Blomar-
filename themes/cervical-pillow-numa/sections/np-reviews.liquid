@@ -1,0 +1,14 @@
+{%- assign s = section.settings -%}
+<section class="nprv" id="reviews" style="--sec-bg: {{ s.bg }};" data-np-more="{{ s.initial }}"><div class="page-width">
+  <div class="np-center"><h2 class="np-h2 np-h2--brand">{{ s.heading | escape }}</h2>
+    {%- if s.rating != blank -%}<p class="nprv__sum">{% render 'np-stars', size: 16 %} <b>{{ s.rating | escape }}</b> <span>· {{ s.count | escape }}</span></p>{%- endif -%}
+    {%- if s.sub != blank -%}<p class="nprv__sub">{{ s.sub | escape }}</p>{%- endif -%}</div>
+  <div class="nprv__grid">{%- for block in section.blocks -%}{%- if block.type == '@app' -%}{% render block %}{%- continue -%}{%- endif -%}
+    <article class="nprv__card" {{ block.shopify_attributes }}><p class="nprv__name"><strong>{{ block.settings.name | escape }}</strong>{%- if block.settings.verified -%}<span>{% render 'np-icon', name: 'check', size: 11 %} Verified</span>{%- endif -%}</p>
+      <p class="nprv__stars" aria-label="{{ block.settings.stars }} out of 5">{%- for i in (1..5) -%}<span{% if i > block.settings.stars %} class="is-off"{% endif %}>★</span>{%- endfor -%}</p>
+      <p>{{ block.settings.text | escape }}</p></article>{%- endfor -%}</div>
+  <div class="np-center"><button type="button" class="nprv__more" data-np-more-btn hidden>Show more reviews</button></div>
+</div></section>
+{% schema %}
+{"name":"Review wall","settings":[{"type":"color","id":"bg","label":"Background","default":"#E6E2F6"},{"type":"text","id":"heading","label":"Heading","default":"What sleepers are saying"},{"type":"text","id":"rating","label":"Average rating","info":"Hidden when empty. Real figures only."},{"type":"text","id":"count","label":"Review count text"},{"type":"text","id":"sub","label":"Subline"},{"type":"range","id":"initial","label":"Reviews shown before 'Show more'","min":4,"max":24,"step":2,"default":12}],"blocks":[{"type":"@app"},{"type":"review","name":"Review","settings":[{"type":"text","id":"name","label":"Name","default":"REPLACE_ME name"},{"type":"range","id":"stars","label":"Stars","min":1,"max":5,"step":1,"default":5},{"type":"checkbox","id":"verified","label":"Verified buyer (real orders only)","default":false},{"type":"textarea","id":"text","label":"Review","default":"REPLACE_ME_REVIEW"}]}],"presets":[{"name":"Review wall"}]}
+{% endschema %}

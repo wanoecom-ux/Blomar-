@@ -1,0 +1,10 @@
+{%- assign s = section.settings -%}
+<section class="npz" style="--sec-bg: {{ s.bg }};"><div class="page-width npz__grid">
+  <div class="npz__card"><div class="npz__img">{% render 'media-img', image: s.image, width: 1000, alt: s.heading %}</div></div>
+  <div class="npz__copy"><h2 class="np-h2 np-h2--brand">{{ s.heading | escape }}</h2><p>{{ s.text | escape }}</p>
+    {%- for block in section.blocks -%}<details class="np-acc-row" {{ block.shopify_attributes }}><summary>{{ block.settings.title | escape }}<span class="np-plus">{% render 'np-icon', name: 'plus', size: 14 %}</span></summary><div class="rte">{{ block.settings.text }}</div></details>{%- endfor -%}
+  </div>
+</div></section>
+{% schema %}
+{"name":"Image card + accordions","settings":[{"type":"color","id":"bg","label":"Background","default":"#EEEBFA"},{"type":"image_picker","id":"image","label":"Image (REPLACE_ME)"},{"type":"text","id":"heading","label":"Heading","default":"One pillow. Two heights. Every position."},{"type":"textarea","id":"text","label":"Text","default":"Text"}],"blocks":[{"type":"row","name":"Row","settings":[{"type":"text","id":"title","label":"Title","default":"Row"},{"type":"richtext","id":"text","label":"Text","default":"<p>Text</p>"}]}],"presets":[{"name":"Image card + accordions"}]}
+{% endschema %}

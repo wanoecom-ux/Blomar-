@@ -1,0 +1,72 @@
+{%- liquid
+  assign s = section.settings
+-%}
+<footer class="npf" style="--npf-bg: {{ s.bg }};">
+  <div class="page-width">
+    {%- if s.cta_heading != blank -%}
+    <div class="npf__cta">
+      <div>{%- if s.cta_proof != blank -%}<p class="npf__proof">{% render 'np-stars', size: 14 %} {{ s.cta_proof | escape }}</p>{%- endif -%}<h2>{{ s.cta_heading | escape }}</h2></div>
+      <a class="np-btn np-btn--light" href="{{ s.cta_link | default: '#MainProduct' }}">{{ s.cta_label | escape }}</a>
+    </div>
+    {%- endif -%}
+    <div class="npf__grid">
+      <div class="npf__news">
+        <h3>{{ s.news_heading | escape }}</h3>
+        {%- form 'customer', class: 'npf__form' -%}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <label class="visually-hidden" for="NpfEmail">Email address</label>
+          <input id="NpfEmail" type="email" name="contact[email]" placeholder="Email address" required autocomplete="email">
+          <button type="submit" aria-label="Subscribe">{% render 'np-icon', name: 'arrow', size: 18 %}</button>
+          {%- if form.posted_successfully? -%}<p class="npf__ok" role="status">Thanks, you're on the list.</p>{%- endif -%}
+          {%- if form.errors -%}<p class="npf__err" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>{%- endif -%}
+        {%- endform -%}
+        <p class="npf__small">{{ s.news_note | escape }}</p>
+      </div>
+      {%- for n in (1..2) -%}
+        {%- assign hk = 'col' | append: n | append: '_heading' -%}{%- assign lk = 'col' | append: n | append: '_links' -%}
+        {%- if s[hk] != blank -%}
+        <div class="npf__col"><h3>{{ s[hk] | escape }}</h3><ul role="list">{%- assign rows = s[lk] | newline_to_br | split: '<br />' -%}{%- for r in rows -%}{%- assign p = r | strip | split: '|' -%}{%- if p.size == 2 -%}<li><a href="{{ p[1] | strip }}">{{ p[0] | strip | escape }}</a></li>{%- endif -%}{%- endfor -%}</ul></div>
+        {%- endif -%}
+      {%- endfor -%}
+      <div class="npf__col"><h3>Legal</h3><ul role="list">{%- for policy in shop.policies -%}<li><a href="{{ policy.url }}">{{ policy.title | escape }}</a></li>{%- else -%}<li>REPLACE_ME: publish your policies in Settings → Policies</li>{%- endfor -%}</ul></div>
+    </div>
+    <div class="npf__brand">
+      <img src="{{ 'blomar-logo-white.png' | asset_url }}" alt="{{ shop.name | escape }}" width="1112" height="255" loading="lazy">
+      <div class="npf__social">
+        {%- if s.instagram != blank -%}<a href="{{ s.instagram }}" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>{%- endif -%}
+        {%- if s.tiktok != blank -%}<a href="{{ s.tiktok }}" aria-label="TikTok"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M15 3c.4 2.4 1.9 4 4 4.3V10a7 7 0 0 1-4-1.3V15a6 6 0 1 1-6-6v3a3 3 0 1 0 3 3V3z"/></svg></a>{%- endif -%}
+        {%- if s.facebook != blank -%}<a href="{{ s.facebook }}" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M14 8h3V4h-3c-2.8 0-4 1.8-4 4.5V11H7v4h3v9h4v-9h3l1-4h-4V8.6c0-.4.3-.6.6-.6z"/></svg></a>{%- endif -%}
+      </div>
+    </div>
+    <div class="npf__notes">
+      {%- if s.note_1 != blank -%}<p>{{ s.note_1 | escape }}</p>{%- endif -%}
+      {%- if s.note_2 != blank -%}<p>{{ s.note_2 | escape }}</p>{%- endif -%}
+    </div>
+    <div class="npf__bottom"><span>&copy; {{ 'now' | date: '%Y' }} {{ shop.name | escape }}. All rights reserved.</span><span class="npf__pay">{%- for type in shop.enabled_payment_types limit: 8 -%}{{ type | payment_type_svg_tag: class: 'npf__pay-icon' }}{%- endfor -%}</span></div>
+  </div>
+  {%- if s.watermark != blank -%}<div class="npf__mark" aria-hidden="true">{{ s.watermark | escape }}</div>{%- endif -%}
+</footer>
+{% schema %}
+{"name":"Footer","settings":[
+{"type":"color","id":"bg","label":"Background","default":"#2F2756"},
+{"type":"header","content":"Call to action card"},
+{"type":"text","id":"cta_proof","label":"Proof line","info":"Hidden when empty. Use a real figure.","default":"REPLACE_ME happy sleepers"},
+{"type":"text","id":"cta_heading","label":"Heading","default":"Wake up without the neck ache. Try it tonight."},
+{"type":"text","id":"cta_label","label":"Button","default":"Start sleeping better"},
+{"type":"text","id":"cta_link","label":"Button link","default":"#MainProduct"},
+{"type":"header","content":"Newsletter"},
+{"type":"text","id":"news_heading","label":"Heading","default":"Get sleep tips and early offers"},
+{"type":"textarea","id":"news_note","label":"Small print","default":"By signing up you agree to receive marketing emails from Blomar. Unsubscribe any time."},
+{"type":"header","content":"Link columns (Label | /url per line)"},
+{"type":"text","id":"col1_heading","label":"Column 1 heading","default":"Learn"},
+{"type":"textarea","id":"col1_links","label":"Column 1 links","default":"Cervical Pillow | /products/blomar-cervical-pillow\nFAQ | #faq\nReviews | #reviews"},
+{"type":"text","id":"col2_heading","label":"Column 2 heading","default":"Help"},
+{"type":"textarea","id":"col2_links","label":"Column 2 links","default":"Track Your Order | /pages/track-your-order\nContact Us | /pages/contact"},
+{"type":"header","content":"Social (hidden when empty)"},
+{"type":"text","id":"instagram","label":"Instagram URL"},{"type":"text","id":"tiktok","label":"TikTok URL"},{"type":"text","id":"facebook","label":"Facebook URL"},
+{"type":"header","content":"Small print"},
+{"type":"textarea","id":"note_1","label":"Note 1","default":"Individual results vary. The Blomar Cervical Pillow is a comfort product and is not intended to diagnose, treat, cure or prevent any medical condition."},
+{"type":"textarea","id":"note_2","label":"Note 2","default":"Offers apply while stated on the product page and cannot be combined unless noted."},
+{"type":"text","id":"watermark","label":"Big background word","default":"blomar"}],
+"presets":[{"name":"Footer"}]}
+{% endschema %}

@@ -1,0 +1,554 @@
+{
+ "sections": {
+  "trust": {
+   "type": "np-trust",
+   "blocks": {
+    "t1": {
+     "type": "card",
+     "settings": {
+      "icon": "star",
+      "label": "REPLACE_ME 5-star reviews"
+     }
+    },
+    "t2": {
+     "type": "card",
+     "settings": {
+      "icon": "layers",
+      "label": "Two-height contour"
+     }
+    },
+    "t3": {
+     "type": "card",
+     "settings": {
+      "icon": "snow",
+      "label": "Cool, breathable cover"
+     }
+    },
+    "t4": {
+     "type": "card",
+     "settings": {
+      "icon": "moon",
+      "label": "30-night sleep trial"
+     }
+    },
+    "t5": {
+     "type": "card",
+     "settings": {
+      "icon": "leaf",
+      "label": "Hypoallergenic foam"
+     }
+    },
+    "t6": {
+     "type": "card",
+     "settings": {
+      "icon": "spine",
+      "label": "Neck-friendly shape"
+     }
+    }
+   },
+   "block_order": [
+    "t1",
+    "t2",
+    "t3",
+    "t4",
+    "t5",
+    "t6"
+   ],
+   "settings": {
+    "bg": "#EEEBFA"
+   }
+  },
+  "difference": {
+   "type": "np-difference",
+   "blocks": {
+    "d1": {
+     "type": "col",
+     "settings": {
+      "icon": "spine",
+      "title": "Line up your spine",
+      "text": "The contour cradles your neck so your head doesn't tip down or bend up through the night."
+     }
+    },
+    "d2": {
+     "type": "col",
+     "settings": {
+      "icon": "sun",
+      "title": "Wake up lighter",
+      "text": "Less craning and twisting means fewer stiff, sore mornings for most sleepers."
+     }
+    },
+    "d3": {
+     "type": "col",
+     "settings": {
+      "icon": "ruler",
+      "title": "Pick your height",
+      "text": "A lower side for back sleepers and a higher side for side sleepers. Just flip it."
+     }
+    },
+    "d4": {
+     "type": "col",
+     "settings": {
+      "icon": "snow",
+      "title": "Sleep cool",
+      "text": "An airy, removable cover helps stop heat building up around your face and neck."
+     }
+    }
+   },
+   "block_order": [
+    "d1",
+    "d2",
+    "d3",
+    "d4"
+   ],
+   "settings": {
+    "bg": "#F8F7FD",
+    "label_before": "Before",
+    "label_after": "After",
+    "heading": "Feel the [difference]",
+    "text": "A flat or lumpy pillow leaves your neck doing the work all night. Drag the slider to see how a contoured shape keeps everything lined up."
+   }
+  },
+  "zones": {
+   "type": "np-zones",
+   "blocks": {
+    "z1": {
+     "type": "row",
+     "settings": {
+      "title": "Lower side, for back sleepers",
+      "text": "<p>A gentle curve supports the natural hollow of your neck while your head rests a little lower, so your chin doesn't push towards your chest.</p>"
+     }
+    },
+    "z2": {
+     "type": "row",
+     "settings": {
+      "title": "Higher side, for side sleepers",
+      "text": "<p>The taller edge fills the gap between your shoulder and ear, keeping your head level instead of dropping towards the mattress.</p>"
+     }
+    },
+    "z3": {
+     "type": "row",
+     "settings": {
+      "title": "Shoulder cut-outs",
+      "text": "<p>Shaped wings make room for your shoulder and arm when you roll over, so you're not lying on a hard edge.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "z1",
+    "z2",
+    "z3"
+   ],
+   "settings": {
+    "bg": "#EEEBFA",
+    "heading": "One pillow. Two heights. Every position.",
+    "text": "Most pillows are one shape and hope for the best. This one is built in zones, so your neck gets the right support whether you start on your back, end up on your side, or switch all night."
+   }
+  },
+  "compare": {
+   "type": "np-compare",
+   "blocks": {
+    "c1": {
+     "type": "row",
+     "settings": {
+      "feature": "Neck alignment",
+      "us": true,
+      "them": false
+     }
+    },
+    "c2": {
+     "type": "row",
+     "settings": {
+      "feature": "Two heights",
+      "us": true,
+      "them": false
+     }
+    },
+    "c3": {
+     "type": "row",
+     "settings": {
+      "feature": "Holds its shape",
+      "us": true,
+      "them": false
+     }
+    },
+    "c4": {
+     "type": "row",
+     "settings": {
+      "feature": "Cool, breathable cover",
+      "us": true,
+      "them": false
+     }
+    },
+    "c5": {
+     "type": "row",
+     "settings": {
+      "feature": "30-night trial",
+      "us": true,
+      "them": false
+     }
+    },
+    "c6": {
+     "type": "row",
+     "settings": {
+      "feature": "Flattens overnight",
+      "us": false,
+      "them": true
+     }
+    }
+   },
+   "block_order": [
+    "c1",
+    "c2",
+    "c3",
+    "c4",
+    "c5",
+    "c6"
+   ],
+   "settings": {
+    "bg": "#F8F7FD",
+    "heading": "Your neck deserves [better support]",
+    "text": "A regular pillow sinks flat within hours and leaves your neck bent. The Blomar Cervical Pillow is shaped to keep it supported until morning.",
+    "us": "Blomar",
+    "them": "Others"
+   }
+  },
+  "reviews": {
+   "type": "np-reviews",
+   "blocks": {
+    "r1": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r2": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r3": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r4": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r5": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r6": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r7": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    },
+    "r8": {
+     "type": "review",
+     "settings": {
+      "name": "REPLACE_ME name",
+      "stars": 5,
+      "verified": false,
+      "text": "REPLACE_ME_REVIEW: add a real customer review here, or connect your reviews app in this section."
+     }
+    }
+   },
+   "block_order": [
+    "r1",
+    "r2",
+    "r3",
+    "r4",
+    "r5",
+    "r6",
+    "r7",
+    "r8"
+   ],
+   "settings": {
+    "bg": "#E6E2F6",
+    "heading": "What sleepers are saying",
+    "rating": "",
+    "count": "",
+    "sub": "",
+    "initial": 12
+   }
+  },
+  "split": {
+   "type": "np-split",
+   "settings": {
+    "bg": "#F8F7FD",
+    "badge_title": "",
+    "badge_text": "",
+    "heading": "Why side and back sleepers are switching to the Blomar Cervical Pillow",
+    "text": "<p>The stiff neck when you sit up. The careful turn of your head before you get out of bed. If that's how most mornings start, your pillow is probably part of it. The Blomar Cervical Pillow gives you two heights, shoulder cut-outs for side sleeping and a cool, breathable cover in one contoured design, so your neck stays supported however you sleep.</p>",
+    "rating": "",
+    "count": "",
+    "endorse": "",
+    "btn1": "TRY IT FOR 30 NIGHTS",
+    "btn1_link": "#MainProduct",
+    "btn2": "LEARN MORE",
+    "btn2_link": "#faq",
+    "note": "Not a medical device. Results vary by individual."
+   }
+  },
+  "principles": {
+   "type": "np-principles",
+   "blocks": {
+    "p1": {
+     "type": "row",
+     "settings": {
+      "title": "Keeps the natural neck curve",
+      "text": "<p>The raised front edge supports the curve of your neck instead of letting it sag into a flat pillow.</p>"
+     }
+    },
+    "p2": {
+     "type": "row",
+     "settings": {
+      "title": "Takes pressure off the shoulder",
+      "text": "<p>Cut-outs on each side give your shoulder somewhere to go when you sleep on your side.</p>"
+     }
+    },
+    "p3": {
+     "type": "row",
+     "settings": {
+      "title": "Keeps the spine neutral",
+      "text": "<p>Choosing the right height for your position helps keep your head level with the rest of your spine.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "p1",
+    "p2",
+    "p3"
+   ],
+   "settings": {
+    "bg": "#FFFFFF",
+    "heading": "Designed around how your neck actually rests",
+    "text": "No gimmicks. Just a shape built around the way your head, neck and shoulders sit when you're lying down.",
+    "note": "Not a medical device. Results vary. If you have an ongoing neck condition, talk to a qualified health professional."
+   }
+  },
+  "duo": {
+   "type": "np-duo",
+   "settings": {
+    "bg": "#EEEBFA",
+    "heading": "Support that moves with you",
+    "text": "Back, side, or somewhere in between. The two heights and shoulder cut-outs adjust to your position, not the other way round."
+   }
+  },
+  "faq": {
+   "type": "np-faq",
+   "blocks": {
+    "f1": {
+     "type": "q",
+     "settings": {
+      "q": "How long does shipping take?",
+      "a": "<p>REPLACE_ME: add your real processing and delivery times for each country.</p>"
+     }
+    },
+    "f2": {
+     "type": "q",
+     "settings": {
+      "q": "How firm is it?",
+      "a": "<p>Medium-firm. Supportive enough to hold your neck in place, with memory foam that softens slightly to your shape.</p>"
+     }
+    },
+    "f3": {
+     "type": "q",
+     "settings": {
+      "q": "Which side should I use?",
+      "a": "<p>Back sleepers usually prefer the lower side and side sleepers the higher side. Give each a few nights.</p>"
+     }
+    },
+    "f4": {
+     "type": "q",
+     "settings": {
+      "q": "What if it doesn't work for me?",
+      "a": "<p>REPLACE_ME: describe your real 30-night trial and returns process, matching your refund policy.</p>"
+     }
+    },
+    "f5": {
+     "type": "q",
+     "settings": {
+      "q": "Does it smell when it arrives?",
+      "a": "<p>New memory foam can have a light smell. Let it air out for a day or two and it fades.</p>"
+     }
+    },
+    "f6": {
+     "type": "q",
+     "settings": {
+      "q": "Is it OK for sensitive skin?",
+      "a": "<p>REPLACE_ME: add the real cover and foam materials and any certifications.</p>"
+     }
+    },
+    "f7": {
+     "type": "q",
+     "settings": {
+      "q": "What size is it?",
+      "a": "<p>REPLACE_ME: add the real dimensions and weight.</p>"
+     }
+    },
+    "f8": {
+     "type": "q",
+     "settings": {
+      "q": "How do I wash it?",
+      "a": "<p>REPLACE_ME: add the real care instructions for the cover and foam.</p>"
+     }
+    }
+   },
+   "block_order": [
+    "f1",
+    "f2",
+    "f3",
+    "f4",
+    "f5",
+    "f6",
+    "f7",
+    "f8"
+   ],
+   "settings": {
+    "bg": "#FFFFFF",
+    "heading": "FAQ"
+   }
+  },
+  "stats": {
+   "type": "np-stats",
+   "blocks": {
+    "s1": {
+     "type": "stat",
+     "settings": {
+      "figure": "",
+      "suffix": "%",
+      "stars": false,
+      "text": "REPLACE_ME: would recommend to family and friends",
+      "bar": 0
+     }
+    },
+    "s2": {
+     "type": "stat",
+     "settings": {
+      "figure": "",
+      "suffix": "",
+      "stars": true,
+      "text": "REPLACE_ME: average rating across verified buyers",
+      "bar": 0
+     }
+    }
+   },
+   "block_order": [
+    "s1",
+    "s2"
+   ],
+   "settings": {
+    "bg": "#E6E2F6",
+    "heading": "Real sleepers. Real results.",
+    "text": "REPLACE_ME: a line about who you surveyed.",
+    "eyebrow": "CUSTOMER SURVEY",
+    "figure": "",
+    "figure_text": "of customers REPLACE_ME [result]",
+    "unit": "customers",
+    "btn": "Start sleeping better tonight",
+    "btn_link": "#MainProduct",
+    "foot": "REPLACE_ME: say where these figures come from (e.g. survey of X verified buyers, month/year)."
+   }
+  },
+  "crosssell": {
+   "type": "np-crosssell",
+   "blocks": {
+    "x1": {
+     "type": "card",
+     "settings": {
+      "product": "",
+      "qty": 2,
+      "title": "Blomar Cervical Pillow 2-Pack",
+      "text": "One for you, one for whoever keeps borrowing yours.",
+      "badge": "",
+      "featured": false,
+      "button": "Add the 2-pack"
+     }
+    },
+    "x2": {
+     "type": "card",
+     "settings": {
+      "product": "",
+      "qty": 1,
+      "title": "REPLACE_ME bundle",
+      "text": "REPLACE_ME: describe a real bundle or add-on you sell.",
+      "badge": "BEST VALUE",
+      "featured": true,
+      "button": "Add the bundle"
+     }
+    },
+    "x3": {
+     "type": "card",
+     "settings": {
+      "product": "",
+      "qty": 1,
+      "title": "REPLACE_ME add-on",
+      "text": "REPLACE_ME: describe a real add-on product.",
+      "badge": "",
+      "featured": false,
+      "button": "Add to cart"
+     }
+    }
+   },
+   "block_order": [
+    "x1",
+    "x2",
+    "x3"
+   ],
+   "settings": {
+    "bg": "#F8F7FD",
+    "heading": "Complete your sleep setup",
+    "text": "Your pillow supports your neck all night. These extras help you get the most from it."
+   }
+  }
+ },
+ "order": [
+  "trust",
+  "difference",
+  "zones",
+  "compare",
+  "reviews",
+  "split",
+  "principles",
+  "duo",
+  "faq",
+  "stats",
+  "crosssell"
+ ]
+}

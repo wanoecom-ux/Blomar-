@@ -1,0 +1,16 @@
+{%- assign s = section.settings -%}
+<section class="npsp" style="--sec-bg: {{ s.bg }};"><div class="npsp__grid">
+  <div class="npsp__img">{% render 'media-img', image: s.image, width: 1400, alt: s.heading %}</div>
+  <div class="npsp__copy">
+    {%- if s.badge_title != blank -%}<div class="npsp__badge"><strong>{{ s.badge_title | escape }}</strong><span>{{ s.badge_text | escape }}</span></div>{%- endif -%}
+    <h2 class="np-h2 np-h2--xl">{{ s.heading | escape }}</h2>
+    <div class="rte">{{ s.text }}</div>
+    {%- if s.rating != blank -%}<p class="npsp__rating">{% render 'np-stars', size: 14 %} <b>{{ s.rating | escape }}</b> <span>· {{ s.count | escape }}</span></p>{%- endif -%}
+    {%- if s.endorse != blank -%}<p class="npsp__endorse">{{ s.endorse | escape | replace: '[', '<strong>' | replace: ']', '</strong>' }}</p>{%- endif -%}
+    <div class="npsp__btns">{%- if s.btn1 != blank -%}<a class="np-btn np-btn--brand" href="{{ s.btn1_link | default: '#MainProduct' }}">{{ s.btn1 | escape }} {% render 'np-icon', name: 'arrow', size: 14 %}</a>{%- endif -%}{%- if s.btn2 != blank -%}<a class="np-btn np-btn--ghost" href="{{ s.btn2_link | default: '#faq' }}">{{ s.btn2 | escape }} {% render 'np-icon', name: 'arrow', size: 14 %}</a>{%- endif -%}</div>
+    {%- if s.note != blank -%}<p class="np-note">{{ s.note | escape }}</p>{%- endif -%}
+  </div>
+</div></section>
+{% schema %}
+{"name":"Split: image + reasons","settings":[{"type":"color","id":"bg","label":"Background","default":"#F8F7FD"},{"type":"image_picker","id":"image","label":"Image (REPLACE_ME)"},{"type":"text","id":"badge_title","label":"Badge title","info":"Hidden when empty."},{"type":"text","id":"badge_text","label":"Badge text"},{"type":"text","id":"heading","label":"Heading","default":"Heading"},{"type":"richtext","id":"text","label":"Text","default":"<p>Text</p>"},{"type":"text","id":"rating","label":"Rating","info":"Hidden when empty."},{"type":"text","id":"count","label":"Review count text"},{"type":"text","id":"endorse","label":"Endorsement line","info":"Only real, verifiable endorsements. [Brackets] = bold. Hidden when empty."},{"type":"text","id":"btn1","label":"Button 1","default":"TRY IT FOR 30 NIGHTS"},{"type":"text","id":"btn1_link","label":"Button 1 link","default":"#MainProduct"},{"type":"text","id":"btn2","label":"Button 2","default":"LEARN MORE"},{"type":"text","id":"btn2_link","label":"Button 2 link","default":"#faq"},{"type":"text","id":"note","label":"Small print","default":"Not a medical device. Results vary by individual."}],"presets":[{"name":"Split: image + reasons"}]}
+{% endschema %}

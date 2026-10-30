@@ -1,0 +1,25 @@
+{%- assign s = section.settings -%}
+<section class="npx" style="--sec-bg: {{ s.bg }};"><div class="page-width">
+  <div class="np-center"><h2 class="np-h2 np-h2--brand">{{ s.heading | escape }}</h2><p class="np-lead">{{ s.text | escape }}</p></div>
+  <div class="npx__grid">
+  {%- for block in section.blocks -%}
+    {%- assign p = block.settings.product -%}
+    {%- assign v = p.selected_or_first_available_variant -%}
+    <article class="npx__card{% if block.settings.featured %} is-featured{% endif %}" {{ block.shopify_attributes }}>
+      {%- if block.settings.badge != blank -%}<span class="npx__badge">{{ block.settings.badge | escape }}</span>{%- endif -%}
+      <div class="npx__img">{%- if block.settings.image != blank -%}{{ block.settings.image | image_url: width: 700 | image_tag: loading: 'lazy', alt: block.settings.title }}{%- elsif p != blank and p.featured_media != blank -%}{{ p.featured_media | image_url: width: 700 | image_tag: loading: 'lazy', alt: p.title }}{%- else -%}{{ 'product-2' | placeholder_svg_tag }}{%- endif -%}</div>
+      <div class="npx__body">
+        <h3>{{ block.settings.title | default: p.title | default: 'REPLACE_ME product' | escape }}</h3>
+        <p>{{ block.settings.text | escape }}</p>
+        {%- if p != blank -%}<p class="npx__price"><strong>{{ v.price | money }}</strong>{%- if v.compare_at_price > v.price -%}<s>{{ v.compare_at_price | money }}</s>{%- endif -%}</p>{%- endif -%}
+        {%- if p != blank and v.available -%}
+          <form method="post" action="{{ routes.cart_add_url }}" data-product-form><input type="hidden" name="id" value="{{ v.id }}"><input type="hidden" name="quantity" value="{{ block.settings.qty }}"><button type="submit" class="np-btn {% if block.settings.featured %}np-btn--grad{% else %}np-btn--ghost{% endif %} np-btn--block">{{ block.settings.button | escape }}</button><p class="mp__error" data-error hidden></p></form>
+        {%- else -%}<span class="np-btn np-btn--ghost np-btn--block is-disabled" aria-disabled="true">REPLACE_ME: pick a product</span>{%- endif -%}
+      </div>
+    </article>
+  {%- endfor -%}
+  </div>
+</div></section>
+{% schema %}
+{"name":"Product cards (add-ons)","settings":[{"type":"color","id":"bg","label":"Background","default":"#F8F7FD"},{"type":"text","id":"heading","label":"Heading","default":"Complete your sleep setup"},{"type":"textarea","id":"text","label":"Text","default":"Text"}],"blocks":[{"type":"card","name":"Product card","settings":[{"type":"product","id":"product","label":"Product"},{"type":"range","id":"qty","label":"Quantity added","min":1,"max":4,"step":1,"default":1},{"type":"image_picker","id":"image","label":"Image (optional)"},{"type":"text","id":"title","label":"Title (optional)"},{"type":"textarea","id":"text","label":"Text","default":"Short description."},{"type":"text","id":"badge","label":"Badge"},{"type":"checkbox","id":"featured","label":"Highlight this card","default":false},{"type":"text","id":"button","label":"Button","default":"Add to cart"}]}],"presets":[{"name":"Product cards (add-ons)"}]}
+{% endschema %}
