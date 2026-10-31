@@ -12,6 +12,8 @@ Store: blomar.store (`1yygu1-d4.myshopify.com`), edited through the Shopify MCP 
 
 ## Reference
 
+- `Copy of elixir-1-6-2-no-license` (`gid://shopify/OnlineStoreTheme/199167213751`): one-product Blomar LifeBulbs store. Homepage (`index.json`) and `product.json` use Elixir Product Details with the `kv_*` buy-box blocks plus the `kv-*` page sections (a layout recreation of the VigorNatura kids page, user asked for it explicitly). Homepage sets `current_product: blomar-lifebulbs`. Fonts Montserrat 800 / Poppins, Blomar wordmark logo.
+
 - `Blomar live + Kids product page (draft)` (`gid://shopify/OnlineStoreTheme/199160004791`): template `product.kids-layout` is the Blomar live Elixir product setup (Product Details + Elixir sections) with the Lifebulbs USP text. Leftover `kv-*` files there are unused: no presets, not referenced by any template.
 - Old standalone version: `Kids Supplement – VigorNatura layout (template)` (`gid://shopify/OnlineStoreTheme/198973128887`).
 - Large theme files can be uploaded without pasting them: `stagedUploadsCreate` → curl POST the file → `themeFilesUpsert` with `body: {type: URL, value: <resourceUrl>}`.
