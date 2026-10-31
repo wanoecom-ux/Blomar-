@@ -15,6 +15,6 @@ Store: blomar.store (`1yygu1-d4.myshopify.com`), edited through the Shopify MCP 
 
 ## Reference
 
-- `Blomar live + Kids product page (draft)` (`gid://shopify/OnlineStoreTheme/199160004791`): first page ported this way. Template `product.kids-layout` (Elixir Product Details buy box + `kv_usp`, `kv_checklist`, `kv_videos` blocks), page sections `kv-*`, assets `kv-product.css` / `kv-product.js`. `sections/kv-main-product.liquid` is no longer used.
+- `Blomar live + Kids product page (draft)` (`gid://shopify/OnlineStoreTheme/199160004791`): first page ported this way. Template `product.kids-layout` (Elixir Product Details buy box holding the kids buy box as `kv_*` blocks: style, rating, badges, title, usp, checklist, ship, tiers, buy, videos, faq; `kv_style` sets fonts and colours for every kids block and section), page sections `kv-*`, assets `kv-product.css` / `kv-product.js`. `sections/kv-main-product.liquid` is no longer used.
 - Source of that page: `Kids Supplement – VigorNatura layout (template)` (`gid://shopify/OnlineStoreTheme/198973128887`).
 - Large theme files can be uploaded without pasting them: `stagedUploadsCreate` → curl POST the file → `themeFilesUpsert` with `body: {type: URL, value: <resourceUrl>}`.
