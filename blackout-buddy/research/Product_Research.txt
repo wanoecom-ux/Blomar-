@@ -1,0 +1,194 @@
+Solar Power Bank — Product Research
+HOW DOES IT WORK? (process, method, outcome)
+A 20,000mAh lithium-polymer battery sits inside a rugged, rubber-bumpered shell. You charge it
+from the wall through USB-C, which is the fast way, and the solar panel on the back
+trickle-charges it whenever it sits in sunlight. To charge devices, you lay a phone on the Qi
+wireless pad or plug into the USB-A and USB-C ports, up to four devices at once. LEDs show
+how much charge is left, and a built-in LED flashlight doubles as a torch during a blackout or at
+camp. The outcome is a phone-sized backup battery that stays ready in the car, the camping
+bag or the kitchen drawer, so a dead phone never leaves you stranded or unreachable.
+Honest numbers (use these, not competitor claims):
+  ●​ 20,000mAh is about 74Wh, enough for roughly 4 full phone charges.
+  ●​ A built-in panel this size adds only a small amount per sunny day. Owners report a full
+  day of direct sun adds roughly 20–25% to the bank, about one phone top-up.
+  ●​ Solar is a backup top-up, not the main way to charge it.
+Sixth-grade version It's a big battery for your phone with a small solar panel on the back.
+Charge it at home before you go. Then you can charge your phone by plugging it in or just
+laying it on top. If it sits in the sun, it slowly fills back up. It has a torch for when the power goes
+out or you're camping.
+PRODUCT FEATURES
+  ●​ 20,000mAh lithium-polymer battery (about 74Wh)
+  ●​ Built-in solar panel on the back (no one states the wattage, so confirm it with the
+  supplier)
+  ●​ Qi wireless charging pad, up to 10W (auto-steps 10W / 7.5W / 5W)
+  ●​ Wired outputs: 2× USB-A and 1× USB-C. The USB-C is two-way, charging the bank and
+  devices through the same port.
+  ●​ Fast-charge claims vary: 18W PD + QC3.0 (NOVA) vs "up to 20W" (Forejourney).
+  Confirm with the supplier.
+  ●​ Charges up to 4 devices at once
+  ●​ Built-in LED flashlight (NOVA says dual)
+  ●​ LED battery-level indicator
+  ●​ Rugged ABS+PC shell with rubberised bumpers (NOVA adds "flame-retardant")
+  ●​ Water resistance: the supplier says "waterproof", NOVA says IPX5 and Forejourney says
+  "splash-resistant". Treat it as splash-resistant until it's certified.
+  ●​ Compass carabiner (in NOVA's version)
+  ●​ In the box: USB cable and manual
+Confirm with the supplier before writing copy: solar panel output (W/mA), tested real
+capacity, IP rating certificate, wired output wattage, weight and dimensions, and battery
+certifications (UN38.3, MSDS, CE/FCC, and anything needed for the AU market).
+STEP 4 — ASSUMED BENEFITS (what each feature does)
+  ●​ 20,000mAh battery → about 4 phone charges, so you get through a weekend away or a
+  long blackout without hunting for a plug
+  ●​ Solar panel → tops itself up in the sun, so the bank doesn't sit flat in a drawer or
+  glovebox when you finally need it
+  ●​ Wireless pad → lay the phone down with no cable; charges earbuds and other Qi
+  devices too
+  ●​ 4 outputs at once → the whole family or group charges off one unit
+  ●​ Flashlight → power and light in one grab-and-go item when the lights go out
+  ●​ Rugged bumpered shell → survives being thrown in a car, tent, toolbox or backpack
+  ●​ Battery-level LEDs → you know at a glance whether it's ready
+  ●​ Two-way USB-C → one cable charges both the bank and your phone
+Review-surfaced benefits the brand didn't lead with:
+  ●​ It "lives in the car" as a permanent backup in case the car or phone dies.
+  ●​ Solar works best as a trickle charger that stops the bank from draining while stored, not
+  as a main charger.
+  ●​ Wireless is handy for small devices like earbud cases while the phone charges by cable.
+STEP 5 — ASSUMED DESIRES (ask "why?" until you hit
+the real want)
+Master desire: "I never want to be stuck with a dead phone when it actually matters, like when
+the power's out, when we're off-grid, or when my family needs to reach me."
+Primary Big-3 category: Health (safety and security). Secondary: Relationships (staying
+reachable for family).
+  ●​ Charges phone 4× → Why? So I'm not cut off when there's no power → "I want to know I
+  can always call for help or check on my kids."
+  ●​ Solar top-up → Why? So it's actually charged when an emergency hits → "I want to be
+  the one who's prepared, not the one scrambling."
+  ●​ Flashlight + power in one → Why? Blackouts are stressful in the dark → "When the
+  lights go out, I want my family calm, not panicking."
+  ●​ Charges 4 devices → Why? Everyone's phone dies at camp → "I want the trip to be
+  about the trip, not about whose phone is on 3%."
+  ●​ Rugged build → Why? Cheap banks break outdoors → "I want gear I can chuck in the
+  ute and forget about until I need it."
+Deeper desires to test (Evolve Desire Calendar lens):
+  1.​ Storm and blackout season (Nov–Apr in QLD and northern AU; Jun–Nov hurricane
+  season in the US): "When the power goes out, I want us connected and in control." This
+  is in season right now.
+  2.​ Summer holiday camping and road trips (Dec–Jan in AU): "I want to switch off from
+  the world without being unreachable."
+  3.​ Christmas gifting (Nov–Dec): "I want a gift for Dad or my partner that he'll actually use,
+  not one that goes in a drawer."
+  4.​ Travel and festivals: "I want to stay charged all weekend without hunting for a
+  powerpoint."
+Desires to avoid chasing (the product can't credibly live up to them, per Evolve 1.1):
+  ●​  "Never plug it in again" or "unlimited free energy from the sun"
+  ●​  Fast solar charging ("full in a few hours of sun")
+  ●​  Powering laptops, fridges or appliances. It's a phone-class bank, not a power station.
+  ●​  "Fully waterproof / drop it in a river" unless it's certified IP67
+STEP 6 — MECHANISM AND USP
+Stated mechanism (how competitors say it works): "Harnesses the sun's energy" or "power
+anywhere", plus a feature list (solar + USB input, wireless + USB output). Nobody explains how
+the solar actually helps, and Forejourney inflates the capacity to 42,800mAh in places.
+Assumed new mechanisms / USP candidates
+  ●​ "Sun-topped backup" (solar as maintenance, not main charge) → Reframes the
+  category's #1 complaint into an honest, believable benefit. No competitor says it. →
+  Strength: High
+  ●​ Honest numbers (about 4 phone charges; a day of sun ≈ one top-up) → New
+  information in a market full of fake mAh and "unlimited" claims → Strength: High
+  ●​ Grab-and-go blackout kit (power + torch + wireless in one) → Category-standard parts,
+  but nobody packages them as a blackout kit → Strength: Medium-High
+  ●​ 4 devices at once → Common across the category → Strength: Low-Medium
+Recommended one-line USP (assumed): "The backup battery that doesn't go flat in your
+drawer. Charge it at the wall, and the sun keeps it topped up for when the power isn't there."
+Hidden mechanism the brand under-uses: Every lithium power bank slowly loses charge
+while stored, which is why the "emergency" bank is usually flat in an emergency. The panel's
+real job is to offset that drain and top it up on a sunny windowsill. Don't suggest leaving it on a
+hot car dashboard, because heat is bad for lithium batteries.
+STEP 7 — HIDDEN MECHANISM ANALYSIS
+1. What does the product do that it doesn't advertise?
+  ●​  It works as a blackout torch and power source in one.
+  ●​  It charges earbuds or a watch wirelessly while the phone charges by cable.
+  ●​  It stays topped up in storage, so it's ready when you need it.
+  ●​  One USB-C cable charges both ways.
+2. What components does it include that competitors don't?
+  ●​ Nothing physical. It's the same white-label unit. Win through the kit (carabiner, short
+  cable set, pouch), a published tested-capacity spec sheet, certifications, warranty and
+  local shipping.
+3. If it worked too well, what would customers complain about?
+  ●​ "Everyone at camp keeps borrowing it." "I had to buy a second one for the other car."
+  "The kids took it."
+4. If a customer explained it to a friend, what would they say? "It's a big power bank with a
+solar panel on it. Charge it at home first, because the sun part is slow, but it's a great backup to
+keep in the car or for when the power goes out. It's got a torch, and you can just sit your phone
+on it."
+What that explanation reveals:
+  ●​ Buying trigger: a trip or an outage.
+  ●​ Objection: slow solar.
+  ●​ Outcome: peace of mind as a backup that's always ready.
+MARKET AWARENESS, SOPHISTICATION AND BELIEF
+Awareness (assumed, split by sub-avatar)
+  ●​ Storm-season parent → Problem aware → "Blackouts happen; I'll sort it when the next
+  storm comes." → Enter on the problem: the last outage, phone on 8%, kids in the dark.
+  ●​ Camper / 4WD / road-tripper → Solution aware → "Solar power banks are gimmicks."
+  → Enter with new information: honest numbers and how to actually use it.
+  ●​ TikTok-exposed shopper → Product aware → "It's $29.99 on TikTok." → Enter on the
+  offer: bundle, warranty, local shipping, gift-ready.
+  ●​ Christmas gift buyer → Aware of the need (a gift), not the product → "What do I get the
+  guy who has everything?" → Enter on identity: "for the one who's always prepared."
+Sophistication
+Market stage: 4–5. Claims are already inflated (42,800mAh on a 20,000mAh unit, "unlimited
+energy"), and review sites openly call most solar power banks gimmicks. Bigger claims won't
+land.
+  ●​ New mechanism: the "sun-topped backup" (solar keeps it ready, it doesn't replace the
+  wall).
+  ●​ New information: real numbers: about 4 phone charges, a day of sun ≈ one top-up,
+  roughly 74Wh, which sits under the common 100Wh carry-on limit (carry-on only; check
+  your airline).
+  ●​ New identity: "the prepared one," the person in the family or group who always has
+  power and a torch.
+Belief barriers (Evolve module 9)
+  1.​ Mechanism: "Solar on a power bank doesn't actually work." → Agree, then reframe it as
+  a top-up, and show a real sun test.
+  2.​ Product: "It's the same cheap Alibaba thing and the capacity is fake." → Tested
+  capacity, certifications, warranty, real reviews.
+  3.​ Self: "I'm not a camper or a prepper; I don't need this." → Everyday use cases:
+  glovebox, blackout drawer, school pick-ups, sport weekends.
+VOICE OF CUSTOMER AND OBJECTIONS
+Star breakdown
+Not gathered yet. The only aggregates so far:
+  ●​ RETMSR: 4.5★ from about 1.0K reviews
+  ●​ Forejourney: claims 4.78★ (144), but its header says 15 reviews and no individual
+  reviews show
+  ●​ NOVA: no reviews
+Verbatim language snippets
+Sources: Amazon reviews of similar solar banks, via reseller listings and review-analysis sites.
+  ●​ "Solar charging works, is excruciatingly slow (days/weeks)"
+  ●​  "It seems to take FOREVER to charge with sunlight"
+  ●​  "too small to do meaningful charging on an empty bank"
+  ●​  "It lives in the car with me"
+  ●​  "Solar panel actually charges at 300-400mah on a sunny day"
+  ●​  "the wireless charging is very very slow"
+Buzzwords to track: power outage, blackout, backup, emergency, peace of mind, never
+stranded, lives in my car / glovebox, off-grid, camping, rugged, trickle charge, real capacity,
+heavy / bulky, torch / flashlight.
+Objection catalogue
+  ●​ "Solar is too slow" → The most common complaint across reviews → Own it: "charge
+  at the wall, the sun keeps it topped up," and show real numbers.
+  ●​ "The capacity is fake" → Competitors claim 42,800mAh on a 20,000mAh unit →
+  Publish the tested capacity and the number of phone charges.
+  ●​ "Too heavy / bulky" → "Heavier than I expected" shows up in reviews → State the
+  weight, and frame it as a glovebox or pack item, not a pocket item.
+  ●​ "Wireless is slow" → Reviews → Set expectations: wireless for convenience and
+  earbuds, USB-C for speed.
+  ●​ "Why pay more than $29.99 on TikTok?" → RETMSR's price → Bundle (2-pack: car +
+  home), warranty, local shipping, gift-ready packaging.
+  ●​ "Is it waterproof?" → Specs conflict across sellers → Only claim the tested rating.
+  ●​ "Can I fly with it?" → About 74Wh → Carry-on only; check your airline's rules.
+  ●​ "Can I leave it in the car?" → Lithium and heat → Glovebox or shade, never a hot
+  dashboard.
+Gap
+  ●​ No star breakdown or deep review set yet. Export reviews for a matching listing
+  (RETMSR, BLAVOR or Riapow), the same process we used for FetchCam.
+  ●​ Reddit research: r/camping, r/preppers, r/4x4australia, r/CampingandHiking,
+  r/BuyItForLife, r/onebag.
+  ●​ Order a sample and test it: real capacity, solar mA in Brisbane sun, and how much a full
+  sunny day adds.

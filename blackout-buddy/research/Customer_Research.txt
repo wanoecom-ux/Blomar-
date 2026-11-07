@@ -1,0 +1,292 @@
+Solar Power Bank — Customer Research
+KEY FINDINGS
+  1.​ Buyers use it for three things: outdoors (19%), emergencies and outages (13%) and
+  travel (12%). It's a "just in case" product. People buy it before a trip or a storm, then end
+  up using it every day.
+  2.​ Weight is the #1 complaint, not solar. 13% call it heavy or bulky, and only 6%
+  complain that solar is slow. Most solar complaints come pre-forgiven ("the brand told me
+  it's a backup"). Setting expectations honestly works.
+  3.​ Rugged build is the #1 praise (19%), followed by the flashlight (10%). People love
+  that it feels tough. "Hefty in a good way" and "survived drops, sand and bags" come up
+  again and again.
+  4.​ The emotional peak is the outage story. Reviews like "grandma's literal lifeline" and
+  "what a life saver" during snow storms and hurricanes are the most vivid language in the
+  whole set, even though they're a minority of reviews.
+  5.​ Reddit is skeptical of solar power banks, with comments like "aren't worth crap" and
+  "a waste of time", and suspicious of fake mAh on Amazon. Out of the gate, the market
+  believes the solar is a gimmick, so the honest "backup top-up" framing is the only
+  credible one.
+  6.​ Australian context is present. Reddit mentions floods, cyclones, bushfires and "power
+  problems up north", plus a warning about a cheap non-Australian-standard device
+  causing a house fire, which makes safety standards an objection for AU buyers.
+MAIN AVATAR — "THE READY ONE"
+Core desire: "Whatever happens — a storm, a campsite, a long day out — I want to know my
+phone, and my family's, won't die on me."
+Core-5 (Desire → Experience → Emotion → Behaviour → Demographics)
+  ●​ Desire: To be the one who's prepared. Stay reachable, have light, and not be helpless
+  when the power or the plug isn't there.
+  ●​ Experience: Has been caught out before, by a storm outage, a phone dying on a trip, or
+  the kids' phones flat at camp. Owns several power banks already, but the small ones die
+  fast and none of them are where they're needed when it counts.
+  ●​ Emotion: Low-grade "what if" anxiety, then relief and quiet pride when the kit works
+  ("what a life saver"). Mildly frustrated by gadgets that over-promise.
+  ●​ Behaviour: Buys ahead of a known event (storm season, a trip, a festival). Keeps one in
+  the car or kit and buys extras for family. Charges it at the wall and treats solar as a
+  bonus. Reads reviews for real-world numbers.
+  ●​ Demographics (hypothesis, to validate): 30–60, both genders, often the household
+  organiser or the partner who "handles" preparedness. Commonly a parent. Many buy for
+  a partner, parent or grandparent. Middle income; price-aware but will pay for something
+  that feels tough.
+Avatar card
+  ●​ Name: The Ready One
+  ●​ Age: 30–60
+  ●​ Gender: Mixed. Women often buy for a husband, partner or family.
+  ●​ Marital / kids: Often partnered with kids ("charged all the kids' phones over the
+  weekend")
+  ●​ Occupation: Varied. Over-index on outdoor and blue-collar workers and people who
+  travel for work.
+  ●​ Income: Middle. On Reddit, a clear budget segment (renters, minimum wage) wants
+  prep under $50–$200.
+Core challenges and pain points:
+  ●​  Phones die at the worst time (outage, campsite, long travel day).
+  ●​  Small 5,000mAh banks "die way too quickly".
+  ●​  Cables are forgotten, tangled or wrong.
+  ●​  Lighting during a blackout is poor.
+  ●​  Not sure which gadgets actually work.
+Goals and values: Self-reliance, looking after family, practicality over looks, gear that survives
+being thrown around, not wasting money on gimmicks.
+Objections and questions: Does the solar actually work? How heavy is it? Is the capacity
+real? Will wireless work through my case? Is it safe left in a hot car? Will it charge my watch?
+Tried and didn't work:
+  ●​  Small power banks
+  ●​  Charging in the car or idling the truck
+  ●​  Candles and $1.50 lanterns
+  ●​  Generators: fuel, noise and neighbour friction
+  ●​  Big $500+ power stations: overkill for phones
+  ●​  Cheap solar gadgets that over-promised
+SUB-AVATARS
+A. Storm-Season Household ("Storm-Ready")
+  ●​ Share: about 13% of reviews; the dominant theme on Reddit.
+  ●​ Desire: "When the power goes out, I want my family connected, with light, and not
+  panicking."
+  ●​ Trigger: A storm warning, or the memory of the last outage. Buys "just weeks before" or
+  right after one.
+  ●​ Language: "lifeline", "life saver", "got to stay prepared", "hurricanes are an unwanted
+  way of life", "keep on hand and charged up for times when the power goes out"
+  ●​ AU translation: QLD storms, floods, cyclones, bushfire blackouts
+  ●​ Where: r/preppers, local city subs (r/brisbane, r/GoldCoast), storm-season news
+  ●​ Ad entry: Problem aware. Open on the last blackout: phone on 8%, kids in the dark.
+B. Weekend Camper / Family Outdoors ("Campsite")
+  ●​ Share: about 19% of reviews, the largest use case.
+  ●​ Desire: "I want the trip to be about the trip, not about whose phone is on 3%."
+  ●​ Trigger: An upcoming trip or festival, or the last trip where everyone's phone died.
+  ●​ Language: "charge all the kids' phones", "held up to a three-week camping trip", "hefty
+  but in an entirely good way", "no more 'anyone have a charger?'"
+  ●​ Where: r/camping, r/CampingandHiking, r/carcamping, r/4x4australia
+  ●​ Ad entry: Solution aware. They own power banks. Show capacity (4 charges),
+  ruggedness and the torch at camp.
+C. Traveller / Road-tripper
+  ●​ Share: about 12% of reviews.
+  ●​ Desire: "I never want to be hunting for a powerpoint when I'm away."
+  ●​ Use cases: Disneyland days, international trips, a cross-country motorcycle ride, work
+  travel ("always forget my charger at the hotel").
+  ●​ Language: "helped me in several countries", "still going strong after nearly 4 years",
+  "dropped, lived in sand, tossed in bags"
+  ●​ Ad entry: Product aware. Proof of durability and capacity, plus a carry-on note.
+D. Gift Buyer
+  ●​ Share: about 3% explicit, but many reviewers "bought two" or bought "for my husband"
+  or "for grandma". In season now (Christmas).
+  ●​ Desire: "I want to give something they'll actually use, and that keeps them safe."
+  ●​ Language: "This will be everyone's gift next Christmas", "fancy/expensive looking box",
+  "husband's favorite charger", "great gift for anyone who's on the go"
+  ●​ Ad entry: Identity. "For the one who's always prepared", plus gift-ready packaging and a
+  2-pack.
+E. Outdoor Worker / Tradie
+  ●​ Share: about 1% explicit, but the language is the sharpest in the set, and it's a strong
+  AU fit.
+  ●​ Desire: "My phone is my work tool, and it can't die on a 12-hour day."
+  ●​ Language: "I work outside all day, so portable chargers have become my best friends",
+  "works 12-18 hour days on a job that requires him to use his phone for work orders",
+  "Not a want but a need!"
+  ●​ Ad entry: Solution aware. Ruggedness, dust and water resistance, capacity for long
+  days.
+F. Budget / Beginner Prepper (Reddit)
+  ●​ Who: Renters on a tight budget who "don't understand the mAh stuff" and are wary of
+  fake-capacity Amazon listings. Prep budgets run from $50 to $200–300.
+  ●​ Desire: "Tell me the simple thing that keeps my phone alive without wasting money."
+  ●​ Ad entry: New information. Plain-English numbers ("20,000mAh = about 4 phone
+  charges"), honest solar claims, real capacity.
+Niche notes
+Medical-device dependents charge insulin pumps, glucose monitors or hearing aids. They're
+high stakes, so they want redundancy. Don't make medical claims; at most, say they "keep
+essentials charged".
+Family-abroad buyers buy for relatives facing rolling blackouts in Cuba (in Spanish reviews).
+This is small and US-centric, so it's not a priority for AU.
+CUSTOMER LANGUAGE
+Buzzwords to track
+  ●​ Preparedness: prepared, just in case, emergency, power outage, blackout, lifeline, life
+  saver, peace of mind, keep on hand
+  ●​ Product feel: rugged, sturdy, durable, solid, hefty, heavy, bulky, clunky, brick
+  ●​ Function: fast charge, multiple charges, juice, top up, trickle charge, backup, direct sun
+  ●​ Use: camping, hiking, road trip, festival, keep it in my car, everyday
+Verbatim phrases (Amazon)
+  ●​  "This charger became her literal lifeline"
+  ●​  "what a life saver!"
+  ●​  "Not a want but a need!"
+  ●​  "hefty but in an entirely good way"
+  ●​  "Amazing survival tool you didnt know you needed"
+  ●​  "It's been dropped, lived in sand, tossed in bags"
+  ●​  "Got to stay prepared."
+  ●​  "The solar charge is a good backup"
+  ●​  "Solar charging is iffy works but take like 4 days"
+  ●​  "it charges in direct sun- not filtered light!"
+  ●​  "you might need two, one to use while the second one charges"
+  ●​  "This will be everyone's gift next Christmas."
+Verbatim phrases (Reddit)
+  ●​  "most of those power banks with a built-in solar charger aren't worth crap"
+  ●​  "If the price seems too good to be true, it's probably a fake capacity."
+  ●​  "Im not a tecophile so i dont really understand the mAh stuff"
+  ●​  "the normal portable phone charges I have seem to die way too quickly"
+  ●​  "Kept 2 phones charged for a 3 day weekend with plenty of juice to spare."
+  ●​  "Gotta be prepped for bloody everything." (Australian commenter)
+  ●​  "it took a hurricane followed by a week without power to convince my husband that my
+  prepping wasn't crazy"
+CORE PROBLEMS AND SOLUTIONS TRIED
+Problem 1: The phone dies when the power or the plug isn't there
+Solutions tried:
+  ●​  Small power banks ("die way too quickly")
+  ●​  Car charging or idling the truck
+  ●​  Airplane mode and rationing the phone
+  ●​  Borrowing a neighbour's generator, which caused resentment
+  ●​  Big power stations ($500+, overkill)
+Problem 2: No light in a blackout
+Solutions tried:
+  ●​  Candles (soot, fire risk)
+  ●​  $1.50 lanterns
+  ●​  Flashlights that "are absolutely useless at lighting up an entire room"
+  ●​  Headlamps
+Problem 3: Not trusting the gear
+  ●​ Fake mAh claims
+  ●​ Solar banks that don't charge from the sun
+  ●​ Cheap devices failing or catching fire
+Problem 4: Cable chaos
+  ●​ Forgetting, tangling or carrying the wrong cable. Built-in cables are praised for exactly
+  this.
+Other problems: Weight in a day bag, wireless that won't work through a thick case, short
+included cables.
+GOOD AND BAD COMPARATIVE REVIEWS
+Good (vs other banks they own):
+  ●​  Charges faster than other bricks
+  ●​  Used more than their Anker
+  ●​  Wireless and wired at the same time
+  ●​  Tough corners survive drops
+  ●​  Customer service replaced faulty units quickly (5% mention service)
+Bad:
+  ●​  Heavy or bulky (13%)
+  ●​  Solar is slow, takes days from empty and needs direct sun, not a window (6%)
+  ●​  Wireless needs the case removed and is "spot specific" (4%)
+  ●​  Compass is a "gimmick" or inaccurate
+  ●​  Ports or units failed (4%)
+  ●​  Watch charger works with Apple Watch only
+  ●​  Warping or overheating if left on a hot dashboard
+OBJECTIONS AND FAQ
+  ●​ "Does the solar actually work?" → Yes, as a top-up in direct sun. Charge it at the wall
+  first, and the sun keeps it topped up. Expect days, not hours, from empty.
+  ●​ "Why won't it charge on my windowsill?" → It needs direct sunlight outside. Glass
+  and indoor light give almost nothing.
+  ●​ "Is it heavy?" → Be upfront about the weight (around 470g packed). It's a car, kit or bag
+  item, not a pocket item.
+  ●​ "Is the capacity real?" → Publish tested capacity and real phone-charge counts.
+  ●​ "Will wireless work through my case?" → Thin cases yes; thick or rugged cases may
+  need removing. Use USB-C for speed.
+  ●​ "Can I leave it in the car?" → Glovebox or shade, yes. On a hot dashboard, no,
+  because heat damages lithium batteries.
+  ●​ "Can I charge the bank and my phone at the same time?" → Answer from supplier
+  testing.
+  ●​ "Can I fly with it?" → Carry-on only (about 74Wh); check your airline.
+  ●​ "Is it safe and certified for Australia?" → List the certifications. This matters to AU
+  buyers who've seen cheap-device fire stories.
+  ●​ "Will it charge my watch?" → Only if your model has a watch pad and your watch
+  supports it. Be specific.
+BELIEFS AND AWARENESS
+Core beliefs of the market
+  1.​ "Being prepared is responsible, not crazy." Preppers often feel judged until the outage
+  proves them right.
+  2.​ "Most gadgets on Amazon over-promise."
+  3.​ "Solar on a power bank is mostly a gimmick."
+  4.​ "Tough and heavy means quality; flimsy means it'll fail when I need it."
+  5.​ "My phone is my lifeline. In a crisis, the first thing to go is information."
+  6.​ "Charge at the wall; anything else is a bonus."
+Awareness
+This is a trigger-moment market. Most buyers sit at solution aware (they own power banks)
+until a storm warning, an outage or a trip booking moves them to buy fast. Ads should either
+recreate the trigger moment (an outage, a dead phone at camp) or ride a real one (storm
+season, Christmas, summer holidays).
+TOP REVIEWS BY SUB-AVATAR
+Internal research only. These are BLAVOR's Amazon reviews and can't be used as social proof
+for our product (misattributed testimonials breach ACL and Meta policy). Use them for angles,
+hooks and script language.
+A. Storm-Season Household
+  1.​ ★5 — "I bought this solar charger as a birthday gift for my grandma in Texas,
+  coincidentally just weeks before the historic winter storm that knocked out her power for
+  over a week. This charger became her literal lifeline to keep her essentials charged."
+  2.​ ★5 — "I ordered and received it couple weeks prior to these past snow storms here in
+  San Antonio, TX and what a life saver! It was fully charged as the power outage came
+  and I used it to keep my phone charged and light at night."
+  3.​ ★5 — "I needed this for hurricanes and I love it! Will buy as gifts for family members
+  too... Just don't forget, it needs sunlight to charge."
+  4.​ ★5 — "Came in very handy got this yesterday power went out shortly after... living in
+  Florida you have to be ready for hurricane season... Plan to get another for my car. Got
+  to stay prepared."
+  5.​ ★4 — "I ordered this power supply for camping but so far it came in handy when we got
+  hit with hurricane Helene. We were without power for a day."
+B. Weekend Camper / Family Outdoors
+  1.​ ★5 — "This is a massive capacity battery that let me charge up all the kids' phones with
+  room to spare over the entire weekend."
+  2.​ ★4 — "Held up to a three-week camping trip. Charges well in direct sunlight."
+  3.​ ★5 — "It is hefty but in an entirely good way as you don't want to haul around a flimsy
+  device outdoors."
+  4.​ ★5 — "I bought this solar power bank primarily for my camping trips, and it has
+  exceeded my expectations... An essential accessory if you spend a lot of time outdoors
+  or want to be prepared for any power outage."
+  5.​ ★5 — "My husband... had no problem using it at the campground. He just left it outside
+  his tent to charge up."
+C. Traveller / Road-tripper
+  1.​ ★5 — "I've taken it camping, on airplanes, all over Disneyland (multiple trips)... It's been
+  dropped, lived in sand, tossed in bags, and generally not babied. It keeps going."
+  2.​ ★5 — "This product has helped me in several countries & even during power outages
+  back in the US."
+  3.​ ★5 — "I bought two of these items for a cross-country motorcycle trip... Charged my
+  motorcycle helmet and iPhone several times before I needed to charge it."
+  4.​ ★5 — "I travel for work and i always forget my charger at the hotel. Glad i bought this."
+  5.​ ★5 — "Can charge my samsung s7 and my sisters iphone se at 100% for the duration
+  of a 14 hour trip watching videos."
+D. Gift Buyer
+  1.​ ★5 — "I always pick one thing to give my family for Christmas that I have 5 stars to. This
+  will be everyone's gift next Christmas."
+  2.​ ★5 — "This product came in a fancy/expensive looking box, which will make a great
+  looking Gift."
+  3.​ ★5 — "My husband uses this thing everyday." (Husbands favorite charger)
+  4.​ ★5 — "Great gift for anyone who's on the go, adventuring, or constantly runs their
+  phone down."
+  5.​ ★5 — "This would make a nice little gift for anyone or as a gift for yourself."
+E. Outdoor Worker / Tradie
+  1.​ ★5 — "My boyfriend has ruined the charging port of every phone he's ever had. He's
+  blue collar... works 12-18 hour days on a job that requires him to use his phone for work
+  orders and directions."
+  2.​ ★5 — "I work outside all day, so portable chargers have become my best friends."
+  3.​ ★4 — "The solar charge is a good backup but would not want to count on this as the
+  sole means of re-charging... in fairness Blavor states this very clearly."
+ 4.​ ★5 — "I leave this in my car and the sun hits it to charge it up. Super slow sun charger
+  but i hardly use it for it to matter."
+ANGLE STARTERS
+ ●​ A — "The blackout test": last storm, phone on 8%, torch on, kids calm. Hook: "The
+  night the power went out, I was the only one with a charged phone."
+ ●​ B — "Whose phone is on 3%?": campsite group chaos, then one rugged bank charges
+  everyone.
+ ●​ C — "Dropped, sanded, still going": a durability torture test in travel montage.
+ ●​ D — "The gift they'll actually use": for the dad, partner or grandparent who's "always
+  prepared". 2-pack: one for the car, one for home.
+ ●​ E — "My phone is my work": tradie on a 12-hour day, dust, rain, still charged.
+ ●​ F — "The honest solar power bank": "Most solar power banks lie. Here's what ours
+  actually does."
