@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Blackout Buddy Guarantee</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;600;700&family=Poppins:ital,wght@0,700;0,800;1,800&display=block" rel="stylesheet">
+<style>
+  /* Blackout Buddy tokens (from the theme's bb-page.css) */
+  :root{
+    --ink:#0E1726; --ink-2:#1B2638; --amber:#F5A524; --amber-d:#D9860B; --amber-l:#FFE9C2;
+    --line:#E4E7EC; --bg-soft:#F6F7F9;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1216px;height:1160px;background:var(--bg-soft)}
+  .card{
+    position:absolute;inset:6px;border-radius:44px;background:#fff;border:3px solid var(--line);
+    display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+    padding:56px 64px;color:var(--ink);
+  }
+  .kicker{font:700 44px/1 'Poppins',sans-serif;letter-spacing:.06em;text-transform:uppercase;display:flex;align-items:baseline;gap:18px}
+  .kicker .brand{font:italic 800 58px/1 'Poppins',sans-serif;letter-spacing:-.02em;text-transform:none;color:var(--amber-d)}
+  h1{margin-top:34px;font:800 128px/1 'Poppins',sans-serif;letter-spacing:-.04em}
+  h1 span{display:block}
+  h1 .hl{color:var(--amber-d);margin-top:6px}
+  .sub{margin-top:44px;max-width:900px;font:600 40px/1.32 'Inter',sans-serif;letter-spacing:-.01em;color:var(--ink)}
+  .rule{margin:46px 0 30px;width:264px;height:9px;border-radius:5px;background:var(--amber)}
+  ul{list-style:none;width:680px}
+  li{font:600 38px/1.2 'Inter',sans-serif;letter-spacing:-.01em;color:var(--ink-2);padding:26px 0}
+  li+li{border-top:3px solid #F9D18B}
+</style>
+</head>
+<body>
+  <div class="card" id="card">
+    <div class="kicker"><span>The</span><span class="brand">Blackout Buddy™</span><span>Guarantee</span></div>
+    <h1><span>30-Day Money</span><span class="hl">Back Guarantee</span></h1>
+    <p class="sub">Not the backup you wanted? Send it back within 30 days for a full&nbsp;refund.</p>
+    <div class="rule"></div>
+    <ul>
+      <li>12-month warranty on every unit</li>
+      <li>Free shipping, tracked to your door</li>
+      <li>Your money back, not store credit</li>
+    </ul>
+  </div>
+</body>
+</html>
